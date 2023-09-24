@@ -1,0 +1,31 @@
+
+public class DE_TwitterSearch extend BaseSmokEntity {
+
+    @Column(name="id")
+    protected int id;
+
+    @Column(name="userid")
+    private String userId;
+
+    @Column(name="searchid")
+    private String searchId;
+
+    @Column(name="result_date")
+    private LocalDateTime resultDate;
+
+    @Column(name="user_handle")
+    private String userHandle;
+
+    @Column(name="title")
+    private String title;
+
+    @Column(name="message")
+    private String message;
+
+    @Column(name-"tweet_language")
+    private String text;
+
+    @Column(name="status")
+    private String status;
+
+}

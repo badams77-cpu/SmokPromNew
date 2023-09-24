@@ -1,0 +1,24 @@
+{
+  "smok.admin.version": "0.1.0",
+  "smok.app.version": "0.1.0",
+  "smok.demon.version": "0.1.0",
+  "smok.init.version":"0.1.0",
+  "smok.searchrunner.versipon":"0.1.0",
+  "smokDB.cass1.Name": "smok",
+  "smokDB.cass1.Username": ,
+  "smokDB.cass1."
+  "smokDB.cass1.IsolationLevel": ,
+  "smokDB.cass1.DbVariant":"CASSANDRA",
+  "smokDB.cass1.HostAddress": "127.0.0.1",
+  "smokDB.cass1.Port": "",
+  "smokDB.cass1.Username": "",
+  "smokDB.cass1.RemoveDatabaseNameAtService": "",
+  "smokDB.cass1.Priority": "1",
+  "smokDB.cass1.Group": "smokCass",
+  "smokDB.cass1.UseSSL": "true",
+  "smokDB.cass1.VerifySSL": "false";
+  }
+
+
+
+}
