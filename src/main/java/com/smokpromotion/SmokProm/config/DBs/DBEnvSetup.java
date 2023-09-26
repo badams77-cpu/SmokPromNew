@@ -2,6 +2,7 @@ package com.smokpromotion.SmokProm.config.DBs;
 
 import com.datastax.oss.driver.api.core.CqlIdentifier;
 import com.datastax.oss.driver.api.core.CqlSession;
+import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
 import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 @Component
 public class DBEnvSetup {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SmokDataSource.class);
+    private static final Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(SmokDataSource.class);
 
     private final static String[] CredFields = DBCreds.getCredFields();
 
@@ -28,13 +29,13 @@ public class DBEnvSetup {
 
     private List<DBCreds> envCredList;
 
-    private Map<SmokDatasourceName, DBCreds> envCredMap;
+    private final Map<SmokDatasourceName, DBCreds> envCredMap;
 
-    private Map<SmokDatasourceName, HikariDataSource> dataSources;
+    private final Map<SmokDatasourceName, HikariDataSource> dataSources;
 
-    private Map<SmokDatasourceName, SmokDataSource> smokDataSourceMap;
+    private final Map<SmokDatasourceName, SmokDataSource> smokDataSourceMap;
 
-    private Map<SmokDatasourceName, CqlSession> smokCassMap;
+    private final Map<SmokDatasourceName, CqlSession> smokCassMap;
 
     @Autowired
     public DBEnvSetup(Environment env){
@@ -45,8 +46,8 @@ public class DBEnvSetup {
         smokCassMap = new HashMap<>();
         envCredList = new LinkedList<>();
 
-        Map<String, Object> map = new HashMap();
-        for(Iterator it = ((AbstractEnvironment) env).getPropertySources().iterator(); it.hasNext(); ) {
+        Map<String, Object> map = new HashMap<>();
+        for(Iterator<PropertySource<?>> it = ((AbstractEnvironment) env).getPropertySources().iterator(); it.hasNext(); ) {
             PropertySource propertySource = (PropertySource) it.next();
             if (propertySource instanceof MapPropertySource) {
                 map.putAll(((MapPropertySource) propertySource).getSource());
@@ -63,13 +64,15 @@ public class DBEnvSetup {
                     dbEnvMap.entrySet().stream().filter( en->en.getKey().startsWith(sdsn.getDataSourceName()))
                             .collect(Collectors.toMap( x->x.getKey(), y->y.getValue()));
             int found = 0;
-            Map<String, String> credMap = new HashMap<>();
 
+            LOGGER.warn("Seting up source "+sdsn);
+
+            Map<String, String> credMap = new HashMap<>();
             String stem = PREFIX+"."+smkDS+".";
 
             for(String field : CredFields) {
                 String key = stem + field;
-                String value = (String) dbEnvMap.get(key);
+                String value = (String) credData.get(key);
                 if (value == null) {
                     LOGGER.warn("Missing DB Set Env Var: " + key);
                     continue;
