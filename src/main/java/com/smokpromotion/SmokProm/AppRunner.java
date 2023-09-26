@@ -50,15 +50,18 @@ public class AppRunner implements ApplicationRunner {
         String smokAppVariantDesc = "Unknown";
         String smokAppVersionDesc = "Unknown";
 
-        if (activeProfiles.contains("Init")) {
-            smokAppVariantDesc = "Init";
+        if (activeProfiles.contains(PROFILE_APP)) {
+            smokAppVariantDesc = PROFILE_APP;
             smokAppVersionDesc = smokPortalVersionString;
-        } else if (activeProfiles.contains("Demon")) {
-            smokAppVariantDesc = "Demon";
+        } else if (activeProfiles.contains(PROFILE_DEMON)) {
+            smokAppVariantDesc = PROFILE_DEMON;
             smokAppVersionDesc = smokDemonVersionString;
-        } else if (activeProfiles.contains("App")) {
-            smokAppVariantDesc = "App";
-            smokAppVersionDesc = smokPortalVersionString;
+        } else if (activeProfiles.contains(PROFILE_INIT)) {
+            smokAppVariantDesc = PROFILE_INIT;
+            smokAppVersionDesc = smokInitVersionString;
+        } else if (activeProfiles.contains(PROFILE_ADMIN)) {
+                smokAppVariantDesc = PROFILE_ADMIN;
+                smokAppVersionDesc = smokAdminVersionString;
         } else {
             LOGGER.warn(String.format("run: No known smok app profiles used, active profiles are: %s", activeProfiles.stream().collect(Collectors.joining(","))));
         }
