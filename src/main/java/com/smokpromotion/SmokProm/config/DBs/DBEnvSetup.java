@@ -128,9 +128,15 @@ public class DBEnvSetup {
         return smokCassMap.get(dbSrcName);
     }
 
-    public SmokDatasourceName getMainDBName(){
-        return envCredList.get(0).getName();
+    public SmokDatasourceName getMainCassDBName(){
+        return envCredList.stream().filter(x-> x.getVariant()== DatabaseVariant.CASSANDRA)
+                .findFirst().orElse(new DBCreds()).getName()
+        ;
     }
 
-
+    public SmokDatasourceName getMainSqlDBName(){
+        return envCredList.stream().filter(x->x.getVariant() !=DatabaseVariant.CASSANDRA)
+                .findFirst().orElse(new DBCreds()).getName()
+                ;
+    }
 }

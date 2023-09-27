@@ -22,3 +22,14 @@ smok-db:
     Group: SmokCluster
     UseSSL: false
     VerifySSL: false
+  mysql1:
+    Name: smok
+    Username: smok_cass1
+    IsolationLevel: noTransactions
+    DbVariant: mysql
+    HostAddress: 127.0.0.1
+    #    Port: 7000
+    Port: 3033
+    Priority: 2
+    UseSSL: false
+    VerifySSL: false

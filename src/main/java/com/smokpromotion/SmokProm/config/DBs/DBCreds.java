@@ -47,7 +47,22 @@ public class DBCreds {
     private final boolean verifySSLCert;
     private final String isolationLevel;
 
-    DBCreds(SmokDatasourceName name, String
+    public DBCreds(){
+        this.name = new SmokDatasourceName("");
+        this.variant = DatabaseVariant.NONE;
+        this.hostAddress = "127.0.0.1";
+        this.port = 3303;
+        this.priority =0;
+        this.removeDatabaseNameAtService = "";
+        this.username = "";
+        this.passwd ="";
+        this.group = "";
+        this.isolationLevel = "";
+        this.useSSL = false;
+        this.verifySSLCert = false;
+    }
+
+    public DBCreds(SmokDatasourceName name, String
             group, int  priorty, DatabaseVariant variant, String remoteDatabaseNameAtService,
                    String hostAddress, int port, String username, String passwd, boolean useSSL, boolean verifySSLCert,
             String isolationLevel)

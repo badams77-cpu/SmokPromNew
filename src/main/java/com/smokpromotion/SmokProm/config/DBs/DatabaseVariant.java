@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 
 public enum DatabaseVariant {
 
+    NONE(0, ""),
     MYSQL( 1, "mysql"),
     SQL_SERVER(2, "sqlserver"),
     CASSANDRA(3, "cassandra");
