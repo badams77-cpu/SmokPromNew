@@ -2,30 +2,33 @@ package com.smokpromotion.SmokProm.config.DBs;
 
 import com.datastax.oss.driver.api.core.CqlIdentifier;
 import com.datastax.oss.driver.api.core.CqlSession;
+import com.smokpromotion.SmokProm.config.common.YamlDBConfig;
+import com.smokpromotion.SmokProm.config.common.YamlPropertySourceFactory;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
 import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.AbstractEnvironment;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.core.env.MapPropertySource;
-import org.springframework.core.env.PropertySource;
-import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Component
+@Configuration
 public class DBEnvSetup {
 
     private static final Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(SmokDataSource.class);
 
     private final static String[] CredFields = DBCreds.getCredFields();
 
-    private static final String PREFIX = "smokDB";
+    private static final String PREFIX = YamlDBConfig.getPrefix();
 
-    @Autowired private Environment env;
+    @Autowired
+    private Environment env;
+
+    @Autowired private YamlDBConfig ydb;
 
     private List<DBCreds> envCredList;
 
@@ -38,25 +41,33 @@ public class DBEnvSetup {
     private final Map<SmokDatasourceName, CqlSession> smokCassMap;
 
     @Autowired
-    public DBEnvSetup(Environment env){
+    public DBEnvSetup(YamlDBConfig ydb, Environment env){
         this.env = env;
+        this.ydb = ydb;
         envCredMap = new HashMap<>();
         dataSources = new HashMap<>();
         smokDataSourceMap = new HashMap<>();
         smokCassMap = new HashMap<>();
         envCredList = new LinkedList<>();
-
         Map<String, Object> map = new HashMap<>();
-        for(Iterator<PropertySource<?>> it = ((AbstractEnvironment) env).getPropertySources().iterator(); it.hasNext(); ) {
-            PropertySource propertySource = (PropertySource) it.next();
-            if (propertySource instanceof MapPropertySource) {
-                map.putAll(((MapPropertySource) propertySource).getSource());
+        for(Iterator<Map.Entry<String, Map<String, String>>> it = ydb.getEntries().entrySet().iterator(); it.hasNext(); ) {
+            Map.Entry<String, Map<String, String>> entry = it.next();
+            String topKey = entry.getKey();
+            Map<String, String> propertySource = entry.getValue();
+            for (String key : propertySource.keySet()) {
+                String longKey = PREFIX + "."+ topKey + "." + key;
+                String envValue = env.getProperty(longKey);
+                String val = envValue==null ? propertySource.get(key) : envValue;
+                map.put(longKey, val);
             }
         }
+        LOGGER.warn("Read "+map.size()+" env and property items");
 
         Map<String, Object> dbEnvMap = map.entrySet().stream().filter( en->en.getKey().startsWith(PREFIX+".")).collect(Collectors.toMap(en->en.getKey().substring("smokDb.".length()),en->en.getValue()));
 
         Set<String> names =  dbEnvMap.keySet().stream().map(x->x.substring(0,x.indexOf("_"))).collect(Collectors.toSet());
+
+        LOGGER.warn("Read "+names.size()+" DBs to connect to");
 
         for(String smkDS : names){
             SmokDatasourceName sdsn = new SmokDatasourceName(smkDS);
@@ -89,6 +100,7 @@ public class DBEnvSetup {
                 if (creds.getVariant()!=DatabaseVariant.CASSANDRA){
                     CassandraConnector cassConn = new CassandraConnector();
                     cassConn.connect(creds);
+
                   CqlSession cqlSess = cassConn.getSession();
                   cqlSess.execute("USE " + CqlIdentifier.fromCql(creds.getName().getDataSourceName()));
                   smokCassMap.put(sdsn, cqlSess);
@@ -115,4 +127,10 @@ public class DBEnvSetup {
     public CqlSession getCqlSession(SmokDatasourceName dbSrcName){
         return smokCassMap.get(dbSrcName);
     }
+
+    public SmokDatasourceName getMainDBName(){
+        return envCredList.get(0).getName();
+    }
+
+
 }

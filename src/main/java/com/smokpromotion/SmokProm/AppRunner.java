@@ -24,6 +24,9 @@ public class AppRunner implements ApplicationRunner {
     private static final String PROFILE_INIT = "smok_init";
 
     @Autowired
+    private Initialization init;
+
+    @Autowired
     Environment env;
 
     @Value("${smok.admin.version:0.1.0}")
@@ -59,6 +62,7 @@ public class AppRunner implements ApplicationRunner {
         } else if (activeProfiles.contains(PROFILE_INIT)) {
             smokAppVariantDesc = PROFILE_INIT;
             smokAppVersionDesc = smokInitVersionString;
+            init.init();
         } else if (activeProfiles.contains(PROFILE_ADMIN)) {
                 smokAppVariantDesc = PROFILE_ADMIN;
                 smokAppVersionDesc = smokAdminVersionString;

@@ -9,10 +9,10 @@ smok:
     version: 0.1.0
   searchrunner:
     version: 0.1.0
-smokDB:
+smok-db:
   cass1:
     Name: smok
-    Username:
+    Username: smok_cass1
     IsolationLevel: noTransactions
     DbVariant: cassandra
     HostAddress: 127.0.0.1

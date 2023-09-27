@@ -1,5 +1,7 @@
 package com.smokpromotion.SmokProm.config.DBs;
 
+import org.springframework.boot.jdbc.DataSourceBuilder;
+
 import java.util.Map;
 
 public class DBCreds {
@@ -131,8 +133,6 @@ public class DBCreds {
     public boolean isUseSSL() {
         return useSSL;
     }
-
-
 
 
     @Override
