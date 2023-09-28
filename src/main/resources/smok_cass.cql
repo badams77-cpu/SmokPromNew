@@ -1,4 +1,4 @@
-CREATE KEY SPACE IF NOT EXISTS smok;
+CREATE KEYSPACE IF NOT EXISTS smok WITH REPLICATION = {'class':'SimpleStrategy', 'replication_factor':1};
 
 CREATE TABLE IF NOT EXISTS smok.user (
  id UUID PRIMARY KEY,
@@ -58,7 +58,7 @@ CREATE table IF NOT EXISTS smok.oauth_log (
 );
 
 CREATE table IF NOT EXISTS email_queue (
-  id UUID PRIAMRY KEY,
+  id UUID PRIMARY KEY,
   userid UUID,
   recipient_email text,
   title text,

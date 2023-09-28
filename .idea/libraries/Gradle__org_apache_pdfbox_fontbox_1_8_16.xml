@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: org.apache.pdfbox:fontbox:1.8.16" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="org.apache.pdfbox" artifactId="fontbox" version="1.8.16" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.pdfbox/fontbox/1.8.16/a4aece226b0412bd459ed3290b91d98a3f1c6d2e/fontbox-1.8.16.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.pdfbox/fontbox/1.8.16/76235a61a67da4c2a901a52f1c679add31dfc7b/fontbox-1.8.16-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

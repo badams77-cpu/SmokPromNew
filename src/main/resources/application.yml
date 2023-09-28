@@ -1,3 +1,9 @@
+flyway:
+  url: jdbc:mysql://localhost:3306/mysql
+  schemas: smok
+  user: "smok"
+  password: "SmokSql7!"
+
 net:
   sf:
     jasperreports:
@@ -81,7 +87,7 @@ smok-db:
     useSSL: false
     verifySSL: false
   mysql1:
-    name: smokMySq
+    name: smokMysql
     username: smok
     oasswd: SmokSql7!
     isolationLevel: noTransactions

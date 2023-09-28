@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.datastax.oss:java-driver-query-builder:4.17.0" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="com.datastax.oss" artifactId="java-driver-query-builder" version="4.17.0" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.datastax.oss/java-driver-query-builder/4.17.0/7bb3d00139594000f4e49a76f6afdd53789074d2/java-driver-query-builder-4.17.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.datastax.oss/java-driver-query-builder/4.17.0/352087ca0dc9bee1e17632668d800d664c354691/java-driver-query-builder-4.17.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

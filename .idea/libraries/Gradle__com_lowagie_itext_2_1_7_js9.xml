@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: com.lowagie:itext:2.1.7.js9" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="com.lowagie" artifactId="itext" version="2.1.7.js9" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/itext-2.1.7.js9.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

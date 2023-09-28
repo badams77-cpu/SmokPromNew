@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.datastax.oss:java-driver-core:4.17.0" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="com.datastax.oss" artifactId="java-driver-core" version="4.17.0" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.datastax.oss/java-driver-core/4.17.0/3d619c4ecb214ac091006ff06ab32198a260f977/java-driver-core-4.17.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.datastax.oss/java-driver-core/4.17.0/8cb944d9b4dfd3b8acd1f2c043200ea06e104a1e/java-driver-core-4.17.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
