@@ -9,13 +9,15 @@ import org.springframework.context.annotation.PropertySource;
 import java.util.Map;
 
 @Configuration
-@PropertySource("classpath:application.yaml" )
+@PropertySource("classpath:application.yml" )
 @ConfigurationProperties(prefix= "smok-db")
 public class YamlDBConfig {
 
     private static final String PREFIX = "smok-db";
     private final Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(this.getClass());
     private Map<String, Map<String, String>> entries;
+
+
 
     public static String getPrefix(){
         return PREFIX;

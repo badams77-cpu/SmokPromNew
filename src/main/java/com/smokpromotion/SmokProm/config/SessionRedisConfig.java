@@ -47,7 +47,7 @@ public class SessionRedisConfig {
             jedisConnectionFactory.setHostName(host);
             jedisConnectionFactory.setPort(port);
         } else if (redisNodes.equals("NULL")) {
-            LOGGER.info("Using Redis cluster specified in from application.yaml");
+            LOGGER.info("Using Redis cluster specified in from application.yml");
             jedisConnectionFactory = new JedisConnectionFactory(new RedisClusterConfiguration(clusterConfig.getNodes()));
         } else {
             LOGGER.info("Using Redis cluster nodes: "+redisNodes);

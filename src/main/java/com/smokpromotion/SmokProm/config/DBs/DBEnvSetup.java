@@ -10,8 +10,10 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.PropertySource;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -40,17 +42,62 @@ public class DBEnvSetup {
 
     private final Map<SmokDatasourceName, CqlSession> smokCassMap;
 
+    public static Map<String, Object> getAllKnownProperties(Environment env) {
+        Map<String, Object> rtn = new HashMap<>();
+        if (env instanceof ConfigurableEnvironment) {
+            for (PropertySource<?> ps : ((ConfigurableEnvironment) env).getPropertySources()   ) {
+                if (ps instanceof EnumerablePropertySource) {
+                    for (String key : ((EnumerablePropertySource) ps).getPropertyNames()) {
+                        rtn.put(key, ((EnumerablePropertySource<?>) ps).getProperty(key));
+                    }
+                }
+            }
+        }
+        return rtn;
+    }
+
+    public static <T> List<T> withoutFirst(List<T> o) {
+        final List<T> result = new ArrayList<T>();
+
+        for (int i = 1; i < o.size(); i++)
+            result.add(o.get(i));
+
+        return result;
+    }
     @Autowired
     public DBEnvSetup(YamlDBConfig ydb, Environment env){
         this.env = env;
         this.ydb = ydb;
+
+        Map<String, Object> allProp = getAllKnownProperties(env);
+
+        Map<List<String>, Object> splitKeys = allProp.entrySet().stream()
+                .collect( Collectors.toMap(
+                    x->Arrays.asList( ((String) x.getKey()).split("\\.")),
+                        Map.Entry::getValue,
+                   (a,b)->a)
+                );
+
+        Map<List<String>, Object> withPrefix = splitKeys.entrySet().stream()
+                .filter( x->x.getKey().size()>1 && x.getKey().get(0).equalsIgnoreCase(PREFIX) )
+                .collect( Collectors.toMap(x->withoutFirst(x.getKey()), Map.Entry::getValue));
+
+        Map<String, Map<String, String>> propsByDb = withPrefix.entrySet().stream()
+                .filter( x->x.getKey().size()>1 )
+                .collect( Collectors.groupingBy( x-> ((Map.Entry<List<String>, Object>) x).getKey().get(0),
+                        Collectors.toMap( y-> String.join(".",
+                                        withoutFirst(((Map.Entry<List<String>, Object>) y).getKey())),
+                                z->((Map.Entry<List<String>, Object>) z).getValue().toString())
+                        )
+                );
+
         envCredMap = new HashMap<>();
         dataSources = new HashMap<>();
         smokDataSourceMap = new HashMap<>();
         smokCassMap = new HashMap<>();
         envCredList = new LinkedList<>();
         Map<String, Object> map = new HashMap<>();
-        for(Iterator<Map.Entry<String, Map<String, String>>> it = ydb.getEntries().entrySet().iterator(); it.hasNext(); ) {
+        for(Iterator<Map.Entry<String, Map<String, String>>> it = propsByDb.entrySet().iterator(); it.hasNext(); ) {
             Map.Entry<String, Map<String, String>> entry = it.next();
             String topKey = entry.getKey();
             Map<String, String> propertySource = entry.getValue();
@@ -63,9 +110,9 @@ public class DBEnvSetup {
         }
         LOGGER.warn("Read "+map.size()+" env and property items");
 
-        Map<String, Object> dbEnvMap = map.entrySet().stream().filter( en->en.getKey().startsWith(PREFIX+".")).collect(Collectors.toMap(en->en.getKey().substring("smokDb.".length()),en->en.getValue()));
+        Map<String, Object> dbEnvMap = allProp.entrySet().stream().filter( en->en.getKey().startsWith(PREFIX+".")).collect(Collectors.toMap(en->en.getKey().substring("smokDb.".length()),en->en.getValue()));
 
-        Set<String> names =  dbEnvMap.keySet().stream().map(x->x.substring(0,x.indexOf("_"))).collect(Collectors.toSet());
+        Set<String> names =  dbEnvMap.keySet().stream().map(x->x.substring(0,x.indexOf("."))).collect(Collectors.toSet());
 
         LOGGER.warn("Read "+names.size()+" DBs to connect to");
 
