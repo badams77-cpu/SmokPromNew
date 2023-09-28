@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.cassandra.core.CassandraTemplate;
 
+import javax.sql.DataSource;
+
 @Configuration
 public class MainDataSourceConfig {
 
@@ -23,7 +25,7 @@ public class MainDataSourceConfig {
     }
 
     @Bean
-    public HikariDataSource getDatasource(){
+    public DataSource getDatasource(){
         SmokDatasourceName main = dbEnv.getMainSqlDBName();
         return dbEnv.getHikDatasource(main);
     }

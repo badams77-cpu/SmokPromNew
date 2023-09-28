@@ -1,23 +1,21 @@
 package com.smokpromotion.SmokProm.config.DBs;
 
-import org.springframework.boot.jdbc.DataSourceBuilder;
-
 import java.util.Map;
 
 public class DBCreds {
 
-    private static final String ENV_VAR_NAME = "Name";
-    private static final String ENV_VAR_ISOLATION_LEVEL = "IsolationLevel";
-    private static final String ENV_VAR_DB_VARIANT = "DbVariant";
-    private static final String ENV_VAR_HOST_ADDRESS = "HostAddress";
-    private static final String ENV_VAR_PORT = "Port";
-    private static final String ENV_VAR_USERNAME = "Username";
-    private static final String ENV_VAR_PASSWD = "Password";
-    private static final String ENV_VAR_REMOVE_DATABASE_NAME_AT_SERVICE = "removeDatabaseNameAtService";
-    private static final String ENV_VAR_PRIORITY = "Priority";
-    private static final String ENV_VAR_GROUP = "Group";
-    private static final String ENV_VAR_USE_SSL = "UseSSL";
-    private static final String ENV_VAR_VERIFY_SSL_CERT = "VerifySSL";
+    private static final String ENV_VAR_NAME = "name";
+    private static final String ENV_VAR_ISOLATION_LEVEL = "isolationLevel";
+    private static final String ENV_VAR_DB_VARIANT = "dbVariant";
+    private static final String ENV_VAR_HOST_ADDRESS = "hostAddress";
+    private static final String ENV_VAR_PORT = "port";
+    private static final String ENV_VAR_USERNAME = "username";
+    private static final String ENV_VAR_PASSWD = "password";
+    private static final String ENV_VAR_REMOTE_DATABASE_NAME_AT_SERVICE = "remoteDatabaseNameAtService";
+    private static final String ENV_VAR_PRIORITY = "priority";
+    private static final String ENV_VAR_GROUP = "group";
+    private static final String ENV_VAR_USE_SSL = "useSSL";
+    private static final String ENV_VAR_VERIFY_SSL_CERT = "verifySSL";
 
     private static final String[] ENV_VARS = {
                 ENV_VAR_NAME,
@@ -26,7 +24,7 @@ public class DBCreds {
                 ENV_VAR_HOST_ADDRESS,
                 ENV_VAR_PORT,
                 ENV_VAR_PASSWD,
-                ENV_VAR_REMOVE_DATABASE_NAME_AT_SERVICE,
+            ENV_VAR_REMOTE_DATABASE_NAME_AT_SERVICE,
                 ENV_VAR_PRIORITY,
                 ENV_VAR_GROUP,
                 ENV_VAR_USE_SSL,
@@ -89,7 +87,7 @@ public class DBCreds {
         this.hostAddress = cred.getOrDefault(ENV_VAR_HOST_ADDRESS,"");
         this.port = Integer.parseInt(cred.getOrDefault(ENV_VAR_PORT, ""));
         this.priority = Integer.parseInt(cred.getOrDefault(ENV_VAR_PRIORITY,""));
-        this.removeDatabaseNameAtService = cred.getOrDefault(ENV_VAR_REMOVE_DATABASE_NAME_AT_SERVICE,"" );
+        this.removeDatabaseNameAtService = cred.getOrDefault(ENV_VAR_REMOTE_DATABASE_NAME_AT_SERVICE,"" );
         this.username = cred.getOrDefault(ENV_VAR_USERNAME,"");
         this.passwd = cred.getOrDefault(ENV_VAR_GROUP,"");
         this.group = cred.getOrDefault(ENV_VAR_GROUP,"");

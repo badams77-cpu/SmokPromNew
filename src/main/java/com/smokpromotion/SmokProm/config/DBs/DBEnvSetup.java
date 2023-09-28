@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @Configuration
 public class DBEnvSetup {
 
-    private static final Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(SmokDataSource.class);
+    private static final Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(DBEnvSetup.class);
 
     private final static String[] CredFields = DBCreds.getCredFields();
 
@@ -110,7 +110,7 @@ public class DBEnvSetup {
         }
         LOGGER.warn("Read "+map.size()+" env and property items");
 
-        Map<String, Object> dbEnvMap = allProp.entrySet().stream().filter( en->en.getKey().startsWith(PREFIX+".")).collect(Collectors.toMap(en->en.getKey().substring("smokDb.".length()),en->en.getValue()));
+        Map<String, Object> dbEnvMap = allProp.entrySet().stream().filter( en->en.getKey().startsWith(PREFIX+".")).collect(Collectors.toMap(en->en.getKey().substring(PREFIX.length()+1),en->en.getValue()));
 
         Set<String> names =  dbEnvMap.keySet().stream().map(x->x.substring(0,x.indexOf("."))).collect(Collectors.toSet());
 
@@ -129,32 +129,56 @@ public class DBEnvSetup {
             String stem = PREFIX+"."+smkDS+".";
 
             for(String field : CredFields) {
-                String key = stem + field;
-                String value = (String) credData.get(key);
-                if (value == null) {
+                String key = smkDS +"."+ field;
+                Object oVal = credData.get(key);
+
+                String value = "";
+                if (oVal == null) {
                     LOGGER.warn("Missing DB Set Env Var: " + key);
                     continue;
+                } else {
+                    if (oVal instanceof Number ) {
+                        long n = ((Number) oVal).longValue();
+                        value = "" + n;
+                    } else if (oVal instanceof Boolean) {
+                        value = ((Boolean) oVal).toString();
+                    } else {
+                        value = (String) credData.get(key);
+                    }
                 }
                 found++;
                 credMap.put(field, value);
             }
-            if (found == CredFields.length) {
-                DBCreds creds = new DBCreds(credMap);
-                envCredMap.put(sdsn, creds);
-                envCredList.add(creds);
-                SmokDataSource src = new SmokDataSource(creds);
-                smokDataSourceMap.put(sdsn, src);
-                if (creds.getVariant()!=DatabaseVariant.CASSANDRA){
-                    CassandraConnector cassConn = new CassandraConnector();
-                    cassConn.connect(creds);
+            if (found >= CredFields.length) {
+                try {
+                    DBCreds creds = new DBCreds(credMap);
+                    envCredMap.put(sdsn, creds);
+                    envCredList.add(creds);
+                    SmokDataSource src = new SmokDataSource(creds);
+                    smokDataSourceMap.put(sdsn, src);
+                    if (creds.getVariant() == DatabaseVariant.CASSANDRA) {
+                        CassandraConnector cassConn = new CassandraConnector();
+                        cassConn.connect(creds);
 
-                  CqlSession cqlSess = cassConn.getSession();
-                  cqlSess.execute("USE " + CqlIdentifier.fromCql(creds.getName().getDataSourceName()));
-                  smokCassMap.put(sdsn, cqlSess);
-                } else {
-                  HikariDataSource hikariDataSource = src.getHikariDataSource();
-                  dataSources.put(sdsn,    hikariDataSource);
+                        CqlSession cqlSess = cassConn.getSession();
+                        if (cqlSess==null){
+                            LOGGER.error("Error get CqlSession "+sdsn+" "+cassConn.getMessage());
+                            continue;
+                        }
+                        cqlSess.execute("USE " + CqlIdentifier.fromCql(creds.getName().getDataSourceName()));
+                        ;
+                        smokCassMap.put(sdsn, cqlSess);
+                    } else {
+                        HikariDataSource hikariDataSource = src.getHikariDataSource();
+                        dataSources.put(sdsn, hikariDataSource);
+                    }
+                } catch (Exception e){
+                    LOGGER.error("Error create datasource "+sdsn,e);
                 }
+            } else {
+                String missing = Arrays.asList(CredFields).stream().map( k-> smkDS+"."+k)
+                        .filter( k->credMap.containsKey(k)).collect(Collectors.joining(", "));
+                LOGGER.error("DB Config: " + sdsn + " missing fields "+missing);
             }
         }
     }
@@ -163,8 +187,10 @@ public class DBEnvSetup {
         return envCredMap.getOrDefault(dbName, new DBCreds(new HashMap<>()));
     }
 
-    public HikariDataSource getHikDatasource(SmokDatasourceName dbSrcName){
-        return dataSources.get(dbSrcName);
+    public HikariDataSource getHikDatasource(SmokDatasourceName dbSrcName)
+    {
+        return dataSources.get(dbSrcName)
+                ;
     }
 
     public SmokDataSource getSmokDatasource(SmokDatasourceName dbSrcName){
