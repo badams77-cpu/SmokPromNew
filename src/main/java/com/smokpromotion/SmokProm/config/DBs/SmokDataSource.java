@@ -72,18 +72,18 @@ public class SmokDataSource {
             try {
                 isoLevel = IsolationLevel.valueOf(cred.getIsolationLevel());
                 if (isoLevel.getLevelId() < IsolationLevel.TRANSACTION_READ_COMMITTED.getLevelId()) {
-                    LOGGER.error("legacyAWSDataSource: invalid transaction isolation level: " + cred.getIsolationLevel() + " - must be at least TRANSACTION_READ_COMMITTED, will use server default");
+                    LOGGER.error("SmokDataSource: invalid transaction isolation level: " + cred.getIsolationLevel() + " - must be at least TRANSACTION_READ_COMMITTED, will use server default");
                     isoLevel = null;
                 }
             } catch (Exception e) {
-                LOGGER.warn("legacyAWSDataSource: unknown transaction isolation level: " + cred.getIsolationLevel() + " , will use server default");
+                LOGGER.warn("SmokDataSource: unknown transaction isolation level: " + cred.getIsolationLevel() + " , will use server default");
             }
         }
         if (isoLevel != null) {
-            LOGGER.warn("legacyAWSDataSource: setting isolation level: " + cred.getIsolationLevel());
+            LOGGER.warn("SmokDataSource: setting isolation level: " + cred.getIsolationLevel());
             conf.setTransactionIsolation("" + isoLevel.getLevelId());
         } else {
-            LOGGER.warn("legacyAWSDataSource: using server default isolation level");
+            LOGGER.warn("SmokDataSource: using server default isolation level");
         }
 
         conf.setConnectionTestQuery("SELECT 1");

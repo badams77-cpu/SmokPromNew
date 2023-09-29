@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS smok.user (
                                          firstlogin timestamp,
                                          payment_status text,
                                          passwd text,
-                                         last_login timestamp,
+                                         last_login timestamp default '1970-01-01 00:00:01',
                                          company_name text,
                                          cc_email text,
                                          address1 text,
@@ -23,11 +23,11 @@ CREATE TABLE IF NOT EXISTS smok.user (
                                          oauth_verifier text,
                                          access_token text,
                                          access_token_expiry text,
-                                         created timestamp,
+                                         created timestamp default '1970-01-01 00:00:01',
                                          created_by int,
-                                         updated timestamp,
+                                         updated timestamp default '1970-01-01 00:00:01',
                                          deleted boolean,
-                                         deleted_at timestamp
+                                         deleted_at timestamp null default null
 );
 
 CREATE TABLE IF NOT EXISTS smok.admin_user (
@@ -36,11 +36,11 @@ CREATE TABLE IF NOT EXISTS smok.admin_user (
                                                passwd text,
                                                change_pass_token text,
                                                change_pass_token_created text,
-                                               created timestamp,
+                                               created timestamp default '1970-01-01 00:00:01',
                                                created_by int,
-                                               updated timestamp,
+                                               updated timestamp default '1970-01-01 00:00:01',
                                                deleted boolean,
-                                               deleted_at timestamp
+                                               deleted_at timestamp null default null
 
 );
 
@@ -50,40 +50,40 @@ CREATE table IF NOT EXISTS smok.oauth_log (
                                               log_date timestamp,
                                               oauth_status text,
                                               error_message text,
-                                              created timestamp,
+                                              created timestamp default '1970-01-01 00:00:01',
                                               created_by int,
-                                              updated timestamp,
+                                              updated timestamp default '1970-01-01 00:00:01',
                                               deleted boolean,
-                                              deleted_at timestamp
+                                              deleted_at timestamp null default null
 );
 
-CREATE table IF NOT EXISTS email_queue (
+CREATE table IF NOT EXISTS smok.email_queue (
                                            id int PRIMARY KEY,
                                            userid int,
                                            recipient_email text,
                                            title text,
                                            body text,
-                                           created timestamp,
+                                           created timestamp default '1970-01-01 00:00:01',
                                            created_by int,
-                                           updated timestamp,
+                                           updated timestamp default '1970-01-01 00:00:01',
                                            deleted boolean,
-                                           deleted_at timestamp
+                                           deleted_at timestamp null default null
 );
 
-CREATE table IF NOT EXISTS email_log (
+CREATE table IF NOT EXISTS smok.email_log (
                                          id int PRIMARY KEY,
                                          userid int,
                                          email_id int,
                                          error_message text,
                                          status text,
-                                         created timestamp,
+                                         created timestamp default '1970-01-01 00:00:01',
                                          created_by int,
-                                         updated timestamp,
+                                         updated timestamp default '1970-01-01 00:00:01',
                                          deleted boolean,
-                                         deleted_at timestamp
+                                         deleted_at timestamp null default null
 );
 
-CREATE table IF NOT EXISTS twitter_search (
+CREATE table IF NOT EXISTS smok.twitter_search (
                                               id int PRIMARY KEY,
                                               userid int,
                                               regularity text,
@@ -95,14 +95,14 @@ CREATE table IF NOT EXISTS twitter_search (
                                               longitude double,
                                               radius double,
                                               tweet_language text,
-                                              created timestamp,
+                                              created timestamp default '1970-01-01 00:00:01',
                                               created_by int,
-                                              updated timestamp,
+                                              updated timestamp default '1970-01-01 00:00:01',
                                               deleted boolean,
-                                              deleted_at timestamp
+                                              deleted_at timestamp null default null
 );
 
-CREATE table IF NOT EXISTS search_results (
+CREATE table IF NOT EXISTS smok.search_results (
                                               id int PRIMARY KEY,
                                               userid int,
                                               searchid int,
@@ -111,14 +111,14 @@ CREATE table IF NOT EXISTS search_results (
                                               title text,
                                               message text,
                                               tweet_language text,
-                                              created timestamp,
+                                              created timestamp default '1970-01-01 00:00:01',
                                               created_by int,
-                                              updated timestamp,
+                                              updated timestamp default '1970-01-01 00:00:01',
                                               deleted boolean,
-                                              deleted_at timestamp
+                                              deleted_at timestamp null default null
 );
 
-CREATE table IF NOT EXISTS search_log (
+CREATE table IF NOT EXISTS smok.search_log (
                                           id int PRIMARY KEY,
                                           userid int,
                                           searchid int,
@@ -126,24 +126,24 @@ CREATE table IF NOT EXISTS search_log (
                                           nresults int,
                                           nsent int,
                                           nsent_success int,
-                                          created timestamp,
+                                          created timestamp default '1970-01-01 00:00:01',
                                           created_by int,
-                                          updated timestamp,
+                                          updated timestamp default '1970-01-01 00:00:01',
                                           deleted boolean,
-                                          deleted_at timestamp
+                                          deleted_at timestamp null default null
 );
 
 
-CREATE table IF NOT EXISTS sent_for_search_results (
+CREATE table IF NOT EXISTS smok.sent_for_search_results (
                                                        id int PRIMARY KEY,
                                                        userid int,
                                                        searchid int,
                                                        message_text text,
                                                        message_body text,
-                                                       created timestamp,
+                                                       created timestamp default '1970-01-01 00:00:01',
                                                        created_by int,
-                                                       updated timestamp,
+                                                       updated timestamp default '1970-01-01 00:00:01',
                                                        deleted boolean,
-                                                       deleted_at timestamp
+                                                       deleted_at timestamp null default null
 
 );

@@ -23,6 +23,7 @@ public class DBCreds {
                 ENV_VAR_DB_VARIANT,
                 ENV_VAR_HOST_ADDRESS,
                 ENV_VAR_PORT,
+                ENV_VAR_USERNAME,
                 ENV_VAR_PASSWD,
             ENV_VAR_REMOTE_DATABASE_NAME_AT_SERVICE,
                 ENV_VAR_PRIORITY,
@@ -89,7 +90,7 @@ public class DBCreds {
         this.priority = Integer.parseInt(cred.getOrDefault(ENV_VAR_PRIORITY,""));
         this.removeDatabaseNameAtService = cred.getOrDefault(ENV_VAR_REMOTE_DATABASE_NAME_AT_SERVICE,"" );
         this.username = cred.getOrDefault(ENV_VAR_USERNAME,"");
-        this.passwd = cred.getOrDefault(ENV_VAR_GROUP,"");
+        this.passwd = cred.getOrDefault(ENV_VAR_PASSWD,"");
         this.group = cred.getOrDefault(ENV_VAR_GROUP,"");
         this.useSSL = Boolean.getBoolean(cred.getOrDefault(ENV_VAR_VERIFY_SSL_CERT, ""));
         this.verifySSLCert = Boolean.getBoolean(cred.getOrDefault(ENV_VAR_VERIFY_SSL_CERT, ""));
