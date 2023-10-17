@@ -26,7 +26,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-@Profile({"admin","dxpulse_admin"})
 public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser> {
 
     private final static MethodPrefixingLogger LOGGER = MethodPrefixingLoggerFactory.getLogger(REP_AdminUserService.class);

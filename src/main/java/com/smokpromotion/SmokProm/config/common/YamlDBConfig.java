@@ -1,12 +1,34 @@
 package com.smokpromotion.SmokProm.config.common;
 
+import com.datastax.oss.driver.api.core.CqlSession;
+import com.datastax.oss.driver.api.core.CqlSessionBuilder;
+import com.datastax.oss.driver.api.core.context.DriverContext;
+import com.datastax.oss.driver.api.core.cql.Row;
+import com.datastax.oss.driver.api.core.type.DataType;
+import com.datastax.oss.driver.api.core.type.codec.TypeCodec;
+import com.datastax.oss.driver.api.core.type.codec.registry.CodecRegistry;
+import com.datastax.oss.driver.api.core.type.reflect.GenericType;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import org.slf4j.Logger;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.data.cassandra.core.convert.CassandraConverter;
+import org.springframework.data.cassandra.core.convert.ColumnType;
+import org.springframework.data.cassandra.core.convert.ColumnTypeResolver;
+import org.springframework.data.cassandra.core.mapping.CassandraMappingContext;
+import org.springframework.data.cassandra.core.mapping.CassandraPersistentEntity;
+import org.springframework.data.convert.CustomConversions;
+import org.springframework.data.projection.EntityProjection;
+import org.springframework.data.projection.ProjectionFactory;
 
 import java.util.Map;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @Configuration
 @PropertySource("classpath:application.yml" )
@@ -17,11 +39,55 @@ public class YamlDBConfig {
     private final Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(this.getClass());
     private Map<String, Map<String, String>> entries;
 
-
-
     public static String getPrefix(){
         return PREFIX;
     }
+
+    @Bean
+    public CqlSession cassandraSession() {
+        CqlSession sk = mock(CqlSession.class);
+        when(sk.getContext()).thenReturn(mock(DriverContext.class));
+        return sk;
+    }
+
+    @Bean
+    public CassandraConverter cassandraConverter() {
+        CassandraConverter  cc = mock(CassandraConverter.class);
+        when(cc.getCodecRegistry()).thenReturn(new CodecRegistry() {
+            @NonNull
+            @Override
+            public <JavaTypeT> TypeCodec<JavaTypeT> codecFor(@NonNull DataType cqlType, @NonNull GenericType<JavaTypeT> javaType) {
+                return null;
+            }
+
+            @NonNull
+            @Override
+            public <JavaTypeT> TypeCodec<JavaTypeT> codecFor(@NonNull DataType cqlType) {
+                return null;
+            }
+
+            @NonNull
+            @Override
+            public <JavaTypeT> TypeCodec<JavaTypeT> codecFor(@NonNull GenericType<JavaTypeT> javaType) {
+                return null;
+            }
+
+            @NonNull
+            @Override
+            public <JavaTypeT> TypeCodec<JavaTypeT> codecFor(@NonNull DataType cqlType, @NonNull JavaTypeT value) {
+                return null;
+            }
+
+            @NonNull
+            @Override
+            public <JavaTypeT> TypeCodec<JavaTypeT> codecFor(@NonNull JavaTypeT value) {
+                return null;
+            }
+        });
+        return cc;
+    }
+
+
     @Override
     public String toString() {
         if (entries != null) {

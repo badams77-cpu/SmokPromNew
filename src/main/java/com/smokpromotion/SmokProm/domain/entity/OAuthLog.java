@@ -1,14 +1,15 @@
 package com.smokpromotion.SmokProm.domain.entity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@org.springframework.data.cassandra.core.mapping.Table(value="smok.oauth_log")
+@Table(name="smok.oauth_log ")
 public class OAuthLog extends BaseSmokEntity {
 
-    @Column(name="!id")
-    private UUID id;
     @Column(name="!username")
     private String username;
     @Column(name="!log_Date")
@@ -22,11 +23,11 @@ public class OAuthLog extends BaseSmokEntity {
     }
 
     public UUID getUuid() {
-        return id;
+        return uuid;
     }
 
     public void setId(UUID id) {
-        this.id = id;
+        this.uuid = id;
     }
 
     @Override

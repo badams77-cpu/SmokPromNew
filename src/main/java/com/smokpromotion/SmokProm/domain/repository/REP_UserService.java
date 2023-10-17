@@ -64,6 +64,7 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
         super(dbConnectionFactory, S_User.class);
         this.changePasswordTimeOut = changePasswordTimeOut;
         this.dbFactory = dbConnectionFactory;
+        this.dbConnectionFactory = dbConnectionFactory;
         this.dbEnvSetup = dbEnvSetup;
         this.pwCryptUtil = pwCryptUtil;
         this.table = USER_TABLE;

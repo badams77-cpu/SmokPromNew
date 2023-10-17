@@ -6,14 +6,23 @@ import com.smokpromotion.SmokProm.domain.repository.Updateable;
 import jakarta.persistence.Column;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import org.springframework.context.annotation.Primary;
+import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
+import org.springframework.data.cassandra.core.mapping.PrimaryKey;
+import org.springframework.data.cassandra.core.mapping.PrimaryKeyClass;
+import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 import org.springframework.data.cassandra.core.mapping.Table;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+import jakarta.persistence.Id;
 
-@Table
 public class BaseSmokEntity {
 
+
+    @PrimaryKeyColumn(type = PrimaryKeyType.PARTITIONED, ordinal = 0, name = "id")
+    @Id()
     @Column(name="id")
     protected int id;
     @org.springframework.data.cassandra.core.mapping.Column("id")

@@ -39,7 +39,7 @@ public class DBCreds {
     private final int port;
     private final String username;
     private final String passwd;
-    private final String removeDatabaseNameAtService;
+    private final String remoteDatabaseNameAtService;
     private final int priority;
     private final String group;
     private final boolean useSSL;
@@ -52,7 +52,7 @@ public class DBCreds {
         this.hostAddress = "127.0.0.1";
         this.port = 3303;
         this.priority =0;
-        this.removeDatabaseNameAtService = "";
+        this.remoteDatabaseNameAtService = "";
         this.username = "";
         this.passwd ="";
         this.group = "";
@@ -72,7 +72,7 @@ public class DBCreds {
         this.hostAddress = hostAddress;
         this.port = port;
         this.priority =priorty;
-        this.removeDatabaseNameAtService = remoteDatabaseNameAtService;
+        this.remoteDatabaseNameAtService = remoteDatabaseNameAtService;
         this.username = username;
         this.passwd = passwd;
         this.group = group;
@@ -86,9 +86,9 @@ public class DBCreds {
         this.name = new SmokDatasourceName(cred.getOrDefault(ENV_VAR_DB_VARIANT,""));
         this.variant = DatabaseVariant.getFromDescription(cred.getOrDefault(ENV_VAR_DB_VARIANT,""));
         this.hostAddress = cred.getOrDefault(ENV_VAR_HOST_ADDRESS,"");
-        this.port = Integer.parseInt(cred.getOrDefault(ENV_VAR_PORT, ""));
-        this.priority = Integer.parseInt(cred.getOrDefault(ENV_VAR_PRIORITY,""));
-        this.removeDatabaseNameAtService = cred.getOrDefault(ENV_VAR_REMOTE_DATABASE_NAME_AT_SERVICE,"" );
+        this.port = Integer.parseInt(cred.getOrDefault(ENV_VAR_PORT, "0"));
+        this.priority = Integer.parseInt(cred.getOrDefault(ENV_VAR_PRIORITY,"0"));
+        this.remoteDatabaseNameAtService = cred.getOrDefault(ENV_VAR_REMOTE_DATABASE_NAME_AT_SERVICE,"" );
         this.username = cred.getOrDefault(ENV_VAR_USERNAME,"");
         this.passwd = cred.getOrDefault(ENV_VAR_PASSWD,"");
         this.group = cred.getOrDefault(ENV_VAR_GROUP,"");
@@ -136,8 +136,8 @@ public class DBCreds {
         return name;
     }
 
-    public String getRemoveDatabaseNameAtService() {
-        return removeDatabaseNameAtService;
+    public String getRemoteDatabaseNameAtService() {
+        return remoteDatabaseNameAtService;
     }
 
     public int getPriority() {

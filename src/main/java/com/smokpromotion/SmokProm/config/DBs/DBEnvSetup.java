@@ -58,12 +58,12 @@ public class DBEnvSetup {
 
     public static <T> List<T> withoutFirst(List<T> o) {
         final List<T> result = new ArrayList<T>();
-
         for (int i = 1; i < o.size(); i++)
             result.add(o.get(i));
 
         return result;
     }
+
     @Autowired
     public DBEnvSetup(YamlDBConfig ydb, Environment env){
         this.env = env;
@@ -189,8 +189,7 @@ public class DBEnvSetup {
 
     public HikariDataSource getHikDatasource(SmokDatasourceName dbSrcName)
     {
-        return dataSources.get(dbSrcName)
-                ;
+        return dataSources.get(dbSrcName);
     }
 
     public SmokDataSource getSmokDatasource(SmokDatasourceName dbSrcName){

@@ -1,6 +1,7 @@
 package com.smokpromotion.SmokProm.domain.entity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Table;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.io.Serializable;
@@ -10,6 +11,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.UUID;
 
+@org.springframework.data.cassandra.core.mapping.Table(value="smok.user")
+@Table(name="smpk.user")
 public class S_User extends BaseSmokEntity implements Serializable {
 
     // Fields present in Majorana table.

@@ -7,6 +7,7 @@ import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
 import org.slf4j.Logger;
 
 import java.net.InetSocketAddress;
+import java.security.AuthProvider;
 
 public class CassandraConnector {
 
@@ -17,7 +18,7 @@ public class CassandraConnector {
 
     public void connect(DBCreds creds){
         if (creds.getVariant()==DatabaseVariant.CASSANDRA){
-           connect(creds.getHostAddress(), creds.getPort(), creds.getGroup());
+           connectInner(creds);
         } else {
             message = "Not Cassandra";
         }
@@ -31,10 +32,12 @@ public class CassandraConnector {
         this.message = message;
     }
 
-    public void connect(String node, Integer port, String dataCenter) {
+    public void connectInner(DBCreds creds) {
         CqlSessionBuilder builder = CqlSession.builder();
-        builder.addContactPoint(new InetSocketAddress(node, port));
-        builder.withLocalDatacenter(dataCenter);
+        builder.addContactPoint(new InetSocketAddress(creds.getHostAddress(), creds.getPort()));
+        builder.withLocalDatacenter( creds.getGroup());
+
+        builder.withAuthCredentials(creds.getUsername(), creds.getUsername());
 
         session = builder.build();
     }

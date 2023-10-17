@@ -42,7 +42,7 @@ public class SmokDataSource {
             case MYSQL:
                 url = String.format(
                         "jdbc:mysql://%s/%s?zeroDateTimeBehavior=convertToNull&useSSL=%s&verifyServerCertificate=%s",
-                        cred.getHostAddress(), cred.getUsername(),  cred.isUseSSL(), cred.isVerifySSLCert());
+                        cred.getHostAddress(), cred.getRemoteDatabaseNameAtService(),cred.isVerifySSLCert(),  cred.isUseSSL(), cred.isVerifySSLCert());
 //                ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
             break;
             case SQL_SERVER:

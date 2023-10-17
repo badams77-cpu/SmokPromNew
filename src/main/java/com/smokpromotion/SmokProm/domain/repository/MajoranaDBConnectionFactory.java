@@ -22,13 +22,19 @@ import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.Optional;
 
+import static org.mockito.Mockito.mock;
+
 @Component
 public class MajoranaDBConnectionFactory {
 
     private DBEnvSetup dBSourcesFromEnv;
 
+    private CassandraTemplate mockCass;
+
+
     public MajoranaDBConnectionFactory(DBEnvSetup dbs) {
               dBSourcesFromEnv = dbs;
+        mockCass = mock(CassandraTemplate.class);
     }
 
 
@@ -88,7 +94,7 @@ public class MajoranaDBConnectionFactory {
 
     public Optional<CassandraTemplate> getCassandraTemplate(SmokDatasourceName dbName){
         CqlSession cSess = dBSourcesFromEnv.getCqlSession(dbName);
-        CassandraTemplate cass = cSess == null ? null : new  CassandraTemplate(cSess);
+        CassandraTemplate cass = cSess == null ? mockCass: new  CassandraTemplate(cSess);
         return Optional.of(cass);
     }
 

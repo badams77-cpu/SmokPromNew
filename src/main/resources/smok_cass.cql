@@ -57,7 +57,7 @@ CREATE table IF NOT EXISTS smok.oauth_log (
   deleted_at timestamp
 );
 
-CREATE table IF NOT EXISTS email_queue (
+CREATE table IF NOT EXISTS smok.email_queue (
   id UUID PRIMARY KEY,
   userid UUID,
   recipient_email text,
@@ -70,7 +70,7 @@ CREATE table IF NOT EXISTS email_queue (
   deleted_at timestamp
 );
 
-CREATE table IF NOT EXISTS email_log (
+CREATE table IF NOT EXISTS smok.email_log (
   id UUID PRIMARY KEY,
   userid UUID,
   email_id UUID,
@@ -83,7 +83,7 @@ CREATE table IF NOT EXISTS email_log (
   deleted_at timestamp
 );
 
-CREATE table IF NOT EXISTS twitter_search (
+CREATE table IF NOT EXISTS smok.twitter_search (
   id UUID PRIMARY KEY,
   userid UUID,
   regularity text,
@@ -102,7 +102,7 @@ CREATE table IF NOT EXISTS twitter_search (
   deleted_at timestamp
 );
 
-CREATE table IF NOT EXISTS search_results (
+CREATE table IF NOT EXISTS smok.search_results (
   id UUID PRIMARY KEY,
   userid UUID,
   searchid UUID,
@@ -118,7 +118,7 @@ CREATE table IF NOT EXISTS search_results (
   deleted_at timestamp
 );
 
-CREATE table IF NOT EXISTS search_log (
+CREATE table IF NOT EXISTS smok.search_log (
   id UUID PRIMARY KEY,
   userid UUID,
   searchid UUID,
@@ -134,7 +134,7 @@ CREATE table IF NOT EXISTS search_log (
 );
 
 
-CREATE table IF NOT EXISTS sent_for_search_results (
+CREATE table IF NOT EXISTS smok.sent_for_search_results (
   id UUID PRIMARY KEY,
   userid UUID,
   searchid UUID,
