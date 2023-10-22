@@ -89,7 +89,7 @@ smok-db:
 #    useSSL: false
 #    verifySSL: false
   mysql:
-    name: smokMysql
+    name: mysql
     username: promo
     remoteDatabaseNameAtService: mysql
     password: PromAskHow7!

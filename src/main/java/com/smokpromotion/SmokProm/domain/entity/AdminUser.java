@@ -21,7 +21,7 @@ public class AdminUser  extends BaseSmokEntity  {
     private String firstname;
     @Column("lastname")
     private String lastname;
-    @Column("userpw")
+    @Column("passwd")
     private String userpw;
     @Column("secVn")
     private int secVn;

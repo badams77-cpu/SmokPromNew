@@ -43,49 +43,6 @@ public class YamlDBConfig {
         return PREFIX;
     }
 
-    @Bean
-    public CqlSession cassandraSession() {
-        CqlSession sk = mock(CqlSession.class);
-        when(sk.getContext()).thenReturn(mock(DriverContext.class));
-        return sk;
-    }
-
-    @Bean
-    public CassandraConverter cassandraConverter() {
-        CassandraConverter  cc = mock(CassandraConverter.class);
-        when(cc.getCodecRegistry()).thenReturn(new CodecRegistry() {
-            @NonNull
-            @Override
-            public <JavaTypeT> TypeCodec<JavaTypeT> codecFor(@NonNull DataType cqlType, @NonNull GenericType<JavaTypeT> javaType) {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public <JavaTypeT> TypeCodec<JavaTypeT> codecFor(@NonNull DataType cqlType) {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public <JavaTypeT> TypeCodec<JavaTypeT> codecFor(@NonNull GenericType<JavaTypeT> javaType) {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public <JavaTypeT> TypeCodec<JavaTypeT> codecFor(@NonNull DataType cqlType, @NonNull JavaTypeT value) {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public <JavaTypeT> TypeCodec<JavaTypeT> codecFor(@NonNull JavaTypeT value) {
-                return null;
-            }
-        });
-        return cc;
-    }
 
 
     @Override

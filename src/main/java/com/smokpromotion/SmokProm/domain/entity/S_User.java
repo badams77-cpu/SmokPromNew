@@ -21,17 +21,17 @@ public class S_User extends BaseSmokEntity implements Serializable {
     @Column(name="username")
     @org.springframework.data.cassandra.core.mapping.Column("username")
     private String username;
-    @Column(name="firstname")
-    @org.springframework.data.cassandra.core.mapping.Column("firstname")
-    private String firstname;
-    @Column(name="lastname")
-    @org.springframework.data.cassandra.core.mapping.Column("lastname")
-    private String lastname;
+  @Column(name="firstname")
+  @org.springframework.data.cassandra.core.mapping.Column("firstname")
+  private String firstname;
+  @Column(name="lastname")
+  @org.springframework.data.cassandra.core.mapping.Column("lastname")
+  private String lastname;
     @Column(name="secVn")
     @org.springframework.data.cassandra.core.mapping.Column("secVn")
     private int secVn;
-    @org.springframework.data.cassandra.core.mapping.Column("userpw")
-    @Column(name="userpw")
+    @org.springframework.data.cassandra.core.mapping.Column("passwd")
+    @Column(name="passwd")
     private String userpw;
     @org.springframework.data.cassandra.core.mapping.Column("last_login_timestamp")
     @Column(name="last_login_timestamp")
@@ -296,7 +296,7 @@ public class S_User extends BaseSmokEntity implements Serializable {
     public String toString() {
         return "S_User{" +
                 "username='" + username + '\'' +
-                ", firstname='" + firstname + '\'' +
+               ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", secVn=" + secVn +
                 ", userpw='" + userpw + '\'' +

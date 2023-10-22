@@ -3,6 +3,9 @@ CREATE DATABASE IF NOT EXISTS smok;
 CREATE TABLE IF NOT EXISTS smok.user (
                                          id int PRIMARY KEY,
                                          username text,
+                                         firstname text,
+                                         lastname text,
+                                         secVn int,
                                          subscription_level text,
                                          firstlogin timestamp,
                                          payment_status text,
@@ -33,6 +36,9 @@ CREATE TABLE IF NOT EXISTS smok.user (
 CREATE TABLE IF NOT EXISTS smok.admin_user (
                                                id int PRIMARY KEY,
                                                username text,
+                                               firstname text.
+                                                   lastname text,
+                                               secVn int,
                                                passwd text,
                                                change_pass_token text,
                                                change_pass_token_created text,

@@ -6,6 +6,7 @@ import com.datastax.oss.driver.api.querybuilder.QueryBuilder;
 import com.smokpromotion.SmokProm.config.DBs.DBCreds;
 import com.smokpromotion.SmokProm.config.DBs.DBEnvSetup;
 import com.smokpromotion.SmokProm.config.DBs.SmokDatasourceName;
+import com.smokpromotion.SmokProm.config.common.CassandraState;
 import com.smokpromotion.SmokProm.config.portal.PortalSecurityPrinciple;
 import com.smokpromotion.SmokProm.domain.entity.AdminUser;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLogger;
@@ -48,14 +49,15 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
     public REP_AdminUserService(
        DBEnvSetup dbEnvSetup,
        MajoranaDBConnectionFactory dbConnectionFactory,
-       PwCryptUtil pwCryptUtil
+       PwCryptUtil pwCryptUtil,
+       CassandraState cassState
     ) {
         super(dbConnectionFactory, AdminUser.class);
-
+        //this.dbName = dbEnvSetup.getMainDBName();
         this.dbEnvSetup = dbEnvSetup;
         this.pwCryptUtil = pwCryptUtil;
         this.dbConnectionFactory = dbConnectionFactory;
-        this.dbName = dbEnvSetup.getMainDBName();
+        this.dbName = dbConnectionFactory.getMainDBName();
         this.table = dbConnectionFactory.getSchemaInDB(dbName)+"."+ADMIN_TABLE;
     }
 
@@ -185,8 +187,9 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
                                 .stream().collect(Collectors.toList());
 
                     default:
-                        res = dbConnectionFactory.getJdbcTemplate(dbName).stream().map(templ->templ.query(
-                                "SELECT " + table + " where username=", inVal, getMapper())).collect(Collectors.toList());
+                        res = dbConnectionFactory.getJdbcTemplate(dbName).stream()
+                                .map(templ->templ.query(
+                                "SELECT * FROM " + table + " where username=?", inVal, getMapper())).collect(Collectors.toList());
 
                 }
         return res.stream().flatMap( s -> s.stream() ).collect(Collectors.toList());
@@ -343,7 +346,7 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
             break;
             default:
                 rowsAffected = dbConnectionFactory.getJdbcTemplate(dbName).stream().map(templ->
-                                templ.update(  sql, getMapper())).count();
+                                templ.update(  sql, getMapper(), holder)).count();
 
 
                 Number newUserId = holder.getKey();

@@ -8,7 +8,10 @@ import com.smokpromotion.SmokProm.util.PwCryptUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+
+import javax.naming.Context;
 
 @Component
 public class Initialization {
@@ -22,6 +25,9 @@ public class Initialization {
     private REP_AdminUserService adminUserService;
 
     @Autowired
+    private ApplicationContext ctx;
+
+    @Autowired
     private PwCryptUtil pwCrypt;
     private final static String USERNAME = "barry.david.adams@gmail.com";
 
@@ -31,11 +37,13 @@ public class Initialization {
 
     private final static String FIRSTPASS = "changeme";
 
+
+
     public void init(){
         S_User user = userService.getUser(USERNAME);
         if (user==null){
             user = new S_User();
-            user.setFirstname(FIRST);
+           user.setFirstname(FIRST);
             user.setLastname(LAST);
             user.setUsername(USERNAME);
             user.setSecVn(1);

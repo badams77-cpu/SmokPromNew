@@ -33,7 +33,7 @@ public class PortalSecurityPrincipleService {
     // Constructors
     // -----------------------------------------------------------------------------------------------------------------
 
-    @Autowired
+//    @Autowired
     public PortalSecurityPrincipleService(
     ) {
 
@@ -67,8 +67,8 @@ public class PortalSecurityPrincipleService {
         authUser.setOrganization(legacyUser.getOrganization());
         authUser.setNoPII(legacyUser.isNoPII());
         */
-        authUser.setFirstname(legacyUser.getFirstname());
-        authUser.setLastname(legacyUser.getLastname());
+//        authUser.setFirstname(legacyUser.getFirstname());
+//        authUser.setLastname(legacyUser.getLastname());
 
         // LanguageSettingEnum lang = authUser.getUserLanguage();
         // Optional<DE_PracticeGroup> group = legacyGroupService.getById(legacyMajoranaPortalEnum, authUser.getPracticeGroupId());

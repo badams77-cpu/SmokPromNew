@@ -8,6 +8,7 @@ import com.smokpromotion.SmokProm.config.DBs.DBCreds;
 import com.smokpromotion.SmokProm.config.DBs.DBEnvSetup;
 import com.smokpromotion.SmokProm.config.DBs.DatabaseVariant;
 import com.smokpromotion.SmokProm.config.DBs.SmokDatasourceName;
+import com.smokpromotion.SmokProm.config.common.CassandraState;
 import com.smokpromotion.SmokProm.config.portal.PortalSecurityPrinciple;
 import com.smokpromotion.SmokProm.domain.entity.S_User;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLogger;
@@ -60,6 +61,7 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
             DBEnvSetup dbEnvSetup,
             MajoranaDBConnectionFactory dbConnectionFactory,
             PwCryptUtil pwCryptUtil,
+            CassandraState cassState,
             @Value("${CHANGE_PASSWORD_EXPIRY_MINS:15}") int changePasswordTimeOut
     ) {
         super(dbConnectionFactory, S_User.class);
@@ -68,7 +70,8 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
         this.dbConnectionFactory = dbConnectionFactory;
         this.dbEnvSetup = dbEnvSetup;
         this.pwCryptUtil = pwCryptUtil;
-        this.dbName = dbEnvSetup.getMainDBName();
+        //this.dbName = dbEnvSetup.getMainDBName();
+        this.dbName = dbConnectionFactory.getMainDBName();
         this.table = dbConnectionFactory.getSchemaInDB(dbName)+"."+USER_TABLE;
     }
 
@@ -116,8 +119,8 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
         if (optExistingUser.isPresent()) {
 
             S_User u = optExistingUser.get();
-            u.setFirstname(firstname);
-            u.setLastname(lastname);
+//            u.setFirstname(firstname);
+//            u.setLastname(lastname);
             u.setUsername(email);
 
             boolean successful = updateUser( principle, firstname, lastname, email, language, organization);
@@ -347,9 +350,9 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
                 Optional<JdbcTemplate> temp = dbConnectionFactory.getJdbcTemplate(dbName);
                 rowsAffected = temp.stream().map(templ -> {
                     try {
-                        return (long) templ.update(sql, getMapper());
+                        return (long) templ.update(sql, getMapper(), holder);
                     } catch (Exception e) {
-                        LOGGER.debug("Error creating record", e);
+                        LOGGER.error("Error creating record", e);
                         return 0L;
                     }
                 }).count();
@@ -358,7 +361,7 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
         Number newUserId = holder.getKey();
 
         if (newUserId == null || rowsAffected == 0) {
-            LOGGER.error("Trying to create User without portal Database present");
+            LOGGER.error("Failed to create rows="+rowsAffected+" newUswrId="+newUserId);
         } else {
             newUser.setId(newUserId.intValue());
         }

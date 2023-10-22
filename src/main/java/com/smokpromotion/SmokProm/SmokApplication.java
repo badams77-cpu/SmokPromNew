@@ -14,8 +14,10 @@ import org.springframework.context.annotation.Lazy;
 public class SmokApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(SmokApplication.class, args);
 	}
+
 
 
 	@Override
