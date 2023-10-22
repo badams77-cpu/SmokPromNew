@@ -1,6 +1,7 @@
 package com.smokpromotion.SmokProm.domain.repository;
 
 import com.smokpromotion.SmokProm.config.DBs.SmokDatasourceName;
+import com.smokpromotion.SmokProm.config.common.PrimaryGlobalDBName;
 import com.smokpromotion.SmokProm.domain.entity.BaseSmokEntity;
 import com.smokpromotion.SmokProm.domain.entity.S_User;
 import com.smokpromotion.SmokProm.util.SQLHelper;
@@ -46,7 +47,7 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
         SqlParameterSource params = getSqlParameterSource(sUser);
         buffy.append("("+ repoFields.stream().map(x->x.getField().getName()).collect(Collectors.joining(",") )+ ")");
         buffy.append(" VALUES ("+ repoFields.stream()
-                .map(x->x.isPopulatedCreated() || x.isPopulatedUpdated()? "now()": x.getField().getName())
+                .map(x->x.isPopulatedCreated() || x.isPopulatedUpdated()? "now()": ":"+x.getField().getName())
                 .collect(Collectors.joining(",") )+ ");");
         return buffy.toString();
     }

@@ -30,17 +30,18 @@ public class DBEnvSetup {
     @Autowired
     private Environment env;
 
-    @Autowired private YamlDBConfig ydb;
+    @Autowired
+    private YamlDBConfig ydb;
 
     private List<DBCreds> envCredList;
 
-    private final Map<SmokDatasourceName, DBCreds> envCredMap;
+    private  Map<SmokDatasourceName, DBCreds> envCredMap;
 
-    private final Map<SmokDatasourceName, HikariDataSource> dataSources;
+    private  Map<SmokDatasourceName, HikariDataSource> dataSources;
 
-    private final Map<SmokDatasourceName, SmokDataSource> smokDataSourceMap;
+    private  Map<SmokDatasourceName, SmokDataSource> smokDataSourceMap;
 
-    private final Map<SmokDatasourceName, CqlSession> smokCassMap;
+    private  Map<SmokDatasourceName, CqlSession> smokCassMap;
 
     public static Map<String, Object> getAllKnownProperties(Environment env) {
         Map<String, Object> rtn = new HashMap<>();
@@ -208,6 +209,12 @@ public class DBEnvSetup {
 
     public SmokDatasourceName getMainSqlDBName(){
         return envCredList.stream().filter(x->x.getVariant() !=DatabaseVariant.CASSANDRA)
+                .findFirst().orElse(new DBCreds()).getName()
+                ;
+    }
+
+    public SmokDatasourceName getMainDBName(){
+        return envCredList.stream()
                 .findFirst().orElse(new DBCreds()).getName()
                 ;
     }

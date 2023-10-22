@@ -23,7 +23,7 @@ public class Initialization {
 
     @Autowired
     private PwCryptUtil pwCrypt;
-    private final static String USERNAME = "bar`ry.david.adams@gmail.com";
+    private final static String USERNAME = "barry.david.adams@gmail.com";
 
     private final static String FIRST = "Barry";
 

@@ -83,7 +83,7 @@ public class DBCreds {
     DBCreds(Map<String, String> cred)
     {
         this.isolationLevel = cred.getOrDefault(ENV_VAR_ISOLATION_LEVEL,"");
-        this.name = new SmokDatasourceName(cred.getOrDefault(ENV_VAR_DB_VARIANT,""));
+        this.name = new SmokDatasourceName(cred.getOrDefault(ENV_VAR_NAME,""));
         this.variant = DatabaseVariant.getFromDescription(cred.getOrDefault(ENV_VAR_DB_VARIANT,""));
         this.hostAddress = cred.getOrDefault(ENV_VAR_HOST_ADDRESS,"");
         this.port = Integer.parseInt(cred.getOrDefault(ENV_VAR_PORT, "0"));

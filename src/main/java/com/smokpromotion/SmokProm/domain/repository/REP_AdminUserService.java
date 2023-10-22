@@ -32,7 +32,7 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
     
     private static final String ADMIN_TABLE = "admin_user";
 
-    private static final String ADMIN_DB_NAME = "smok";
+    private String ADMIN_DB_NAME = "smok";
 
     private DBEnvSetup dbEnvSetup;
 
@@ -41,6 +41,8 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
     private SmokDatasourceName dbName;
 
     private MajoranaDBConnectionFactory dbConnectionFactory;
+
+    private String table;
 
     @Autowired
     public REP_AdminUserService(
@@ -53,7 +55,8 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
         this.dbEnvSetup = dbEnvSetup;
         this.pwCryptUtil = pwCryptUtil;
         this.dbConnectionFactory = dbConnectionFactory;
-        this.dbName = new SmokDatasourceName(ADMIN_DB_NAME);
+        this.dbName = dbEnvSetup.getMainDBName();
+        this.table = dbConnectionFactory.getSchemaInDB(dbName)+"."+ADMIN_TABLE;
     }
 
     // MajoranaTODO Change the comment below to reflect this service.
@@ -144,11 +147,11 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
                 case CASSANDRA:
 
                     rowsAffected = dbConnectionFactory.getCassandraTemplate(dbName).stream().map(templ->templ.update(
-                            "UPDATE " + ADMIN_TABLE + sql)).count();
+                            "UPDATE " + table + sql)).count();
                     break;
                 default:
                     rowsAffected = dbConnectionFactory.getJdbcTemplate(dbName).stream().map(templ->templ.update(
-                    "UPDATE " + ADMIN_TABLE + sql)).count();
+                    "UPDATE " + table + sql)).count();
 
             }
             return rowsAffected == 1;
@@ -183,7 +186,7 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
 
                     default:
                         res = dbConnectionFactory.getJdbcTemplate(dbName).stream().map(templ->templ.query(
-                                "SELECT " + ADMIN_TABLE + " where username=", inVal, getMapper())).collect(Collectors.toList());
+                                "SELECT " + table + " where username=", inVal, getMapper())).collect(Collectors.toList());
 
                 }
         return res.stream().flatMap( s -> s.stream() ).collect(Collectors.toList());
@@ -216,7 +219,7 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
 
             default:
                 res = dbConnectionFactory.getJdbcTemplate(dbName).stream().map(templ->templ.query(
-                        "SELECT " + ADMIN_TABLE + " where username=", inVal, getMapper())).collect(Collectors.toList());
+                        "SELECT " + table + " where username=", inVal, getMapper())).collect(Collectors.toList());
 
         }
         return res.stream().flatMap( s -> s.stream() ).findFirst();
@@ -245,7 +248,7 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
 
             default:
                 res = dbConnectionFactory.getJdbcTemplate(dbName).stream().map(templ->templ.query(
-                        "SELECT " + ADMIN_TABLE + " where username=", inVal, getMapper())).collect(Collectors.toList());
+                        "SELECT " + table + " where username=", inVal, getMapper())).collect(Collectors.toList());
 
         }
         return res.stream().flatMap( s -> s.stream() ).findFirst();

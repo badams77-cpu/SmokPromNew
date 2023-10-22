@@ -1,10 +1,7 @@
 package com.smokpromotion.SmokProm.domain.repository;
 
 import com.datastax.oss.driver.api.core.CqlSession;
-import com.smokpromotion.SmokProm.config.DBs.DBEnvSetup;
-import com.smokpromotion.SmokProm.config.DBs.DatabaseVariant;
-import com.smokpromotion.SmokProm.config.DBs.SmokDataSource;
-import com.smokpromotion.SmokProm.config.DBs.SmokDatasourceName;
+import com.smokpromotion.SmokProm.config.DBs.*;
 import com.smokpromotion.SmokProm.domain.entity.TimeResult;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +29,17 @@ public class MajoranaDBConnectionFactory {
     private CassandraTemplate mockCass;
 
 
+
     public MajoranaDBConnectionFactory(DBEnvSetup dbs) {
               dBSourcesFromEnv = dbs;
         mockCass = mock(CassandraTemplate.class);
     }
 
-
+    public String getSchemaInDB(SmokDatasourceName dbSrcName){
+        DBCreds creds = dBSourcesFromEnv.getCreds(dbSrcName);
+        if (creds==null) return "";
+        return creds.getGroup();
+    }
 
     public Optional<JdbcTemplate> getJdbcTemplate(SmokDatasourceName dbSrcName) {
         HikariDataSource source = dBSourcesFromEnv.getHikDatasource(dbSrcName);

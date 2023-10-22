@@ -1,3 +1,4 @@
+
 package com.smokpromotion.SmokProm.domain.repository;
 
 import com.datastax.oss.driver.api.core.CqlIdentifier;
@@ -15,6 +16,7 @@ import com.smokpromotion.SmokProm.util.PwCryptUtil;
 import com.smokpromotion.SmokProm.util.SecVnEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
@@ -31,7 +33,8 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
 
     private final static MethodPrefixingLogger LOGGER = MethodPrefixingLoggerFactory.getLogger(REP_UserService.class);
 
-    private static final String ADMIN_TABLE = "users";
+    private static final String USER_TABLE = "user";
+
 
     private int changePasswordTimeOut = 15;
 
@@ -42,10 +45,8 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
     private SmokDatasourceName dbName;
 
     private MajoranaDBConnectionFactory dbConnectionFactory;
-    
-    private static final String USER_TABLE = "users";
 
-    private static final String DB_NAME = "smok";
+    private String DB_NAME = "smok";
     
     private final String table;
     
@@ -67,8 +68,8 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
         this.dbConnectionFactory = dbConnectionFactory;
         this.dbEnvSetup = dbEnvSetup;
         this.pwCryptUtil = pwCryptUtil;
-        this.table = USER_TABLE;
-        this.dbName = new SmokDatasourceName(DB_NAME);
+        this.dbName = dbEnvSetup.getMainDBName();
+        this.table = dbConnectionFactory.getSchemaInDB(dbName)+"."+USER_TABLE;
     }
 
     public int getChangePasswordTimeOut() {
@@ -149,11 +150,11 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
             case CASSANDRA:
 
                 rowsAffected = dbConnectionFactory.getCassandraTemplate(dbName).stream().map(templ->templ.update(
-                        "UPDATE " + ADMIN_TABLE + sql)).count();
+                        "UPDATE " + table + sql)).count();
                 break;
             default:
                 rowsAffected = dbConnectionFactory.getJdbcTemplate(dbName).stream().map(templ->templ.update(
-                        "UPDATE " + ADMIN_TABLE + sql)).count();
+                        "UPDATE " + table + sql)).count();
 
         }
         return rowsAffected == 1;
@@ -188,7 +189,7 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
 
             default:
                 res = dbConnectionFactory.getJdbcTemplate(dbName).stream().map(templ->templ.query(
-                        "SELECT " + ADMIN_TABLE + " where username=", inVal, getMapper())).collect(Collectors.toList());
+                        "SELECT * FROM " + table + " where username= ?",inVal, getMapper())).collect(Collectors.toList());
 
         }
         return res.stream().flatMap( s -> s.stream() ).collect(Collectors.toList());
@@ -221,7 +222,7 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
 
             default:
                 res = dbConnectionFactory.getJdbcTemplate(dbName).stream().map(templ->templ.query(
-                        "SELECT " + ADMIN_TABLE + " where username=", inVal, getMapper())).collect(Collectors.toList());
+                        "SELECT " + table + " where username=", inVal, getMapper())).collect(Collectors.toList());
 
         }
         return res.stream().flatMap( s -> s.stream() ).findFirst();
@@ -249,7 +250,7 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
 
             default:
                 res = dbConnectionFactory.getJdbcTemplate(dbName).stream().map(templ->templ.query(
-                        "SELECT " + ADMIN_TABLE + " where username=", inVal, getMapper())).collect(Collectors.toList());
+                        "SELECT " + table + " where username=", inVal, getMapper())).collect(Collectors.toList());
 
         }
         return res.stream().flatMap( s -> s.stream() ).findFirst();
@@ -329,33 +330,40 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
 
         KeyHolder holder = new GeneratedKeyHolder();
 
-        String sql = getCreateString(newUser);
+        String sql = "INSERT INTO " + table + " " + getCreateString(newUser);
 
         long rowsAffected = 0;
 
-        switch(dbConnectionFactory.getVariant(dbName)) {
+        switch (dbConnectionFactory.getVariant(dbName)) {
 
             case CASSANDRA:
 
-                rowsAffected = dbConnectionFactory.getCassandraTemplate(dbName).stream().map(templ->templ.update(
-                        "INSERT INTO " + ADMIN_TABLE + sql)).count();
+                rowsAffected = dbConnectionFactory.getCassandraTemplate(dbName).stream().map(templ -> templ.update(
+                        "INSERT INTO " + table + sql)).count();
 
                 newUser = getByEmail(newUser.getUsername()).stream().findFirst().orElse(null);
                 break;
             default:
-                rowsAffected = dbConnectionFactory.getJdbcTemplate(dbName).stream().map(templ->
-                        templ.update(  sql, getMapper())).count();
+                Optional<JdbcTemplate> temp = dbConnectionFactory.getJdbcTemplate(dbName);
+                rowsAffected = temp.stream().map(templ -> {
+                    try {
+                        return (long) templ.update(sql, getMapper());
+                    } catch (Exception e) {
+                        LOGGER.debug("Error creating record", e);
+                        return 0L;
+                    }
+                }).count();
 
 
-                Number newUserId = holder.getKey();
+        Number newUserId = holder.getKey();
 
-                if (newUserId==null){
-                    LOGGER.error("Trying to create User without portal Database present");
-                } else {
-                    newUser.setId(newUserId.intValue());
-                }
+        if (newUserId == null || rowsAffected == 0) {
+            LOGGER.error("Trying to create User without portal Database present");
+        } else {
+            newUser.setId(newUserId.intValue());
+        }
 
-        };
+    };
 
         return newUser;
 
