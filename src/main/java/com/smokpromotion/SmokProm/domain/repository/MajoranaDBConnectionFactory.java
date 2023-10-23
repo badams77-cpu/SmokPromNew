@@ -14,6 +14,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -52,6 +53,11 @@ public class MajoranaDBConnectionFactory {
             HikariDataSource source = dBSourcesFromEnv.getHikDatasource(dbSrcName);
             if (source==null){ return Optional.empty(); }
             return Optional.of(new JdbcTemplate(source));
+        }
+
+        public Connection getMysqlConn(SmokDatasourceName dbSrcName) throws SQLException {
+            HikariDataSource source = dBSourcesFromEnv.getHikDatasource(dbSrcName);
+            return source.getConnection();
         }
 
         public DatabaseVariant getVariant(SmokDatasourceName dbName){

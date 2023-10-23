@@ -9,6 +9,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -46,7 +47,7 @@ public class AppRunner implements ApplicationRunner {
     @Value("${smok.searchrunner.version:0.1.0}")
     private String smpkSearchRunneVersionString;
     
-    public void run(ApplicationArguments args) {
+    public void run(ApplicationArguments args) throws SQLException {
 
         Set<String> activeProfiles = Arrays.stream(env.getActiveProfiles()).collect(Collectors.toSet());
 

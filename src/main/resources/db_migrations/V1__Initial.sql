@@ -1,7 +1,7 @@
 CREATE DATABASE IF NOT EXISTS smok;
 
 CREATE TABLE IF NOT EXISTS smok.user (
-                                         id int PRIMARY KEY,
+                                         id int PRIMARY KEY AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT,
                                          username text,
                                          firstname text,
                                          lastname text,
@@ -34,9 +34,9 @@ CREATE TABLE IF NOT EXISTS smok.user (
 );
 
 CREATE TABLE IF NOT EXISTS smok.admin_user (
-                                               id int PRIMARY KEY,
+                                               id int PRIMARY KEY AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT,
                                                username text,
-                                               firstname text.
+                                               firstname text,
                                                    lastname text,
                                                secVn int,
                                                passwd text,
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS smok.admin_user (
 );
 
 CREATE table IF NOT EXISTS smok.oauth_log (
-                                              id int PRIMARY KEY,
+                                              id int PRIMARY KEY AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT,
                                               userid int,
                                               log_date timestamp,
                                               oauth_status text,
@@ -64,7 +64,7 @@ CREATE table IF NOT EXISTS smok.oauth_log (
 );
 
 CREATE table IF NOT EXISTS smok.email_queue (
-                                           id int PRIMARY KEY,
+                                           id int PRIMARY KEY AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT,
                                            userid int,
                                            recipient_email text,
                                            title text,
@@ -77,7 +77,7 @@ CREATE table IF NOT EXISTS smok.email_queue (
 );
 
 CREATE table IF NOT EXISTS smok.email_log (
-                                         id int PRIMARY KEY,
+                                         id int PRIMARY KEY AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT,
                                          userid int,
                                          email_id int,
                                          error_message text,
@@ -90,7 +90,7 @@ CREATE table IF NOT EXISTS smok.email_log (
 );
 
 CREATE table IF NOT EXISTS smok.twitter_search (
-                                              id int PRIMARY KEY,
+                                              id int PRIMARY KEY AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT,
                                               userid int,
                                               regularity text,
                                               result_limit int,
@@ -109,7 +109,7 @@ CREATE table IF NOT EXISTS smok.twitter_search (
 );
 
 CREATE table IF NOT EXISTS smok.search_results (
-                                              id int PRIMARY KEY,
+                                              id int PRIMARY KEY AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT,
                                               userid int,
                                               searchid int,
                                               result_date timestamp,
@@ -125,7 +125,7 @@ CREATE table IF NOT EXISTS smok.search_results (
 );
 
 CREATE table IF NOT EXISTS smok.search_log (
-                                          id int PRIMARY KEY,
+                                          id int PRIMARY KEY AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT,
                                           userid int,
                                           searchid int,
                                           result_date timestamp,
@@ -141,7 +141,7 @@ CREATE table IF NOT EXISTS smok.search_log (
 
 
 CREATE table IF NOT EXISTS smok.sent_for_search_results (
-                                                       id int PRIMARY KEY,
+                                                       id int PRIMARY KEY AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT,
                                                        userid int,
                                                        searchid int,
                                                        message_text text,

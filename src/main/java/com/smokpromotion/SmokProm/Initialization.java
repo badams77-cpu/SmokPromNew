@@ -12,6 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import javax.naming.Context;
+import java.sql.SQLException;
 
 @Component
 public class Initialization {
@@ -39,7 +40,7 @@ public class Initialization {
 
 
 
-    public void init(){
+    public void init() throws SQLException {
         S_User user = userService.getUser(USERNAME);
         if (user==null){
             user = new S_User();

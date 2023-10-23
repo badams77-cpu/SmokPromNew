@@ -64,7 +64,7 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
             CassandraState cassState,
             @Value("${CHANGE_PASSWORD_EXPIRY_MINS:15}") int changePasswordTimeOut
     ) {
-        super(dbConnectionFactory, S_User.class);
+        super(dbConnectionFactory, dbConnectionFactory.getMainDBName() ,S_User.class);
         this.changePasswordTimeOut = changePasswordTimeOut;
         this.dbFactory = dbConnectionFactory;
         this.dbConnectionFactory = dbConnectionFactory;
@@ -337,6 +337,8 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
 
         long rowsAffected = 0;
 
+        final S_User nu = newUser;
+
         switch (dbConnectionFactory.getVariant(dbName)) {
 
             case CASSANDRA:
@@ -347,15 +349,16 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
                 newUser = getByEmail(newUser.getUsername()).stream().findFirst().orElse(null);
                 break;
             default:
-                Optional<JdbcTemplate> temp = dbConnectionFactory.getJdbcTemplate(dbName);
-                rowsAffected = temp.stream().map(templ -> {
+                Optional<JdbcTemplate> templ = dbConnectionFactory.getJdbcTemplate(dbName);
+                rowsAffected = templ.stream().mapToLong(te -> {
                     try {
-                        return (long) templ.update(sql, getMapper(), holder);
+
+                        return (long) te.update( getSqlPreparedStatementParameter(sql, nu), holder);
                     } catch (Exception e) {
                         LOGGER.error("Error creating record", e);
                         return 0L;
                     }
-                }).count();
+                }).sum(  );
 
 
         Number newUserId = holder.getKey();

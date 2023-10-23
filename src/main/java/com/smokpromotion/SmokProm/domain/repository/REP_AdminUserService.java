@@ -19,6 +19,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
@@ -52,7 +53,7 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
        PwCryptUtil pwCryptUtil,
        CassandraState cassState
     ) {
-        super(dbConnectionFactory, AdminUser.class);
+        super(dbConnectionFactory,  dbConnectionFactory.getMainDBName() , AdminUser.class);
         //this.dbName = dbEnvSetup.getMainDBName();
         this.dbEnvSetup = dbEnvSetup;
         this.pwCryptUtil = pwCryptUtil;
@@ -327,11 +328,13 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
         return pwCryptUtil.isPasswordGood(u.getSecVn(), u.getUsername(), password, u.getUserpw() );
     }
 
-    public AdminUser create( AdminUser newUser, String password) {
+    public AdminUser create( AdminUser newUser, String password) throws SQLException {
 
         KeyHolder holder = new GeneratedKeyHolder();
 
         String sql = getCreateString(newUser);
+
+        final AdminUser nu = newUser;
 
         long rowsAffected = 0;
 
@@ -345,14 +348,14 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
                 newUser = getByEmail(newUser.getUsername()).stream().findFirst().orElse(null);
             break;
             default:
-                rowsAffected = dbConnectionFactory.getJdbcTemplate(dbName).stream().map(templ->
-                                templ.update(  sql, getMapper(), holder)).count();
+                rowsAffected = dbConnectionFactory.getJdbcTemplate(dbName).stream().mapToLong(templ->
+                                templ.update( getSqlPreparedStatementParameter(sql, nu), holder)).sum();
 
 
                 Number newUserId = holder.getKey();
 
                 if (newUserId==null){
-                    LOGGER.error("Trying to create User without portal Database present");
+                    LOGGER.error("Failed to create rows="+rowsAffected+" newUswrId="+newUserId);
                 } else {
                     newUser.setId(newUserId.intValue());
                 }

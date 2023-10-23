@@ -9,6 +9,7 @@ import com.smokpromotion.SmokProm.util.SQLHelper;
 import jakarta.persistence.Column;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -16,6 +17,8 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import jakarta.persistence.Column;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -34,10 +37,13 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
 
     protected MajoranaDBConnectionFactory dbFactory;
 
+    protected SmokDatasourceName dbName;
+
     protected List<MajoranaRepositoryField> repoFields = new LinkedList<>();
 
-    protected MajoranaAnnotationRepository(MajoranaDBConnectionFactory dbFactory, Class<T> clazz){
+    protected MajoranaAnnotationRepository(MajoranaDBConnectionFactory dbFactory,  SmokDatasourceName dbName ,Class<T> clazz){
         this.dbFactory = dbFactory;
+        this.dbName = dbName;
         this.clazz =clazz;
         setFieldsByReflection(clazz);
     }
@@ -116,7 +122,21 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
         }
     }
 
+    protected PreparedStatementCreator getSqlPreparedStatementParameter(String sql, T entity)
+        throws SQLException
+    {
 
+     //   Connection conn = dbFactory.getMysqlConn(dbName)s
+        return new PreparedStatementCreator(){
+
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                PreparedStatement ps =  con.prepareStatement(sql);
+                setPreparedStatementFields(ps, entity);
+                return ps;
+            }
+        };
+    }
 
     protected SqlParameterSource getSqlParameterSource(T entity){
         return new MapSqlParameterSource(getParameterMap(entity));
@@ -158,6 +178,89 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
             }
         }
         return sourceMap;
+    }
+
+    private void setPreparedStatementFields(PreparedStatement ps,T entity) throws SQLException {
+        Map<String, Object> sourceMap = new HashMap<>();
+        int i = 0;
+        for(MajoranaRepositoryField field : repoFields){
+            try {
+                Object ob = invokeGetter(entity, field.getGetter());
+                if (ob!=null) {
+                    if (ob instanceof LocalDate) {
+                        java.sql.Date d = java.sql.Date.valueOf((LocalDate) ob);
+                        ps.setDate(i, d);
+                    } else if (ob instanceof LocalTime) {
+                        java.sql.Time t = java.sql.Time.valueOf((LocalTime) ob);
+                        ps.setDate(i, t);
+                    } else if (ob instanceof LocalDateTime) {
+                        java.sql.Timestamp ts = java.sql.Timestamp.valueOf((LocalDateTime) ob);
+                        ps.setTimestamp(i, ts);
+                    } else if (field.getValueType().isEnum()) {
+                        String en = ((Enum) ob).name();
+                        ps.setString(i, en);
+                    } else if (field.getValueType().isPrimitive()){
+                        switch( field.getValueType().getName()) {
+                            case "int":
+                                ps.setInt(i, ((Integer) ob).intValue());
+                                break;
+                            case "long":
+                                ps.setLong(i, ((Integer) ob).longValue());
+                                break;
+                            case "float":
+                                ps.setFloat(i, ((Float) ob).floatValue());
+                                break;
+                            case "double":
+                                ps.setDouble(i, ((Double) ob).doubleValue());
+                                break;
+                            case "boolean":
+                                ps.setBoolean(i, ((Boolean) ob).booleanValue());
+                                break;
+                         }
+                        } else {
+                            switch( field.getValueType().getName()) {
+
+                                case "java.lang.Integer":
+                                    ps.setInt(i, ((Integer) ob).intValue());
+                                    //  if (ob){ invokeSetter(entity, null, setter); }
+                                    break;
+                                case "java.lang.Long":
+                                    ps.setLong(i, ((Long) ob).longValue());
+                                    //invokeSetter(entity, rs.getLong(col), setter);
+                                    // if (rs.wasNull()){ invokeSetter(entity, null, setter); }
+                                    break;
+                                case "java.lang.Float":
+                                    ps.setFloat(i, ((Float) ob).floatValue());
+                                    //        invokeSetter(entity, rs.getFloat(col), setter);
+                                    //        if (rs.wasNull()){ invokeSetter(entity, null, setter); }
+                                    break;
+                                case "java.lang.Double":
+                                    ps.setDouble(i, ((Double) ob).doubleValue());
+//                                invokeSetter(entity, rs.getDouble(col), setter);
+//                                if (rs.wasNull()){ invokeSetter(entity, null, setter); }
+                                    break;
+                                case "java.lang.Boolean":
+                                    ps.setBoolean(i, ((Boolean) ob).booleanValue());
+                                    //  invokeSetter(entity, rs.getBoolean(col), setter);
+                                    //  if (rs.wasNull()){ invokeSetter(entity, null, setter); }
+                                    break;
+                                case "java.lang.String":
+                                    ps.setString(i, ((String) ob));
+                                    //invokeSetter(entity, rs.getString(col), setter);
+                                    break;
+                            }
+                        }
+                        // Default
+                    }
+
+//                sourceMap.put(field.getDbColumn(), ob);
+                i++;
+            } catch (Exception e){
+                Exception f=e;
+                LOGGER.warn("getSqlParametersource: Error Serializing field "+field.getName()+" "+field.getDbColumn(),f);
+
+            }
+        }
     }
 
 
@@ -299,6 +402,8 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
             Object f = getter.invoke(obj);
             return f;
     }
+
+
 
     private List<Field> getClassFields(Class clazz){
         Field[] fields = clazz.getDeclaredFields();
