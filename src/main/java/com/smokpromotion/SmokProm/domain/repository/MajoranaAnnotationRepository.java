@@ -192,7 +192,7 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
                         ps.setDate(i, d);
                     } else if (ob instanceof LocalTime) {
                         java.sql.Time t = java.sql.Time.valueOf((LocalTime) ob);
-                        ps.setDate(i, t);
+                        ps.setTime(i, t);
                     } else if (ob instanceof LocalDateTime) {
                         java.sql.Timestamp ts = java.sql.Timestamp.valueOf((LocalDateTime) ob);
                         ps.setTimestamp(i, ts);

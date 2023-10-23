@@ -348,17 +348,23 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
                 newUser = getByEmail(newUser.getUsername()).stream().findFirst().orElse(null);
             break;
             default:
-                rowsAffected = dbConnectionFactory.getJdbcTemplate(dbName).stream().mapToLong(templ->
-                                templ.update( getSqlPreparedStatementParameter(sql, nu), holder)).sum();
 
+                    rowsAffected = dbConnectionFactory.getJdbcTemplate(dbName).stream().mapToLong(templ -> {
+                            try {
+                             return templ.update(getSqlPreparedStatementParameter(sql, nu), holder);
+                            } catch (SQLException e){
+                                LOGGER.error("Exception creating new Admin User",e);
+                                return 0;
+                            }}).sum();
 
-                Number newUserId = holder.getKey();
+                    Number newUserId = holder.getKey();
 
-                if (newUserId==null){
-                    LOGGER.error("Failed to create rows="+rowsAffected+" newUswrId="+newUserId);
-                } else {
-                    newUser.setId(newUserId.intValue());
-                }
+                    if (newUserId == null) {
+                        LOGGER.error("Failed to create rows=" + rowsAffected + " newUswrId=" + newUserId);
+                    } else {
+                        newUser.setId(newUserId.intValue());
+                    }
+                    
 
         };
 
