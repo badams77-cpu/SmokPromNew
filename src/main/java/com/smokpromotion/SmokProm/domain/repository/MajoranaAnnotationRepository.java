@@ -200,6 +200,7 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
                         String en = ((Enum) ob).name();
                         ps.setString(i, en);
                     } else if (field.getValueType().isPrimitive()){
+
                         switch( field.getValueType().getName()) {
                             case "int":
                                 ps.setInt(i, ((Integer) ob).intValue());
