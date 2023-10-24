@@ -356,7 +356,7 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
                 rowsAffected = templ.stream().mapToLong(te -> {
                     try {
 
-                        return (long) te.update( getSqlPreparedStatementParameter(sql1, nu), holder);
+                        return (long) te.update( getSqlPreparedStatementParameter(sql1, nu,true), holder);
                     } catch (Exception e) {
                         LOGGER.error("Error creating record", e);
                         return 0L;

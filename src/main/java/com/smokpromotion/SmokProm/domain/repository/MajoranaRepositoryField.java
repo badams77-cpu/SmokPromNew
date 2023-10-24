@@ -15,6 +15,8 @@ public class MajoranaRepositoryField {
     private Column columnAnnotation;
     private Class valueType;
 
+    private boolean isTransient;
+
     private boolean populatedCreated;
 
     private boolean populatedUpdated;
@@ -25,6 +27,14 @@ public class MajoranaRepositoryField {
 
     public MajoranaRepositoryField(){
 
+    }
+
+    public boolean isTransient() {
+        return isTransient;
+    }
+
+    public void setTransient(boolean aTransient) {
+        isTransient = aTransient;
     }
 
     public boolean checkFields(){
@@ -140,6 +150,7 @@ public class MajoranaRepositoryField {
                 ", dbColumn='" + dbColumn + '\'' +
                 ", columnAnnotation=" + columnAnnotation +
                 ", valueType=" + valueType +
+                ", isTransient=" + isTransient +
                 ", populatedCreated=" + populatedCreated +
                 ", populatedUpdated=" + populatedUpdated +
                 ", updateable=" + updateable +

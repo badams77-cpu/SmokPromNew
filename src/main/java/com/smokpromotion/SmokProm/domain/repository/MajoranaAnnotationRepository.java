@@ -17,10 +17,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import jakarta.persistence.Column;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -59,8 +56,8 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
     protected String getCreateStringNP(T sUser){
         StringBuffer buffy =  new StringBuffer();
         SqlParameterSource params = getSqlParameterSource(sUser);
-        buffy.append("("+ repoFields.stream().map(x->x.getDbColumn()).collect(Collectors.joining(",") )+ ")");
-        buffy.append(" VALUES ("+ repoFields.stream()
+        buffy.append("("+ repoFields.stream().filter(x->!x.isTransient()).map(x->x.getDbColumn()).collect(Collectors.joining(",") )+ ")");
+        buffy.append(" VALUES ("+ repoFields.stream().filter(x->!x.isTransient())
                 .map(x->x.isPopulatedCreated() || x.isPopulatedUpdated()? "now()": ":"+x.getField().getName())
                 .collect(Collectors.joining(",") )+ ");");
         return buffy.toString();
@@ -68,7 +65,7 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
 
     protected String getUpdateStringNP(T sUser){
         StringBuffer buffy =  new StringBuffer();
-        buffy.append(" SET "+ repoFields.stream().filter(x->x.isUpdateable())
+        buffy.append(" SET "+ repoFields.stream().filter(x->!x.isTransient()).filter(x->x.isUpdateable())
                 .map(x->x.getDbColumn() + ":" + ((x.isPopulatedUpdated())?"now() " : ":"+x.getField().getName()))
                 .collect(Collectors.joining(",") )+ " WHERE id=:id");
         return buffy.toString();
@@ -78,8 +75,8 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
     protected String getCreateString(T sUser){
         StringBuffer buffy =  new StringBuffer();
         SqlParameterSource params = getSqlParameterSource(sUser);
-        buffy.append("("+ repoFields.stream().map(x->x.getDbColumn()).collect(Collectors.joining(",") )+ ")");
-        buffy.append(" VALUES ("+ repoFields.stream()
+        buffy.append("("+ repoFields.stream().filter(x->!x.isTransient()).map(x->x.getDbColumn()).collect(Collectors.joining(",") )+ ")");
+        buffy.append(" VALUES ("+ repoFields.stream().filter(x->!x.isTransient())
                 .map(x->x.isPopulatedCreated() || x.isPopulatedUpdated()? "now()": "?")
                 .collect(Collectors.joining(",") )+ ");");
         return buffy.toString();
@@ -87,7 +84,7 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
 
     protected String getUpdateString(T sUser){
         StringBuffer buffy =  new StringBuffer();
-        buffy.append(" SET "+ repoFields.stream().filter(x->x.isUpdateable())
+        buffy.append(" SET "+ repoFields.stream().filter(x->!x.isTransient()).filter(x->x.isUpdateable())
                 .map(x->x.getDbColumn() + ":" + ((x.isPopulatedUpdated())?"now() " : "?"))
                 .collect(Collectors.joining(",") )+ " WHERE id=:id");
         return buffy.toString();
@@ -105,6 +102,14 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
             majoranaField.setValueType(field.getType());
             majoranaField.setName(field.getName());
             majoranaField.setDbColumn(field.getName());
+
+            if (field.getName().equals("createdByUserEmail")){
+                LOGGER.warn("e");
+            }
+
+            boolean isTransient = Modifier.isTransient(field.getModifiers());
+            majoranaField.setTransient(isTransient);
+
             boolean updateable = false;
             boolean popCreated = false;
             boolean popUpdated = false;
@@ -155,20 +160,40 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
         }
     }
 
-    protected PreparedStatementCreator getSqlPreparedStatementParameter(String sql, T entity)
+    protected PreparedStatementCreator getSqlPreparedStatementParameter(String sql, T entity, boolean genKey)
         throws SQLException
     {
 
+
+
      //   Connection conn = dbFactory.getMysqlConn(dbName)s
-        return new PreparedStatementCreator(){
+        PreparedStatementCreator pc = new MajorPreparedStatCreator() {
+
+
+            protected boolean genKey;
+
+            public void MajorPreparedStatCreator(boolean genKey){
+                this.genKey = genKey;
+            }
+
+            @Override
+            public void setGenKey(boolean bol0) {
+
+            }
 
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                PreparedStatement ps =  con.prepareStatement(sql);
+                PreparedStatement ps = genKey ? con.prepareStatement(sql,
+                        Statement.RETURN_GENERATED_KEYS ) : con.prepareStatement(sql);
+                if (genKey){
+
+                }
                 setPreparedStatementFields(ps, entity);
                 return ps;
             }
         };
+
+        return pc;
     }
 
     protected SqlParameterSource getSqlParameterSource(T entity){

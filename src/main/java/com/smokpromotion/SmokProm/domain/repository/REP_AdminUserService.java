@@ -164,7 +164,7 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
                     rowsAffected = templ.stream().mapToLong(te -> {
                         try {
 
-                            return (long) te.update( getSqlPreparedStatementParameter(sql1, au));
+                            return (long) te.update( getSqlPreparedStatementParameter(sql1, au, true));
                         } catch (Exception e) {
                             LOGGER.error("Error creating record", e);
                             return 0L;

@@ -39,7 +39,10 @@ public class AdminUser  extends BaseSmokEntity  {
     @Column(name="last_login")
     @Updateable
     private LocalDateTime lastvisit;
-
+    @Column(name="useractive")
+    @Updateable
+    @org.springframework.data.cassandra.core.mapping.Column("useractive")
+    private boolean useractive;
     @org.springframework.data.cassandra.core.mapping.Column("change_pass_token")
     @Column(name="change_pass_token")
     @Updateable
@@ -201,6 +204,7 @@ public class AdminUser  extends BaseSmokEntity  {
                 ", userpw='" + userpw + '\'' +
                 ", secVn=" + secVn +
                 ", lastvisit=" + lastvisit +
+                ", useractive=" + useractive +
                 ", changePassToken='" + changePassToken + '\'' +
                 ", changePassTokenCreate=" + changePassTokenCreate +
                 ", id=" + id +
