@@ -366,7 +366,7 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
 
                     rowsAffected = dbConnectionFactory.getJdbcTemplate(dbName).stream().mapToLong(templ -> {
                             try {
-                               return templ.update(getSqlPreparedStatementParameter(sql1, nu), holder);
+                               return templ.update(getSqlPreparedStatementParameter(sql1, nu, true), holder);
                             } catch (SQLException e){
                                 LOGGER.error("Exception creating new Admin User",e);
                                 return 0;
