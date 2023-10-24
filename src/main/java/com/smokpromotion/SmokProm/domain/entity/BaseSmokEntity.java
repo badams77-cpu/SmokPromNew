@@ -2,6 +2,8 @@ package com.smokpromotion.SmokProm.domain.entity;
 
 import com.smokpromotion.SmokProm.domain.entity.BaseSmokEntity;
 import com.smokpromotion.SmokProm.domain.repository.AutoPopTimestamp;
+import com.smokpromotion.SmokProm.domain.repository.PopulatedCreated;
+import com.smokpromotion.SmokProm.domain.repository.PopulatedUpdated;
 import com.smokpromotion.SmokProm.domain.repository.Updateable;
 import jakarta.persistence.Column;
 
@@ -42,12 +44,13 @@ public class BaseSmokEntity {
     @org.springframework.data.cassandra.core.mapping.Column("update_by_userid")
     @Column(name="updated_by_userid")
     protected int updatedByUserid;
-    @Updateable
+    @PopulatedCreated
     @AutoPopTimestamp(updated = false , created = true)
     @org.springframework.data.cassandra.core.mapping.Column("created")
     @Column(name="created")
     protected LocalDateTime created;
     @Updateable
+    @PopulatedUpdated
     @AutoPopTimestamp(updated = false , created = true)
     @org.springframework.data.cassandra.core.mapping.Column("updated")
     @Column(name="updated")

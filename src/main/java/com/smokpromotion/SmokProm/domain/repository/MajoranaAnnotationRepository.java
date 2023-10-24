@@ -33,6 +33,14 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
 
     private static final String PACKAGE_BASE = "com.smokpromotion.SmokProm";
 
+    private static final LocalDate defDate = LocalDate.of(1970,1,1);
+
+    private static final LocalTime defTime = LocalTime.of(0,0,0);
+
+    private static final LocalTime oneSecPast = LocalTime.of(0,0,1);
+
+    private static final LocalDateTime defDateTime = defDate.atTime(oneSecPast);
+
     protected Class<T> clazz;
 
     protected MajoranaDBConnectionFactory dbFactory;
@@ -48,7 +56,7 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
         setFieldsByReflection(clazz);
     }
 
-    protected String getCreateString(T sUser){
+    protected String getCreateStringNP(T sUser){
         StringBuffer buffy =  new StringBuffer();
         SqlParameterSource params = getSqlParameterSource(sUser);
         buffy.append("("+ repoFields.stream().map(x->x.getField().getName()).collect(Collectors.joining(",") )+ ")");
@@ -58,13 +66,33 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
         return buffy.toString();
     }
 
-    protected String getUpdateString(T sUser){
+    protected String getUpdateStringNP(T sUser){
         StringBuffer buffy =  new StringBuffer();
         buffy.append(" SET "+ repoFields.stream().filter(x->x.isUpdateable())
                 .map(x->x.getField().getName() + ":" + ((x.isPopulatedUpdated())?"now() " : ":"+x.getField().getName()))
                 .collect(Collectors.joining(",") )+ " WHERE id=:id");
         return buffy.toString();
     }
+
+
+    protected String getCreateString(T sUser){
+        StringBuffer buffy =  new StringBuffer();
+        SqlParameterSource params = getSqlParameterSource(sUser);
+        buffy.append("("+ repoFields.stream().map(x->x.getField().getName()).collect(Collectors.joining(",") )+ ")");
+        buffy.append(" VALUES ("+ repoFields.stream()
+                .map(x->x.isPopulatedCreated() || x.isPopulatedUpdated()? "now()": "?")
+                .collect(Collectors.joining(",") )+ ");");
+        return buffy.toString();
+    }
+
+    protected String getUpdateString(T sUser){
+        StringBuffer buffy =  new StringBuffer();
+        buffy.append(" SET "+ repoFields.stream().filter(x->x.isUpdateable())
+                .map(x->x.getField().getName() + ":" + ((x.isPopulatedUpdated())?"now() " : "?"))
+                .collect(Collectors.joining(",") )+ " WHERE id=:id");
+        return buffy.toString();
+    }
+
 
     private void setFieldsByReflection(Class clazz){
         List<Field> fields = getClassFields(clazz);
@@ -84,10 +112,10 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
                 if (ann.annotationType().equals(Updateable.class)){
                     updateable = true;
                 }
-                if (ann.annotationType().equals(Updateable.class)){
+                if (ann.annotationType().equals(PopulatedCreated.class)){
                     popCreated = true;
                 }
-                if (ann.annotationType().equals(Updateable.class)){
+                if (ann.annotationType().equals(PopulatedUpdated.class)){
                     popUpdated = true;
                 }
                 if (ann.annotationType().equals(jakarta.persistence.Column.class)){
@@ -182,22 +210,29 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
 
     private void setPreparedStatementFields(PreparedStatement ps,T entity) throws SQLException {
         Map<String, Object> sourceMap = new HashMap<>();
-        int i = 0;
+        int i = 1;
         for(MajoranaRepositoryField field : repoFields){
             try {
                 Object ob = invokeGetter(entity, field.getGetter());
-                if (ob!=null) {
-                    if (ob instanceof LocalDate) {
-                        java.sql.Date d = java.sql.Date.valueOf((LocalDate) ob);
+                boolean isNull = ob==null;
+                boolean isNullable = field.isNullable();
+//                if (ob==null) {
+                
+//                } else {
+                    if (field.getValueType()==LocalDate.class) {
+                        java.sql.Date nd = isNullable? null : java.sql.Date.valueOf(defDate);
+                        java.sql.Date d = isNull ? nd : java.sql.Date.valueOf((LocalDate) ob);
                         ps.setDate(i, d);
-                    } else if (ob instanceof LocalTime) {
-                        java.sql.Time t = java.sql.Time.valueOf((LocalTime) ob);
+                    } else if (field.getValueType()== LocalTime.class) {
+                        java.sql.Time nt = isNullable? null : java.sql.Time.valueOf(defTime);
+                        java.sql.Time t = isNull ? nt : java.sql.Time.valueOf((LocalTime) ob);
                         ps.setTime(i, t);
-                    } else if (ob instanceof LocalDateTime) {
-                        java.sql.Timestamp ts = java.sql.Timestamp.valueOf((LocalDateTime) ob);
+                    } else if (field.getValueType()== LocalDateTime.class) {
+                        java.sql.Timestamp nts = isNullable? null : java.sql.Timestamp.valueOf(defDateTime);
+                        java.sql.Timestamp ts = isNull ? nts : java.sql.Timestamp.valueOf((LocalDateTime) ob);
                         ps.setTimestamp(i, ts);
                     } else if (field.getValueType().isEnum()) {
-                        String en = ((Enum) ob).name();
+                        String en = isNull ? null : ((Enum) ob).name();
                         ps.setString(i, en);
                     } else if (field.getValueType().isPrimitive()){
 
@@ -218,41 +253,42 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
                                 ps.setBoolean(i, ((Boolean) ob).booleanValue());
                                 break;
                          }
-                        } else {
+                    } else {
                             switch( field.getValueType().getName()) {
 
                                 case "java.lang.Integer":
-                                    ps.setInt(i, ((Integer) ob).intValue());
+                                    ps.setInt(i, isNull ? 0 : ((Integer) ob).intValue());
                                     //  if (ob){ invokeSetter(entity, null, setter); }
                                     break;
                                 case "java.lang.Long":
-                                    ps.setLong(i, ((Long) ob).longValue());
+                                    ps.setLong(i, isNull ? 0 : ((Long) ob).longValue());
                                     //invokeSetter(entity, rs.getLong(col), setter);
                                     // if (rs.wasNull()){ invokeSetter(entity, null, setter); }
                                     break;
                                 case "java.lang.Float":
-                                    ps.setFloat(i, ((Float) ob).floatValue());
+                                    ps.setFloat(i, isNull ? 0 : ((Float) ob).floatValue());
                                     //        invokeSetter(entity, rs.getFloat(col), setter);
                                     //        if (rs.wasNull()){ invokeSetter(entity, null, setter); }
                                     break;
                                 case "java.lang.Double":
-                                    ps.setDouble(i, ((Double) ob).doubleValue());
+                                    ps.setDouble(i, isNull ? 0 : ((Double) ob).doubleValue());
 //                                invokeSetter(entity, rs.getDouble(col), setter);
 //                                if (rs.wasNull()){ invokeSetter(entity, null, setter); }
                                     break;
                                 case "java.lang.Boolean":
-                                    ps.setBoolean(i, ((Boolean) ob).booleanValue());
+                                    ps.setBoolean(i, isNull ? false : ((Boolean) ob).booleanValue());
                                     //  invokeSetter(entity, rs.getBoolean(col), setter);
                                     //  if (rs.wasNull()){ invokeSetter(entity, null, setter); }
                                     break;
                                 case "java.lang.String":
-                                    ps.setString(i, ((String) ob));
+                                    String ns = isNullable ? null : "";
+                                    ps.setString(i, isNull ? ns : ((String) ob));
                                     //invokeSetter(entity, rs.getString(col), setter);
                                     break;
                             }
                         }
                         // Default
-                    }
+//                    }
 
 //                sourceMap.put(field.getDbColumn(), ob);
                 i++;

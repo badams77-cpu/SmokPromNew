@@ -1,5 +1,6 @@
 package com.smokpromotion.SmokProm.domain.entity;
 
+import com.smokpromotion.SmokProm.domain.repository.Updateable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Table;
 import org.apache.commons.lang3.text.WordUtils;
@@ -12,87 +13,110 @@ import java.util.Objects;
 import java.util.UUID;
 
 @org.springframework.data.cassandra.core.mapping.Table(value="smok.user")
-@Table(name="smpk.user")
+@Table(name="smok.user")
 public class S_User extends BaseSmokEntity implements Serializable {
 
     // Fields present in Majorana table.
 
 
     @Column(name="username")
+    @Updateable
     @org.springframework.data.cassandra.core.mapping.Column("username")
     private String username;
   @Column(name="firstname")
+  @Updateable
   @org.springframework.data.cassandra.core.mapping.Column("firstname")
   private String firstname;
   @Column(name="lastname")
+  @Updateable
   @org.springframework.data.cassandra.core.mapping.Column("lastname")
   private String lastname;
     @Column(name="secVn")
+    @Updateable
     @org.springframework.data.cassandra.core.mapping.Column("secVn")
     private int secVn;
     @org.springframework.data.cassandra.core.mapping.Column("passwd")
     @Column(name="passwd")
+    @Updateable
     private String userpw;
     @org.springframework.data.cassandra.core.mapping.Column("last_login_timestamp")
     @Column(name="last_login_timestamp")
+    @Updateable
     private LocalDateTime lastVisit;
     @org.springframework.data.cassandra.core.mapping.Column("company_name")
     @Column(name="company_name")
+    @Updateable
     private String companyName;
     @org.springframework.data.cassandra.core.mapping.Column("cc_email")
     @Column(name="cc_email")
+    @Updateable
     private String ccEmail;
     @org.springframework.data.cassandra.core.mapping.Column("address1")
     @Column(name="address1")
+    @Updateable
     private String address1;
     @org.springframework.data.cassandra.core.mapping.Column("address2")
     @Column(name="address2")
+    @Updateable
     private String address2;
     @Column(name="town")
+    @Updateable
     @org.springframework.data.cassandra.core.mapping.Column("town")
     private String town;
     @org.springframework.data.cassandra.core.mapping.Column("country")
     @Column(name="country")
+    @Updateable
     private String country;
     @org.springframework.data.cassandra.core.mapping.Column("postcode")
     @Column(name="postcode")
+    @Updateable
     private String postcode;
     @org.springframework.data.cassandra.core.mapping.Column("change_pass_token")
     @Column(name="change_pass_token")
+    @Updateable
     private String changePassToken;
     @org.springframework.data.cassandra.core.mapping.Column("change_pass_token_created")
     @Column(name="change_pass_token_created")
+    @Updateable
     private LocalDateTime changePassTokenCreate;
 
     @org.springframework.data.cassandra.core.mapping.Column("twitter_handler")
     @Column(name="twitter_handler")
+    @Updateable
     private String twitterHandle;
 
     @org.springframework.data.cassandra.core.mapping.Column("oauth_reg_token")
     @Column(name="oauth_reg_token")
+    @Updateable
     private String oauthRegToken;
 
     @org.springframework.data.cassandra.core.mapping.Column("oauth_reg_secret")
     @Column(name="oauth_reg_secret")
+    @Updateable
     private String oauthRegSecret;
 
     @org.springframework.data.cassandra.core.mapping.Column("oauth_verifier")
     @Column(name="oauth_verifier")
+    @Updateable
     private String oauthVerifier;
 
     @org.springframework.data.cassandra.core.mapping.Column("access_token")
     @Column(name="access_token")
+    @Updateable
     private String twitterAccessCode;
 
     @org.springframework.data.cassandra.core.mapping.Column("access_token_expiry")
     @Column(name="access_token_expiry")
+    @Updateable
     private LocalDateTime accessTokenExpiry;
 
     @Column(name="useractive")
+    @Updateable
     @org.springframework.data.cassandra.core.mapping.Column("useractive")
     private boolean useractive;
 
     @Column(name="passwd_change_date")
+    @Updateable
     @org.springframework.data.cassandra.core.mapping.Column("passwd_change_date")
     private LocalDate passwdChangeDate;
 

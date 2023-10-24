@@ -21,6 +21,8 @@ public class MajoranaRepositoryField {
 
     private boolean updateable;
 
+    private boolean nullable;
+
     public MajoranaRepositoryField(){
 
     }
@@ -47,6 +49,14 @@ public class MajoranaRepositoryField {
 
     public boolean isPopulatedUpdated() {
         return populatedUpdated;
+    }
+
+    public boolean isNullable() {
+        return nullable;
+    }
+
+    public void setNullable(boolean nullable) {
+        this.nullable = nullable;
     }
 
     public void setPopulatedUpdated(boolean populatedUpdated) {
@@ -130,6 +140,10 @@ public class MajoranaRepositoryField {
                 ", dbColumn='" + dbColumn + '\'' +
                 ", columnAnnotation=" + columnAnnotation +
                 ", valueType=" + valueType +
+                ", populatedCreated=" + populatedCreated +
+                ", populatedUpdated=" + populatedUpdated +
+                ", updateable=" + updateable +
+                ", nullable=" + nullable +
                 '}';
     }
 }

@@ -363,6 +363,7 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
 
         Number newUserId = holder.getKey();
 
+
         if (newUserId == null || rowsAffected == 0) {
             LOGGER.error("Failed to create rows="+rowsAffected+" newUswrId="+newUserId);
         } else {

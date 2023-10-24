@@ -1,5 +1,6 @@
 package com.smokpromotion.SmokProm.domain.entity;
 
+import com.smokpromotion.SmokProm.domain.repository.Updateable;
 import com.smokpromotion.SmokProm.util.SecVnEnum;
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -14,23 +15,30 @@ import org.springframework.data.cassandra.core.mapping.Column;
 
 public class AdminUser  extends BaseSmokEntity  {
 
-
+    @Updateable
     @Column("username")
     private String username;
+    @Updateable
     @Column("firstname")
     private String firstname;
+    @Updateable
     @Column("lastname")
     private String lastname;
     @Column("passwd")
+    @Updateable
     private String userpw;
     @Column("secVn")
+    @Updateable
     private int secVn;
     @Column("last_login_timestamp")
+    @Updateable
     private LocalDateTime lastvisit;
     @Column("change_pass_token")
+    @Updateable
     private String changePassToken;
 
     @Column("change_pass_token_created")
+    @Updateable
     private LocalDateTime changePassTokenCreate;
 
     public AdminUser(){
