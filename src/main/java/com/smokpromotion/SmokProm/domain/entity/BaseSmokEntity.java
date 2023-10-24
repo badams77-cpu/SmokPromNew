@@ -1,10 +1,7 @@
 package com.smokpromotion.SmokProm.domain.entity;
 
 import com.smokpromotion.SmokProm.domain.entity.BaseSmokEntity;
-import com.smokpromotion.SmokProm.domain.repository.AutoPopTimestamp;
-import com.smokpromotion.SmokProm.domain.repository.PopulatedCreated;
-import com.smokpromotion.SmokProm.domain.repository.PopulatedUpdated;
-import com.smokpromotion.SmokProm.domain.repository.Updateable;
+import com.smokpromotion.SmokProm.domain.repository.*;
 import jakarta.persistence.Column;
 
 import jakarta.persistence.Column;
@@ -29,12 +26,14 @@ public class BaseSmokEntity {
     protected int id;
     @org.springframework.data.cassandra.core.mapping.Column("id")
     @Column(name="uuid")
+    @Nullable
     protected UUID uuid;
     @Updateable
     @org.springframework.data.cassandra.core.mapping.Column("deleted")
     @Column(name="deleted")
     protected boolean deleted;
     @Updateable
+    @Nullable
     @org.springframework.data.cassandra.core.mapping.Column("deletedAt")
     @Column(name="deleted_at")
     protected LocalDateTime deletedAt;

@@ -8,36 +8,45 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
-import org.springframework.data.cassandra.core.mapping.Column;
+import jakarta.persistence.Column;
+//import org.springframework.data.cassandra.core.mapping.Column;
 
 
 
 public class AdminUser  extends BaseSmokEntity  {
 
     @Updateable
-    @Column("username")
+    @org.springframework.data.cassandra.core.mapping.Column("username")
+    @Column(name="username")
     private String username;
     @Updateable
-    @Column("firstname")
+    @org.springframework.data.cassandra.core.mapping.Column("firstname")
+    @Column(name="firstname")
     private String firstname;
     @Updateable
-    @Column("lastname")
+    @org.springframework.data.cassandra.core.mapping.Column("lastname")
+    @Column(name="lastname")
     private String lastname;
-    @Column("passwd")
+    @org.springframework.data.cassandra.core.mapping.Column("passwd")
+    @Column(name="passwd")
     @Updateable
     private String userpw;
-    @Column("secVn")
+    @Column(name="secVn")
+    @org.springframework.data.cassandra.core.mapping.Column("secVn")
     @Updateable
     private int secVn;
-    @Column("last_login_timestamp")
+    @org.springframework.data.cassandra.core.mapping.Column("last_login_timestamp")
+    @Column(name="last_login_timestamp")
     @Updateable
     private LocalDateTime lastvisit;
-    @Column("change_pass_token")
+
+    @org.springframework.data.cassandra.core.mapping.Column("change_pass_token")
+    @Column(name="change_pass_token")
     @Updateable
     private String changePassToken;
 
-    @Column("change_pass_token_created")
+    @org.springframework.data.cassandra.core.mapping.Column("change_pass_token_created")
+    @Column(name="change_pass_token_created")
     @Updateable
     private LocalDateTime changePassTokenCreate;
 

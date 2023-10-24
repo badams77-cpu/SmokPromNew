@@ -108,6 +108,7 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
             boolean updateable = false;
             boolean popCreated = false;
             boolean popUpdated = false;
+            boolean nullable = false;
             for(Annotation ann : annotations){
                 if (ann.annotationType().equals(Updateable.class)){
                     updateable = true;
@@ -117,6 +118,9 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
                 }
                 if (ann.annotationType().equals(PopulatedUpdated.class)){
                     popUpdated = true;
+                }
+                if (ann.annotationType().equals(Nullable.class)){
+                    nullable = true;
                 }
                 if (ann.annotationType().equals(jakarta.persistence.Column.class)){
                     toAdd=true;
@@ -131,6 +135,7 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
             majoranaField.setUpdateable(updateable);
             majoranaField.setPopulatedCreated(popCreated);
             majoranaField.setPopulatedUpdated(popUpdated);
+            majoranaField.setNullable(nullable);
             for(Method method: methods){
                 if (isGetter(method) && method.getName().equalsIgnoreCase("GET"+field.getName())
                         || method.getName().equalsIgnoreCase("IS"+field.getName().toUpperCase())
@@ -219,7 +224,10 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
 //                if (ob==null) {
                 
 //                } else {
-                    if (field.getValueType()==LocalDate.class) {
+                    if (field.getValueType()==UUID.class) {
+                        String ns = isNullable ? null : UUID.randomUUID().toString();
+                        ps.setString(i, isNull ? ns : ((String) ob));
+                    } else if (field.getValueType()==LocalDate.class) {
                         java.sql.Date nd = isNullable? null : java.sql.Date.valueOf(defDate);
                         java.sql.Date d = isNull ? nd : java.sql.Date.valueOf((LocalDate) ob);
                         ps.setDate(i, d);
@@ -298,6 +306,8 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
 
             }
         }
+        String s = ps.toString();
+        LOGGER.warn("Values: "+s);
     }
 
 
