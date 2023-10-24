@@ -39,8 +39,8 @@ public class S_User extends BaseSmokEntity implements Serializable {
     @Column(name="passwd")
     @Updateable
     private String userpw;
-    @org.springframework.data.cassandra.core.mapping.Column("last_login_timestamp")
-    @Column(name="last_login_timestamp")
+    @org.springframework.data.cassandra.core.mapping.Column("last_login")
+    @Column(name="last_login")
     @Updateable
     private LocalDateTime lastVisit;
     @org.springframework.data.cassandra.core.mapping.Column("company_name")

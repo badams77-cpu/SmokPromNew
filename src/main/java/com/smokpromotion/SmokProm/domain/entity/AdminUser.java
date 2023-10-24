@@ -35,8 +35,8 @@ public class AdminUser  extends BaseSmokEntity  {
     @org.springframework.data.cassandra.core.mapping.Column("secVn")
     @Updateable
     private int secVn;
-    @org.springframework.data.cassandra.core.mapping.Column("last_login_timestamp")
-    @Column(name="last_login_timestamp")
+    @org.springframework.data.cassandra.core.mapping.Column("last_login")
+    @Column(name="last_login")
     @Updateable
     private LocalDateTime lastvisit;
 

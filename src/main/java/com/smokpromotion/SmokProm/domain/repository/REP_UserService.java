@@ -333,7 +333,6 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
 
         KeyHolder holder = new GeneratedKeyHolder();
 
-        String sql = "INSERT INTO " + table + " " + getCreateString(newUser);
 
         long rowsAffected = 0;
 
@@ -342,18 +341,22 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
         switch (dbConnectionFactory.getVariant(dbName)) {
 
             case CASSANDRA:
+                String sql = "INSERT INTO " + table + " " + getCreateStringNP(newUser);
 
-                rowsAffected = dbConnectionFactory.getCassandraTemplate(dbName).stream().map(templ -> templ.update(
-                        "INSERT INTO " + table + sql)).count();
+//                SimpleStatement cql = SimpleStatement.newInstance(sql);
+
+                rowsAffected = dbConnectionFactory.getCassandraTemplate(dbName).stream().map(templ -> templ.insert(nu)).count();
 
                 newUser = getByEmail(newUser.getUsername()).stream().findFirst().orElse(null);
                 break;
             default:
+                String sql1 = "INSERT INTO " + table + " " + getCreateString(newUser);
+
                 Optional<JdbcTemplate> templ = dbConnectionFactory.getJdbcTemplate(dbName);
                 rowsAffected = templ.stream().mapToLong(te -> {
                     try {
 
-                        return (long) te.update( getSqlPreparedStatementParameter(sql, nu), holder);
+                        return (long) te.update( getSqlPreparedStatementParameter(sql1, nu), holder);
                     } catch (Exception e) {
                         LOGGER.error("Error creating record", e);
                         return 0L;

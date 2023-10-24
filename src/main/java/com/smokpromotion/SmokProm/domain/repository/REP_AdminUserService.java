@@ -15,6 +15,7 @@ import com.smokpromotion.SmokProm.util.PwCryptUtil;
 import com.smokpromotion.SmokProm.util.SecVnEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
@@ -140,21 +141,35 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
 
     public boolean updateUser( AdminUser user) {
 
-
-            String sql = getUpdateString(user);
-
             long rowsAffected = 0;
+
+            final AdminUser au = user;
 
             switch(dbConnectionFactory.getVariant(dbName)) {
 
                 case CASSANDRA:
 
-                    rowsAffected = dbConnectionFactory.getCassandraTemplate(dbName).stream().map(templ->templ.update(
-                            "UPDATE " + table + sql)).count();
+//                SimpleStatement cql = SimpleStatement.newInstance(sql);
+
+                    rowsAffected = dbConnectionFactory.getCassandraTemplate(dbName).stream().map(templ -> templ.update(au)).count();
+
+                    user = getByEmail(user.getUsername()).stream().findFirst().orElse(null);
                     break;
+
                 default:
-                    rowsAffected = dbConnectionFactory.getJdbcTemplate(dbName).stream().map(templ->templ.update(
-                    "UPDATE " + table + sql)).count();
+
+                    String sql1 = "UPDATE " + table + getUpdateString(user);
+
+                    Optional<JdbcTemplate> templ = dbConnectionFactory.getJdbcTemplate(dbName);
+                    rowsAffected = templ.stream().mapToLong(te -> {
+                        try {
+
+                            return (long) te.update( getSqlPreparedStatementParameter(sql1, au));
+                        } catch (Exception e) {
+                            LOGGER.error("Error creating record", e);
+                            return 0L;
+                        }
+                    }).sum(  );
 
             }
             return rowsAffected == 1;
@@ -332,8 +347,6 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
 
         KeyHolder holder = new GeneratedKeyHolder();
 
-        String sql = getCreateString(newUser);
-
         final AdminUser nu = newUser;
 
         long rowsAffected = 0;
@@ -341,6 +354,7 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
         switch(dbConnectionFactory.getVariant(dbName)) {
 
             case CASSANDRA:
+                String sql = "INSERT INTO " + table + " " + getCreateStringNP(newUser);
 
                 rowsAffected = dbConnectionFactory.getCassandraTemplate(dbName).stream().map(templ->templ.update(
                         "INSERT INTO " + ADMIN_TABLE + sql)).count();
@@ -348,10 +362,11 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
                 newUser = getByEmail(newUser.getUsername()).stream().findFirst().orElse(null);
             break;
             default:
+                String sql1 = "INSERT INTO " + table + " " + getCreateString(newUser);
 
                     rowsAffected = dbConnectionFactory.getJdbcTemplate(dbName).stream().mapToLong(templ -> {
                             try {
-                               return templ.update(getSqlPreparedStatementParameter(sql, nu), holder);
+                               return templ.update(getSqlPreparedStatementParameter(sql1, nu), holder);
                             } catch (SQLException e){
                                 LOGGER.error("Exception creating new Admin User",e);
                                 return 0;

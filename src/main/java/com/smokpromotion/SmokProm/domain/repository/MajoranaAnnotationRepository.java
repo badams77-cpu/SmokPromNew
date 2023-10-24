@@ -59,7 +59,7 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
     protected String getCreateStringNP(T sUser){
         StringBuffer buffy =  new StringBuffer();
         SqlParameterSource params = getSqlParameterSource(sUser);
-        buffy.append("("+ repoFields.stream().map(x->x.getField().getName()).collect(Collectors.joining(",") )+ ")");
+        buffy.append("("+ repoFields.stream().map(x->x.getDbColumn()).collect(Collectors.joining(",") )+ ")");
         buffy.append(" VALUES ("+ repoFields.stream()
                 .map(x->x.isPopulatedCreated() || x.isPopulatedUpdated()? "now()": ":"+x.getField().getName())
                 .collect(Collectors.joining(",") )+ ");");
@@ -69,7 +69,7 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
     protected String getUpdateStringNP(T sUser){
         StringBuffer buffy =  new StringBuffer();
         buffy.append(" SET "+ repoFields.stream().filter(x->x.isUpdateable())
-                .map(x->x.getField().getName() + ":" + ((x.isPopulatedUpdated())?"now() " : ":"+x.getField().getName()))
+                .map(x->x.getDbColumn() + ":" + ((x.isPopulatedUpdated())?"now() " : ":"+x.getField().getName()))
                 .collect(Collectors.joining(",") )+ " WHERE id=:id");
         return buffy.toString();
     }
@@ -78,7 +78,7 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
     protected String getCreateString(T sUser){
         StringBuffer buffy =  new StringBuffer();
         SqlParameterSource params = getSqlParameterSource(sUser);
-        buffy.append("("+ repoFields.stream().map(x->x.getField().getName()).collect(Collectors.joining(",") )+ ")");
+        buffy.append("("+ repoFields.stream().map(x->x.getDbColumn()).collect(Collectors.joining(",") )+ ")");
         buffy.append(" VALUES ("+ repoFields.stream()
                 .map(x->x.isPopulatedCreated() || x.isPopulatedUpdated()? "now()": "?")
                 .collect(Collectors.joining(",") )+ ");");
@@ -88,7 +88,7 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
     protected String getUpdateString(T sUser){
         StringBuffer buffy =  new StringBuffer();
         buffy.append(" SET "+ repoFields.stream().filter(x->x.isUpdateable())
-                .map(x->x.getField().getName() + ":" + ((x.isPopulatedUpdated())?"now() " : "?"))
+                .map(x->x.getDbColumn() + ":" + ((x.isPopulatedUpdated())?"now() " : "?"))
                 .collect(Collectors.joining(",") )+ " WHERE id=:id");
         return buffy.toString();
     }
