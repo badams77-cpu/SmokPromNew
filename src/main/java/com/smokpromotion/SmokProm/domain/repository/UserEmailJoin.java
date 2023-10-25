@@ -13,7 +13,7 @@ public class UserEmailJoin {
     private static String INNER_JOIN = " INNER JOIN ";
 
     private static String JOIN1 = " u_cr ON en.created_by_userid = u_cr.id ";
-    private static String JOIN2 = "  u_up ON en.created_by_userid = u_up.id ";
+    private static String JOIN2 = "  u_up ON en.updated_by_userid = u_up.id ";
 
 
 //    private static String JOIN = " INNER JOIN "+USER_TABLE + " u_cr ON en.created_by_userid = u_cr.id "+

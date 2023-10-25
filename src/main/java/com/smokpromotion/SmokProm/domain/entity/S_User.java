@@ -118,7 +118,7 @@ public class S_User extends BaseSmokEntity implements Serializable {
     @Column(name="passwd_change_date")
     @Updateable
     @org.springframework.data.cassandra.core.mapping.Column("passwd_change_date")
-    private LocalDate passwdChangeDate;
+    private LocalDateTime passwdChangeDate;
 
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -304,11 +304,11 @@ public class S_User extends BaseSmokEntity implements Serializable {
         this.useractive = useractive;
     }
 
-    public LocalDate getPasswdChangeDate() {
+    public LocalDateTime getPasswdChangeDate() {
         return passwdChangeDate;
     }
 
-    public void setPasswdChangeDate(LocalDate passwdChangeDate) {
+    public void setPasswdChangeDate(LocalDateTime passwdChangeDate) {
         this.passwdChangeDate = passwdChangeDate;
     }
 

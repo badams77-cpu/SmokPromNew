@@ -392,6 +392,9 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
                                 case "boolean":
                                     invokeSetter(entity, rs.getBoolean(col), setter);
                                     break;
+                                case "java.util.UUID":
+                                    invokeSetter(entity, UUID.fromString(rs.getString(col)), setter);
+                                    break;
                                 case "java.lang.Integer":
                                     invokeSetter(entity, rs.getInt(col), setter);
                                     if (rs.wasNull()){ invokeSetter(entity, null, setter); }

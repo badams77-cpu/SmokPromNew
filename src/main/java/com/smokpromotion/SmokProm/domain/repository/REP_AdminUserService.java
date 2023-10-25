@@ -212,9 +212,9 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
 
                     default:
 
-                        String sql = "SELECT *"+UserEmailJoin.getFIELDS()+" FROM " + table +
+                        String sql = "SELECT *"+UserEmailJoin.getFIELDS()+" FROM " + table + " en "+
                                 getTheJoin()+
-                                " en where en.username= ?";
+                                " where en.username= ?";
 
                         res = dbConnectionFactory.getJdbcTemplate(dbName).stream()
                                 .map(templ->templ.query(
