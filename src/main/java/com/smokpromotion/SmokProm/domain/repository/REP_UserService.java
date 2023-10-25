@@ -34,7 +34,7 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
 
     private final static MethodPrefixingLogger LOGGER = MethodPrefixingLoggerFactory.getLogger(REP_UserService.class);
 
-    private static final String USER_TABLE = "user";
+    protected static final String USER_TABLE = "user";
 
 
     private int changePasswordTimeOut = 15;
@@ -191,8 +191,11 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
                         .stream().collect(Collectors.toList());
 
             default:
+                String sql = "SELECT *"+UserEmailJoin.getFIELDS()+" FROM " + table + " en "+
+                        UserEmailJoin.getJOIN()+
+                        " where username= ?";
                 res = dbConnectionFactory.getJdbcTemplate(dbName).stream().map(templ->templ.query(
-                        "SELECT * FROM " + table + " where username= ?",inVal, getMapper())).collect(Collectors.toList());
+                        sql,inVal, getMapper())).collect(Collectors.toList());
 
         }
         return res.stream().flatMap( s -> s.stream() ).collect(Collectors.toList());
@@ -224,8 +227,13 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
                         .stream().collect(Collectors.toList());
 
             default:
+
+                String sql = "SELECT *"+UserEmailJoin.getFIELDS()+" FROM " + table + " en "+
+                        UserEmailJoin.getJOIN()+
+                        " where en.id= ?";
+
                 res = dbConnectionFactory.getJdbcTemplate(dbName).stream().map(templ->templ.query(
-                        "SELECT " + table + " where username=", inVal, getMapper())).collect(Collectors.toList());
+                        sql, inVal, getMapper())).collect(Collectors.toList());
 
         }
         return res.stream().flatMap( s -> s.stream() ).findFirst();
@@ -252,8 +260,13 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
                         .stream().collect(Collectors.toList());
 
             default:
+
+                String sql = "SELECT *"+UserEmailJoin.getFIELDS()+" FROM " + table + " en "+
+                        UserEmailJoin.getJOIN()+
+                        " where en.uuid= ?";
+
                 res = dbConnectionFactory.getJdbcTemplate(dbName).stream().map(templ->templ.query(
-                        "SELECT " + table + " where username=", inVal, getMapper())).collect(Collectors.toList());
+                        sql, inVal, getMapper())).collect(Collectors.toList());
 
         }
         return res.stream().flatMap( s -> s.stream() ).findFirst();
