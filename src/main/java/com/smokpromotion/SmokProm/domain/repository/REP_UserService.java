@@ -48,9 +48,10 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
     private MajoranaDBConnectionFactory dbConnectionFactory;
 
     private String DB_NAME = "smok";
-    
+
     private final String table;
-    
+
+    private UserEmailJoin theJoin;
     
     // -----------------------------------------------------------------------------------------------------------------
     // Constructors
@@ -75,8 +76,18 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
         this.table = dbConnectionFactory.getSchemaInDB(dbName)+"."+USER_TABLE;
     }
 
+    public synchronized String getTheJoin(){
+       if (theJoin!=null){ return theJoin.getJOIN(); }
+       theJoin = new UserEmailJoin(this);
+       return theJoin.getJOIN();
+    }
+
     public int getChangePasswordTimeOut() {
         return changePasswordTimeOut;
+    }
+
+    public String getTable() {
+        return table;
     }
 
     public S_User getUser(String email) {
@@ -192,8 +203,8 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
 
             default:
                 String sql = "SELECT *"+UserEmailJoin.getFIELDS()+" FROM " + table + " en "+
-                        UserEmailJoin.getJOIN()+
-                        " where username= ?";
+                        getTheJoin()+
+                        " where en.username= ?";
                 res = dbConnectionFactory.getJdbcTemplate(dbName).stream().map(templ->templ.query(
                         sql,inVal, getMapper())).collect(Collectors.toList());
 
@@ -229,7 +240,7 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
             default:
 
                 String sql = "SELECT *"+UserEmailJoin.getFIELDS()+" FROM " + table + " en "+
-                        UserEmailJoin.getJOIN()+
+                        getTheJoin()+
                         " where en.id= ?";
 
                 res = dbConnectionFactory.getJdbcTemplate(dbName).stream().map(templ->templ.query(
@@ -262,7 +273,7 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
             default:
 
                 String sql = "SELECT *"+UserEmailJoin.getFIELDS()+" FROM " + table + " en "+
-                        UserEmailJoin.getJOIN()+
+                        getTheJoin()+
                         " where en.uuid= ?";
 
                 res = dbConnectionFactory.getJdbcTemplate(dbName).stream().map(templ->templ.query(

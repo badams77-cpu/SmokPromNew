@@ -48,6 +48,10 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
     private String table;
 
     @Autowired
+    private REP_UserService userService;
+
+    private UserEmailJoin theJoin;
+    @Autowired
     public REP_AdminUserService(
        DBEnvSetup dbEnvSetup,
        MajoranaDBConnectionFactory dbConnectionFactory,
@@ -62,6 +66,13 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
         this.dbName = dbConnectionFactory.getMainDBName();
         this.table = dbConnectionFactory.getSchemaInDB(dbName)+"."+ADMIN_TABLE;
     }
+
+    public synchronized String getTheJoin(){
+        if (theJoin!=null){ return theJoin.getJOIN(); }
+        theJoin = new UserEmailJoin(userService);
+        return theJoin.getJOIN();
+    }
+
 
     // MajoranaTODO Change the comment below to reflect this service.
 
@@ -202,7 +213,7 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
                     default:
 
                         String sql = "SELECT *"+UserEmailJoin.getFIELDS()+" FROM " + table +
-                                UserEmailJoin.getJOIN()+
+                                getTheJoin()+
                                 " en where en.username= ?";
 
                         res = dbConnectionFactory.getJdbcTemplate(dbName).stream()
@@ -241,7 +252,7 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
             default:
 
                 String sql = "SELECT *"+UserEmailJoin.getFIELDS()+" FROM " + table +
-                        UserEmailJoin.getJOIN()+
+                        getTheJoin()+
                         " en where en.id = ?";
 
                 res = dbConnectionFactory.getJdbcTemplate(dbName).stream().map(templ->templ.query(
@@ -275,7 +286,7 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
             default:
 
                 String sql = "SELECT *"+UserEmailJoin.getFIELDS()+" FROM " + table +
-                        UserEmailJoin.getJOIN()+
+                        getTheJoin()+
                         " en where en.uuid= ?";
 
                 res = dbConnectionFactory.getJdbcTemplate(dbName).stream().map(templ->templ.query(

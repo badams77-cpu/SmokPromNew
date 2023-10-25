@@ -29,6 +29,8 @@ CREATE TABLE IF NOT EXISTS smok.user (
                                          oauth_verifier text,
                                          access_token text,
                                          access_token_expiry text,
+                                         updated_by_userid int default 0,
+                                         created_by_userid int default 0,
                                          created timestamp default '1970-01-01 00:00:01',
                                          created_by int,
                                          updated timestamp default '1970-01-01 00:00:01',
