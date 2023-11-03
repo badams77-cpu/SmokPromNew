@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.electronwill.night-config:core:3.6.6" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="com.electronwill.night-config" artifactId="core" version="3.6.6" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.electronwill.night-config/core/3.6.6/1dccdc2c372ad0846561a2bd40c9db0543e55863/core-3.6.6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.electronwill.night-config/core/3.6.6/10be58693a93502f94a2dbaf13364dabe7871d7f/core-3.6.6-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

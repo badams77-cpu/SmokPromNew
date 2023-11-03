@@ -2,6 +2,8 @@ package com.smokpromotion.SmokProm.config.portal;
 
 import com.smokpromotion.SmokProm.util.CookieFactory;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -9,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.SecurityBuilder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
@@ -16,7 +19,10 @@ import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
@@ -33,6 +39,8 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer {
     private PortalCustomAuthenticationProvider portalCustomAuthenticationProvider;
     private CsrfTokenRepository csrfTokenRepository;
     private MajoranaPayCustomAPISecurityFilter MajoranaPayCustomAPISecurityFilter;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(PortalWebSecurityConfig.class);
 
     // -----------------------------------------------------------------------------------------------------------------
     // Constructors
@@ -67,66 +75,105 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer {
 
     }
 
-    public void configure(SecurityBuilder builder) throws Exception {
+//    public void configure(SecurityBuilder builder) throws Exception {
+
+//    }
+
+
+        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+            http
+                    .formLogin(form -> {
+                        try {
+                            form
+                                    .permitAll()
+                                    .loginPage("/login")
+                                    .failureHandler(getCustomAuthenticationFailureHandler())
+                                    .usernameParameter("email")
+                                    .passwordParameter("password")
+                                    .defaultSuccessUrl("/login-handler")
+                                    .and()
+                                    .logout().logoutSuccessUrl("/")
+                                    .and()
+                                    .addFilterBefore(MajoranaPayCustomAPISecurityFilter, BasicAuthenticationFilter.class)
+
+
+                                    .exceptionHandling().accessDeniedHandler(MajoranaAccessDeniedHandler());
+
+                        } catch (Exception e) {
+                            LOGGER.warn("Exception configuring form",e );
+                        }
+                            }
+                    )
+
+            ;
+            return null;
+            // ...
+        }
+    }
+
+    @Override
+    public void configure(SecurityBuilder securityBuilder) throws Exception {
+
+
+
+                 AuthorizeHttpRequestsConfigurer http = (AuthorizeHttpRequestsConfigurer) (
+                 (HttpSecurityBuilder) securityBuilder)
+                 .getConfigurer(AuthorizeHttpRequestsConfigurer.class);
+
+        HttpSecurityBuilder hsb = ((HttpSecurityBuilder<?>) securityBuilder);
+             hsb.authenticationProvider(portalCustomAuthenticationProvider);
+
+        HttpSecurity hs = (HttpSecurity) hsb.build();
+
+        AuthenticationManagerBuilder authManager =
+
+     hs.csrf(csrf -> csrf.csrfTokenRepository(csrfTokenRepository))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/token/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+                //.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
+                .httpBasic(Customizer.withDefaults())
+             .authorizeHttpRequests(
+                    auth->auth
+     // items - should be a fairly restricted set of items
+                   .requestMatchers("/","/css/**", "/images/**", "/public-js/**", "/login-handler","/login", "/client-login/**", "/exact-login","/favicon.ico", "/prec/**","/actuator/health" ).permitAll()
+                   .requestMatchers(HttpMethod.POST, "/client-login-post").permitAll()
+
+     //authenticated only - not role group specific
+                .requestMatchers("/landing-page","/error", "/dashboard/ops/**", "/userpermission/api/**","/application-permission-admin/api/**","/dashboard/toReport/**", "/practices/lastupdate/**", "/development/**", "/dashboard/ceo/api/**", "/tips/api/**", "/notifications/**","/static/media/**",
+                        "/practice-setup", "/settings/**", "/version-history", "/videos/**", "/accessDenied","/js-error", "/csrf-token", "/portal/api/userInformation", "/support","/your-account","/change-password/**", "/send-communication/**").authenticated()
+                .requestMatchers("/generic/api/**").authenticated()
+                .requestMatchers("/timeout").authenticated()
+                .requestMatchers("/menu/api").authenticated()
+                .requestMatchers("/js/adminportal/**").denyAll()
+                .requestMatchers("/js/dentistportal/**").denyAll()
+                .requestMatchers("/js/**").authenticated()
+     // used for users-in-group, email job endpoints, kpi goal endpoints
+                .requestMatchers(HttpMethod.GET, "/generic/api/**").authenticated()
+                .requestMatchers(HttpMethod.PATCH, "/generic/api/**").authenticated()
+                .requestMatchers(HttpMethod.POST, "/generic/api/**").authenticated()
+
+                .requestMatchers(HttpMethod.PUT, "/generic/api/**").authenticated()
+
+     // authenticated and role group specific
+                .requestMatchers("/{basePath}/{path}/**").access("@MajoranaAccessDecision.allowSection(request, authentication, #basePath, #path)")
+                .requestMatchers("/{basePath}/**").access("@MajoranaAccessDecision.allowSection(request, authentication, #basePath)")
+                .anyRequest().authenticated()
+             );
+
+      securityBuilder
+
+      securityBuilder
+
+      http.configure(hs);
 
     }
 
-
-//    @Override
-    //public void configure(SecurityBuilder securityBuilder) throws Exception {
-
-   //             HttpBasicConfigurer http = (HttpBasicConfigurer) (
-   //             (HttpSecurityBuilder) securityBuilder)
-   //             .getConfigurer(HttpBasicConfigurer.class);
-
-//        http.formLogin()
-//                .permitAll()
-//                .loginPage("/login")
-//                .failureHandler(getCustomAuthenticationFailureHandler())
-//                .usernameParameter("email")
-//                .passwordParameter("password")
-//                .defaultSuccessUrl("/login-handler")
-//
-//               .and()
-//                .addFilterBefore(MajoranaPayCustomAPISecurityFilter, BasicAuthenticationFilter.class)
-               // http //..csrfTokenRepository(csrfTokenRepository)
-               // .and()
-               // .authorizeRequests();
-                // permitAll items - should be a fairly restricted set of items
- //               .antMatchers("/","/css/**", "/images/**", "/public-js/**", "/login-handler","/login", "/client-login/**", "/exact-login","/favicon.ico", "/prec/**","/actuator/health" ).permitAll()
- //               .antMatchers(HttpMethod.POST, "/client-login-post").permitAll()
-
-                // authenticated only - not role group specific
-//                .antMatchers("/landing-page","/error", "/dashboard/ops/**", "/userpermission/api/**","/application-permission-admin/api/**","/dashboard/toReport/**", "/practices/lastupdate/**", "/development/**", "/dashboard/ceo/api/**", "/tips/api/**", "/notifications/**","/static/media/**",
-//                        "/practice-setup", "/settings/**", "/version-history", "/videos/**", "/accessDenied","/js-error", "/csrf-token", "/portal/api/userInformation", "/support","/your-account","/change-password/**", "/send-communication/**").authenticated()
-//                .antMatchers("/generic/api/**").authenticated()
-//                .antMatchers("/timeout").authenticated()
-//                .antMatchers("/menu/api").authenticated()
-//                .antMatchers("/js/adminportal/**").denyAll()
-//                .antMatchers("/js/dentistportal/**").denyAll()
-//                .antMatchers("/js/**").authenticated()
-                // used for users-in-group, email job endpoints, kpi goal endpoints
-//                .antMatchers(HttpMethod.GET, "/generic/api/**").authenticated()
-//                .antMatchers(HttpMethod.PATCH, "/generic/api/**").authenticated()
-//                .antMatchers(HttpMethod.POST, "/generic/api/**").authenticated()
-
-//                .antMatchers(HttpMethod.PUT, "/generic/api/**").authenticated()
-
-                // authenticated and role group specific
-//                .antMatchers("/{basePath}/{path}/**").access("@MajoranaAccessDecision.allowSection(request, authentication, #basePath, #path)")
-//                .antMatchers("/{basePath}/**").access("@MajoranaAccessDecision.allowSection(request, authentication, #basePath)")
-//                .anyRequest().authenticated();
-
-      //  http.logout().logoutSuccessUrl("/");
-
-      //  http.exceptionHandling().accessDeniedHandler(MajoranaAccessDeniedHandler());
-        
-
- //   }
-
 //    @Override
 //    public void configure(WebSecurity web){
-//            web.ignoring().antMatchers("/UK","/EIRE","/NLD","/AUS","/NZ","/UAE", "/UK/login","/EIRE/login","/NLD/login","/AUS/login","/NZ/login","/UAE/login");
+//            web.ignoring().requestMatchers("/UK","/EIRE","/NLD","/AUS","/NZ","/UAE", "/UK/login","/EIRE/login","/NLD/login","/AUS/login","/NZ/login","/UAE/login");
 //    }
 
     @Bean

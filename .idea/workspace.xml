@@ -5,11 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3f6e669d-e286-49c7-8263-6654853d0820" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/c3dcd3ca-282c-4502-bca2-e781b31cb85c.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c3dcd3ca-282c-4502-bca2-e781b31cb85c.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/config/common/InMemorySessionConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/config/portal/PortalSecurityAdapter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/templates/portal/public/error.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/SmokProm.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/SmokProm.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/SmokProm.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/SmokProm.test.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/config/DBs/DBCreds.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/config/DBs/DBCreds.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/config/DBs/DBEnvSetup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/config/DBs/DBEnvSetup.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/config/DBs/MainDataSourceConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/config/DBs/MainDataSourceConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/config/portal/PortalWebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/config/portal/PortalWebSecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/controller/portal/IndexPageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/controller/portal/IndexPageController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/controller/portal/identity/RegisterController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/controller/portal/identity/RegisterController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -40,6 +44,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
+        <option value="HTML File" />
         <option value="Class" />
       </list>
     </option>
@@ -47,34 +53,66 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 3
-}]]></component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot/3.0.5/813b2b51131f1b4ee06d82e3f43f9f356ed0bf6e/spring-boot-3.0.5-sources.jar!/org/springframework/boot/SpringApplication.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jdbc/6.0.7/450bb45a96a69fa19e2c86ed6c144f6f4509d99a/spring-jdbc-6.0.7-sources.jar!/org/springframework/jdbc/core/JdbcTemplate.java" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
   <component name="ProjectId" id="2Vu4bPOkbUGoIyAqbHAoLjsBfEs" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/barry/src/SmokPromNew",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;initial__pages&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/barry/src/SmokPromNew/src/main/resources/static/templates/portal/public&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;nele.options&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
-  <component name="RunManager" selected="Spring Boot.SmokApplication-Init">
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\barry\src\SmokPromNew\src\main\resources\static\templates\portal\public" />
+      <recent name="C:\Users\barry\src\SmokPromNew\libs" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.smokpromotion.SmokProm.domain.repository" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.SmokApplication - app">
     <configuration name="SmokApplication - admin" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <option name="ACTIVE_PROFILES" value="admin" />
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="SmokProm.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.smokpromotion.SmokProm.SmokApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SmokApplication - admin" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <option name="ACTIVE_PROFILES" value="admin" />
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="SmokProm.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.smokpromotion.SmokProm.SmokApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SmokApplication - app" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <option name="ACTIVE_PROFILES" value="smok_app" />
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
       <module name="SmokProm.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.smokpromotion.SmokProm.SmokApplication" />
@@ -100,6 +138,24 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="SmokApplication - demon" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <option name="ACTIVE_PROFILES" value="smok_demon" />
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="SmokProm.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.smokpromotion.SmokProm.SmokApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SmokApplication-Init" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <option name="ACTIVE_PROFILES" value="smok_init, mock-cass" />
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="SmokProm.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.smokpromotion.SmokProm.SmokApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="SmokApplication-Init" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <option name="ACTIVE_PROFILES" value="smok_init" />
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
@@ -109,6 +165,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Spring Boot.SmokApplication-Init" />
+      <item itemvalue="Spring Boot.SmokApplication - admin" />
+      <item itemvalue="Spring Boot.SmokApplication - app" />
+      <item itemvalue="Spring Boot.SmokApplication - demon" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -125,7 +187,26 @@
       <workItem from="1695765787441" duration="9649000" />
       <workItem from="1695927199148" duration="6077000" />
       <workItem from="1695933570189" duration="2217000" />
-      <workItem from="1695938455650" duration="1902000" />
+      <workItem from="1695938455650" duration="7240000" />
+      <workItem from="1696294746988" duration="3613000" />
+      <workItem from="1696905314307" duration="5793000" />
+      <workItem from="1697167774445" duration="10518000" />
+      <workItem from="1697426726121" duration="4802000" />
+      <workItem from="1697431583337" duration="4650000" />
+      <workItem from="1697490483112" duration="11381000" />
+      <workItem from="1697749469174" duration="16943000" />
+      <workItem from="1697807590203" duration="3600000" />
+      <workItem from="1697816554698" duration="1122000" />
+      <workItem from="1697829432411" duration="1168000" />
+      <workItem from="1697830702045" duration="6580000" />
+      <workItem from="1697861813907" duration="3243000" />
+      <workItem from="1697937215180" duration="23000" />
+      <workItem from="1697975859622" duration="2308000" />
+      <workItem from="1698017808074" duration="46586000" />
+      <workItem from="1698411867219" duration="515000" />
+      <workItem from="1698412873716" duration="1704000" />
+      <workItem from="1698536645627" duration="292000" />
+      <workItem from="1698982564523" duration="6716000" />
     </task>
     <servers />
   </component>
@@ -167,41 +248,119 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/config/DBs/DBCreds.java</url>
-          <line>70</line>
+          <line>68</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/config/DBs/DBEnvSetup.java</url>
-          <line>98</line>
-          <option name="timeStamp" value="3" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/config/DBs/CassandraConnector.java</url>
+          <line>38</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/domain/repository/REP_UserService.java</url>
+          <line>347</line>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/config/DBs/SmokDataSource.java</url>
+          <line>41</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/domain/repository/REP_UserService.java</url>
+          <line>165</line>
+          <option name="timeStamp" value="31" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/config/DBs/DBEnvSetup.java</url>
-          <line>118</line>
-          <option name="timeStamp" value="4" />
+          <line>211</line>
+          <option name="timeStamp" value="32" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/config/DBs/MainDataSourceConfig.java</url>
-          <line>29</line>
-          <option name="timeStamp" value="5" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/domain/repository/REP_UserService.java</url>
+          <line>325</line>
+          <option name="timeStamp" value="34" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/config/DBs/DBEnvSetup.java</url>
-          <line>110</line>
-          <option name="timeStamp" value="6" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/domain/repository/REP_UserService.java</url>
+          <line>349</line>
+          <option name="timeStamp" value="35" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/config/DBs/DBEnvSetup.java</url>
-          <line>171</line>
-          <option name="timeStamp" value="8" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/domain/repository/REP_UserService.java</url>
+          <line>348</line>
+          <option name="timeStamp" value="36" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/config/DBs/DBEnvSetup.java</url>
-          <line>140</line>
-          <option name="timeStamp" value="9" />
+          <url>file://$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/domain/repository/MajoranaAnnotationRepository.java</url>
+          <line>335</line>
+          <option name="timeStamp" value="41" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/domain/repository/REP_AdminUserService.java</url>
+          <line>345</line>
+          <option name="timeStamp" value="44" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jdbc/6.0.7/450bb45a96a69fa19e2c86ed6c144f6f4509d99a/spring-jdbc-6.0.7-sources.jar!/org/springframework/jdbc/core/JdbcTemplate.java</url>
+          <line>990</line>
+          <option name="timeStamp" value="49" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/domain/entity/BaseSmokEntity.java</url>
+          <line>16</line>
+          <option name="timeStamp" value="52" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/domain/repository/REP_UserService.java</url>
+          <line>338</line>
+          <option name="timeStamp" value="54" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/domain/repository/MajoranaAnnotationRepository.java</url>
+          <line>81</line>
+          <option name="timeStamp" value="60" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/domain/repository/MajoranaAnnotationRepository.java</url>
+          <line>188</line>
+          <option name="timeStamp" value="61" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/domain/repository/MajoranaAnnotationRepository.java</url>
+          <line>75</line>
+          <option name="timeStamp" value="62" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/domain/repository/REP_AdminUserService.java</url>
+          <line>187</line>
+          <option name="timeStamp" value="64" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/config/portal/PortalWebSecurityConfig.java</url>
+          <line>128</line>
+          <option name="timeStamp" value="65" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-field">
+          <url>file://$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/domain/repository/REP_UserService.java</url>
+          <line>40</line>
+          <properties field="dbName" class="com.smokpromotion.SmokProm.domain.repository.REP_UserService" />
+          <option name="timeStamp" value="30" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="SpringBootApplicationConfigurationType">
+        <watch expression="((REP_UserService)this).clazz" language="JAVA" custom="com.smokpromotion.SmokProm.domain.repository.REP_UserService" />
+        <watch expression="allProp" />
+        <watch expression="((REP_UserService)this).clazz" language="JAVA" custom="com.smokpromotion.SmokProm.domain.repository.REP_UserService" />
+        <watch expression="sql" />
+        <watch expression="entity" />
+        <watch expression="((REP_UserService)this).clazz" language="JAVA" custom="com.smokpromotion.SmokProm.domain.repository.REP_UserService" />
+        <watch expression="majoranaField.getter" />
+        <watch expression="majoranaField.updateable" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand>

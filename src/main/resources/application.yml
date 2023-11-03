@@ -108,11 +108,11 @@ spring.config.activate.on-profile: admin
 server:
   port: 9002
 ---
-spring.config.activate.on-profile: app
+spring.config.activate.on-profile: smok-app
 server:
   port: 9001
 ---
-spring.config.activate.on-profile: demon
+spring.config.activate.on-profile: smok-demon
 server:
   port: 9003
 ---
