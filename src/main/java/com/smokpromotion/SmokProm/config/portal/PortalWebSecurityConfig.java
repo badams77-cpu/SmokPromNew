@@ -103,37 +103,37 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer {
 //    }
 
 
-        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-            http
-                    .formLogin(form -> {
-                        try {
-                            form
-                                    .permitAll()
-                                    .loginPage("/login")
-                                    .failureHandler(getCustomAuthenticationFailureHandler())
-                                    .usernameParameter("email")
-                                    .passwordParameter("password")
-                                    .defaultSuccessUrl("/login-handler")
-                                    .and()
-                                    .logout().logoutSuccessUrl("/")
-                                    .and()
-                                    .addFilterBefore(MajoranaPayCustomAPISecurityFilter,
-                                            BasicAuthenticationFilter.class)
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .formLogin(form -> {
+                            try {
+                                form
+                                        .permitAll()
+                                        .loginPage("/login")
+                                        .failureHandler(getCustomAuthenticationFailureHandler())
+                                        .usernameParameter("email")
+                                        .passwordParameter("password")
+                                        .defaultSuccessUrl("/login-handler")
+                                        .and()
+                                        .logout().logoutSuccessUrl("/")
+                                        .and()
+                                        .addFilterBefore(MajoranaPayCustomAPISecurityFilter,
+                                                BasicAuthenticationFilter.class)
 
 
-                                    .exceptionHandling().accessDeniedHandler(MajoranaAccessDeniedHandler());
+                                        .exceptionHandling().accessDeniedHandler(MajoranaAccessDeniedHandler());
 
-                        } catch (Exception e) {
-                            LOGGER.warn("Exception configuring form",e );
-                        }
+                            } catch (Exception e) {
+                                LOGGER.warn("Exception configuring form", e);
                             }
-                    )
+                        }
+                )
 
-            ;
-            return null;
-            // ...
-        }
+        ;
+        return null;
+        // ...
     }
+
 
     @Override
     public void configure(SecurityBuilder securityBuilder) throws Exception {
@@ -155,7 +155,7 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer {
                 boolean acc = maj.checkAccessForPath(psp, authentication, );
                 return 0;
             }
-        }
+        };
 
         List<AccessDecisionVoter<?>> avl = new LinkedList<>();
 
