@@ -24,4 +24,3 @@ public class MajoranaAccessDecisionManager extends BaseAccessDecisionManager {
         return subscriptionAccess.isUserAllowedToPath(request.getParameterMap(), authentication, path);
     }
 }
-

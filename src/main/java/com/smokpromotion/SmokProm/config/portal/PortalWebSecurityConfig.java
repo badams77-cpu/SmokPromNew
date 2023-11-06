@@ -1,5 +1,6 @@
 package com.smokpromotion.SmokProm.config.portal;
 
+import com.smokpromotion.SmokProm.config.common.AccessVoteri;
 import com.smokpromotion.SmokProm.util.CookieFactory;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 import org.checkerframework.checker.units.qual.A;
@@ -138,28 +139,13 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer {
     @Override
     public void configure(SecurityBuilder securityBuilder) throws Exception {
 
-        AccessDecisionVoter av = new AccessDecisionVoter() {
-            @Override
-            public boolean supports(ConfigAttribute attribute) {
-                return true;
-            }
-
-            @Override
-            public boolean supports(Class clazz) {
-                return false;
-            }
-
-            @Override
-            public int vote(Authentication authentication, Object object, Collection collection) {
-                PortalSecurityPrinciple psp = (PortalSecurityPrinciple) authentication.getPrincipal();
-                boolean acc = maj.checkAccessForPath(psp, authentication, );
-                return 0;
-            }
-        };
+        AccessVoteri av = new AccessVoteri(maj);
 
         List<AccessDecisionVoter<?>> avl = new LinkedList<>();
 
         AccessDecisionManager acc = new UnanimousBased(avl);
+
+        avl.add(av);
 
         AuthorizationManager aam = RequestMatcherDelegatingAuthorizationManager.builder()
                 .add(new AntPathRequestMatcher(""),
