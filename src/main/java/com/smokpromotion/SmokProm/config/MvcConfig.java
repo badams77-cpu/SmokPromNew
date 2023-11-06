@@ -57,12 +57,6 @@ public class MvcConfig implements WebMvcConfigurer {
         return source;
     }
 
-    @Bean
-    AuthorizationManager authz() {
-        return RequestMatcherDelegatingAuthorizationManager.builder()
-                .add(new AntPathRequestMatcher("/admin/**"), AuthorityAuthorizationManager.hasAnyRole())
-                .build();
-    }
 
     @Bean(name = "localeResolver")
     public CookieLocaleResolver localeResolver() {
