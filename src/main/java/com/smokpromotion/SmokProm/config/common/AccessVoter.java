@@ -10,11 +10,11 @@ import org.springframework.security.core.Authentication;
 
 import java.util.Collection;
 
-public class AccessVoteri implements AccessDecisionVoter {
+public class AccessVoter implements AccessDecisionVoter {
 
     private BaseAccessDecisionManager  baseAccessDecisionManager;
 
-    public AccessVoteri(BaseAccessDecisionManager baseAccessDecisionManager){
+    public AccessVoter(BaseAccessDecisionManager baseAccessDecisionManager){
         this.baseAccessDecisionManager = baseAccessDecisionManager;
     }
 

@@ -1,10 +1,8 @@
 package com.smokpromotion.SmokProm.config.portal;
 
-import com.smokpromotion.SmokProm.config.common.AccessVoteri;
+import com.smokpromotion.SmokProm.config.common.AccessVoter;
 import com.smokpromotion.SmokProm.util.CookieFactory;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
-import org.checkerframework.checker.units.qual.A;
-import org.checkerframework.checker.units.qual.Acceleration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,7 +137,7 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer {
     @Override
     public void configure(SecurityBuilder securityBuilder) throws Exception {
 
-        AccessVoteri av = new AccessVoteri(maj);
+        AccessVoter av = new AccessVoter(maj);
 
         List<AccessDecisionVoter<?>> avl = new LinkedList<>();
 
