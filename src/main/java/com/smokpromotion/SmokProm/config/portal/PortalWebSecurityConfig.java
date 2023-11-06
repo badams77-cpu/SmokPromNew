@@ -2,6 +2,8 @@ package com.smokpromotion.SmokProm.config.portal;
 
 import com.smokpromotion.SmokProm.util.CookieFactory;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
+import org.checkerframework.checker.units.qual.A;
+import org.checkerframework.checker.units.qual.Acceleration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.access.AccessDecisionVoter;
+import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.access.vote.UnanimousBased;
+import org.springframework.security.authorization.AuthorityAuthorizationManager;
+import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.SecurityBuilder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -22,10 +30,17 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.RequestMatcherDelegatingAuthorizationManager;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -40,6 +55,8 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer {
     private CsrfTokenRepository csrfTokenRepository;
     private MajoranaPayCustomAPISecurityFilter MajoranaPayCustomAPISecurityFilter;
 
+    private MajoranaAccessDecisionManager maj;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(PortalWebSecurityConfig.class);
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -47,8 +64,13 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer {
     // -----------------------------------------------------------------------------------------------------------------
 
     @Autowired
-    public PortalWebSecurityConfig(PortalCustomAuthenticationProvider portalCustomAuthenticationProvider, CsrfTokenRepository csrfTokenRepository,  @Value("${Majorana_COOKIE_DOMAIN:localhost}") String cookieDomain) {
+    public PortalWebSecurityConfig(PortalCustomAuthenticationProvider portalCustomAuthenticationProvider,
+                                   CsrfTokenRepository csrfTokenRepository,
+                                   @Value("${Majorana_COOKIE_DOMAIN:localhost}") String cookieDomain,
+                                   MajoranaAccessDecisionManager maj
 
+    ) {
+        this.maj = maj;
         this.portalCustomAuthenticationProvider = portalCustomAuthenticationProvider;
         this.csrfTokenRepository = csrfTokenRepository;
         this.MajoranaPayCustomAPISecurityFilter = new MajoranaPayCustomAPISecurityFilter();
@@ -75,6 +97,7 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer {
 
     }
 
+
 //    public void configure(SecurityBuilder builder) throws Exception {
 
 //    }
@@ -94,7 +117,8 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer {
                                     .and()
                                     .logout().logoutSuccessUrl("/")
                                     .and()
-                                    .addFilterBefore(MajoranaPayCustomAPISecurityFilter, BasicAuthenticationFilter.class)
+                                    .addFilterBefore(MajoranaPayCustomAPISecurityFilter,
+                                            BasicAuthenticationFilter.class)
 
 
                                     .exceptionHandling().accessDeniedHandler(MajoranaAccessDeniedHandler());
@@ -114,7 +138,36 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer {
     @Override
     public void configure(SecurityBuilder securityBuilder) throws Exception {
 
+        AccessDecisionVoter av = new AccessDecisionVoter() {
+            @Override
+            public boolean supports(ConfigAttribute attribute) {
+                return true;
+            }
 
+            @Override
+            public boolean supports(Class clazz) {
+                return false;
+            }
+
+            @Override
+            public int vote(Authentication authentication, Object object, Collection collection) {
+                PortalSecurityPrinciple psp = (PortalSecurityPrinciple) authentication.getPrincipal();
+                boolean acc = maj.checkAccessForPath(psp, authentication, );
+                return 0;
+            }
+        }
+
+        List<AccessDecisionVoter<?>> avl = new LinkedList<>();
+
+        AccessDecisionManager acc = new UnanimousBased(avl);
+
+        AuthorizationManager aam = RequestMatcherDelegatingAuthorizationManager.builder()
+                .add(new AntPathRequestMatcher(""),
+                        AuthorityAuthorizationManager.hasAuthority(PortalCustomAuthenticationProvider.ROLE_VAPI))
+//                .add(new AntPathRequestMatcher("/resource/**"), AuthorityAuthorizationManager.hasAuthority("SCOPE_resource"))
+                .build();
+
+        avl.add(av);
 
                  AuthorizeHttpRequestsConfigurer http = (AuthorizeHttpRequestsConfigurer) (
                  (HttpSecurityBuilder) securityBuilder)
@@ -125,7 +178,12 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer {
 
         HttpSecurity hs = (HttpSecurity) hsb.build();
 
-        AuthenticationManagerBuilder authManager =
+
+
+//        AuthorityAuthorizationManager aam = AuthorityAuthorizationManager.hasAuthority();
+
+
+//        AuthenticationManagerBuilder authManager =
 
      hs.csrf(csrf -> csrf.csrfTokenRepository(csrfTokenRepository))
                 .authorizeHttpRequests(auth -> auth
@@ -157,15 +215,17 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer {
 
                 .requestMatchers(HttpMethod.PUT, "/generic/api/**").authenticated()
 
+
+                            .anyRequest().access(aam)
      // authenticated and role group specific
-                .requestMatchers("/{basePath}/{path}/**").access("@MajoranaAccessDecision.allowSection(request, authentication, #basePath, #path)")
-                .requestMatchers("/{basePath}/**").access("@MajoranaAccessDecision.allowSection(request, authentication, #basePath)")
-                .anyRequest().authenticated()
+//                .requestMatchers("/{basePath}/{path}/**")
+
+                            //.access("@MajoranaAccessDecision.allowSection(request, authentication, #basePath, #path)")
+//                .requestMatchers("/{basePath}/**")
+                            //.access("@MajoranaAccessDecision.allowSection(request, authentication, #basePath)")
+        //        .anyRequest().authenticated()
+
              );
-
-      securityBuilder
-
-      securityBuilder
 
       http.configure(hs);
 

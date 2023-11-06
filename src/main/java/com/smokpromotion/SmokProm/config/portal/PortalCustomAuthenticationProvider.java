@@ -23,6 +23,7 @@ import java.util.List;
 @Profile(value = "portal")
 public class PortalCustomAuthenticationProvider implements AuthenticationProvider {
 
+    public static final String ROLE_VAPI = "ROLE_VAPI_LOGGED";
     private static final Logger LOGGER = LoggerFactory.getLogger(PortalCustomAuthenticationProvider.class);
 
     private REP_UserService legacyMajoranaUserService;
@@ -153,14 +154,14 @@ public class PortalCustomAuthenticationProvider implements AuthenticationProvide
     public static List<String> getRolesForUsername(String email) {
 
         List<String> roles = new ArrayList<>();
-        roles.add("ROLE_SITE_PORTAL");
+        roles.add(ROLE_VAPI);
 
-        if (email.contains("@urcompliant.com")) {
-            roles.add("ROLE_URC");
-        }
+       // if (email.contains("@urcompliant.com")) {
+       //     roles.add("ROLE_URC");
+       // }
 
 
-        roles.add("ROLE_LITE");
+        //roles.add("ROLE_LITE");
 
         return roles;
 

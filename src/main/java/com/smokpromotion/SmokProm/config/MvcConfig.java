@@ -8,6 +8,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.security.authorization.AuthorityAuthorizationManager;
+import org.springframework.security.authorization.AuthorizationManager;
+import org.springframework.security.web.access.intercept.RequestMatcherDelegatingAuthorizationManager;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -51,6 +55,13 @@ public class MvcConfig implements WebMvcConfigurer {
         // messageSource.setDefaultEncoding("UTF-8");
 
         return source;
+    }
+
+    @Bean
+    AuthorizationManager authz() {
+        return RequestMatcherDelegatingAuthorizationManager.builder()
+                .add(new AntPathRequestMatcher("/admin/**"), AuthorityAuthorizationManager.hasAnyRole())
+                .build();
     }
 
     @Bean(name = "localeResolver")
