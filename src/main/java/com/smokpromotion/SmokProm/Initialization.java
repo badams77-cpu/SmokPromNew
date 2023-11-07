@@ -36,7 +36,7 @@ public class Initialization {
 
     private final static String LAST = "Adams";
 
-    private final static String FIRSTPASS = "changeme";
+    private final static String FIRSTPASS = "keepme";
 
 
 

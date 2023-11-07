@@ -370,6 +370,8 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
 
         KeyHolder holder = new GeneratedKeyHolder();
 
+        newUser.setUserpw(pwCryptUtil.getPasswd(password, newUser.getSecVn()));
+        
         final AdminUser nu = newUser;
 
         long rowsAffected = 0;
