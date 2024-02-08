@@ -23,6 +23,8 @@ public class DBEnvSetup {
 
     private static final Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(DBEnvSetup.class);
 
+    private static final String SEPERATOR = "_";
+
     private final static String[] CredFields = DBCreds.getCredFields();
 
     private static final String PREFIX = YamlDBConfig.getPrefix();
@@ -86,7 +88,7 @@ public class DBEnvSetup {
         Map<String, Map<String, String>> propsByDb = withPrefix.entrySet().stream()
                 .filter( x->x.getKey().size()>1 )
                 .collect( Collectors.groupingBy( x-> ((Map.Entry<List<String>, Object>) x).getKey().get(0),
-                        Collectors.toMap( y-> String.join(".",
+                        Collectors.toMap( y-> String.join(SEPERATOR,
                                         withoutFirst(((Map.Entry<List<String>, Object>) y).getKey())),
                                 z->((Map.Entry<List<String>, Object>) z).getValue().toString())
                         )

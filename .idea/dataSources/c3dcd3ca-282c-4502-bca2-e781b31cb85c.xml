@@ -1,73 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="@localhost-mysql [2]">
-  <database-model serializer="dbm" dbms="MYSQL" family-id="MYSQL" format-version="4.49">
-    <root id="1">
-      <DefaultCasing>lower/lower</DefaultCasing>
-      <DefaultEngine>InnoDB</DefaultEngine>
-      <DefaultTmpEngine>InnoDB</DefaultTmpEngine>
-      <Grants>|root||root|localhost|ALTER|G
-|root||smok||ALTER|G
-|root||root|localhost|ALTER ROUTINE|G
-|root||smok||ALTER ROUTINE|G
-|root||root|localhost|CREATE|G
-|root||smok||CREATE|G
-|root||root|localhost|CREATE ROUTINE|G
-|root||smok||CREATE ROUTINE|G
-|root||root|localhost|CREATE TABLESPACE|G
-|root||smok||CREATE TABLESPACE|G
-|root||root|localhost|CREATE TEMPORARY TABLES|G
-|root||smok||CREATE TEMPORARY TABLES|G
-|root||root|localhost|CREATE USER|G
-|root||smok||CREATE USER|G
-|root||root|localhost|CREATE VIEW|G
-|root||smok||CREATE VIEW|G
-|root||root|localhost|DELETE|G
-|root||smok||DELETE|G
-|root||root|localhost|DROP|G
-|root||smok||DROP|G
-|root||root|localhost|EVENT|G
-|root||smok||EVENT|G
-|root||root|localhost|EXECUTE|G
-|root||smok||EXECUTE|G
-|root||root|localhost|FILE|G
-|root||smok||FILE|G
-|root||root|localhost|INDEX|G
-|root||smok||INDEX|G
-|root||root|localhost|INSERT|G
-|root||smok||INSERT|G
-|root||root|localhost|LOCK TABLES|G
-|root||smok||LOCK TABLES|G
-|root||root|localhost|PROCESS|G
-|root||smok||PROCESS|G
-|root||root|localhost|REFERENCES|G
-|root||smok||REFERENCES|G
-|root||root|localhost|RELOAD|G
-|root||smok||RELOAD|G
-|root||root|localhost|REPLICATION CLIENT|G
-|root||smok||REPLICATION CLIENT|G
-|root||root|localhost|REPLICATION SLAVE|G
-|root||smok||REPLICATION SLAVE|G
-|root||root|localhost|SELECT|G
-|root||smok||SELECT|G
-|root||root|localhost|SHOW DATABASES|G
-|root||smok||SHOW DATABASES|G
-|root||root|localhost|SHOW VIEW|G
-|root||smok||SHOW VIEW|G
-|root||root|localhost|SHUTDOWN|G
-|root||smok||SHUTDOWN|G
-|root||mysql.session|localhost|SUPER|G
-|root||root|localhost|SUPER|G
-|root||smok||SUPER|G
-|root||root|localhost|TRIGGER|G
-|root||smok||TRIGGER|G
-|root||root|localhost|UPDATE|G
-|root||smok||UPDATE|G
-|root||root|localhost|grant option|G
-|root||smok||grant option|G
-performance_schema|schema||mysql.session|localhost|SELECT|G
-sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
-      <ServerVersion>5.7.43</ServerVersion>
-    </root>
+  <database-model serializer="dbm" dbms="MYSQL" family-id="MYSQL" format-version="4.51">
+    <root id="1"/>
     <collation id="2" parent="1" name="big5_chinese_ci">
       <Charset>big5</Charset>
       <DefaultForCharset>1</DefaultForCharset>

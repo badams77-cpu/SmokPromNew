@@ -20,10 +20,9 @@ public class DBCryptoRotationService {
 
     private Logger LOGGER = LoggerFactory.getLogger(DBCryptoRotationService.class);
 
-    private final ApplicationContext applicationContext;
+//  private final ApplicationContext applicationContext;
 
     private static Class[] REPOSITORIES = {};
-
 
     private final static int BLOCK_SIZE = 100;
     private final DBCryptoRotationBlockService blockService;
@@ -32,13 +31,15 @@ public class DBCryptoRotationService {
     private final boolean rotateKeysOnStartup;
 
     @Autowired
-    public DBCryptoRotationService(ApplicationContext applicationContext,
+    public DBCryptoRotationService(
+
+            //ApplicationContext applicationContext,
                                    CryptoKeyIds cryptoKeyIds,
                                    DBCryptoRotationBlockService blockService,
                                    Environment environment,
-                                   @Value("${MPC_CRYPTO_ROTATE_KEYS_ON_STARTUP:true}") boolean rotateKeysOnStartup
+                                   @Value("${MPC_CRYPTO_ROTATE_KEYS_ON_STARTUP:false}") boolean rotateKeysOnStartup
     ){
-        this.applicationContext = applicationContext;
+//        this.applicationContext = applicationContext;
         this.cryptoKeyIds = cryptoKeyIds;
         this.blockService = blockService;
         this.environment = environment;
@@ -61,22 +62,24 @@ public class DBCryptoRotationService {
             return;
         }
         boolean isTest = Arrays.stream(environment.getActiveProfiles()).anyMatch(x->x.equals("test"));
-        for(Class repo : REPOSITORIES) {
-                AbstractRotatableKey repository = (AbstractRotatableKey) applicationContext.getBean(repo);
-                int startId = 0;
-                int newId = 1;
-                while(newId!=startId) {
-                    startId = newId;
-                    newId = blockService.updateKeyBlock(repository, startId, newId, BLOCK_SIZE, cryptoKeyIds.getOldKeyId(), cryptoKeyIds.getNewKeyId(), reverse);
-                    if (newId==startId){
-                        LOGGER.info("updatedKeys, completed on repo "+repo);
-                    } else {
-                        LOGGER.info("updatedKeys, Updated keys on " + repo + " to id" + (newId - 1));
-                    }
-                }
-            }
-        }
+//        for(Class repo : REPOSITORIES) {
+//                AbstractRotatableKey repository = (AbstractRotatableKey) applicationContext.getBean(repo);
+//                int startId = 0;
+//                int newId = 1;
+//                while(newId!=startId) {
+//                    startId = newId;
+//                    newId = blockService.updateKeyBlock(repository, startId, newId, BLOCK_SIZE, cryptoKeyIds.getOldKeyId(), cryptoKeyIds.getNewKeyId(), reverse);
+//                    if (newId==startId){
+//                        LOGGER.info("updatedKeys, completed on repo "+repo);
+//                    } else {
+//                        LOGGER.info("updatedKeys, Updated keys on " + repo + " to id" + (newId - 1));
+//                    }
+//                }
+//            }
+//        }
     }
 
 
 
+
+}

@@ -5,12 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3f6e669d-e286-49c7-8263-6654853d0820" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/c3dcd3ca-282c-4502-bca2-e781b31cb85c.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/c3dcd3ca-282c-4502-bca2-e781b31cb85c.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/SmokProm.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/SmokProm.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/SmokProm.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/SmokProm.test.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/config/DBs/DBCreds.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/config/DBs/DBCreds.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/config/DBs/DBEnvSetup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/config/DBs/DBEnvSetup.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/config/DBs/MainDataSourceConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/smokpromotion/SmokProm/config/DBs/MainDataSourceConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,7 +30,12 @@
         </task>
         <projects_view>
           <tree_state>
-            <expand />
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="SmokProm" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
             <select />
           </tree_state>
         </projects_view>
@@ -47,31 +52,42 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 3
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="2Vu4bPOkbUGoIyAqbHAoLjsBfEs" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/barry/src/SmokPromNew",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.Build SmokPromNew.executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.SmokApplication-Init.executor&quot;: &quot;Run&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/barry/src/FeedDistiller&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Spring Boot.SmokApplication-Init">
     <configuration name="SmokApplication - admin" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <option name="ACTIVE_PROFILES" value="admin" />
@@ -110,6 +126,13 @@
       </method>
     </configuration>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-17.0.9-corretto-17.0.9-3183f394aec4-8f899f12" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -126,6 +149,18 @@
       <workItem from="1695927199148" duration="6077000" />
       <workItem from="1695933570189" duration="2217000" />
       <workItem from="1695938455650" duration="1902000" />
+      <workItem from="1705376867039" duration="8739000" />
+      <workItem from="1705443660156" duration="4611000" />
+      <workItem from="1705545131357" duration="1202000" />
+      <workItem from="1705639870036" duration="1253000" />
+      <workItem from="1705986293353" duration="1122000" />
+      <workItem from="1706127554443" duration="1813000" />
+      <workItem from="1706376442055" duration="812000" />
+      <workItem from="1706391805280" duration="366000" />
+      <workItem from="1706393402088" duration="601000" />
+      <workItem from="1706394040055" duration="602000" />
+      <workItem from="1706590077371" duration="599000" />
+      <workItem from="1706662291975" duration="599000" />
     </task>
     <servers />
   </component>
