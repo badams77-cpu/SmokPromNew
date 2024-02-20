@@ -5,31 +5,42 @@ import com.datastax.oss.driver.api.core.CqlSessionBuilder;
 import com.smokpromotion.SmokProm.config.DBs.DBEnvSetup;
 import com.smokpromotion.SmokProm.config.DBs.MainDataSourceConfig;
 import com.smokpromotion.SmokProm.config.common.YamlDBConfig;
+import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
+import org.apache.logging.log4j.core.appender.ConsoleAppender;
+import org.slf4j.Logger;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
 
 @SpringBootApplication
+@EnableConfigurationProperties(com.smokpromotion.SmokProm.config.common.YamlDBConfig.class)
 public class SmokApplication extends SpringBootServletInitializer {
 
-
+	private static final Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(SmokApplication.class);
 
 	public static void main(String[] args) {
-
-		SpringApplication.run(SmokApplication.class, args);
-
-		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
-		ctx.register(MainDataSourceConfig.class);
-		ctx.register(DBEnvSetup.class);
-		ctx.register(YamlDBConfig.class);
+		try {
+			SpringApplication.run(SmokApplication.class, args);
+		} catch (Exception e){
+			LOGGER.warn("Exception e in Starting Spring",e);
+			Throwable cause = e.getCause();
+			while(cause !=null){
+				LOGGER.warn("Exception caused by Starting Spring",cause);
+				cause = cause.getCause();
+			}
+		}
 	}
 
+	private static void initLog4J() {
 
+	}
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {

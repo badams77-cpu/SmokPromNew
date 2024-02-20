@@ -92,7 +92,7 @@ smok-db:
     name: mysql
     username: promo
     remoteDatabaseNameAtService: mysql
-    password: PromAskHow7!
+    password: PromoAskHow7!
     isolationLevel: noTransactions
     dbVariant: mysql
     group: "smok"

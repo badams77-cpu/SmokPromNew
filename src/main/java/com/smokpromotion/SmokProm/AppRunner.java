@@ -1,10 +1,15 @@
 package com.smokpromotion.SmokProm;
 
+import com.smokpromotion.SmokProm.config.DBs.DBEnvSetup;
+import com.smokpromotion.SmokProm.config.DBs.MainDataSourceConfig;
+import com.smokpromotion.SmokProm.config.common.YamlDBConfig;
+import org.apache.catalina.core.ApplicationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,9 +31,11 @@ public class AppRunner implements ApplicationRunner {
 
     @Autowired
     private Initialization init;
-
     @Autowired
     Environment env;
+
+    @Autowired
+    private static ApplicationContext ctx;
 
     @Value("${smok.admin.version:0.1.0}")
     private String smokAdminVariantString;
@@ -70,6 +77,12 @@ public class AppRunner implements ApplicationRunner {
         } else {
             LOGGER.warn(String.format("run: No known smok app profiles used, active profiles are: %s", activeProfiles.stream().collect(Collectors.joining(","))));
         }
+
+        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
+        ctx.register(MainDataSourceConfig.class);
+        ctx.register(DBEnvSetup.class);
+        ctx.register(YamlDBConfig.class);
+        ctx.refresh();
 
         LOGGER.warn(String.format("smok %s Application startup completed - version: %s", smokAppVariantDesc, smokAppVersionDesc));
 
