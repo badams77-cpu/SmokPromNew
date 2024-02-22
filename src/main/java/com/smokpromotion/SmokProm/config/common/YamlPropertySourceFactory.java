@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.Properties;
 
-@Component
 public class YamlPropertySourceFactory implements PropertySourceFactory {
 
     @Override
