@@ -51,7 +51,8 @@ import static org.mockito.Mockito.when;
 //@ConfigurationProperties()//(prefix= "smok-db")
 public class YamlDBConfig {
 
-    private static final String YAML_FILE = "resources/application.yaml";
+    private static final String YAML_FILE = //"resources/" +
+            "classpath:application.yml";
 
     private static final String PREFIX = "smok-db";
 
