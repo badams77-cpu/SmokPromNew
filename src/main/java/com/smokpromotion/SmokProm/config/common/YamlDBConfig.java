@@ -26,6 +26,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.EnumerablePropertySource;
+import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.EncodedResource;
@@ -63,23 +64,20 @@ public class YamlDBConfig {
         EncodedResource eres = new EncodedResource(res,  Charset.defaultCharset());
         YamlPropertySourceFactory fact = new YamlPropertySourceFactory();
         try {
-            Map<String, String> props =fact.createPropertySource(YAML_FILE, eres).;
-            this.entries = mapProps(props);
+            PropertiesPropertySource props =fact.createPropertySource(YAML_FILE, eres);
+            this.entries = mapProps(propToMap(props));
         } catch (Exception e){
             LOGGER.warn("Exception propulating YamlConfig ",e);
         }
 
     }
 
-    private Map<String, String> propToMap(EnumerablePropertySource prop){
+    private Map<String, String> propToMap(PropertiesPropertySource  prop){
         Map<String, String> map = new HashMap<>();
-            if (prop instanceof EnumerablePropertySource) {
                 for (String key : ( prop).getPropertyNames()) {
                     if (key.startsWith(PREFIX)) {
                         map.put(key.replace(PREFIX+".", ""), prop.getProperty(key).toString());
-                    }
-                }
-            }
+                    }}
         return map;
     }
 
