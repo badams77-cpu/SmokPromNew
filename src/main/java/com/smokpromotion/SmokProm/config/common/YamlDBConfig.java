@@ -59,17 +59,24 @@ public class YamlDBConfig {
     private final Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(this.getClass());
 
     private Map<String, Map<String, String>> entries;
+
+    private Map<String, String> rawEntries;
     public YamlDBConfig(){
         Resource res = new ClassPathResource(YAML_FILE);
         EncodedResource eres = new EncodedResource(res,  Charset.defaultCharset());
         YamlPropertySourceFactory fact = new YamlPropertySourceFactory();
         try {
             PropertiesPropertySource props =fact.createPropertySource(YAML_FILE, eres);
-            this.entries = mapProps(propToMap(props));
+            rawEntries = propToMap(props);
+            this.entries = mapProps(rawEntries);
         } catch (Exception e){
             LOGGER.warn("Exception propulating YamlConfig ",e);
         }
 
+    }
+
+    public Map<String, String> getRawEntries() {
+        return rawEntries;
     }
 
     private Map<String, String> propToMap(PropertiesPropertySource  prop){

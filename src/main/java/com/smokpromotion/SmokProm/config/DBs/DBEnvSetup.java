@@ -30,8 +30,6 @@ public class DBEnvSetup {
 
     private static final String PREFIX = YamlDBConfig.getPrefix();
 
-    @Autowired
-    private Environment env;
 
     @Autowired
     private YamlDBConfig ydb;
@@ -46,7 +44,7 @@ public class DBEnvSetup {
 
     private  Map<SmokDatasourceName, CqlSession> smokCassMap;
 
-    public static Map<String, Object> getAllKnownProperties(Environment env) {
+ /*   public static Map<String, Object> getAllKnownProperties(Environment env) {
         Map<String, Object> rtn = new HashMap<>();
         if (env instanceof ConfigurableEnvironment) {
             for (PropertySource<?> ps : ((ConfigurableEnvironment) env).getPropertySources()   ) {
@@ -58,7 +56,7 @@ public class DBEnvSetup {
             }
         }
         return rtn;
-    }
+    }*/
 
     public static <T> List<T> withoutFirst(List<T> o) {
         final List<T> result = new ArrayList<T>();
@@ -69,31 +67,17 @@ public class DBEnvSetup {
     }
 
     @Autowired
-    public DBEnvSetup(YamlDBConfig ydb, Environment env){
-        this.env = env;
+    public DBEnvSetup(YamlDBConfig ydb){
+  //      this.env = env;
         this.ydb = ydb;
 
-        Map<String, Object> allProp = getAllKnownProperties(env);
+        Map<String, String> allProp = ydb.getRawEntries();
 
-        Map<List<String>, Object> splitKeys = allProp.entrySet().stream()
-                .collect( Collectors.toMap(
-                    x->Arrays.asList( ((String) x.getKey()).split("\\.")),
-                        Map.Entry::getValue,
-                   (a,b)->a)
-                );
+//                getAllKnownProperties(env);
+        Map<String, Map<String, String>> propsByDb = ydb.getEntries();
 
-        Map<List<String>, Object> withPrefix = splitKeys.entrySet().stream()
-                .filter( x->x.getKey().size()>1 && x.getKey().get(0).equalsIgnoreCase(PREFIX) )
-                .collect( Collectors.toMap(x->withoutFirst(x.getKey()), Map.Entry::getValue));
 
-        Map<String, Map<String, String>> propsByDb = withPrefix.entrySet().stream()
-                .filter( x->x.getKey().size()>1 )
-                .collect( Collectors.groupingBy( x-> ((Map.Entry<List<String>, Object>) x).getKey().get(0),
-                        Collectors.toMap( y-> String.join(SEPERATOR,
-                                        withoutFirst(((Map.Entry<List<String>, Object>) y).getKey())),
-                                z->((Map.Entry<List<String>, Object>) z).getValue().toString())
-                        )
-                );
+
 
         envCredMap = new HashMap<>();
         dataSources = new HashMap<>();
@@ -107,7 +91,7 @@ public class DBEnvSetup {
             Map<String, String> propertySource = entry.getValue();
             for (String key : propertySource.keySet()) {
                 String longKey = PREFIX + "."+ topKey + "." + key;
-                String envValue = env.getProperty(longKey);
+                String envValue = propertySource.get(longKey);
                 String val = envValue==null ? propertySource.get(key) : envValue;
                 map.put(longKey, val);
             }
@@ -185,6 +169,28 @@ public class DBEnvSetup {
                 LOGGER.error("DB Config: " + sdsn + " missing fields "+missing);
             }
         }
+    }
+
+    private void oldEnv(Map<String, String> allProp){
+        Map<List<String>, Object> splitKeys = allProp.entrySet().stream()
+                .collect( Collectors.toMap(
+                        x->Arrays.asList( ((String) x.getKey()).split("\\.")),
+                        Map.Entry::getValue,
+                        (a,b)->a)
+                );
+
+        Map<List<String>, Object> withPrefix = splitKeys.entrySet().stream()
+                .filter( x->x.getKey().size()>1 && x.getKey().get(0).equalsIgnoreCase(PREFIX) )
+                .collect( Collectors.toMap(x->withoutFirst(x.getKey()), Map.Entry::getValue));
+
+        Map<String, Map<String, String>> propsByDb = withPrefix.entrySet().stream()
+                .filter( x->x.getKey().size()>1 )
+                .collect( Collectors.groupingBy( x-> ((Map.Entry<List<String>, Object>) x).getKey().get(0),
+                                Collectors.toMap( y-> String.join(SEPERATOR,
+                                                withoutFirst(((Map.Entry<List<String>, Object>) y).getKey())),
+                                        z->((Map.Entry<List<String>, Object>) z).getValue().toString())
+                        )
+                );
     }
 
     public DBCreds getCreds(SmokDatasourceName dbName){

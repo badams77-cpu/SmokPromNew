@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
 
 @SpringBootApplication
-@EnableConfigurationProperties(com.smokpromotion.SmokProm.config.common.YamlDBConfig.class)
+//@EnableConfigurationProperties(com.smokpromotion.SmokProm.config.common.YamlDBConfig.class)
 public class SmokApplication extends SpringBootServletInitializer {
 
 	private static final Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(SmokApplication.class);
