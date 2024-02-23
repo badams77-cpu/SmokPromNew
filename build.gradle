@@ -33,6 +33,18 @@ configurations {
     }
 }
 
+task resDir(){
+    dependsOn(compileJava)
+    mkdir(new File(rootProject.buildDir, "classes/resource"))
+}
+
+task moveRes(type: Copy) {
+    dependsOn(resDir)
+    from( new File(rootProject.buildDir, "resources"))
+    into(new File(rootProject.buildDir, "classes/ressource"))
+}
+
+
      dependencies {
          testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
          testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
