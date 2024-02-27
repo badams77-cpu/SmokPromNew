@@ -52,9 +52,9 @@ import static org.mockito.Mockito.when;
 public class YamlDBConfig {
 
     private static final String YAML_FILE = //"resources/" +
-            "classpath:main/application.yml";
+            "/application.yml";
 
-    private static final String PREFIX = "smok-xdb";
+    private static final String PREFIX = "smok-db";
 
     private static final String SEPERATOR = "-";
     private final Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(this.getClass());
@@ -72,7 +72,7 @@ public class YamlDBConfig {
             rawEntries = propToMap(props);
             this.entries = mapProps(rawEntries);
         } catch (Exception e){
-            LOGGER.warn("Exception propulating YamlConfig ",e);
+            LOGGER.warn("Exception populating YamlConfig ",e);
         }
 
     }

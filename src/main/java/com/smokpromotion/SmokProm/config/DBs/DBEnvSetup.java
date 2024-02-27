@@ -76,9 +76,6 @@ public class DBEnvSetup {
 //                getAllKnownProperties(env);
         Map<String, Map<String, String>> propsByDb = ydb.getEntries();
 
-
-
-
         envCredMap = new HashMap<>();
         dataSources = new HashMap<>();
         smokDataSourceMap = new HashMap<>();
