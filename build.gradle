@@ -1,3 +1,10 @@
+import org.gradle.api.internal.file.CopyActionProcessingStreamAction
+import org.gradle.api.internal.file.copy.FileCopyDetailsInternal
+import org.gradle.api.services.BuildService
+
+import javax.annotation.Nullable
+import java.time.Duration
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.2.2'
@@ -34,16 +41,46 @@ configurations {
 }
 
 task resDir(){
-    dependsOn(compileJava)
-    mkdir(new File(rootProject.buildDir, "classes/resource"))
+    dependsOn(processResources)
+    mkdir(new File(rootProject.buildDir, "classes/resources"))
 }
 
 task moveRes(type: Copy) {
     dependsOn(resDir)
-    from( new File(rootProject.buildDir, "resources"))
-    into(new File(rootProject.buildDir, "classes/ressource"))
+    println "moveRes, from "+ new File(rootProject.projectDir, "/src/main/resources")
+    println "moveRes, to "+ new File(rootProject.buildDir, "classes/resources")
+    from( new File(rootProject.projectDir, "/src/main/resources"))
+    into(new File(rootProject.buildDir, "classes/resources"))
 }
 
+
+
+task proRes(type: Copy) {
+    from layout.buildDirectory.file("reports/my-report.pdf"), layout.projectDirectory.file("src/docs/manual.pdf")
+    into layout.buildDirectory.dir("toArchive")
+}
+
+processResources.doLast {
+//        dependsOn(proRes)
+        mkdir(new File(rootProject.buildDir, "classes/resources"))
+    proRes.getActions().each( a->a.execute(proRes))
+}
+
+
+
+jar {
+    dependsOn processResources
+    dependsOn compileJava
+    dependsOn moveRes
+    from(sourceSets.main.output.getDirs())
+
+    manifest {
+        attributes 'Main-Class': 'DistillerTweeter.Main'
+    }
+//
+    archivesBaseName = 'DistillerTweeter'
+    getDestinationDirectory().set(new File(projectDir, "./build/libs"))
+}
 
      dependencies {
          testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'

@@ -52,7 +52,7 @@ import static org.mockito.Mockito.when;
 public class YamlDBConfig {
 
     private static final String YAML_FILE = //"resources/" +
-            "classpath:resources/main/application.yml";
+            "classpath:main/application.yml";
 
     private static final String PREFIX = "smok-xdb";
 
@@ -63,7 +63,8 @@ public class YamlDBConfig {
 
     private Map<String, String> rawEntries;
     public YamlDBConfig(){
-        Resource res = new ClassPathResource(YAML_FILE, getClass().getClassLoader());
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        Resource res = new ClassPathResource(YAML_FILE, classLoader);
         EncodedResource eres = new EncodedResource(res,  Charset.defaultCharset());
         YamlPropertySourceFactory fact = new YamlPropertySourceFactory();
         try {
