@@ -1,67 +1,42 @@
 package com.smokpromotion.SmokProm.config.common;
 
-import com.datastax.oss.driver.api.core.CqlSession;
-import com.datastax.oss.driver.api.core.CqlSessionBuilder;
-import com.datastax.oss.driver.api.core.context.DriverContext;
-import com.datastax.oss.driver.api.core.cql.Row;
-import com.datastax.oss.driver.api.core.type.DataType;
-import com.datastax.oss.driver.api.core.type.codec.TypeCodec;
-import com.datastax.oss.driver.api.core.type.codec.registry.CodecRegistry;
-import com.datastax.oss.driver.api.core.type.reflect.GenericType;
+
 import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
-import edu.umd.cs.findbugs.annotations.NonNull;
 import java.nio.charset.Charset;
 
-import org.apache.cassandra.concurrent.SEPExecutor;
 
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.bind.ConstructorBinding;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+
 import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.convert.ConversionService;
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.EncodedResource;
-import org.springframework.data.cassandra.core.convert.CassandraConverter;
-import org.springframework.data.cassandra.core.convert.ColumnType;
-import org.springframework.data.cassandra.core.convert.ColumnTypeResolver;
-import org.springframework.data.cassandra.core.mapping.CassandraMappingContext;
-import org.springframework.data.cassandra.core.mapping.CassandraPersistentEntity;
-import org.springframework.data.convert.CustomConversions;
-import org.springframework.data.projection.EntityProjection;
-import org.springframework.data.projection.ProjectionFactory;
+
 import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-//@ConstructorBinding
+
 @Component()
 @Primary
 //@ConfigurationProperties()//(prefix= "smok-db")
 public class YamlDBConfig {
 
-    private static final String YAML_FILE = //"resources/" +
-            "/application.yml";
+    private static final String YAML_FILE = "/application.yml";
 
     private static final String PREFIX = "smok-db";
 
-    private static final String SEPERATOR = "-";
+    private static final String SEPERATOR = ".";
+
+    private static final String SEPERATOR_REGEX = "\\.";
     private final Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(this.getClass());
 
     private Map<String, Map<String, String>> entries;
 
     private Map<String, String> rawEntries;
+
     public YamlDBConfig(){
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         Resource res = new ClassPathResource(YAML_FILE, classLoader);
@@ -85,15 +60,15 @@ public class YamlDBConfig {
         Map<String, String> map = new HashMap<>();
                 for (String key : ( prop).getPropertyNames()) {
                     if (key.startsWith(PREFIX)) {
-                        map.put(key.replace(PREFIX+".", ""), prop.getProperty(key).toString());
-                    }}
+                      map.put(key, prop.getProperty(key).toString());
+                    }
+                }
         return map;
     }
 
     private static Map<String, Map<String, String>> mapProps(Map<String, String> entries){
-        return entries.entrySet().stream()
+        Map<String, Map<String, String>> mymap = entries.entrySet().stream()
                 .map ( e ->{
-
                     List<String> s = propNametoList(e.getKey());
                     return new AbstractMap.SimpleEntry<>(s, e.getValue());
                 })
@@ -104,13 +79,17 @@ public class YamlDBConfig {
                     return s.size()>1 && s.get(0).equalsIgnoreCase(PREFIX);
                 })
                 .collect(
-                        Collectors.groupingBy(e-> (String) ((AbstractMap.SimpleEntry<List<String>, String>) e).getKey().get(1),
-                        Collectors.toMap(f->(String)  ((AbstractMap.SimpleEntry<List<String>, String>) f).getKey().get(2),
+                        Collectors.groupingBy(e-> (String) ((AbstractMap.SimpleEntry<List<String>, String>) e)
+                                        .getKey().get(1),
+                        Collectors.toMap(f->(String)  ((AbstractMap.SimpleEntry<List<String>, String>) f)
+                                        .getKey().get(2),
                                 g-> (String) ((AbstractMap.SimpleEntry<List<String>, String>) g).getValue())));
+        return mymap;
     }
 
     private static List<String> propNametoList(String s){
-        return Arrays.asList(s.split(SEPERATOR));
+        List<String> a = Arrays.asList(s.split(SEPERATOR_REGEX));
+        return a;
     }
 
     public static String getPrefix(){

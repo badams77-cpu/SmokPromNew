@@ -245,6 +245,7 @@ public class MethodPrefixingLogger implements Logger {
     @Override
     public void warn(String msg, Throwable t) {
         mainLogger.warn(getPrefix()+msg, t);
+
     }
 
     @Override
