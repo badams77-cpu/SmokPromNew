@@ -5,6 +5,8 @@ import java.util.Map;
 public class DBCreds {
 
     private static final String ENV_VAR_NAME = "name";
+
+    private static final String ENV_VAR_ENABLED = "enabled";
     private static final String ENV_VAR_ISOLATION_LEVEL = "isolationLevel";
     private static final String ENV_VAR_DB_VARIANT = "dbVariant";
     private static final String ENV_VAR_HOST_ADDRESS = "hostAddress";
@@ -19,6 +21,7 @@ public class DBCreds {
 
     private static final String[] ENV_VARS = {
                 ENV_VAR_NAME,
+                ENV_VAR_ENABLED,
                 ENV_VAR_ISOLATION_LEVEL,
                 ENV_VAR_DB_VARIANT,
                 ENV_VAR_HOST_ADDRESS,
@@ -36,6 +39,8 @@ public class DBCreds {
     private final SmokDatasourceName name;
     private final DatabaseVariant variant;
     private final String hostAddress;
+
+    private final boolean enabled;
     private final int port;
     private final String username;
     private final String passwd;
@@ -49,6 +54,7 @@ public class DBCreds {
     public DBCreds(){
         this.name = new SmokDatasourceName("");
         this.variant = DatabaseVariant.NONE;
+        this.enabled = false;
         this.hostAddress = "127.0.0.1";
         this.port = 3303;
         this.priority =0;
@@ -62,12 +68,13 @@ public class DBCreds {
     }
 
     public DBCreds(SmokDatasourceName name, String
-            group, int  priorty, DatabaseVariant variant, String remoteDatabaseNameAtService,
+            group, int  priorty, DatabaseVariant variant, String remoteDatabaseNameAtService, boolean enabled,
                    String hostAddress, int port, String username, String passwd, boolean useSSL, boolean verifySSLCert,
             String isolationLevel)
     {
         this.isolationLevel = isolationLevel;
         this.name = name;
+        this.enabled = enabled;
         this.variant = variant;
         this.hostAddress = hostAddress;
         this.port = port;
@@ -84,6 +91,7 @@ public class DBCreds {
     {
         this.isolationLevel = cred.getOrDefault(ENV_VAR_ISOLATION_LEVEL,"");
         this.name = new SmokDatasourceName(cred.getOrDefault(ENV_VAR_NAME,""));
+        this.enabled = Boolean.valueOf(cred.getOrDefault(ENV_VAR_ENABLED, "false"));
         this.variant = DatabaseVariant.getFromDescription(cred.getOrDefault(ENV_VAR_DB_VARIANT,""));
         this.hostAddress = cred.getOrDefault(ENV_VAR_HOST_ADDRESS,"");
         this.port = Integer.parseInt(cred.getOrDefault(ENV_VAR_PORT, "0"));
@@ -98,6 +106,10 @@ public class DBCreds {
 
     public static String[] getCredFields(){
         return ENV_VARS;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
     }
 
     public DatabaseVariant getVariant() {
@@ -154,6 +166,7 @@ public class DBCreds {
         return "DBCreds{" +
                 "name=" + name +
                 ", variant=" + variant +
+                ", enabled=" + enabled +
                 ", hostAddress='" + hostAddress + '\'' +
                 ", port='" + port + '\'' +
                 ", username='" + username + '\'' +

@@ -16,7 +16,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @Configuration
-@Profile(value="mock-cass")
+@Profile(value="mock_cass")
 public class CassandraMock {
 
 

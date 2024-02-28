@@ -33,13 +33,15 @@ public class CassandraConnector {
     }
 
     public void connectInner(DBCreds creds) {
-        CqlSessionBuilder builder = CqlSession.builder();
-        builder.addContactPoint(new InetSocketAddress(creds.getHostAddress(), creds.getPort()));
-        builder.withLocalDatacenter( creds.getGroup());
+        if (creds.isEnabled()) {
+            CqlSessionBuilder builder = CqlSession.builder();
+            builder.addContactPoint(new InetSocketAddress(creds.getHostAddress(), creds.getPort()));
+            builder.withLocalDatacenter(creds.getGroup());
 
-        builder.withAuthCredentials(creds.getUsername(), creds.getUsername());
+            builder.withAuthCredentials(creds.getUsername(), creds.getUsername());
 
-        session = builder.build();
+            session = builder.build();
+        }
     }
 
     public CqlSession getSession() {

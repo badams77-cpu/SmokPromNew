@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile(value="!mock-cass")
+@Profile(value="!mock_cass")
 public class CassandraEnabled {
 
     @Bean
