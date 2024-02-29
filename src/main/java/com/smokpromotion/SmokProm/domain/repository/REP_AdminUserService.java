@@ -9,6 +9,7 @@ import com.smokpromotion.SmokProm.config.DBs.SmokDatasourceName;
 import com.smokpromotion.SmokProm.config.common.CassandraState;
 import com.smokpromotion.SmokProm.config.portal.PortalSecurityPrinciple;
 import com.smokpromotion.SmokProm.domain.entity.AdminUser;
+import com.smokpromotion.SmokProm.domain.entity.S_User;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLogger;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
 import com.smokpromotion.SmokProm.util.PwCryptUtil;
@@ -195,6 +196,9 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
 
         Object[] inVal = new Object[]{ email };
 
+        AdminUser searchEntity = new AdminUser();
+        searchEntity.setUsername(email);
+
         List<List<AdminUser>> res = new LinkedList<>();
 
                 switch(dbConnectionFactory.getVariant(dbName)) {
@@ -214,11 +218,11 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
 
                         String sql = "SELECT *"+UserEmailJoin.getFIELDS()+" FROM " + table + " en "+
                                 getTheJoin()+
-                                " where en.username= ?";
+                                " where en.username= :username";
 
-                        res = dbConnectionFactory.getJdbcTemplate(dbName).stream()
+                        res = dbConnectionFactory.getNamedParameterJdbcTemplate(dbName).stream()
                                 .map(templ->templ.query(
-                                sql, inVal, getMapper())).collect(Collectors.toList());
+                                sql, searchEntity, getMapper())).collect(Collectors.toList());
 
                 }
         return res.stream().flatMap( s -> s.stream() ).collect(Collectors.toList());

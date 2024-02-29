@@ -186,29 +186,40 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
 
         Object[] inVal = new Object[]{ email };
 
+        S_User searchEntity = new S_User();
+        searchEntity.setUsername(email);
+
         List<List<S_User>> res = new LinkedList<>();
 
-        switch(dbConnectionFactory.getVariant(dbName)) {
+        try {
 
-            case CASSANDRA:
+            switch (dbConnectionFactory.getVariant(dbName)) {
 
-                DBCreds cred = dbEnvSetup.getCreds(dbName);
+                case CASSANDRA:
 
-                SimpleStatement ss =  QueryBuilder.selectFrom(dbName.getDataSourceName(), cred.getGroup())
-                        .column(CqlIdentifier.fromCql("username")).build(inVal);
+                    DBCreds cred = dbEnvSetup.getCreds(dbName);
 
-                res = dbConnectionFactory.getCassandraTemplate(dbName).stream()
-                        .map(templ->templ.select(ss, S_User.class)).collect(Collectors.toList())
-                        .stream().collect(Collectors.toList());
+                    SimpleStatement ss = QueryBuilder.selectFrom(dbName.getDataSourceName(), cred.getGroup())
+                            .column(CqlIdentifier.fromCql("username")).build(inVal);
 
-            default:
-                String sql = "SELECT *"+UserEmailJoin.getFIELDS()+" FROM " + table + " en "+
-                        getTheJoin()+
-                        " where en.username= ?";
-                res = dbConnectionFactory.getJdbcTemplate(dbName).stream().map(templ->templ.query(
-                        sql,inVal, getMapper())).collect(Collectors.toList());
+                    res = dbConnectionFactory.getCassandraTemplate(dbName).stream()
+                            .map(templ -> templ.select(ss, S_User.class)).collect(Collectors.toList())
+                            .stream().collect(Collectors.toList());
 
+                default:
+                    String sql = "SELECT en.*" + UserEmailJoin.getFIELDS() + " FROM " + table + " en " +
+                            getTheJoin() +
+                            " where en.username= :username";
+                    res = dbConnectionFactory.getNamedParameterJdbcTemplate(dbName).stream().map(templ -> templ.query(
+                            sql, getSqlParameterSource(searchEntity), getMapper())).collect(Collectors.toList());
+
+            }
+
+        } catch (Exception e){
+            LOGGER.warn("Exception e geting User",e);
         }
+
+
         return res.stream().flatMap( s -> s.stream() ).collect(Collectors.toList());
 
     }
