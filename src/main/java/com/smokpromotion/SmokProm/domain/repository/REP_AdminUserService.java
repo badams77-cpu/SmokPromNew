@@ -16,6 +16,7 @@ import com.smokpromotion.SmokProm.util.PwCryptUtil;
 import com.smokpromotion.SmokProm.util.SecVnEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -382,6 +383,9 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
 
         final AdminUser nu = newUser;
 
+        nu.setSecVn(SecVnEnum.BCryptNum);
+        nu.setUserpw(pwCryptUtil.getPasswd(password, SecVnEnum.BCryptNum));
+
         long rowsAffected = 0;
 
        try {
@@ -397,12 +401,13 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
                    newUser = getByEmail(newUser.getUsername()).stream().findFirst().orElse(null);
                    break;
                default:
-                   String sql1 = "INSERT INTO " + table + " " + getCreateString(newUser);
+                   String sql1 = "INSERT INTO " + table + " " + getCreateStringNP(newUser);
 
-                   rowsAffected = dbConnectionFactory.getJdbcTemplate(dbName).stream().mapToLong(templ -> {
+                   rowsAffected = dbConnectionFactory.getNamedParameterJdbcTemplate(dbName).stream().mapToLong(templ -> {
                        try {
-                           return templ.update(getSqlPreparedStatementParameter(sql1, nu, true), holder);
-                       } catch (SQLException e) {
+                           return templ.update(sql1,
+                                   getSqlParameterSource(nu), holder);
+                       } catch (DataAccessException e) {
                            LOGGER.error("Exception creating new Admin User", e);
                            return 0;
                        }

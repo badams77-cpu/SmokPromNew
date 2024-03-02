@@ -56,9 +56,11 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
     protected String getCreateStringNP(T sUser){
         StringBuffer buffy =  new StringBuffer();
         SqlParameterSource params = getSqlParameterSource(sUser);
-        buffy.append("("+ repoFields.stream().filter(x->!x.isTransient()).map(x->x.getDbColumn()).collect(Collectors.joining(",") )+ ")");
+        buffy.append("("+ repoFields.stream().filter(x->!x.isTransient()).map(
+                x->x.getDbColumn()).collect(Collectors.joining(",") )+ ")");
         buffy.append(" VALUES ("+ repoFields.stream().filter(x->!x.isTransient())
-                .map(x->x.isPopulatedCreated() || x.isPopulatedUpdated()? "now()": ":"+x.getField().getName())
+                .map(x->x.isPopulatedCreated() || x.isPopulatedUpdated()?
+                        "now()": ":"+x.getDbColumn())
                 .collect(Collectors.joining(",") )+ ");");
         return buffy.toString();
     }
