@@ -6,6 +6,7 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.data.cassandra.core.CassandraTemplate;
 import static org.mockito.Mockito.*;
 
@@ -14,17 +15,27 @@ import javax.sql.DataSource;
 @Configuration
 public class MainDataSourceConfig {
 
-    @Autowired
     private DBEnvSetup dbEnv;
+
+    private Environment env;
 
     private CassandraTemplate mockCass;
 
-    public MainDataSourceConfig(){
+    @Autowired
+    public MainDataSourceConfig(
+            DBEnvSetup dbEnv, Environment env
+    ){
         mockCass = mock(CassandraTemplate.class);
+        MajoranaDBConnectionFactory connFact = new MajoranaDBConnectionFactory(dbEnv, env );
+        this.dbEnv = dbEnv;
+        dbConnectionFactory = connFact;
+        this.env = env;
     }
 
-    @Autowired
+//    @Autowired
     private MajoranaDBConnectionFactory dbConnectionFactory;
+
+
     @Bean
     public CassandraTemplate getCassDatasource(){
         SmokDatasourceName main = dbEnv.getMainCassDBName();

@@ -5,8 +5,6 @@
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.sf.jasperreports/jasperreports/6.18.1/817777e50e013970cdc21a09c30a6d99625e0fe4/jasperreports-6.18.1.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.sf.jasperreports/jasperreports/6.18.1/47fcb5b998019805ce28921d366b02580cc7932e/jasperreports-6.18.1-sources.jar!/" />
-    </SOURCES>
+    <SOURCES />
   </library>
 </component>

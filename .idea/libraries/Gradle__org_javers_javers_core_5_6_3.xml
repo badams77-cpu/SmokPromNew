@@ -5,8 +5,6 @@
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.javers/javers-core/5.6.3/b37a7758a80d5b75d09e110f340a011cf26a8811/javers-core-5.6.3.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.javers/javers-core/5.6.3/d426b8af873c3eb10a6718e25ec63cf0c2b8af8a/javers-core-5.6.3-sources.jar!/" />
-    </SOURCES>
+    <SOURCES />
   </library>
 </component>

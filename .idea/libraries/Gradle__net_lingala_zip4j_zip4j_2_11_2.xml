@@ -5,8 +5,6 @@
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.lingala.zip4j/zip4j/2.11.2/609b5fa146624999d0a65737e0e0aad4191fc244/zip4j-2.11.2.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.lingala.zip4j/zip4j/2.11.2/8fb251e588af54b5da9d755461ca420c30c6be54/zip4j-2.11.2-sources.jar!/" />
-    </SOURCES>
+    <SOURCES />
   </library>
 </component>

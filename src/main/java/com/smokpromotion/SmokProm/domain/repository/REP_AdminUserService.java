@@ -199,32 +199,38 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
         AdminUser searchEntity = new AdminUser();
         searchEntity.setUsername(email);
 
+
         List<List<AdminUser>> res = new LinkedList<>();
 
-                switch(dbConnectionFactory.getVariant(dbName)) {
+        try {
 
-                    case CASSANDRA:
+            switch (dbConnectionFactory.getVariant(dbName)) {
 
-                        DBCreds cred = dbEnvSetup.getCreds(dbName);
+                case CASSANDRA:
 
-                        SimpleStatement ss =  QueryBuilder.selectFrom(dbName.getDataSourceName(), cred.getGroup())
-                                .column(CqlIdentifier.fromCql("username")).build(inVal);
+                    DBCreds cred = dbEnvSetup.getCreds(dbName);
 
-                        res = dbConnectionFactory.getCassandraTemplate(dbName).stream()
-                                .map(templ->templ.select(ss, AdminUser.class)).collect(Collectors.toList())
-                                .stream().collect(Collectors.toList());
+                    SimpleStatement ss = QueryBuilder.selectFrom(dbName.getDataSourceName(), cred.getGroup())
+                            .column(CqlIdentifier.fromCql("username")).build(inVal);
 
-                    default:
+                    res = dbConnectionFactory.getCassandraTemplate(dbName).stream()
+                            .map(templ -> templ.select(ss, AdminUser.class)).collect(Collectors.toList())
+                            .stream().collect(Collectors.toList());
 
-                        String sql = "SELECT *"+UserEmailJoin.getFIELDS()+" FROM " + table + " en "+
-                                getTheJoin()+
-                                " where en.username= :username";
+                default:
 
-                        res = dbConnectionFactory.getNamedParameterJdbcTemplate(dbName).stream()
-                                .map(templ->templ.query(
-                                sql, searchEntity, getMapper())).collect(Collectors.toList());
+                    String sql = "SELECT *" + UserEmailJoin.getFIELDS() + " FROM " + table + " en " +
+                            getTheJoin() +
+                            " where en.username= :username";
 
-                }
+                    res = dbConnectionFactory.getNamedParameterJdbcTemplate(dbName).stream()
+                            .map(templ -> templ.query(sql, getSqlParameterSource(searchEntity),
+                                    getMapper())).collect(Collectors.toList());
+            }
+
+        } catch (Exception e){
+            LOGGER.warn("Exception getting adminUser ",e);
+        }
         return res.stream().flatMap( s -> s.stream() ).collect(Collectors.toList());
 
     }
@@ -378,37 +384,45 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
 
         long rowsAffected = 0;
 
-        switch(dbConnectionFactory.getVariant(dbName)) {
+       try {
 
-            case CASSANDRA:
-                String sql = "INSERT INTO " + table + " " + getCreateStringNP(newUser);
+           switch (dbConnectionFactory.getVariant(dbName)) {
 
-                rowsAffected = dbConnectionFactory.getCassandraTemplate(dbName).stream().map(templ->templ.update(
-                        "INSERT INTO " + ADMIN_TABLE + sql)).count();
+               case CASSANDRA:
+                   String sql = "INSERT INTO " + table + " " + getCreateStringNP(newUser);
 
-                newUser = getByEmail(newUser.getUsername()).stream().findFirst().orElse(null);
-            break;
-            default:
-                String sql1 = "INSERT INTO " + table + " " + getCreateString(newUser);
+                   rowsAffected = dbConnectionFactory.getCassandraTemplate(dbName).stream().map(templ -> templ.update(
+                           "INSERT INTO " + ADMIN_TABLE + sql)).count();
 
-                    rowsAffected = dbConnectionFactory.getJdbcTemplate(dbName).stream().mapToLong(templ -> {
-                            try {
-                               return templ.update(getSqlPreparedStatementParameter(sql1, nu, true), holder);
-                            } catch (SQLException e){
-                                LOGGER.error("Exception creating new Admin User",e);
-                                return 0;
-                            }}).sum();
+                   newUser = getByEmail(newUser.getUsername()).stream().findFirst().orElse(null);
+                   break;
+               default:
+                   String sql1 = "INSERT INTO " + table + " " + getCreateString(newUser);
 
-                    Number newUserId = holder.getKey();
+                   rowsAffected = dbConnectionFactory.getJdbcTemplate(dbName).stream().mapToLong(templ -> {
+                       try {
+                           return templ.update(getSqlPreparedStatementParameter(sql1, nu, true), holder);
+                       } catch (SQLException e) {
+                           LOGGER.error("Exception creating new Admin User", e);
+                           return 0;
+                       }
+                   }).sum();
 
-                    if (newUserId == null) {
-                        LOGGER.error("Failed to create rows=" + rowsAffected + " newUswrId=" + newUserId);
-                    } else {
-                        newUser.setId(newUserId.intValue());
-                    }
+                   Number newUserId = holder.getKey();
+
+                   if (newUserId == null) {
+                       LOGGER.error("Failed to create rows=" + rowsAffected + " newUswrId=" + newUserId);
+                   } else {
+                       newUser.setId(newUserId.intValue());
+                   }
 
 
-        };
+           }
+           ;
+
+       } catch (Exception e){
+           LOGGER.warn("Insert Admin User, Exception: ",e );
+       }
 
         return newUser;
 

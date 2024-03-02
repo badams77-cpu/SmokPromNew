@@ -5,8 +5,6 @@
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.12.268/fc9f00e008c88ce63f310b742970f94651ca6b19/aws-java-sdk-kms-1.12.268.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.12.268/6e4937440bf344d1d6ac795841a8e39de47c76c2/aws-java-sdk-kms-1.12.268-sources.jar!/" />
-    </SOURCES>
+    <SOURCES />
   </library>
 </component>

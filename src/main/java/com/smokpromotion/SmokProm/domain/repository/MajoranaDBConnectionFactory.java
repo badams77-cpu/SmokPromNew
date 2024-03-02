@@ -8,6 +8,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.data.cassandra.core.CassandraTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -18,6 +19,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Optional;
 
@@ -30,12 +32,15 @@ public class MajoranaDBConnectionFactory {
 
         private CassandraTemplate mockCass;
 
+
+
         private CassandraState cassandraState;
 
-        public MajoranaDBConnectionFactory(DBEnvSetup dbs, CassandraState cassandraState) {
+        public MajoranaDBConnectionFactory(DBEnvSetup dbs, Environment env) {
+
                   dBSourcesFromEnv = dbs;
             mockCass = mock(CassandraTemplate.class);
-            this.cassandraState = cassandraState;
+            this.cassandraState = new CassandraState(!Arrays.stream(env.getActiveProfiles()).anyMatch(s->s.equalsIgnoreCase("mock-cass")));
         }
 
         public SmokDatasourceName getMainDBName(){

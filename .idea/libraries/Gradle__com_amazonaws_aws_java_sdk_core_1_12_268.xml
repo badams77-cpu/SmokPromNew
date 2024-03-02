@@ -5,8 +5,6 @@
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.12.268/b358c7facb97a09596294a720bf46f954d4bb837/aws-java-sdk-core-1.12.268.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.12.268/df87d78c4d6903e0c3767c870f5c30f7d3a7eea0/aws-java-sdk-core-1.12.268-sources.jar!/" />
-    </SOURCES>
+    <SOURCES />
   </library>
 </component>

@@ -5,8 +5,6 @@
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.datastax.oss/java-driver-mapper-runtime/4.17.0/33164de253a025c369b95b1801df267cacc1dccc/java-driver-mapper-runtime-4.17.0.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.datastax.oss/java-driver-mapper-runtime/4.17.0/39fb5dc07cb987c7e3fdd505232a0389f5633078/java-driver-mapper-runtime-4.17.0-sources.jar!/" />
-    </SOURCES>
+    <SOURCES />
   </library>
 </component>
