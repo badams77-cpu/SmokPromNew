@@ -21,12 +21,22 @@ public class MajoranaRepositoryField {
 
     private boolean populatedUpdated;
 
+    private boolean isId;
+
     private boolean updateable;
 
     private boolean nullable;
 
     public MajoranaRepositoryField(){
 
+    }
+
+    public boolean isId() {
+        return isId;
+    }
+
+    public void setId(boolean id) {
+        isId = id;
     }
 
     public boolean isTransient() {

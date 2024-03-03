@@ -396,7 +396,7 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
                    String sql = "INSERT INTO " + table + " " + getCreateStringNP(newUser);
 
                    rowsAffected = dbConnectionFactory.getCassandraTemplate(dbName).stream().map(templ -> templ.update(
-                           "INSERT INTO " + ADMIN_TABLE + sql)).count();
+                           sql)).count();
 
                    newUser = getByEmail(newUser.getUsername()).stream().findFirst().orElse(null);
                    break;

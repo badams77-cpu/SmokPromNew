@@ -50,7 +50,7 @@ public class BaseSmokEntity {
     protected LocalDateTime created;
     @Updateable
     @PopulatedUpdated
-    @AutoPopTimestamp(updated = false , created = true)
+    @AutoPopTimestamp(updated = true , created = false)
     @org.springframework.data.cassandra.core.mapping.Column("updated")
     @Column(name="updated")
     protected LocalDateTime updated;

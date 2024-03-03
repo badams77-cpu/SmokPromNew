@@ -60,7 +60,11 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
                 x->x.getDbColumn()).collect(Collectors.joining(",") )+ ")");
         buffy.append(" VALUES ("+ repoFields.stream().filter(x->!x.isTransient())
                 .map(x->x.isPopulatedCreated() || x.isPopulatedUpdated()?
-                        "now()": ":"+x.getDbColumn())
+                        "now()": (
+                                x.isId() ? "0" :
+                                ":"+x.getDbColumn()
+
+                ))
                 .collect(Collectors.joining(",") )+ ");");
         return buffy.toString();
     }
@@ -79,7 +83,10 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
         SqlParameterSource params = getSqlParameterSource(sUser);
         buffy.append("("+ repoFields.stream().filter(x->!x.isTransient()).map(x->x.getDbColumn()).collect(Collectors.joining(",") )+ ")");
         buffy.append(" VALUES ("+ repoFields.stream().filter(x->!x.isTransient())
-                .map(x->x.isPopulatedCreated() || x.isPopulatedUpdated()? "now()": "?")
+                .map(x->x.isPopulatedCreated() || x.isPopulatedUpdated()?
+                                "now()":
+                        (x.isId() ? "0" :
+                        "?"))
                 .collect(Collectors.joining(",") )+ ");");
         return buffy.toString();
     }
@@ -112,19 +119,27 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
             boolean isTransient = Modifier.isTransient(field.getModifiers());
             majoranaField.setTransient(isTransient);
 
+            boolean isId = false;
             boolean updateable = false;
             boolean popCreated = false;
             boolean popUpdated = false;
+            boolean autopodTimestamp = false;
             boolean nullable = false;
             for(Annotation ann : annotations){
                 if (ann.annotationType().equals(Updateable.class)){
                     updateable = true;
+                }
+                if (ann.annotationType().equals(jakarta.persistence.Id.class) || ann.annotationType().equals(org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn.class)){
+                    isId = true;
                 }
                 if (ann.annotationType().equals(PopulatedCreated.class)){
                     popCreated = true;
                 }
                 if (ann.annotationType().equals(PopulatedUpdated.class)){
                     popUpdated = true;
+                }
+                if (ann.annotationType().equals(AutoPopTimestamp.class)){
+                    autopodTimestamp = true;
                 }
                 if (ann.annotationType().equals(Nullable.class)){
                     nullable = true;
@@ -139,9 +154,11 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
                     majoranaField.setColumnAnnotation(column);
                 }
             }
+            majoranaField.setId(isId);
             majoranaField.setUpdateable(updateable);
             majoranaField.setPopulatedCreated(popCreated);
             majoranaField.setPopulatedUpdated(popUpdated);
+//            majoranaField.setA
             majoranaField.setNullable(nullable);
             for(Method method: methods){
                 if (isGetter(method) && method.getName().equalsIgnoreCase("GET"+field.getName())
