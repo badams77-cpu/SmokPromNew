@@ -18,6 +18,9 @@ import com.smokpromotion.SmokProm.util.SecVnEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
@@ -368,7 +371,6 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
 
         KeyHolder holder = new GeneratedKeyHolder();
 
-
         long rowsAffected = 0;
 
         final S_User nu = newUser;
@@ -385,13 +387,15 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
                 newUser = getByEmail(newUser.getUsername()).stream().findFirst().orElse(null);
                 break;
             default:
-                String sql1 = "INSERT INTO " + table + " " + getCreateString(newUser);
+                String sql1 = "INSERT INTO " + table + " " + getCreateStringNP(newUser);
 
-                Optional<JdbcTemplate> templ = dbConnectionFactory.getJdbcTemplate(dbName);
+                Optional<NamedParameterJdbcTemplate> templ = dbConnectionFactory.getNamedParameterJdbcTemplate(dbName);
+
+                SqlParameterSource sps = getSqlParameterSourceWithDeletedAt(dbName, nu);
+
                 rowsAffected = templ.stream().mapToLong(te -> {
                     try {
-
-                        return (long) te.update( getSqlPreparedStatementParameter(sql1, nu,true), holder);
+                        return (long) te.update(sql1, sps,  holder);
                     } catch (Exception e) {
                         LOGGER.error("Error creating record", e);
                         return 0L;

@@ -4,8 +4,6 @@ CREATE DATABASE IF NOT EXISTS promo;
 
 CREATE USER 'IF NOT EXISTS promo'@'localhost' IDENTIFIED BY 'PromoAskHow7!';
 
-
-
 GRANT ALL PRIVILEGES ON promo.* to 'promo'@'localhost';
 CREATE DATABASE IF NOT EXISTS promo;
 
@@ -31,7 +29,6 @@ CREATE TABLE IF NOT EXISTS promo.user (
                                           useractive int,
                                           change_pass_token text,
                                           change_pass_token_created text,
-                                          change_pass_date timestamp default '1970-01-01 00:00:01',
                                           twitter_handler text,
                                           oauth_reg_token text,
                                           oauth_reg_secret text,
@@ -40,6 +37,7 @@ CREATE TABLE IF NOT EXISTS promo.user (
                                           access_token_expiry text,
                                           updated_by_userid int default 0,
                                           created_by_userid int default 0,
+                                          passwd_change_date timestamp default '1970-01-01 00:00:01',
                                           created timestamp default '1970-01-01 00:00:01',
                                           created_by int,
                                           updated timestamp default '1970-01-01 00:00:01',
@@ -61,7 +59,7 @@ CREATE TABLE IF NOT EXISTS promo.admin_user (
                                                 last_login timestamp default '1970-01-01 00:00:01',
                                                 change_pass_token text,
                                                 change_pass_token_created text,
-                                                change_pass_date timestamp default '1970-01-01 00:00:01',
+                                                passwd_change_date timestamp default '1970-01-01 00:00:01',
                                                 created timestamp default '1970-01-01 00:00:01',
                                                 created_by int,
                                                 updated timestamp default '1970-01-01 00:00:01',

@@ -70,6 +70,7 @@ public class REP_AdminUserService extends MajoranaAnnotationRepository<AdminUser
     }
 
     public synchronized String getTheJoin(){
+
         if (theJoin!=null){ return theJoin.getJOIN(); }
         theJoin = new UserEmailJoin(userService);
         return theJoin.getJOIN();

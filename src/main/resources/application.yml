@@ -97,7 +97,7 @@ smok-db:
     password: PromoAskHow7!
     isolationLevel: noTransactions
     dbVariant: mysql
-    group: "smok"
+    group: "promo"
     hostAddress: 127.0.0.1
     #    Port: 7000
     port: 3306
