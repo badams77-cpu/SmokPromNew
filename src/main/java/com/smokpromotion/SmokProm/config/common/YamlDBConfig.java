@@ -37,6 +37,8 @@ public class YamlDBConfig {
 
     private Map<String, String> rawEntries;
 
+    private Map<String, String> allProps;
+
     public YamlDBConfig(){
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         Resource res = new ClassPathResource(YAML_FILE, classLoader);
@@ -45,6 +47,7 @@ public class YamlDBConfig {
         try {
             PropertiesPropertySource props =fact.createPropertySource(YAML_FILE, eres);
             rawEntries = propToMap(props);
+            allProps = allPropsToMap(props);
             this.entries = mapProps(rawEntries);
         } catch (Exception e){
             LOGGER.warn("Exception populating YamlConfig ",e);
@@ -56,6 +59,14 @@ public class YamlDBConfig {
         return rawEntries;
     }
 
+    public Map<String, String> getAllProps() {
+        return allProps;
+    }
+
+    public void setAllProps(Map<String, String> allProps) {
+        this.allProps = allProps;
+    }
+
     private Map<String, String> propToMap(PropertiesPropertySource  prop){
         Map<String, String> map = new HashMap<>();
                 for (String key : ( prop).getPropertyNames()) {
@@ -63,6 +74,14 @@ public class YamlDBConfig {
                       map.put(key, prop.getProperty(key).toString());
                     }
                 }
+        return map;
+    }
+
+    private Map<String, String> allPropsToMap(PropertiesPropertySource  prop){
+        Map<String, String> map = new HashMap<>();
+        for (String key : ( prop).getPropertyNames()) {
+            map.put(key, prop.getProperty(key).toString());
+        }
         return map;
     }
 
