@@ -23,7 +23,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Profile("portal")
+@Profile("smok_app")
 public class MajoranaAccessDeniedHandler implements AccessDeniedHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(MajoranaAccessDeniedHandler.class);
 

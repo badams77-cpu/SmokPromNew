@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 
-@Profile("portal")
+@Profile("smok_app")
 @Service()
 public class DBCryptoRotationService {
 

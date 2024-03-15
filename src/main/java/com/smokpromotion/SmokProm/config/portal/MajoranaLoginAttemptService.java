@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Service
-@Profile({"portal","admin"})
+@Profile({"smok_app","admin"})
 public class MajoranaLoginAttemptService {
 
 

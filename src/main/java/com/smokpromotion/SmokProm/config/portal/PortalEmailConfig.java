@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile({"portal","admin","dxpulse_portal","dxpulse_admin", "dentistportal"})
+@Profile({"smok_app","admin","dxpulse_portal","dxpulse_admin", "dentistportal"})
 public class PortalEmailConfig {
 
     @Value("${Majorana_MAIL_FROM_ADDR:admin@imultipractice.com}")

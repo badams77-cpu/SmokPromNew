@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@Profile(value = "portal")
+@Profile(value = "smok_app")
 public class PortalCustomAuthenticationProvider implements AuthenticationProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PortalCustomAuthenticationProvider.class);

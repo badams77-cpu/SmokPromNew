@@ -15,7 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 @Configuration
-@Profile(value = "portal")
+@Profile(value = "smok_app")
 public class PortalMvcConfig implements WebMvcConfigurer {
 
     @Autowired

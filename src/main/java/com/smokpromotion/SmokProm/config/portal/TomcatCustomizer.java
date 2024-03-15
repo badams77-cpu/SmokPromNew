@@ -10,7 +10,7 @@ import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-@Profile("portal")
+@Profile("smok_app")
 @Component
 public class TomcatCustomizer implements WebServerFactoryCustomizer<TomcatServletWebServerFactory> {
 

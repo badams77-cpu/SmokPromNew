@@ -1,21 +1,11 @@
 package com.smokpromotion.SmokProm.config.portal;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-
 import jakarta.servlet.FilterConfig;
 import jakarta.servlet.*;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.OutputStream;
 
-public class MajoranaPayCustomAPISecurityFilter implements Filter {
+import java.io.IOException;
+
+public class MajoranaCustomAPISecurityFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         Filter.super.init(filterConfig);

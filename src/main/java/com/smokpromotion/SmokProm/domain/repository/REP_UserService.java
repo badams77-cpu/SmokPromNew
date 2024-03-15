@@ -371,6 +371,9 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
 
         KeyHolder holder = new GeneratedKeyHolder();
 
+        newUser.setUserpw( pwCryptUtil.getPasswd(password, PwCryptUtil.BCryptNum) );
+        newUser.setSecVn( PwCryptUtil.BCryptNum);
+
         long rowsAffected = 0;
 
         final S_User nu = newUser;
