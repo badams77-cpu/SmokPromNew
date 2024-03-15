@@ -117,7 +117,7 @@ jar {
 
 //         implementation('org.apache.tomcat.embed:tomcat-embed-core:9.0.65')
          implementation('commons-fileupload:commons-fileupload:1.4')
-         implementation('redis.clients:jedis:3.6.3')
+         implementation('redis.clients:jedis:5.1.2')
          implementation('org.thymeleaf.extras:thymeleaf-extras-springsecurity6')
          implementation group: 'com.microsoft.sqlserver', name: 'mssql-jdbc', version: '9.4.1.jre11'
          implementation('com.google.guava:guava:31.1-jre')
