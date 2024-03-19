@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.SecurityBuilder;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
@@ -16,7 +17,7 @@ import org.springframework.security.web.csrf.CsrfTokenRepository;
 @Configuration
 @EnableWebSecurity
 @Profile(value = "smok_app")
-public class PortalWebSecurityConfig implements WebSecurityConfigurer {
+public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBuilder<jakarta.servlet.Filter>> {
 
     // -----------------------------------------------------------------------------------------------------------------
     // Dependencies
@@ -24,7 +25,7 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer {
 
     private PortalCustomAuthenticationProvider portalCustomAuthenticationProvider;
     private CsrfTokenRepository csrfTokenRepository;
-    private MajoranaCustomAPISecurityFilter MajoranaPayCustomAPISecurityFilter;
+    private MajoranaCustomAPISecurityFilter majoranaCustomAPISecurityFilter;
 
     // -----------------------------------------------------------------------------------------------------------------
     // Constructors
@@ -35,33 +36,50 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer {
 
         this.portalCustomAuthenticationProvider = portalCustomAuthenticationProvider;
         this.csrfTokenRepository = csrfTokenRepository;
-        this.MajoranaPayCustomAPISecurityFilter = new MajoranaCustomAPISecurityFilter();
+        this.majoranaCustomAPISecurityFilter = new MajoranaCustomAPISecurityFilter();
         CookieFactory.setCookieDomain(cookieDomain);
     }
 
-    // -----------------------------------------------------------------------------------------------------------------
-    // Protected Methods - WebSecurityConfigurerAdapter Overrides
-    // -----------------------------------------------------------------------------------------------------------------
-
-    // "select email, password, enabled from user where email=?"
-    // "select u.email, ur.role from user_roles ur, user u where ur.user_id = u.id and u.email=?"
-
-    // -----------------------------------------------------------------------------------------------------------------
-    // Protected Methods - WebSecurityConfigurerAdapter Overrides
-    // -----------------------------------------------------------------------------------------------------------------
-
-    // "select email, password, enabled from user where email=?"
-    // "select u.email, ur.role from user_roles ur, user u where ur.user_id = u.id and u.email=?"
-
-
     @Override
-    public void init(SecurityBuilder builder) throws Exception {
-
+    public void init(SecurityBuilder auth) throws Exception {
+        AuthenticationManagerBuilder b = (AuthenticationManagerBuilder) auth;
+        b.authenticationProvider(portalCustomAuthenticationProvider);
     }
 
-    public void configure(SecurityBuilder builder) throws Exception {
-
+    //SecurityBuilder
+    @Override
+    public void configure(SecurityBuilder auth) throws Exception {
+        AuthenticationManagerBuilder b = (AuthenticationManagerBuilder) auth;
+        b.authenticationProvider(portalCustomAuthenticationProvider);
     }
+
+    @Bean
+    public FilterRegistrationBean someFilterRegistration() {
+
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setFilter(majoranaCustomAPISecurityFilter);
+        registration.addUrlPatterns("/url/*");
+        registration.addInitParameter("paramName", "paramValue");
+        registration.setName("MajoranaCustomAPISecurityFilter");
+        registration.setOrder(1);
+        return registration;
+    }
+
+
+    // -----------------------------------------------------------------------------------------------------------------
+    // Protected Methods - WebSecurityConfigurerAdapter Overrides
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // "select email, password, enabled from user where email=?"
+    // "select u.email, ur.role from user_roles ur, user u where ur.user_id = u.id and u.email=?"
+
+    // -----------------------------------------------------------------------------------------------------------------
+    // Protected Methods - WebSecurityConfigurerAdapter Overrides
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // "select email, password, enabled from user where email=?"
+    // "select u.email, ur.role from user_roles ur, user u where ur.user_id = u.id and u.email=?"
+
 
 
 //    @Override
@@ -153,15 +171,12 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer {
     }
 
 
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.authenticationProvider(portalCustomAuthenticationProvider);
-//    }
+
 
     @Bean
-    public FilterRegistrationBean MajoranaPayfilterRegistrationBean() {
+    public FilterRegistrationBean majoranaPayfilterRegistrationBean() {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
-//        registrationBean.setFilter(MajoranaPayCustomAPISecurityFilter);
+        registrationBean.setFilter(majoranaCustomAPISecurityFilter);
         registrationBean.addUrlPatterns("*");
         registrationBean.setOrder(1); //set precedence
         return registrationBean;

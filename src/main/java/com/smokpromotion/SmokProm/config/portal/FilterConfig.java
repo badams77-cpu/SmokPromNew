@@ -17,6 +17,7 @@ public class FilterConfig {
 //    private AnalyticsSender sender;
 //    private AnalyticsTokenService tokenService;
 
+
     @Autowired
     public FilterConfig(Environment env){ //), AnalyticsSender sender, AnalyticsTokenService tokenService){
         this.environment = env;
