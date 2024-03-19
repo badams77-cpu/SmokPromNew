@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.SecurityBuilder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 
@@ -42,15 +43,23 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
 
     @Override
     public void init(SecurityBuilder auth) throws Exception {
-        AuthenticationManagerBuilder b = (AuthenticationManagerBuilder) auth;
-        b.authenticationProvider(portalCustomAuthenticationProvider);
+        if (auth instanceof AuthenticationManagerBuilder) {
+            AuthenticationManagerBuilder b = (AuthenticationManagerBuilder) auth;
+            b.authenticationProvider(portalCustomAuthenticationProvider);
+        } else if (auth instanceof WebSecurity){
+
+        }
     }
 
     //SecurityBuilder
     @Override
     public void configure(SecurityBuilder auth) throws Exception {
-        AuthenticationManagerBuilder b = (AuthenticationManagerBuilder) auth;
-        b.authenticationProvider(portalCustomAuthenticationProvider);
+        if (auth instanceof AuthenticationManagerBuilder) {
+            AuthenticationManagerBuilder b = (AuthenticationManagerBuilder) auth;
+            b.authenticationProvider(portalCustomAuthenticationProvider);
+        } else if (auth instanceof WebSecurity){
+
+        }
     }
 
     @Bean

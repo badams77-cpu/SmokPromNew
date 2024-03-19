@@ -26,15 +26,15 @@ public class FilterConfig {
     }
 
 
-    @Bean
-    public FilterRegistrationBean filterRegistrationBean() {
-        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+//    @Bean
+//    public FilterRegistrationBean filterRegistrationBean() {
+//        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
 //        AnalyticsFilter analyticsFilter = new AnalyticsFilter(sender, tokenService, environment);
 //        registrationBean.setFilter(analyticsFilter);
 //        registrationBean.addUrlPatterns("*");
 //        registrationBean.setOrder(1); //set precedence
-        return registrationBean;
-    }
+//        return registrationBean;
+//    }
 
 
 }
