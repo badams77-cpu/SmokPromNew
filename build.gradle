@@ -102,6 +102,9 @@ jar {
          implementation('org.thymeleaf.extras:thymeleaf-extras-springsecurity6')
          implementation('org.springframework.boot:spring-boot-starter-data-jpa')
          implementation group: 'com.mysql', name: 'mysql-connector-j', version: '8.1.0'
+         // https://mvnrepository.com/artifact/io.projectreactor/reactor-core
+         implementation 'io.projectreactor:reactor-core:3.6.4'
+
 //         implementation group: 'com.datastax.oss', name: 'cassandra-driver-core', version: '4.17.0'
 //         implementation group: 'com.datastax.oss', name: 'cassandra-driver-query-builder', version: '4.17.0'
 //         implementation group: 'com.datastax.oss', name: 'cassandra-driver-mapper-runtime', version: '4.17.0'

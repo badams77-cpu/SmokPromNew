@@ -11,6 +11,12 @@ import org.springframework.security.core.Authentication;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.http.server.reactive.ServerHttpResponse;
+
+import reactor.core.publisher.Mono;
+
+
 @Profile("!test")
 public class MajoranaAccessDecisionManager extends BaseAccessDecisionManager {
     @Autowired private REP_UserService userService;
@@ -20,7 +26,7 @@ public class MajoranaAccessDecisionManager extends BaseAccessDecisionManager {
 
 
     @Override
-    protected boolean checkAccessForPath(HttpServletRequest request, PortalSecurityPrinciple principle, Authentication authentication, String path) throws Exception {
+    protected boolean checkAccessForPath(ServerHttpRequest request, PortalSecurityPrinciple principle, Authentication authentication, String path) throws Exception {
         return subscriptionAccess.isUserAllowedToPath(request.getParameterMap(), authentication, path);
     }
 }

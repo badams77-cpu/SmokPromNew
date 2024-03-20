@@ -12,6 +12,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+import jakarta.servlet.http.HttpServletRequest;
+
+import org.springframework.http.server.reactive.ServerHttpRequest;
 
 public class AdminAccessDecisionManager extends BaseAccessDecisionManager  {
 
@@ -20,7 +23,7 @@ public class AdminAccessDecisionManager extends BaseAccessDecisionManager  {
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminAccessDecisionManager.class);
 
     @Override
-    protected boolean checkPath(HttpServletRequest request, Authentication authentication, String path) {
+    protected boolean checkPath(ServerHttpRequest request, Authentication authentication, String path) {
         boolean ret = false;
         try {
 
@@ -55,11 +58,11 @@ public class AdminAccessDecisionManager extends BaseAccessDecisionManager  {
     }
 
 
-    protected boolean checkAccessForPath(HttpServletRequest request, AdminSecurityPrinciple principle, Authentication authentication, String path) throws Exception {
+    protected boolean checkAccessForPath(ServerHttpRequest request, AdminSecurityPrinciple principle, Authentication authentication, String path) throws Exception {
         return subscriptionAccess.checkAdminAccess(path, principle);
     }
 
-    protected boolean checkAccessForPath(HttpServletRequest request, PortalSecurityPrinciple principle, Authentication authentication, String path) throws Exception {
+    protected boolean checkAccessForPath(ServerHttpRequest request, PortalSecurityPrinciple principle, Authentication authentication, String path) throws Exception {
         return false; // No Access with Portal Principle
     }
 }

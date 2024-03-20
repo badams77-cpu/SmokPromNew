@@ -5,15 +5,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+
+
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.http.server.reactive.ServerHttpResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.http.server.reactive.ServerHttpResponse;
+
+org.springframework.http.server.reactive.ServerHttpRequest;
 
 public abstract class BaseAccessDecisionManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseAccessDecisionManager.class);
 
-    public boolean allowSection(HttpServletRequest request, Authentication authentication, String basePath) {
+
+
+    public boolean allowSection(ServerHttpRequest request, Authentication authentication, String basePath) {
         boolean ret = false;
         if (GenericUtils.isValid(basePath) && GenericUtils.isValid(basePath)) {
             basePath=  cleanPathFromPost(basePath);
@@ -22,7 +32,7 @@ public abstract class BaseAccessDecisionManager {
         return checkPath(request, authentication,basePath);
     }
 
-    public boolean allowSection(HttpServletRequest request, Authentication authentication, String basePath, String path) {
+    public boolean allowSection(ServerHttpRequest request, Authentication authentication, String basePath, String path) {
         boolean ret = false;
         if (GenericUtils.isValid(path) && GenericUtils.isValid(basePath)) {
             path=  cleanPathFromPost(path);
@@ -31,7 +41,7 @@ public abstract class BaseAccessDecisionManager {
         return checkPath(request, authentication,path);
     }
 
-    public boolean allowSection(HttpServletRequest request, Authentication authentication, String basePath, String path, String innerPath) {
+    public boolean allowSection(ServerHttpRequest request, Authentication authentication, String basePath, String path, String innerPath) {
         boolean ret = false;
         if (GenericUtils.isValid(path) && GenericUtils.isValid(basePath) && GenericUtils.isValid(innerPath)) {
             path=  cleanPathFromPost(path);
@@ -45,14 +55,14 @@ public abstract class BaseAccessDecisionManager {
        return path;
     }
 
-    protected boolean checkPath(HttpServletRequest request, Authentication authentication, String path) {
+    protected boolean checkPath(ServerHttpRequest request, Authentication authentication, String path) {
         boolean ret = false;
         try {
 
 //            if (path != null && path.equalsIgnoreCase("/recovery-password")) {
 //                return true;
 //            } else {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Authentication auth = ServerContextHolder.getContext().getAuthentication();
             PortalSecurityPrinciple principle = (PortalSecurityPrinciple) auth.getPrincipal();
 
             ret = checkAccessForPath(request, principle, authentication, path);
@@ -83,7 +93,7 @@ public abstract class BaseAccessDecisionManager {
         return ret;
     }
 
-    protected abstract boolean checkAccessForPath(HttpServletRequest request, PortalSecurityPrinciple principle,Authentication authentication, String path) throws Exception ;
+    protected abstract boolean checkAccessForPath(ServerHttpRequest request, PortalSecurityPrinciple principle,Authentication authentication, String path) throws Exception ;
 
 
 }
