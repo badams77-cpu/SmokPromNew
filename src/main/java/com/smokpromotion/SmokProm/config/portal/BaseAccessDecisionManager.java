@@ -15,7 +15,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 
-org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 
 public abstract class BaseAccessDecisionManager {
 
@@ -62,7 +64,7 @@ public abstract class BaseAccessDecisionManager {
 //            if (path != null && path.equalsIgnoreCase("/recovery-password")) {
 //                return true;
 //            } else {
-            Authentication auth = ServerContextHolder.getContext().getAuthentication();
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             PortalSecurityPrinciple principle = (PortalSecurityPrinciple) auth.getPrincipal();
 
             ret = checkAccessForPath(request, principle, authentication, path);

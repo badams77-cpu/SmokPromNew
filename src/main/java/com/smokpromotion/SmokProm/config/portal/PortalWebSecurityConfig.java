@@ -65,7 +65,6 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
     private MajoranaAccessDecisionManager decisionManager;
 
 
-
     // -----------------------------------------------------------------------------------------------------------------
     // Constructors
     // -----------------------------------------------------------------------------------------------------------------
@@ -88,17 +87,18 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
         if (auth instanceof AuthenticationManagerBuilder) {
             AuthenticationManagerBuilder b = (AuthenticationManagerBuilder) auth;
             b.authenticationProvider(portalCustomAuthenticationProvider);
-        } else if (auth instanceof WebSecurity){
+        } else if (auth instanceof WebSecurity) {
 
         }
     }
 
     //SecurityBuilder
-    @Override public void configure(SecurityBuilder auth) throws Exception {
+    @Override
+    public void configure(SecurityBuilder auth) throws Exception {
         if (auth instanceof AuthenticationManagerBuilder) {
             AuthenticationManagerBuilder b = (AuthenticationManagerBuilder) auth;
-           b.authenticationProvider(portalCustomAuthenticationProvider);
-        } else if (auth instanceof WebSecurity){
+            b.authenticationProvider(portalCustomAuthenticationProvider);
+        } else if (auth instanceof WebSecurity) {
 
         }
     }
@@ -131,55 +131,29 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
     // "select u.email, ur.role from user_roles ur, user u where ur.user_id = u.id and u.email=?"
 
 
+    public Mono<AuthorizationDecision> checkAccess(Mono authentication, Object object) {
+        Authentication auth = (Authentication) authentication.block();
 
+        AuthorizationContext context = (AuthorizationContext) object;
 
-            public Mono<AuthorizationDecision> checkAccess(Mono authentication, Object object) {
-                Authentication auth = (Authentication) authentication.block();
+        try {
 
-                AuthorizationContext context = (AuthorizationContext) object;
+            PortalSecurityPrinciple prin = (PortalSecurityPrinciple) auth.getPrincipal();
+            return Mono.just(new AuthorizationDecision(decisionManager.checkAccessForPath(
+                    context.getExchange().getRequest(),
+                    prin, auth,
+                    context.getExchange().getRequest().getPath().contextPath().value())));
+            //               hasRole("ADMIN").check(authentication, context)
+            //           .switchIfEmpty(hasRole("DBA")
+            //                                        .check(authentication, context))
 
-                try {
-
-                    PortalSecurityPrinciple prin = (PortalSecurityPrinciple) auth.getPrincipal();
-                    return Mono.just(new AuthorizationDecision(decisionManager.checkAccessForPath(
-                            context.getExchange().getRequest(),
-                            prin, auth,
-                            context.getExchange().getRequest().getPath().contextPath().value())));
-                    //               hasRole("ADMIN").check(authentication, context)
-                    //           .switchIfEmpty(hasRole("DBA")
-                    //                                        .check(authentication, context))
-
-                } catch (Exception e) {
-                    LOGGER.warn("IO exception ", e);
-                }
-            }
-
-@Configuration
-    public class SecurityConfig {
-        @Bean
-        SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
-                                                    ReactiveAuthenticationManager reactiveAuthenticationManager) {
-            final String TAG_SERVICES = "/api/**";
-
-//          return http.csrf(ServerHttpSecurity.CsrfSpec::disable)
-//                  .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
-//                  .authenticationManager(reactiveAuthenticationManager)
-//                  .securityContextRepository(NoOpServerSecurityContextRepository.getInstance())
-//                  .authorizeExchange(it -> it
-//                          .pathMatchers(HttpMethod.POST, TAG_SERVICES).hasAnyRole("USER","ADMIN")
-//                          .pathMatchers(HttpMethod.PUT, TAG_SERVICES).hasAnyRole("USER","ADMIN")
-//                          .pathMatchers(HttpMethod.GET, TAG_SERVICES).hasAnyRole("USER","ADMIN")
-//                          .pathMatchers(HttpMethod.DELETE, TAG_SERVICES).hasAnyRole("USER","ADMIN")
-//                          .pathMatchers(TAG_SERVICES).authenticated()
-//                          .anyExchange().permitAll()
-//                  )
-//                  .addFilterAt(new JwtTokenAuthenticationFilter(tokenProvider), SecurityWebFiltersOrder.HTTP_BASIC)
-//                  .build();
-            return null;
-
+        } catch (Exception e) {
+            LOGGER.warn("IO exception ", e);
         }
-
+        return Mono.just( new AuthorizationDecision(false));
     }
+
+
 
 
 
