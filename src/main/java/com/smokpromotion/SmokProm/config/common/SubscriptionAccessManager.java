@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -95,7 +96,13 @@ public class SubscriptionAccessManager {
         return checkMPC2 || checkModules;
     }
 
-    public boolean isUserAllowedToPath(Map<String, String[]> requestParams, Authentication auth, String path) {
+    public boolean isUserAllowedToPathMV(MultiValueMap<String, String[]> requestParams,
+                                       Authentication auth, String path) {
+        return true;
+    }
+
+    public boolean isUserAllowedToPath(MultiValueMap<String, String> requestParams,
+                                       Authentication auth, String path) {
         return true;
     }
 
@@ -117,7 +124,7 @@ public class SubscriptionAccessManager {
             //            String subsType = principle.getSubscriptionType().toLowerCase();
             //            String mktPageSubsLevelRoot = String.format("%s/%s/", MKT_PAGE_ROOT_PATH, subsType);
 
-            //            This line seem to be blocking valid marketing pages
+            //            This line seem to be blocking valid marketing pages x 1`1`
             //            if (mktPagePath.startsWith(mktPageSubsLevelRoot)) {
             // allow users with this subscription level to see the marketing pages relevant to them
             return true;
