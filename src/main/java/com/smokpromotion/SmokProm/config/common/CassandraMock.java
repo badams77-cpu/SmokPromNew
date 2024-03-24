@@ -10,6 +10,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.cassandra.core.ReactiveCassandraTemplate;
 import org.springframework.data.cassandra.core.convert.CassandraConverter;
 
 import static org.mockito.Mockito.mock;
@@ -33,6 +34,14 @@ public class CassandraMock {
         when(sk.getContext()).thenReturn(mock(DriverContext.class));
         return sk;
     }
+
+    @Bean
+    public ReactiveCassandraTemplate cassandraTemplate() {
+        ReactiveCassandraTemplate sk = mock(ReactiveCassandraTemplate.class);
+ //       when(sk.getContext()).thenReturn(mock(DriverContext.class));
+        return sk;
+    }
+
 
     @Bean
     public CassandraConverter cassandraConverter() {

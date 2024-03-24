@@ -54,12 +54,14 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
     // Dependencies
     // -----------------------------------------------------------------------------------------------------------------
 
+    @Autowired
     private PortalCustomAuthenticationProvider portalCustomAuthenticationProvider;
+    @Autowired
     private CsrfTokenRepository csrfTokenRepository;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MajoranaAccessDecisionManager.class);
 
-
+    @Autowired
     private MajoranaCustomAPISecurityFilter majoranaCustomAPISecurityFilter;
 
     private MajoranaAccessDecisionManager decisionManager;
@@ -70,14 +72,15 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
     // -----------------------------------------------------------------------------------------------------------------
 
     @Autowired
-    public PortalWebSecurityConfig(PortalCustomAuthenticationProvider portalCustomAuthenticationProvider,
-                                   CsrfTokenRepository csrfTokenRepository,
-                                   MajoranaAccessDecisionManager accessDecisionManager,
+    public PortalWebSecurityConfig(
+            //PortalCustomAuthenticationProvider portalCustomAuthenticationProvider,
+            //                       CsrfTokenRepository csrfTokenRepository,
+            //                       MajoranaAccessDecisionManager accessDecisionManager,
                                    @Value("${Majorana_COOKIE_DOMAIN:localhost}") String cookieDomain) {
 
-        this.portalCustomAuthenticationProvider = portalCustomAuthenticationProvider;
-        this.csrfTokenRepository = csrfTokenRepository;
-        this.decisionManager = accessDecisionManager;
+    //    this.portalCustomAuthenticationProvider = portalCustomAuthenticationProvider;
+    //    this.csrfTokenRepository = csrfTokenRepository;
+    //    this.decisionManager = accessDecisionManager;
         this.majoranaCustomAPISecurityFilter = new MajoranaCustomAPISecurityFilter();
         CookieFactory.setCookieDomain(cookieDomain);
     }
@@ -115,22 +118,7 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
         return registration;
     }
 
-
-    // -----------------------------------------------------------------------------------------------------------------
-    // Protected Methods - WebSecurityConfigurerAdapter Overrides
-    // -----------------------------------------------------------------------------------------------------------------
-
-    // "select email, password, enabled from user where email=?"
-    // "select u.email, ur.role from user_roles ur, user u where ur.user_id = u.id and u.email=?"
-
-    // -----------------------------------------------------------------------------------------------------------------
-    // Protected Methods - WebSecurityConfigurerAdapter Overrides
-    // -----------------------------------------------------------------------------------------------------------------
-
-    // "select email, password, enabled from user where email=?"
-    // "select u.email, ur.role from user_roles ur, user u where ur.user_id = u.id and u.email=?"
-
-
+    /*
     public Mono<AuthorizationDecision> checkAccess(Mono authentication, Object object) {
         Authentication auth = (Authentication) authentication.block();
 
@@ -152,6 +140,24 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
         }
         return Mono.just( new AuthorizationDecision(false));
     }
+*/
+
+
+
+    // -----------------------------------------------------------------------------------------------------------------
+    // Protected Methods - WebSecurityConfigurerAdapter Overrides
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // "select email, password, enabled from user where email=?"
+    // "select u.email, ur.role from user_roles ur, user u where ur.user_id = u.id and u.email=?"
+
+    // -----------------------------------------------------------------------------------------------------------------
+    // Protected Methods - WebSecurityConfigurerAdapter Overrides
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // "select email, password, enabled from user where email=?"
+    // "select u.email, ur.role from user_roles ur, user u where ur.user_id = u.id and u.email=?"
+
 
 
 

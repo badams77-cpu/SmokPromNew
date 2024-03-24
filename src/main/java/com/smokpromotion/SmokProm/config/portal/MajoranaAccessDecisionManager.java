@@ -26,7 +26,9 @@ public class MajoranaAccessDecisionManager extends BaseAccessDecisionManager {
 
 
     @Override
-    protected boolean checkAccessForPath(ServerHttpRequest request, PortalSecurityPrinciple principle, Authentication authentication, String path) throws Exception {
+    protected boolean checkAccessForPath(ServerHttpRequest request,
+                                         // PortalSecurityPrinciple principle,
+                                         Authentication authentication, String path) throws Exception {
         return subscriptionAccess.isUserAllowedToPath(request.getQueryParams(), authentication, path);
     }
 }

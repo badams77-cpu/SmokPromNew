@@ -25,6 +25,7 @@ public class SmokApplication extends SpringBootServletInitializer {
 
 	private static final Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(SmokApplication.class);
 
+
 	public static void main(String[] args) {
 		try {
 			SpringApplication.run(SmokApplication.class, args);

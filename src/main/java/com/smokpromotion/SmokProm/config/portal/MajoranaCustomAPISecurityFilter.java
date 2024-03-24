@@ -2,9 +2,11 @@ package com.smokpromotion.SmokProm.config.portal;
 
 import jakarta.servlet.FilterConfig;
 import jakarta.servlet.*;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+@Component
 public class MajoranaCustomAPISecurityFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

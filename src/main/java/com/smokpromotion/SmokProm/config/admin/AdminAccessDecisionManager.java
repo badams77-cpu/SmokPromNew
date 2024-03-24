@@ -33,7 +33,9 @@ public class AdminAccessDecisionManager extends BaseAccessDecisionManager  {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             AdminSecurityPrinciple principle = (AdminSecurityPrinciple) auth.getPrincipal();
 
-            ret = checkAccessForPath(request, principle, authentication, path);
+            ret = checkAccessForPath(request,
+                    // principle,
+                    authentication, path);
 
             LOGGER.info("checkPath: - "+(ret?"allowed":" denied ")+"access to "+path );
 //            }
@@ -58,12 +60,21 @@ public class AdminAccessDecisionManager extends BaseAccessDecisionManager  {
     }
 
 
-    protected boolean checkAccessForPath(ServerHttpRequest request, AdminSecurityPrinciple principle, Authentication authentication, String path) throws Exception {
-        return subscriptionAccess.checkAdminAccess(path, principle);
+    protected boolean checkAccessForPath(ServerHttpRequest request,
+                                         //AdminSecurityPrinciple principle,
+                                         Authentication authentication, String path) throws Exception {
+        return subscriptionAccess.checkAdminAccess(path
+                // ,
+                //principle
+                //
+                );
     }
 
-    protected boolean checkAccessForPath(ServerHttpRequest request, PortalSecurityPrinciple principle, Authentication authentication, String path) throws Exception {
-        return false; // No Access with Portal Principle
-    }
+//    protected boolean checkAccessForPath(ServerHttpRequest request,
+//                                         // PortalSecurityPrinciple principle,
+//                                         Authentication authentication,
+//                                         String path) throws Exception {
+//        return false; // No Access with Portal Principle
+//    }
 }
 

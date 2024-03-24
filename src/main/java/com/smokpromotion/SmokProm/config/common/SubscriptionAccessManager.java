@@ -1,7 +1,7 @@
 package com.smokpromotion.SmokProm.config.common;
 
-import com.smokpromotion.SmokProm.config.admin.AdminSecurityPrinciple;
-import com.smokpromotion.SmokProm.config.portal.PortalSecurityPrinciple;
+//import com.smokpromotion.SmokProm.config.admin.AdminSecurityPrinciple;
+//import com.smokpromotion.SmokProm.config.portal.PortalSecurityPrinciple;
 import com.smokpromotion.SmokProm.domain.entity.DE_ApplicationFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -174,7 +174,9 @@ public class SubscriptionAccessManager {
         return checkModules;
     }
 
-    public boolean checkPathModulesLogic(String path, PortalSecurityPrinciple principle, LocalDate when) {
+    public boolean checkPathModulesLogic(String path,
+                                         // PortalSecurityPrinciple principle,
+                                         LocalDate when) {
         boolean ret;
 
 //        List<Integer> idRoleGroupsModule = drPracticeGroupModule.findIdRoleGroupsByPracticeGroupAtDate(principle.getPortal(), principle.getPracticeGroupId(), when);
@@ -187,9 +189,9 @@ public class SubscriptionAccessManager {
         // URC-1642 - subscription exempt users should be able to view all
         // Except if they have a custom role group set that applies to them
 
-        if (obtainUserCustomRoleGroups(principle).isEmpty() && isSubscriptionExempt(principle)) {
-            return true;
-        }
+//        if (obtainUserCustomRoleGroups(principle).isEmpty() && isSubscriptionExempt(principle)) {
+//            return true;
+//        }
 
         // URC-2656 - ensure that Tier1 groups cannot access Dentist Portal Dashboard features
 //        if (isTier1ForbiddenDentistPortalAccess(principle, path)) {
@@ -200,7 +202,7 @@ public class SubscriptionAccessManager {
 
 
         // Otherwise, check user's roles
-        List<Integer> idRoleGroups = obtainUserCustomRoleGroups(principle);
+//        List<Integer> idRoleGroups = obtainUserCustomRoleGroups(principle);
 //        if (idRoleGroups.isEmpty()){
 //            idRoleGroups = idRoleGroupsModule;
 //        }
@@ -233,7 +235,9 @@ public class SubscriptionAccessManager {
      * @param asOfDate the date to check access for
      * @return list of application feature URLs that the principal can access
      */
-    public Set<String> getAppFeatureURLsEnabled(PortalSecurityPrinciple principle, LocalDate asOfDate) {
+    public Set<String> getAppFeatureURLsEnabled(
+            // PortalSecurityPrinciple principle,
+            LocalDate asOfDate) {
 
         return new HashSet<>();
         //        return this.getAppFeaturesEnabled(principle, asOfDate).stream()
@@ -262,7 +266,9 @@ public class SubscriptionAccessManager {
      * @param asOfDate the date to check access for
      * @return list of DE_ApplicationFeature elements, with the isAccessEnabled flag indicating if the principal has access
      */
-    public List<DE_ApplicationFeature> getAppFeaturesWithAccessInfo(PortalSecurityPrinciple principle, LocalDate asOfDate) {
+    public List<DE_ApplicationFeature> getAppFeaturesWithAccessInfo(
+            // PortalSecurityPrinciple principle,
+                                                                    LocalDate asOfDate) {
 ////        MenuRolesRetValue forAccess = this.getRolesForAccess(principle, asOfDate);
        List<DE_ApplicationFeature> appFeatures = new LinkedList<>();
 //
@@ -310,7 +316,11 @@ public class SubscriptionAccessManager {
      * @param asOfDate - as of date to use
      * @return true if there are application features accessible by the user's group subscription, which are not accessible to them
      */
-    public boolean userHasLessThenSubscriptionAccess(PortalSecurityPrinciple principle, LocalDate asOfDate) {
+ /*   public boolean userHasLessThenSubscriptionAccess(
+
+            // PortalSecurityPrinciple principle,
+
+                                                     LocalDate asOfDate) {
 //        if (!principle.getOrganization().getPortalRoleGroup().equals("")) {
 //            // for mediholdings and other restricted organizations assume this is always true
 //            /           return true;
@@ -319,7 +329,7 @@ public class SubscriptionAccessManager {
         return getAppFeaturesWithAccessInfo(principle, asOfDate).stream()
                 .filter(af -> !af.isCustomerRelations())
                 .anyMatch(af -> af.isInSubscriptionRoleGroup() && !af.isAccessEnabled());
-    }
+    }*/
 
     // Return
     // URC-2656 - make private to reduce scope for changes
@@ -368,12 +378,14 @@ public class SubscriptionAccessManager {
         //return ret;
     //}
 
-    public boolean checkAccessMPC2(String path, PortalSecurityPrinciple principle) {
+/*    public boolean checkAccessMPC2(String path, PortalSecurityPrinciple principle) {
         List<Integer> roleGroups = obtainIdRoleGroups(principle);
         return checkAccessBySubscriptionRoleGroup(path, principle, roleGroups);
-    }
+    }*/
 
-    public boolean checkAccessBySubscriptionRoleGroup(String path, PortalSecurityPrinciple principle, List<Integer> idRoleGroups) {
+    public boolean checkAccessBySubscriptionRoleGroup(String path,
+                                              //        PortalSecurityPrinciple principle,
+                                                              List<Integer> idRoleGroups) {
         boolean ret;
 
         // URC-1642 - subscription exempt users should be able to view all
@@ -428,7 +440,9 @@ public class SubscriptionAccessManager {
 
 
     // URC-1607 if any group the user access that has track subscription true, we allow all if a non custom feature is in the subscription access
-    public boolean isTrackingGroup(PortalSecurityPrinciple principle, List<Integer> idRoleGroups){
+    public boolean isTrackingGroup(
+            // PortalSecurityPrinciple principle,
+                                   List<Integer> idRoleGroups){
         //List<DE_RoleGroup> groups = new LinkedList<>();
         //for(int groupId : idRoleGroups){
         //    drRoleGroup.getById(principle.getPortal(), groupId).ifPresent( group->groups.add(group));
@@ -437,9 +451,11 @@ public class SubscriptionAccessManager {
         return false;
     }
 
-    private boolean checkSubscriptionAccess(String path, PortalSecurityPrinciple principle, boolean excludeCustomFeature, boolean isCustomerRelationFeatureAllowed) {
+    private boolean checkSubscriptionAccess(String path,
+                                            // PortalSecurityPrinciple principle,
+                                            boolean excludeCustomFeature, boolean isCustomerRelationFeatureAllowed) {
         boolean ret;
-        int subscriptionGroup = obtainRoleGroupSubLevel(principle);
+        int subscriptionGroup = 0; //obtainRoleGroupSubLevel(principle);
         List<Integer> subscriptionGroups = new LinkedList<>();
         subscriptionGroups.add(subscriptionGroup);
  //       List<Integer> idRolesSubscription = roles.findIdRolesByIdRoleGroupsRegular(principle.getPortal(),subscriptionGroups);
@@ -449,7 +465,9 @@ public class SubscriptionAccessManager {
         return false;
     }
 
-    private boolean isSubscriptionExempt(PortalSecurityPrinciple principle){
+    private boolean isSubscriptionExempt(
+            // PortalSecurityPrinciple principle
+            ){
         //return principle.isSubscriptionExempt() && SubExemptDomains.isAllowed(principle.getEmail()) ;
         return false;
     }
@@ -457,7 +475,10 @@ public class SubscriptionAccessManager {
 
 
 
-    public boolean checkAdminAccess(String path, AdminSecurityPrinciple principle) {
+    public boolean checkAdminAccess(String path
+    //        ,
+    //                                AdminSecurityPrinciple principle
+    ) {
         boolean ret;
         return true;
        /* if (principle.isManageAdminUsers()){ return true; }
@@ -468,7 +489,9 @@ public class SubscriptionAccessManager {
         return ret;*/
     }
 
-    public List<String> getValidPathsForAdmin(AdminSecurityPrinciple principle){
+    public List<String> getValidPathsForAdmin(
+            // AdminSecurityPrinciple principle
+    ){
         //if (principle.isManageAdminUsers()){
             return new LinkedList<>();
         //}
@@ -483,19 +506,11 @@ public class SubscriptionAccessManager {
      * @param requestURI - the request URL
      * @return true if the group has access to this URL, false otherwise
      */
-    public boolean isAllowedByGroupModulesAccess(PortalSecurityPrinciple principle, String requestURI) {
-        // URC-2656
-        if (isTier1ForbiddenDentistPortalAccess(principle, requestURI)) {
-            return false;
-        }
-        return true;
-       // List<Integer> idRoleGroupsModule = drPracticeGroupModule.findIdRoleGroupsByPracticeGroupAtDate(principle.getPortal(), principle.getPracticeGroupId(),
-       //         LocalDate.now());
-       // List<Integer> idRoles = roles.findIdRolesByIdRoleGroupsRegular(principle.getPortal(),idRoleGroupsModule);
-       // return subscriptionLevel.checkAccessByPathAndRoles(principle.getPortal(),requestURI, idRoles, false,false, true);
-    }
 
-    public List<Integer> getSubscriptionRoleGroupIds(PortalSecurityPrinciple principle, LocalDate date){
+
+    public List<Integer> getSubscriptionRoleGroupIds(
+            // PortalSecurityPrinciple principle,
+                                                     LocalDate date){
         return new LinkedList<>();
     /*    if (checkModules){
             return drPracticeGroupModule.findIdRoleGroupsByPracticeGroupAtDate(principle.getPortal(), principle.getPracticeGroupId(), LocalDate.now());
@@ -510,7 +525,9 @@ public class SubscriptionAccessManager {
     }
 
 
-    private boolean checkPathMpc1Logic(PortalSecurityPrinciple principle, String path) {
+    private boolean checkPathMpc1Logic(
+            // PortalSecurityPrinciple principle,
+                                       String path) {
         boolean ret = false;
 /*
         if (path.toLowerCase().startsWith("/cs-setup")) {
@@ -530,12 +547,15 @@ public class SubscriptionAccessManager {
     }
 
 
-    private int obtainRoleGroupSubLevel(PortalSecurityPrinciple principle){
+    private int obtainRoleGroupSubLevel(
+            // PortalSecurityPrinciple principle
+    )
+    {
         return 1;
 //        return  subscriptionLevel.findIdRoleGroupBySubscriptionCode(principle.getPortal(), principle.getSubscriptionType());
     }
 
-    private List<Integer> obtainUserCustomRoleGroups(PortalSecurityPrinciple principle){
+ /*   private List<Integer> obtainUserCustomRoleGroups(PortalSecurityPrinciple principle){
         return new  LinkedList<>();
         //        return userRoleGroup.findIdRoleGroupsByIdRegularUser(principle.getPortal(), principle.getId());
     }
@@ -556,7 +576,7 @@ public class SubscriptionAccessManager {
 
         return false;
         //        return !principle.isSubscriptionExempt() && principle.isGroupTier1() && isPathDentistPortalAppFeature(path);
-    }
+    }*/
 
     public boolean isUseMenuApi(){ return useMenuApi; }
 

@@ -67,7 +67,9 @@ public abstract class BaseAccessDecisionManager {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             PortalSecurityPrinciple principle = (PortalSecurityPrinciple) auth.getPrincipal();
 
-            ret = checkAccessForPath(request, principle, authentication, path);
+            ret = checkAccessForPath(request,
+                    // principle,
+                    authentication, path);
 
             LOGGER.info("checkPath - userid "+principle.getId()+" "+(ret?" allowed ":" denied ")+"access to "+path );
 //            }
@@ -95,7 +97,10 @@ public abstract class BaseAccessDecisionManager {
         return ret;
     }
 
-    protected abstract boolean checkAccessForPath(ServerHttpRequest request, PortalSecurityPrinciple principle,Authentication authentication, String path) throws Exception ;
+    protected abstract boolean checkAccessForPath(ServerHttpRequest request,
+                                                  // PortalSecurityPrinciple principle,
+                                                  Authentication authentication,
+                                                  String path) throws Exception ;
 
 
 }
