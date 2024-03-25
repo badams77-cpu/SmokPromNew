@@ -10,6 +10,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.ReactiveAuthorizationManager;
@@ -18,6 +19,7 @@ import org.springframework.security.config.annotation.SecurityBuilder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
@@ -85,6 +87,16 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
         CookieFactory.setCookieDomain(cookieDomain);
     }
 
+
+    @Bean
+    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder authenticationManagerBuilder =
+                http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.authenticationProvider(portalCustomAuthenticationProvider);
+        return authenticationManagerBuilder.build();
+    }
+
+
     @Override
     public void init(SecurityBuilder auth) throws Exception {
         if (auth instanceof AuthenticationManagerBuilder) {
@@ -118,7 +130,7 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
         return registration;
     }
 
-    /*
+
     public Mono<AuthorizationDecision> checkAccess(Mono authentication, Object object) {
         Authentication auth = (Authentication) authentication.block();
 
@@ -129,7 +141,7 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
             PortalSecurityPrinciple prin = (PortalSecurityPrinciple) auth.getPrincipal();
             return Mono.just(new AuthorizationDecision(decisionManager.checkAccessForPath(
                     context.getExchange().getRequest(),
-                    prin, auth,
+                     auth,
                     context.getExchange().getRequest().getPath().contextPath().value())));
             //               hasRole("ADMIN").check(authentication, context)
             //           .switchIfEmpty(hasRole("DBA")
@@ -140,7 +152,7 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
         }
         return Mono.just( new AuthorizationDecision(false));
     }
-*/
+
 
 
 
@@ -163,8 +175,7 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
 
 
 
-
-    /*
+/*
 @Bean
 SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
                                             ReactiveAuthenticationManager reactiveAuthenticationManager) {
@@ -194,8 +205,8 @@ SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
             )
             .anyExchange().denyAll();
     return http.build();
-}
-      */
+}*/
+
 
 
 /*
