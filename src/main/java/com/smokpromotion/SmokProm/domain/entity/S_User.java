@@ -35,14 +35,16 @@ public class S_User extends BaseSmokEntity implements Serializable {
     @Updateable
     @org.springframework.data.cassandra.core.mapping.Column("secVn")
     private int secVn;
+
+    @Column(name="subscription_level")
+    @Updateable
+    @org.springframework.data.cassandra.core.mapping.Column("subscription_level")
+    private String subscriptionAccessLevel;
     @org.springframework.data.cassandra.core.mapping.Column("passwd")
     @Column(name="passwd")
     @Updateable
     private String userpw;
-    @org.springframework.data.cassandra.core.mapping.Column("last_login")
-    @Column(name="last_login")
-    @Updateable
-    private LocalDateTime lastVisit;
+
     @org.springframework.data.cassandra.core.mapping.Column("company_name")
     @Column(name="company_name")
     @Updateable
@@ -115,10 +117,17 @@ public class S_User extends BaseSmokEntity implements Serializable {
     @org.springframework.data.cassandra.core.mapping.Column("useractive")
     private boolean useractive;
 
+    @Column(name="last_login")
+    @Updateable
+    @org.springframework.data.cassandra.core.mapping.Column("last_login")
+    private LocalDateTime lastVisit;
+
     @Column(name="passwd_change_date")
     @Updateable
     @org.springframework.data.cassandra.core.mapping.Column("passwd_change_date")
     private LocalDateTime passwdChangeDate;
+
+
 
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -126,6 +135,23 @@ public class S_User extends BaseSmokEntity implements Serializable {
     // -----------------------------------------------------------------------------------------------------------------
 
     public S_User() {
+    }
+
+    public String getSubscriptionAccessLevel() {
+        return subscriptionAccessLevel;
+    }
+
+    public void setSubscriptionAccessLevel(String subscriptionAccessLevel) {
+        this.subscriptionAccessLevel = subscriptionAccessLevel;
+    }
+
+
+    public LocalDateTime getLastVisit() {
+        return lastVisit;
+    }
+
+    public void setLastVisit(LocalDateTime lastVisit) {
+        this.lastVisit = lastVisit;
     }
 
     public String getUsername() {
@@ -168,13 +194,6 @@ public class S_User extends BaseSmokEntity implements Serializable {
         this.userpw = userpw;
     }
 
-    public LocalDateTime getLastVisit() {
-        return lastVisit;
-    }
-
-    public void setLastVisit(LocalDateTime lastVisit) {
-        this.lastVisit = lastVisit;
-    }
 
     public String getCompanyName() {
         return companyName;

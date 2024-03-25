@@ -3,7 +3,9 @@ package com.smokpromotion.SmokProm.config.portal;
 
 import com.smokpromotion.SmokProm.domain.entity.S_User;
 import com.smokpromotion.SmokProm.domain.repository.REP_UserService;
+import com.smokpromotion.SmokProm.domain.repository.Updateable;
 import com.smokpromotion.SmokProm.util.GenericUtils;
+import jakarta.persistence.Column;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -25,6 +29,7 @@ public class PortalCustomAuthenticationProvider implements AuthenticationProvide
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PortalCustomAuthenticationProvider.class);
 
+    private final static String DEF_ROLES[] = {"ACCESS"};
     private REP_UserService legacyMajoranaUserService;
     private PortalSecurityPrincipleService securityPrincipleService;
     private MajoranaLoginAttemptService loginAttemptService;
@@ -70,7 +75,12 @@ public class PortalCustomAuthenticationProvider implements AuthenticationProvide
 
                 if (passwordGood) {
 
-                    List<String> userRoles = getRolesForUsername(u.getUsername());
+                    List<String> userRoles =
+                            Arrays.asList(DEF_ROLES);
+                    if (u.getSubscriptionAccessLevel()!=null){
+                        userRoles.add(u.getSubscriptionAccessLevel());
+                    }
+                            // getRolesForUsername(u.getUsername());
 
                     if (userRoles != null && userRoles.size() >= 1) {
 

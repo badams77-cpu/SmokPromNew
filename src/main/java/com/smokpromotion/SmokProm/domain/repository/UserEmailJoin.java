@@ -10,13 +10,13 @@ public class UserEmailJoin {
     private static String FIELDS = ", u_cr.username as created_by_useremail, "+
             "u_up.username as updated_by_useremail ";
 
-    private static String INNER_JOIN = " INNER JOIN ";
+    private static String LEFT_JOIN = " LEFT JOIN ";
 
     private static String JOIN1 = " u_cr ON en.created_by_userid = u_cr.id ";
     private static String JOIN2 = "  u_up ON en.updated_by_userid = u_up.id ";
 
 
-//    private static String JOIN = " INNER JOIN "+USER_TABLE + " u_cr ON en.created_by_userid = u_cr.id "+
+//    private static String JOIN = " LEFT JOIN "+USER_TABLE + " u_cr ON en.created_by_userid = u_cr.id "+
 //            " INNER JOIN "+USER_TABLE + " u_up ON en.created_by_userid = u_up.id ";
 
 
@@ -32,8 +32,8 @@ public class UserEmailJoin {
     }
 
     public String getJOIN() {
-        return INNER_JOIN + userTable + JOIN1 +
-                INNER_JOIN + userTable + JOIN2;
+        return LEFT_JOIN + userTable + JOIN1 +
+                LEFT_JOIN + userTable + JOIN2;
     }
 }
 

@@ -100,8 +100,8 @@ public class DBCreds {
         this.username = cred.getOrDefault(ENV_VAR_USERNAME,"");
         this.passwd = cred.getOrDefault(ENV_VAR_PASSWD,"");
         this.group = cred.getOrDefault(ENV_VAR_GROUP,"");
-        this.useSSL = Boolean.getBoolean(cred.getOrDefault(ENV_VAR_VERIFY_SSL_CERT, ""));
-        this.verifySSLCert = Boolean.getBoolean(cred.getOrDefault(ENV_VAR_VERIFY_SSL_CERT, ""));
+        this.useSSL = Boolean.getBoolean(cred.getOrDefault(ENV_VAR_VERIFY_SSL_CERT, "tree"));
+        this.verifySSLCert = Boolean.getBoolean(cred.getOrDefault(ENV_VAR_VERIFY_SSL_CERT, "tree"));
     }
 
     public static String[] getCredFields(){
