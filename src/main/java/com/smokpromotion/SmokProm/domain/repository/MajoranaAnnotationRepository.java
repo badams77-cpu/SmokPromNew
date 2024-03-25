@@ -73,7 +73,7 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
     protected String getUpdateStringNP(T sUser){
         StringBuffer buffy =  new StringBuffer();
         buffy.append(" SET "+ repoFields.stream().filter(x->!x.isTransient()).filter(x->x.isUpdateable())
-                .map(x->x.getDbColumn() + ":" + ((x.isPopulatedUpdated())?"now() " : ":"+x.getField().getName()))
+                .map(x->""+x.getDbColumn() + "" + ((x.isPopulatedUpdated())?"now() " : "="+x.getField().getName()))
                 .collect(Collectors.joining(",") )+ " WHERE id=:id");
         return buffy.toString();
     }
@@ -95,7 +95,7 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
     protected String getUpdateString(T sUser){
         StringBuffer buffy =  new StringBuffer();
         buffy.append(" SET "+ repoFields.stream().filter(x->!x.isTransient()).filter(x->x.isUpdateable())
-                .map(x->x.getDbColumn() + ":" + ((x.isPopulatedUpdated())?"now() " : "?"))
+                .map(x->x.getDbColumn() + "=" + ((x.isPopulatedUpdated())?"now() " : "?"))
                 .collect(Collectors.joining(",") )+ " WHERE id=:id");
         return buffy.toString();
     }
@@ -413,7 +413,8 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
                                     invokeSetter(entity, rs.getBoolean(col), setter);
                                     break;
                                 case "java.util.UUID":
-                                    invokeSetter(entity, rs.getString(col)!=null ? null : UUID.fromString(rs.getString(col)), setter);
+                                    invokeSetter(entity, UUID.fromString( (rs.getString(col)==null ? "" :
+                                            rs.getString(col))), setter);
                                     break;
                                 case "java.lang.Integer":
                                     invokeSetter(entity, rs.getInt(col), setter);
@@ -457,14 +458,15 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
                                     LOGGER.warn("mapRow: Unknown column type" + field.getValueType().getName());
                                     break;
                             }
-
-                        }
-
-                    } catch (Exception e){
-                        LOGGER.warn("mapRow: Error deserializing field "+field.getName()+" "+field.getDbColumn(),e);
                     }
-                }
-                return entity;
+                } catch (InvocationTargetException e) {
+                        throw new RuntimeException(e);
+                    } catch (NoSuchMethodException e) {
+                        throw new RuntimeException(e);
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+                    return entity;
 
         }
     }
