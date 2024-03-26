@@ -373,100 +373,112 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
 
         @Override
         public T mapRow(ResultSet rs, int rowNum) throws SQLException {
-                T entity = null;
+            T entity = null;
+            try {
+                entity = clazz.newInstance();
+            } catch (IllegalAccessException e) {
+                LOGGER.warn("New Instance " + clazz + "IllegalAccess: ", e);
+            } catch (InstantiationException e) {
+                LOGGER.warn("New Instance " + clazz + "InstantiationException ", e);
+            }
+            for (MajoranaRepositoryField field : repoFields) {
+                Method setter = field.getSetter();
+                String col = field.getDbColumn();
                 try {
-                  entity = clazz.newInstance();
-                } catch (IllegalAccessException e) {
-                 LOGGER.warn("New Instance "+clazz+"IllegalAccess: ",e);
-                  } catch (InstantiationException e) {
-                    LOGGER.warn("New Instance "+clazz+"InstantiationException ", e);
-                }
-                for(MajoranaRepositoryField field : repoFields){
-                    Method setter = field.getSetter();
-                    String col = field.getDbColumn();
-                    try {
-                        if (field.getValueType().isEnum()) {
-                            try {
-                                Method valueOf = field.getValueType().getMethod("valueOf", String.class);
-                                Object value = valueOf.invoke(null, rs.getString(col));
-                                invokeSetter(entity, value, setter);
-                            } catch (Exception e){
-                                Method valueOf = field.getValueType().getMethod("fromString", String.class);
-                                Object value = valueOf.invoke(null, rs.getString(col));
-                                invokeSetter(entity, value, setter);
-                            }
-                        } else {
-                            switch( field.getValueType().getName()) {
-                                case "int":
-                                    invokeSetter(entity, rs.getInt(col), setter);
-                                    break;
-                                case "long":
-                                    invokeSetter(entity, rs.getLong(col), setter);
-                                    break;
-                                case "float":
-                                    invokeSetter(entity, rs.getFloat(col), setter);
-                                    break;
-                                case "double":
-                                    invokeSetter(entity, rs.getDouble(col), setter);
-                                    break;
-                                case "boolean":
-                                    invokeSetter(entity, rs.getBoolean(col), setter);
-                                    break;
-                                case "java.util.UUID":
-                                    invokeSetter(entity, UUID.fromString( (rs.getString(col)==null ? "" :
-                                            rs.getString(col))), setter);
-                                    break;
-                                case "java.lang.Integer":
-                                    invokeSetter(entity, rs.getInt(col), setter);
-                                    if (rs.wasNull()){ invokeSetter(entity, null, setter); }
-                                    break;
-                                case "java.lang.Long":
-                                    invokeSetter(entity, rs.getLong(col), setter);
-                                    if (rs.wasNull()){ invokeSetter(entity, null, setter); }
-                                    break;
-                                case "java.lang.Float":
-                                    invokeSetter(entity, rs.getFloat(col), setter);
-                                    if (rs.wasNull()){ invokeSetter(entity, null, setter); }
-                                    break;
-                                case "java.lang.Double":
-                                    invokeSetter(entity, rs.getDouble(col), setter);
-                                    if (rs.wasNull()){ invokeSetter(entity, null, setter); }
-                                    break;
-                                case "java.lang.Boolean":
-                                    invokeSetter(entity, rs.getBoolean(col), setter);
-                                    if (rs.wasNull()){ invokeSetter(entity, null, setter); }
-                                    break;
-                                case "java.lang.String":
-                                    invokeSetter(entity, rs.getString(col), setter);
-                                    break;
-                                case "java.time.LocalDate":
-                                    java.sql.Date date = rs.getDate(col);
-                                    LocalDate ld = date != null ? date.toLocalDate() : null;
-                                    invokeSetter(entity, ld, setter);
-                                    break;
-                                case "java.time.LocalTime":
-                                    java.sql.Time time = rs.getTime(col);
-                                    LocalTime lt = time != null ? time.toLocalTime() : null;
-                                    invokeSetter(entity, lt, setter);
-                                    break;
-                                case "java.time.LocalDateTime":
-                                    java.sql.Timestamp timestamp = rs.getTimestamp(col);
-                                    LocalDateTime ldt = timestamp != null ? timestamp.toLocalDateTime() : null;
-                                    invokeSetter(entity, ldt, setter);
-                                    break;
-                                default:
-                                    LOGGER.warn("mapRow: Unknown column type" + field.getValueType().getName());
-                                    break;
-                            }
+                    if (field.getValueType().isEnum()) {
+                        try {
+                            Method valueOf = field.getValueType().getMethod("valueOf", String.class);
+                            Object value = valueOf.invoke(null, rs.getString(col));
+                            invokeSetter(entity, value, setter);
+                        } catch (Exception e) {
+                            Method valueOf = field.getValueType().getMethod("fromString", String.class);
+                            Object value = valueOf.invoke(null, rs.getString(col));
+                            invokeSetter(entity, value, setter);
+                        }
+                    } else {
+                        switch (field.getValueType().getName()) {
+                            case "int":
+                                invokeSetter(entity, rs.getInt(col), setter);
+                                break;
+                            case "long":
+                                invokeSetter(entity, rs.getLong(col), setter);
+                                break;
+                            case "float":
+                                invokeSetter(entity, rs.getFloat(col), setter);
+                                break;
+                            case "double":
+                                invokeSetter(entity, rs.getDouble(col), setter);
+                                break;
+                            case "boolean":
+                                invokeSetter(entity, rs.getBoolean(col), setter);
+                                break;
+                            case "java.util.UUID":
+                                invokeSetter(entity, UUID.fromString((rs.getString(col) == null ? "" :
+                                        rs.getString(col))), setter);
+                                break;
+                            case "java.lang.Integer":
+                                invokeSetter(entity, rs.getInt(col), setter);
+                                if (rs.wasNull()) {
+                                    invokeSetter(entity, null, setter);
+                                }
+                                break;
+                            case "java.lang.Long":
+                                invokeSetter(entity, rs.getLong(col), setter);
+                                if (rs.wasNull()) {
+                                    invokeSetter(entity, null, setter);
+                                }
+                                break;
+                            case "java.lang.Float":
+                                invokeSetter(entity, rs.getFloat(col), setter);
+                                if (rs.wasNull()) {
+                                    invokeSetter(entity, null, setter);
+                                }
+                                break;
+                            case "java.lang.Double":
+                                invokeSetter(entity, rs.getDouble(col), setter);
+                                if (rs.wasNull()) {
+                                    invokeSetter(entity, null, setter);
+                                }
+                                break;
+                            case "java.lang.Boolean":
+                                invokeSetter(entity, rs.getBoolean(col), setter);
+                                if (rs.wasNull()) {
+                                    invokeSetter(entity, null, setter);
+                                }
+                                break;
+                            case "java.lang.String":
+                                invokeSetter(entity, rs.getString(col), setter);
+                                break;
+                            case "java.time.LocalDate":
+                                java.sql.Date date = rs.getDate(col);
+                                LocalDate ld = date != null ? date.toLocalDate() : null;
+                                invokeSetter(entity, ld, setter);
+                                break;
+                            case "java.time.LocalTime":
+                                java.sql.Time time = rs.getTime(col);
+                                LocalTime lt = time != null ? time.toLocalTime() : null;
+                                invokeSetter(entity, lt, setter);
+                                break;
+                            case "java.time.LocalDateTime":
+                                java.sql.Timestamp timestamp = rs.getTimestamp(col);
+                                LocalDateTime ldt = timestamp != null ? timestamp.toLocalDateTime() : null;
+                                invokeSetter(entity, ldt, setter);
+                                break;
+                            default:
+                                LOGGER.warn("mapRow: Unknown column type" + field.getValueType().getName());
+                                break;
+                        }
                     }
                 } catch (InvocationTargetException e) {
-                        throw new RuntimeException(e);
-                    } catch (NoSuchMethodException e) {
-                        throw new RuntimeException(e);
-                    } catch (IllegalAccessException e) {
-                        throw new RuntimeException(e);
-                    }
-                    return entity;
+                    throw new RuntimeException(e);
+                } catch (NoSuchMethodException e) {
+                    throw new RuntimeException(e);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+            return entity;
 
         }
     }
@@ -537,3 +549,5 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
     }
 
 }
+
+
