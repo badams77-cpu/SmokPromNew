@@ -303,7 +303,8 @@ SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
 //
     @Bean
     public MajoranaAuthenticationFailureHandler getCustomAuthenticationFailureHandler(){
-        MajoranaAuthenticationFailureHandler customAuthenticationFailureHandler = new MajoranaAuthenticationFailureHandler();
+        MajoranaAuthenticationFailureHandler customAuthenticationFailureHandler =
+                new MajoranaAuthenticationFailureHandler();
         return customAuthenticationFailureHandler;
     }
 

@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 //@ConfigurationProperties()//(prefix= "smok-db")
 public class YamlDBConfig {
 
-    private static final String YAML_FILE = "/application.yml";
+    private static final String YAML_FILE = "/application_s.yml";
 
     private static final String PREFIX = "smok-db";
 

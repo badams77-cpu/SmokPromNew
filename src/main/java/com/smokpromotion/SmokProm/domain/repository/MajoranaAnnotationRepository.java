@@ -28,6 +28,7 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MajoranaAnnotationRepository.class);
 
+    private static final String EMPTY_UUID = "00000000-0000-0000-0000-000000000000";
     private static final String PACKAGE_BASE = "com.smokpromotion.SmokProm";
 
     private static final LocalDate defDate = LocalDate.of(1970,1,1);
@@ -73,7 +74,7 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
     protected String getUpdateStringNP(T sUser){
         StringBuffer buffy =  new StringBuffer();
         buffy.append(" SET "+ repoFields.stream().filter(x->!x.isTransient()).filter(x->x.isUpdateable())
-                .map(x->""+x.getDbColumn() + "" + ((x.isPopulatedUpdated())?"now() " : "="+x.getField().getName()))
+                .map(x->""+x.getDbColumn() + "=" + ((x.isPopulatedUpdated())?"now() " : ":"+x.getDbColumn()))
                 .collect(Collectors.joining(",") )+ " WHERE id=:id");
         return buffy.toString();
     }
@@ -413,7 +414,8 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
                                 invokeSetter(entity, rs.getBoolean(col), setter);
                                 break;
                             case "java.util.UUID":
-                                invokeSetter(entity, UUID.fromString((rs.getString(col) == null ? "" :
+                                invokeSetter(entity, UUID.fromString((rs.getString(col) == null ?
+                                        EMPTY_UUID:
                                         rs.getString(col))), setter);
                                 break;
                             case "java.lang.Integer":

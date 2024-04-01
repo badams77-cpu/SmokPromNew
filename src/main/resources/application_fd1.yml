@@ -1,5 +1,4 @@
 
-
 net:
   sf:
     jasperreports:
@@ -138,6 +137,6 @@ server:
   port: 9004
 ---
 spring.cache.type=redis
-spring.redis.host=192.168.1.75
+spring.redis.host=192.168.1.76
 spring.redis.port=6379
 spring.redis.password=redis10123

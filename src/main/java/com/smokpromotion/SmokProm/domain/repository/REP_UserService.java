@@ -98,7 +98,6 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
         S_User user = null;
         if (!users.isEmpty()) {
 
-            if (users.size() == 1) {
 
                 // A single user of with this email address has been found.
                 S_User legacyUser = users.get(0);
@@ -116,8 +115,6 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
                     LOGGER.debug("getUser: User found but is deleted - " + legacyUser.getIdString());
 
                 }
-
-            }
 
         }
         return user;
@@ -423,12 +420,13 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
 
     public int update(S_User sUser){
         int rowsAffected =0 ;
+        SqlParameterSource sps = getSqlParameterSource(sUser);
         if (dbFactory.getVariant(dbName)== DatabaseVariant.CASSANDRA){
-            rowsAffected = (int) dbConnectionFactory.getCassandraTemplate(dbName).stream().map(templ->templ.update(
-                    "UPDATE " + table + getUpdateString(sUser))).count();
+            String sql = "UPDATE " + table + getUpdateString(sUser);
+            rowsAffected = (int) dbConnectionFactory.getCassandraTemplate(dbName).stream().map(templ->templ.update(sql)).count();
         } else {
-            rowsAffected = (int) dbConnectionFactory.getJdbcTemplate(dbName).map(template->template.update(
-                    "UPDATE "+table + getUpdateString(sUser))).stream().count();
+            String sql1 = "UPDATE " + table + getUpdateStringNP(sUser);
+            rowsAffected = (int) dbConnectionFactory.getNamedParameterJdbcTemplate(dbName).map(template->template.update(sql1, sps)).stream().count();
             return rowsAffected;
 
         }
