@@ -177,16 +177,6 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
     // "select u.email, ur.role from user_roles ur, user u where ur.user_id = u.id and u.email=?"
 
 
-@Bean
-ReactiveAuthenticationManager authMan(){
-     ReactiveAuthenticationManager authMan = new ReactiveAuthenticationManager() {
-         @Override
-         public Mono<Authentication> authenticate(Authentication authentication) {
-             return Mono.just(authentication);
-         }
-     };
-     return authMan;
-}
 
 
 
@@ -214,8 +204,8 @@ SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
                             b.pathMatchers("/openapi/openapi.yml").permitAll()
                                     .anyExchange()
                                     .authenticated()
-            ).and()
-            .authenticationSuccessHandle( ash)
+            ).authenticationSuccessHandler( ash)
+            //.logoutSuccessHandler(lsh)
             .and()
             .anyExchange().denyAll();
     return http.build();
