@@ -1,6 +1,9 @@
 package com.smokpromotion.SmokProm.config.portal;
 
 import com.smokpromotion.SmokProm.util.CookieFactory;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +29,7 @@ import org.springframework.security.config.annotation.web.configurers.FormLoginC
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
@@ -42,6 +46,8 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Mono;
 
 import javax.naming.Context;
+
+import java.io.IOException;
 
 import static org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers.anyExchange;
 
@@ -171,11 +177,20 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
     // "select u.email, ur.role from user_roles ur, user u where ur.user_id = u.id and u.email=?"
 
 
+@Bean
+ReactiveAuthenticationManager authMan(){
+     ReactiveAuthenticationManager authMan = new ReactiveAuthenticationManager() {
+         @Override
+         public Mono<Authentication> authenticate(Authentication authentication) {
+             return Mono.just(authentication);
+         }
+     };
+     return authMan;
+}
 
 
 
 
-/*
 @Bean
 SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
                                             ReactiveAuthenticationManager reactiveAuthenticationManager) {
@@ -184,7 +199,13 @@ SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
         @Override
         public void customize(ServerHttpSecurity.FormLoginSpec fls) {
         }
+    };
 
+    AuthenticationSuccessHandler ash = new AuthenticationSuccessHandler() {
+        @Override
+        public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+            response.sendRedirect("/portal/private/home.html");
+        }
     };
 
     http.formLogin(flc)
@@ -193,19 +214,12 @@ SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
                             b.pathMatchers("/openapi/openapi.yml").permitAll()
                                     .anyExchange()
                                     .authenticated()
-            ).and().access((auth1, context1) ->
-
-                    {
-
-                        Authentication auth = (Authentication) auth1.block();
-
-                        AuthorizationContext context = (AuthorizationContext) context1;
-                        return ram.check(Mono.just(auth), context);
-                    }
-            )
+            ).and()
+            .authenticationSuccessHandle( ash)
+            .and()
             .anyExchange().denyAll();
     return http.build();
-}*/
+}
 
 
 
