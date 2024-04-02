@@ -33,6 +33,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
+import org.springframework.security.web.server.authentication.RedirectServerAuthenticationSuccessHandler;
 import org.springframework.security.web.server.authorization.AuthorizationContext;
 
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -187,24 +188,29 @@ SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
 
     Customizer flc = new Customizer<ServerHttpSecurity.FormLoginSpec>() {
         @Override
-        public void customize(ServerHttpSecurity.FormLoginSpec fls) {
+        public void customize(ServerHttpSecurity.FormLoginSpec fld) {
         }
     };
 
-    AuthenticationSuccessHandler ash = new AuthenticationSuccessHandler() {
+    AuthenticationSuccessHandler ash = new RedirectServerAuthenticationSuccessHandler() {
         @Override
         public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
             response.sendRedirect("/portal/private/home.html");
         }
     };
 
-    http.formLogin(flc)
-            .authorizeExchange(
-                    b ->
-                            b.pathMatchers("/openapi/openapi.yml").permitAll()
-                                    .anyExchange()
-                                    .authenticated()
-            ).authenticationSuccessHandler( ash)
+
+    //http // registerMatcher( a-> a
+      http      .authorizeExchange(
+                b ->
+                        b.pathMatchers("/openapi/openapi.yml").permitAll()
+                                .anyExchange()
+                                .authenticated()
+
+            );
+
+
+    http.FormLoginSpec().authenticationSuccessHandler( ash)
             //.logoutSuccessHandler(lsh)
             .and()
             .anyExchange().denyAll();
