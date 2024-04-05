@@ -34,6 +34,7 @@ import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
 import org.springframework.security.web.server.authentication.RedirectServerAuthenticationSuccessHandler;
+import org.springframework.security.web.server.authentication.ServerAuthenticationSuccessHandler;
 import org.springframework.security.web.server.authorization.AuthorizationContext;
 
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -70,11 +71,16 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MajoranaAccessDecisionManager.class);
 
+    private static final String LOGGED_IN_HOME_PAGE = "/portal/private/home.html";
+
     @Autowired
     private MajoranaCustomAPISecurityFilter majoranaCustomAPISecurityFilter;
 
     private MajoranaAccessDecisionManager decisionManager;
 
+
+    @Autowired
+    private ReactiveAuthenticationManager reactiveAuthenticationManager;
 
     // -----------------------------------------------------------------------------------------------------------------
     // Constructors
@@ -183,8 +189,7 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
 
 
 @Bean
-SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
-                                            ReactiveAuthenticationManager reactiveAuthenticationManager) {
+SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http) {
 
     Customizer flc = new Customizer<ServerHttpSecurity.FormLoginSpec>() {
         @Override
@@ -192,25 +197,29 @@ SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
         }
     };
 
-    AuthenticationSuccessHandler ash = new RedirectServerAuthenticationSuccessHandler() {
+    ServerAuthenticationSuccessHandler ash = new RedirectServerAuthenticationSuccessHandler(LOGGED_IN_HOME_PAGE);
+
+    ReactiveAuthorizationManager<AuthorizationContext> ram =  new ReactiveAuthorizationManager<AuthorizationContext>() {
         @Override
-        public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-            response.sendRedirect("/portal/private/home.html");
+        public Mono<AuthorizationDecision> check(Mono<Authentication> authentication, AuthorizationContext object) {
+            return checkAccess( authentication, object);
         }
     };
 
+    /*{
+        @Override
+        public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+            response.sendRedirect();
+        }
+    };*/
 
     //http // registerMatcher( a-> a
-      http      .authorizeExchange(
-                b ->
-                        b.pathMatchers("/openapi/openapi.yml").permitAll()
-                                .anyExchange()
-                                .authenticated()
+     http
 
-            );
+             .authorizeExchange( b->b.anyExchange().access(ram))
+              .FormLoginSpec().authenticationSuccessHandler( ash)
 
-
-    http.FormLoginSpec().authenticationSuccessHandler( ash)
+ //   http
             //.logoutSuccessHandler(lsh)
             .and()
             .anyExchange().denyAll();
@@ -221,13 +230,18 @@ SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
 
 /*
     @Override
-    public void configure(uSecurityBuilder securityBilder) throws Exception {
 
-       //         HttpBasicConfigurer http = (HttpBasicConfigurer) (
-       //         (HttpSecurityBuilder) securityBuilder)
-       //         .getConfigurer(HttpBasicConfigurer.class);
+ */
 
-        FormLoginConfigurer flc =         (FormLoginConfigurer) ((HttpSecurityBuilder) securityBuilder)
+/*
+
+    public void configure(SecurityBuilder securityBuilder) throws Exception {
+
+        //         HttpBasicConfigurer http = (HttpBasicConfigurer) (
+        //         (HttpSecurityBuilder) securityBuilder)
+        //         .getConfigurer(HttpBasicConfigurer.class);
+
+        FormLoginConfigurer flc = (FormLoginConfigurer) ((HttpSecurityBuilder) securityBuilder)
                 .getConfigurer(FormLoginConfigurer.class);
 
         flc
@@ -237,7 +251,7 @@ SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
                 .failureHandler(getCustomAuthenticationFailureHandler())
 //                .usernameParameter("email")
 //                .passwordParameter("password")
-                .defaultSuccessUrl("/login-handler")
+                .defaultSuccessUrl("/login-handler");
 
 //               http
 //                .addFilterBefore(majoranaCustomAPISecurityFilter, BasicAuthenticationFilter.class)
@@ -247,9 +261,9 @@ SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
 //                 permitAll items - should be a fairly restricted set of items
 //                .antMatchers("/","/css/**", "/images/**", "/public-js/**", "/login-handler","/login", "/client-login/**", "/exact-login","/favicon.ico", "/prec/**","/actuator/health" )
 //                .permitAll();
- //               .antMatchers(HttpMethod.POST, "/client-login-post").permitAll()
+        //               .antMatchers(HttpMethod.POST, "/client-login-post").permitAll()
 
-                // authenticated only - not role group specific
+        // authenticated only - not role group specific
 //                .antMatchers("/landing-page","/error", "/dashboard/ops/**", "/userpermission/api/**","/application-permission-admin/api/**","/dashboard/toReport/**", "/practices/lastupdate/**", "/development/**", "/dashboard/ceo/api/**", "/tips/api/**", "/notifications/**","/static/media/**",
 //                        "/practice-setup", "/settings/**", "/version-history", "/videos/**", "/accessDenied","/js-error", "/csrf-token", "/portal/api/userInformation", "/support","/your-account","/change-password/**", "/send-communication/**").authenticated()
 //                .antMatchers("/generic/api/**").authenticated()
@@ -258,26 +272,26 @@ SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
 //                .antMatchers("/js/adminportal/**").denyAll()
 //                .antMatchers("/js/dentistportal/**").denyAll()
 //                .antMatchers("/js/**").authenticated()
-                // used for users-in-group, email job endpoints, kpi goal endpoints
+        // used for users-in-group, email job endpoints, kpi goal endpoints
 //                .antMatchers(HttpMethod.GET, "/generic/api/**").authenticated()
 //                .antMatchers(HttpMethod.PATCH, "/generic/api/**").authenticated()
 //                .antMatchers(HttpMethod.POST, "/generic/api/**").authenticated()
 
 //                .antMatchers(HttpMethod.PUT, "/generic/api/**").authenticated()
 
-                // authenticated and role group specific
+        // authenticated and role group specific
 //                .antMatchers("/{basePath}/{path}/**").access("@MajoranaAccessDecision.allowSection(request, authentication, #basePath, #path)")
-//                .antMatchers("/{basePath}/**").access("@MajoranaAccessDecision.allowSection(request, authentication, #basePath)")
+//                .antMatchers("/{basePath}/**").access("@MajoraProfnaAccessDecision.allowSection(request, authentication, #basePath)")
 //                .anyRequest().authenticated();
 
 //        http.logout().logoutSuccessUrl("/");
 
 //        http.exceptionHandling().accessDeniedHandler(MajoranaAccessDeniedHandler());
-        
 
 
+    }
 
-   */
+*/
 
 
 
