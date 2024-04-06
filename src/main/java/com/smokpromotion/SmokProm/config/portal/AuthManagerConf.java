@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authorization.AuthorizationDecision;
@@ -18,11 +20,15 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.server.WebFilterExchange;
 import org.springframework.security.web.server.authentication.RedirectServerAuthenticationSuccessHandler;
 import org.springframework.security.web.server.authentication.ServerAuthenticationSuccessHandler;
 import org.springframework.security.web.server.authorization.AuthorizationContext;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
+
+import java.net.URI;
 
 @Lazy
 @Component
@@ -56,7 +62,30 @@ public class AuthManagerConf {
             }
         };
 
-        ServerAuthenticationSuccessHandler ash = new RedirectServerAuthenticationSuccessHandler(LOGGED_IN_HOME_PAGE);
+        ServerAuthenticationSuccessHandler ash = new ServerAuthenticationSuccessHandler(){
+            @Override
+            public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange, Authentication authentication) {
+
+                LOGGER.warn("Auth Success "+authentication.isAuthenticated()+" "+authentication.getName()
+                        +" from "+ webFilterExchange.getExchange().getRequest().getRemoteAddress() );
+
+                ServerHttpResponse swe = webFilterExchange.getExchange().getResponse();
+
+                // Set HTTP status code to 302 (Found) for redirection
+                swe.setStatusCode(HttpStatus.FOUND);
+                swe.getHeaders().setLocation(URI.create(LOGGED_IN_HOME_PAGE));
+
+                return swe.setComplete();
+
+       //         webFilterExchange.getExchange().getResponse().writeAndFlushWith()
+                //return null;.
+            }
+
+   //         public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+   //             response.sendRedirect();
+   //         }
+            // LOGGED_IN_HOME_PAGE
+        };
 
         ReactiveAuthorizationManager<AuthorizationContext> ram =  new ReactiveAuthorizationManager<AuthorizationContext>() {
             @Override
