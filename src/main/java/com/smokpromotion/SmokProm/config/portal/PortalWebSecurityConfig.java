@@ -4,6 +4,7 @@ import com.smokpromotion.SmokProm.util.CookieFactory;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.NotNull;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,8 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authorization.AuthorizationDecision;
@@ -79,7 +82,12 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
     private MajoranaAccessDecisionManager decisionManager;
 
 
-    @Autowired
+
+    private ServerHttpSecurity serverHttpSecurity;
+
+    private HttpSecurity httpSecurity;
+
+
     private ReactiveAuthenticationManager reactiveAuthenticationManager;
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -101,13 +109,7 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
     }
 
 
-    @Bean
-    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder =
-                http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.authenticationProvider(portalCustomAuthenticationProvider);
-        return authenticationManagerBuilder.build();
-    }
+
 
 
     @Override
@@ -118,16 +120,22 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
         } else if (auth instanceof WebSecurity) {
 
         }
+
     }
 
     //SecurityBuilder
     @Override
+
     public void configure(SecurityBuilder auth) throws Exception {
         if (auth instanceof AuthenticationManagerBuilder) {
             AuthenticationManagerBuilder b = (AuthenticationManagerBuilder) auth;
             b.authenticationProvider(portalCustomAuthenticationProvider);
         } else if (auth instanceof WebSecurity) {
 
+        } else if (auth instanceof ServerHttpSecurity) {
+            serverHttpSecurity = (ServerHttpSecurity) auth.build();
+        } else if (auth instanceof HttpSecurity) {
+            httpSecurity = (HttpSecurity) (auth.build());
         }
     }
 
@@ -184,12 +192,71 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
     // "select u.email, ur.role from user_roles ur, user u where ur.user_id = u.id and u.email=?"
 
 
+    public PortalCustomAuthenticationProvider getPortalCustomAuthenticationProvider() {
+        return portalCustomAuthenticationProvider;
+    }
 
+    public void setPortalCustomAuthenticationProvider(PortalCustomAuthenticationProvider portalCustomAuthenticationProvider) {
+        this.portalCustomAuthenticationProvider = portalCustomAuthenticationProvider;
+    }
 
+    public CsrfTokenRepository getCsrfTokenRepository() {
+        return csrfTokenRepository;
+    }
 
+    public void setCsrfTokenRepository(CsrfTokenRepository csrfTokenRepository) {
+        this.csrfTokenRepository = csrfTokenRepository;
+    }
 
-@Bean
-SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http) {
+    public MajoranaCustomAPISecurityFilter getMajoranaCustomAPISecurityFilter() {
+        return majoranaCustomAPISecurityFilter;
+    }
+
+    public void setMajoranaCustomAPISecurityFilter(MajoranaCustomAPISecurityFilter majoranaCustomAPISecurityFilter) {
+        this.majoranaCustomAPISecurityFilter = majoranaCustomAPISecurityFilter;
+    }
+
+    public MajoranaAccessDecisionManager getDecisionManager() {
+        return decisionManager;
+    }
+
+    public void setDecisionManager(MajoranaAccessDecisionManager decisionManager) {
+        this.decisionManager = decisionManager;
+    }
+
+    public ServerHttpSecurity getServerHttpSecurity() {
+        return serverHttpSecurity;
+    }
+
+    public void setServerHttpSecurity(ServerHttpSecurity serverHttpSecurity) {
+        this.serverHttpSecurity = serverHttpSecurity;
+    }
+
+    public HttpSecurity getHttpSecurity() {
+        return httpSecurity;
+    }
+
+    public void setHttpSecurity(HttpSecurity httpSecurity) {
+        this.httpSecurity = httpSecurity;
+    }
+
+    public ReactiveAuthenticationManager getReactiveAuthenticationManager() {
+        return reactiveAuthenticationManager;
+    }
+
+    public void setReactiveAuthenticationManager(ReactiveAuthenticationManager reactiveAuthenticationManager) {
+        this.reactiveAuthenticationManager = reactiveAuthenticationManager;
+    }
+
+    @Bean
+@Order(-100)
+SecurityWebFilterChain springWebFilterChain() {
+
+    ServerHttpSecurity http = serverHttpSecurity;
+
+    if (http==null){
+        LOGGER.error("springWebFilterChain not set serverHttpSecurity is null");
+    }
 
     Customizer flc = new Customizer<ServerHttpSecurity.FormLoginSpec>() {
         @Override
