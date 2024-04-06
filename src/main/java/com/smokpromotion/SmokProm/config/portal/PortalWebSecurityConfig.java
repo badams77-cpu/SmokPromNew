@@ -216,13 +216,16 @@ SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http) {
     //http // registerMatcher( a-> a
      http
 
-             .authorizeExchange( b->b.anyExchange().access(ram))
-              .FormLoginSpec().authenticationSuccessHandler( ash)
+             .authorizeExchange( b->b.anyExchange().access(ram));
+          //   .and()
+          //   .anyExchange().denyAll();;
+
+     http.formLogin()
+              .authenticationSuccessHandler( ash);
 
  //   http
             //.logoutSuccessHandler(lsh)
-            .and()
-            .anyExchange().denyAll();
+
     return http.build();
 }
 
