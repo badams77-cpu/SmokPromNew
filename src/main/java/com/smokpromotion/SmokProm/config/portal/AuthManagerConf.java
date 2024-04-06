@@ -24,6 +24,7 @@ import org.springframework.security.web.server.authorization.AuthorizationContex
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
+@Lazy
 @Component
 public class AuthManagerConf {
 
@@ -34,6 +35,7 @@ public class AuthManagerConf {
 
     private static final String LOGGED_IN_HOME_PAGE = "/portal/private/home.html";
 
+    @Autowired
     private MajoranaAccessDecisionManager decisionManager;
 
 
