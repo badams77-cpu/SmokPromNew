@@ -74,12 +74,10 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MajoranaAccessDecisionManager.class);
 
-    private static final String LOGGED_IN_HOME_PAGE = "/portal/private/home.html";
+
 
     @Autowired
     private MajoranaCustomAPISecurityFilter majoranaCustomAPISecurityFilter;
-
-    private MajoranaAccessDecisionManager decisionManager;
 
 
 
@@ -151,7 +149,7 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
         return registration;
     }
 
-
+/*
     public Mono<AuthorizationDecision> checkAccess(Mono authentication, Object object) {
         Authentication auth = (Authentication) authentication.block();
 
@@ -173,7 +171,7 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
         }
         return Mono.just( new AuthorizationDecision(false));
     }
-
+*/
 
 
 
@@ -216,13 +214,7 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
         this.majoranaCustomAPISecurityFilter = majoranaCustomAPISecurityFilter;
     }
 
-    public MajoranaAccessDecisionManager getDecisionManager() {
-        return decisionManager;
-    }
 
-    public void setDecisionManager(MajoranaAccessDecisionManager decisionManager) {
-        this.decisionManager = decisionManager;
-    }
 
     public ServerHttpSecurity getServerHttpSecurity() {
         return serverHttpSecurity;
@@ -248,53 +240,6 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
         this.reactiveAuthenticationManager = reactiveAuthenticationManager;
     }
 
-    @Bean
-@Order(-100)
-SecurityWebFilterChain springWebFilterChain() {
-
-    ServerHttpSecurity http = serverHttpSecurity;
-
-    if (http==null){
-        LOGGER.error("springWebFilterChain not set serverHttpSecurity is null");
-    }
-
-    Customizer flc = new Customizer<ServerHttpSecurity.FormLoginSpec>() {
-        @Override
-        public void customize(ServerHttpSecurity.FormLoginSpec fld) {
-        }
-    };
-
-    ServerAuthenticationSuccessHandler ash = new RedirectServerAuthenticationSuccessHandler(LOGGED_IN_HOME_PAGE);
-
-    ReactiveAuthorizationManager<AuthorizationContext> ram =  new ReactiveAuthorizationManager<AuthorizationContext>() {
-        @Override
-        public Mono<AuthorizationDecision> check(Mono<Authentication> authentication, AuthorizationContext object) {
-            return checkAccess( authentication, object);
-        }
-    };
-
-    /*{
-        @Override
-        public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-            response.sendRedirect();
-        }
-    };*/
-
-    //http // registerMatcher( a-> a
-     http
-
-             .authorizeExchange( b->b.anyExchange().access(ram));
-          //   .and()
-          //   .anyExchange().denyAll();;
-
-     http.formLogin()
-              .authenticationSuccessHandler( ash);
-
- //   http
-            //.logoutSuccessHandler(lsh)
-
-    return http.build();
-}
 
 
 
