@@ -41,8 +41,15 @@ public class SmokDataSource {
         switch(DatabaseVariant.getFromDescription(cred.getVariant().getDescription())){
             case MYSQL:
                 url = String.format(
-                        "jdbc:mysql://%s/%s?zeroDateTimeBehavior=convertToNull&useSSL=%s&verifyServerCertificate=%s",
-                        cred.getHostAddress(), cred.getRemoteDatabaseNameAtService(),cred.isVerifySSLCert(),  cred.isUseSSL(), cred.isVerifySSLCert());
+                        "jdbc:mysql://%s/%s?zeroDateTimeBehavior=convertToNull&useSSL=%s"+"" +
+                                "&verifyServerCertificate=%s&allowPublicKeyRetrieval=%s",
+                        cred.getHostAddress(),
+                        cred.getRemoteDatabaseNameAtService(),
+                        cred.isVerifySSLCert(),
+                        cred.isUseSSL(),
+                        cred.isVerifySSLCert(),
+                        cred.isAllowPublicKeyRetrieval()
+                );
 //                ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
             break;
             case SQL_SERVER:

@@ -18,6 +18,14 @@ public class DBCreds {
     private static final String ENV_VAR_GROUP = "group";
     private static final String ENV_VAR_USE_SSL = "useSSL";
     private static final String ENV_VAR_VERIFY_SSL_CERT = "verifySSL";
+    private static final String ENV_VAR_ALLOW_PUBLIC_KEY_RETRIEVAL = "allowPublicKeyRetrieval";
+
+    private static final String ENV_VAR_CASS_MASTER = "cassMaster";
+    private static final String ENV_VAR_CASS_MASTER_IP_ADDR = "cassMasterIpAddr";
+    private static final String ENV_VAR_CASS_MASTER_PORT = "cassMassPort";
+
+    private static final String ENV_VAR_CASS_SLAVE_IP_ADDR = "cassSlaveIpAddr";
+    private static final String ENV_VAR_CASS_SLAVE_PORT = "cassSlavePort";
 
     private static final String[] ENV_VARS = {
                 ENV_VAR_NAME,
@@ -32,7 +40,12 @@ public class DBCreds {
                 ENV_VAR_PRIORITY,
                 ENV_VAR_GROUP,
                 ENV_VAR_USE_SSL,
-                ENV_VAR_VERIFY_SSL_CERT
+                ENV_VAR_VERIFY_SSL_CERT,
+                ENV_VAR_CASS_MASTER,
+                ENV_VAR_CASS_MASTER_IP_ADDR,
+                ENV_VAR_CASS_MASTER_PORT,
+            ENV_VAR_CASS_SLAVE_PORT,
+            ENV_VAR_CASS_SLAVE_IP_ADDR
     };
 
 
@@ -50,6 +63,9 @@ public class DBCreds {
     private final boolean useSSL;
     private final boolean verifySSLCert;
     private final String isolationLevel;
+    private final boolean allowPublicKeyRetrieval;
+    private final boolean cassMaster;
+
 
     public DBCreds(){
         this.name = new SmokDatasourceName("");
@@ -65,12 +81,13 @@ public class DBCreds {
         this.isolationLevel = "";
         this.useSSL = false;
         this.verifySSLCert = false;
+        this.allowPublicKeyRetrieval = true;
+        this.cassMaster = false;
     }
-
     public DBCreds(SmokDatasourceName name, String
-            group, int  priorty, DatabaseVariant variant, String remoteDatabaseNameAtService, boolean enabled,
+            group, int  priority, DatabaseVariant variant, String remoteDatabaseNameAtService, boolean enabled,
                    String hostAddress, int port, String username, String passwd, boolean useSSL, boolean verifySSLCert,
-            String isolationLevel)
+            String isolationLevel, boolean allowPublicKeyRetrieval, boolean cassMaster)
     {
         this.isolationLevel = isolationLevel;
         this.name = name;
@@ -78,13 +95,15 @@ public class DBCreds {
         this.variant = variant;
         this.hostAddress = hostAddress;
         this.port = port;
-        this.priority =priorty;
+        this.priority =priority;
         this.remoteDatabaseNameAtService = remoteDatabaseNameAtService;
         this.username = username;
         this.passwd = passwd;
         this.group = group;
         this.useSSL = useSSL;
         this.verifySSLCert = verifySSLCert;
+        this.allowPublicKeyRetrieval = allowPublicKeyRetrieval;
+        this.cassMaster = cassMaster;
     }
 
     DBCreds(Map<String, String> cred)
@@ -94,14 +113,18 @@ public class DBCreds {
         this.enabled = Boolean.valueOf(cred.getOrDefault(ENV_VAR_ENABLED, "false"));
         this.variant = DatabaseVariant.getFromDescription(cred.getOrDefault(ENV_VAR_DB_VARIANT,""));
         this.hostAddress = cred.getOrDefault(ENV_VAR_HOST_ADDRESS,"");
-        this.port = Integer.parseInt(cred.getOrDefault(ENV_VAR_PORT, "0"));
+       this.port = Integer.parseInt(cred.getOrDefault(ENV_VAR_PORT, "0"));
         this.priority = Integer.parseInt(cred.getOrDefault(ENV_VAR_PRIORITY,"0"));
         this.remoteDatabaseNameAtService = cred.getOrDefault(ENV_VAR_REMOTE_DATABASE_NAME_AT_SERVICE,"" );
         this.username = cred.getOrDefault(ENV_VAR_USERNAME,"");
-        this.passwd = cred.getOrDefault(ENV_VAR_PASSWD,"");
-        this.group = cred.getOrDefault(ENV_VAR_GROUP,"");
-        this.useSSL = Boolean.getBoolean(cred.getOrDefault(ENV_VAR_VERIFY_SSL_CERT, "tree"));
+        this.cassMaster =Boolean.valueOf(cred.getOrDefault(ENV_VAR_CASS_MASTER,""));
+        this.group = cred.getOrDefault(ENV_VAR_GROUP,"");      this.useSSL = Boolean.getBoolean(cred.getOrDefault(ENV_VAR_VERIFY_SSL_CERT, "tree"));
         this.verifySSLCert = Boolean.getBoolean(cred.getOrDefault(ENV_VAR_VERIFY_SSL_CERT, "tree"));
+        this.allowPublicKeyRetrieval = Boolean.getBoolean(cred.getOrDefault( ENV_VAR_ALLOW_PUBLIC_KEY_RETRIEVAL,"true"));
+        this.passwd = cred.getOrDefault(ENV_VAR_PASSWD, "");
+    }
+    public boolean isAllowPublicKeyRetrieval() {
+        return allowPublicKeyRetrieval;
     }
 
     public static String[] getCredFields(){
