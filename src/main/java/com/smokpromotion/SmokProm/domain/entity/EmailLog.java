@@ -1,0 +1,19 @@
+package com.smokpromotion.SmokProm.domain.entity;
+
+
+
+public class DE_EmailLog extends BaseSmokEntity {
+
+
+    @Column("id")
+    private UUID id;
+    @Column("userid")
+    private String userid;
+    @Column("error_message")
+    private String errorMessage;
+    @Column("status")
+    private String status;
+
+
+
+}

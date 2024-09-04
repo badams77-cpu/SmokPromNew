@@ -259,6 +259,56 @@ public class MajoranaAnnotationRepository<T extends BaseSmokEntity> {
         return sourceMap;
     }
 
+    private MajoranaRepositoryField getRepoField(String fieldName){
+        return repoFields.stream().filter( f->fieldName.equals( f.getName())).findFirst().orElse(null);
+    }
+
+    public boolean setField(T entity, String fieldName, Object value){
+
+        MajoranaRepositoryField field = getRepoField(fieldName);
+        if (field == null ){
+            LOGGER.warn("setField field "+field.getName()+" not found");
+            return false;
+        }
+        Method setter = field.getSetter();
+        try {
+            invokeSetter(entity, value, setter);
+            return true;
+        } catch (IllegalArgumentException e_arg){
+            LOGGER.warn("setField field "+field.getName()+" field value illegal",e_arg);
+            return false;
+        } catch (InvocationTargetException e_inv){
+            LOGGER.warn("setField field "+field.getName()+" field target illegal",e_inv);
+            return false;
+        } catch (IllegalAccessException e_acc){
+            LOGGER.warn("setField field "+field.getName()+" field access illegal",e_acc);
+            return false;
+        }
+    }
+
+    public boolean getField(T entity, String fieldName){
+
+        MajoranaRepositoryField field = getRepoField(fieldName);
+        if (field == null ){
+            LOGGER.warn("getField field "+field.getName()+" not found");
+            return false;
+        }
+        Method getter = field.getGetter();
+        try {
+            invokeGetter(entity, getter);
+            return true;
+        } catch (IllegalArgumentException e_arg){
+            LOGGER.warn("getField field "+field.getName()+" field value illegal",e_arg);
+            return false;
+        } catch (InvocationTargetException e_inv){
+            LOGGER.warn("getField field "+field.getName()+" field target illegal",e_inv);
+            return false;
+        } catch (IllegalAccessException e_acc){
+            LOGGER.warn("getField field "+field.getName()+" field access illegal",e_acc);
+            return false;
+        }
+    }
+
     private void setPreparedStatementFields(PreparedStatement ps,T entity) throws SQLException {
         Map<String, Object> sourceMap = new HashMap<>();
         int i = 1;

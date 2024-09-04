@@ -28,4 +28,6 @@ public class DE_TwitterSearch extend BaseSmokEntity {
     @Column(name="status")
     private String status;
 
+
+
 }

@@ -1,18 +1,6 @@
 
 public class EmailQueue extends BaseSmokEntity {
 
-  @Column("id")
-  private UUID id;
-
-  @Column("receipient_email")
-  private String receipientEmail;
-
-  @Column("title_text")
-  private String titleText;
-
-  @Column("body_tex"")
-  private String bodyText;
-
 
 
 

@@ -1,9 +1,17 @@
-import org.gradle.api.internal.file.CopyActionProcessingStreamAction
-import org.gradle.api.internal.file.copy.FileCopyDetailsInternal
-import org.gradle.api.services.BuildService
+buildscript {
+    repositories {
+        maven {
+            url = uri("https://plugins.gradle.org/m2/")
+        }
 
-import javax.annotation.Nullable
-import java.time.Duration
+    }
+
+    dependencies {
+        classpath("io.spring.gradle:dependency-management-plugin:1.1.4")
+    }
+}
+
+
 
 plugins {
     id 'java'
@@ -22,7 +30,7 @@ plugins {
 
      repositories {
          maven {
-             url "https://plugins.gradle.org/m2m2/"
+             url "https://plugins.gradle.org/m2/"
          }
          maven {
              url "https://repo1.maven.org/maven2/"

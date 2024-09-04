@@ -192,7 +192,6 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
         List<List<S_User>> res = new LinkedList<>();
 
         try {
-
             switch (dbConnectionFactory.getVariant(dbName)) {
 
                 case CASSANDRA:
@@ -218,10 +217,7 @@ public class REP_UserService extends MajoranaAnnotationRepository<S_User>{
         } catch (Exception e){
             LOGGER.warn("Exception e geting User",e);
         }
-
-
         return res.stream().flatMap( s -> s.stream() ).collect(Collectors.toList());
-
     }
 
 
