@@ -170,7 +170,7 @@ jar {
 
          implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-         implementation group: 'org.flywaydb', name: 'flyway-core'
+//         implementation group: 'org.flywaydb', name: 'flyway-core'
 
      }
 

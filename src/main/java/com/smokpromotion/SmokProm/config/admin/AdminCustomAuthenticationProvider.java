@@ -3,7 +3,6 @@ package com.smokpromotion.SmokProm.config.admin;
 import com.smokpromotion.SmokProm.domain.entity.AdminUser;
 import com.smokpromotion.SmokProm.util.GenericUtils;
 import com.smokpromotion.SmokProm.util.PwCryptUtil;
-import com.smokpromotion.SmokProm.domain.repository.REP_AdminUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

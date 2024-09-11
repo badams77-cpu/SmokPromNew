@@ -1,7 +1,6 @@
 package com.smokpromotion.SmokProm.config.portal;
 
 import com.smokpromotion.SmokProm.domain.entity.S_User;
-import com.smokpromotion.SmokProm.domain.repository.REP_UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

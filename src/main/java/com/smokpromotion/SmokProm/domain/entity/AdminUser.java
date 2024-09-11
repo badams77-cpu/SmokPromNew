@@ -1,11 +1,7 @@
 package com.smokpromotion.SmokProm.domain.entity;
 
-import com.smokpromotion.SmokProm.domain.repository.Updateable;
 import com.smokpromotion.SmokProm.util.SecVnEnum;
-import org.apache.commons.lang3.text.WordUtils;
 
-import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import jakarta.persistence.Column;
@@ -15,43 +11,40 @@ import jakarta.persistence.Column;
 
 public class AdminUser  extends BaseSmokEntity  {
 
-    @Updateable
+    private static final String TABLE_NAME = "admin_users";
+
     @org.springframework.data.cassandra.core.mapping.Column("username")
     @Column(name="username")
     private String username;
-    @Updateable
     @org.springframework.data.cassandra.core.mapping.Column("firstname")
     @Column(name="firstname")
     private String firstname;
-    @Updateable
     @org.springframework.data.cassandra.core.mapping.Column("lastname")
     @Column(name="lastname")
     private String lastname;
     @org.springframework.data.cassandra.core.mapping.Column("passwd")
     @Column(name="passwd")
-    @Updateable
     private String userpw;
     @Column(name="secVn")
     @org.springframework.data.cassandra.core.mapping.Column("secVn")
-    @Updateable
     private int secVn;
     @org.springframework.data.cassandra.core.mapping.Column("last_login")
     @Column(name="last_login")
-    @Updateable
     private LocalDateTime lastvisit;
     @Column(name="useractive")
-    @Updateable
     @org.springframework.data.cassandra.core.mapping.Column("useractive")
     private boolean useractive;
     @org.springframework.data.cassandra.core.mapping.Column("change_pass_token")
     @Column(name="change_pass_token")
-    @Updateable
     private String changePassToken;
 
     @org.springframework.data.cassandra.core.mapping.Column("change_pass_token_created")
     @Column(name="change_pass_token_created")
-    @Updateable
     private LocalDateTime changePassTokenCreate;
+
+    public static String getTableNameStatic(){
+        return TABLE_NAME;
+    }
 
     public AdminUser(){
 

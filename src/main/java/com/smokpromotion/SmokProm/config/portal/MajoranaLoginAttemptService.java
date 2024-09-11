@@ -3,7 +3,7 @@ package com.smokpromotion.SmokProm.config.portal;
 import java.time.LocalDateTime;
 
 import com.smokpromotion.SmokProm.domain.entity.S_User;
-import com.smokpromotion.SmokProm.domain.repository.REP_UserService;
+import com.smokpromotion.SmokProm.domain.repo.REP_UserService;
 import com.smokpromotion.SmokProm.util.GenericUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,9 +72,15 @@ public class MajoranaLoginAttemptService {
         this.MAX_ATTEMPT = MAX_ATTEMPT;
     }
 
-    public void loginSucceeded(String key) {
+    public void loginSucceeded(String key)  {
         String method = "loginSucceeded(...) - ";
-        S_User user = userService.getUser(key);
+
+        S_User user = null;
+        try {
+            user =userService.findByName(key);
+        } catch (Exception e){
+            LOGGER.warn("Cound not find user",e);
+        }
         if (user != null) {
             loginSucceeded(user);
         } else {
@@ -100,7 +106,10 @@ public class MajoranaLoginAttemptService {
     }
 
     public void loginFailed(String key) {
-        S_User user = userService.getUser(key);
+        S_User user = null;
+        try {
+            user = userService.findByName(key);
+        } catch (Exception e){}
         if (user != null) {
             loginFailed(user);
         } else {
@@ -149,7 +158,12 @@ public class MajoranaLoginAttemptService {
 
     public boolean isPasswordRecoveryInProgress(String key) {
         boolean ret = false;
-        S_User user = userService.getUser(key);
+        S_User user = new S_User();
+        try {
+           user = userService.findByName(key);
+        } catch (Exception e){
+            LOGGER.warn("Could not find user "+key);
+        }
 
         return user.getChangePassTokenCreate()!=null &&
                 user.getChangePassTokenCreate().

@@ -2,7 +2,6 @@ package com.smokpromotion.SmokProm.util;
 
 import com.smokpromotion.SmokProm.config.portal.PortalSecurityPrinciple;
 import com.smokpromotion.SmokProm.domain.entity.IdAndKeyId;
-import com.smokpromotion.SmokProm.domain.repository.AbstractRotatableKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

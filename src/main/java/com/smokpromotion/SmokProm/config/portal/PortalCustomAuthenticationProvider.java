@@ -2,7 +2,6 @@ package com.smokpromotion.SmokProm.config.portal;
 
 
 import com.smokpromotion.SmokProm.domain.entity.S_User;
-import com.smokpromotion.SmokProm.domain.repository.REP_UserService;
 import com.smokpromotion.SmokProm.util.GenericUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
