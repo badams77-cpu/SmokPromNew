@@ -32,6 +32,7 @@ public class REP_UserService {
     public REP_UserService(){
         DbBean dBean = new DbBean();
         try {
+            dBean.connect();
             userRepo = dBean.getTypedBean(S_User.class);
         } catch (ClassNotFoundException | SQLException e){
             LOGGER.error("Class S_User not found");

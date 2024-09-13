@@ -91,7 +91,7 @@ jar {
 
          implementation('org.springframework.boot:spring-boot-starter-web')
          implementation('org.springframework.boot:spring-boot-starter-security')
-         implementation('org.springframework.boot:spring-boot-starter-tomcat')
+         implementation('org.springframework.boot:spring-boot-starter-tomcat:3.3.3')
          implementation 'net.bytebuddy:byte-buddy:1.14.12'
 
 // https://mvnrepository.com/artifact/org.slf4j/slf4j-reload4j

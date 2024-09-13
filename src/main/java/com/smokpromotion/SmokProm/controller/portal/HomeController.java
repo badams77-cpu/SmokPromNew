@@ -10,7 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 @Profile("smok_app")
 @Controller
-public class HomeController extends BaseController{
+public class HomeController extends PortalBaseController {
 
     @RequestMapping("/home")
     public String home(Model m, Authentication auth) throws UserNotFoundException, NotLoggedInException

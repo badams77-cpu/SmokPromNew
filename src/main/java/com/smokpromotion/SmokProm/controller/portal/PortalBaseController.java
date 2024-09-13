@@ -1,9 +1,7 @@
-package com.smokpromotion.SmokProm.controller.admin;
+package com.smokpromotion.SmokProm.controller.portal;
 
 import com.smokpromotion.SmokProm.config.portal.PortalSecurityPrinciple;
-import com.smokpromotion.SmokProm.domain.entity.AdminUser;
 import com.smokpromotion.SmokProm.domain.entity.S_User;
-import com.smokpromotion.SmokProm.domain.repo.REP_AdminUserService;
 import com.smokpromotion.SmokProm.domain.repo.REP_UserService;
 import com.smokpromotion.SmokProm.exceptions.NotLoggedInException;
 import com.smokpromotion.SmokProm.exceptions.UserNotFoundException;
@@ -12,15 +10,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 
 @Controller
-public class BaseController {
+public class PortalBaseController {
 
-    protected static final String PRIBASE = "/admin/private/";
+    protected static final String PRIBASE = "/portal/private/";
 
     @Autowired
-    REP_AdminUserService userService;
+    REP_UserService userService;
 
 
-    public AdminUser getAuthUser(Authentication auth) throws UserNotFoundException, NotLoggedInException {
+    public S_User getAuthUser(Authentication auth) throws UserNotFoundException, NotLoggedInException {
         Object prince = auth.getPrincipal();
         if (prince==null || !(prince instanceof PortalSecurityPrinciple)) throw new NotLoggedInException("Please login first");
         PortalSecurityPrinciple principle = (PortalSecurityPrinciple) prince;
