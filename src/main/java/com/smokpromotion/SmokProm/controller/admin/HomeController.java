@@ -8,13 +8,14 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Profile("app")
+
 @Controller
 public class HomeController extends BaseController {
 
-    @RequestMapping("/home")
+    @GetMapping("/home")
     public String home(Model m, Authentication auth) throws UserNotFoundException, NotLoggedInException
     {
         S_User user = getAuthUser(auth);

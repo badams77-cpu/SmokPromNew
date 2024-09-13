@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: org.springframework:spring-tx:6.0.21" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="org.springframework" artifactId="spring-tx" version="6.0.21" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../../../gradle/gradle-8.4/caches/modules-2/files-2.1/org.springframework/spring-tx/6.0.21/1bf6e69adc761d6702219e413b949c5a21da9aa0/spring-tx-6.0.21.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

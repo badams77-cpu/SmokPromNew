@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@SpringBootApplication
+@Component
 public class AppRunner implements ApplicationRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppRunner.class);
@@ -54,7 +54,8 @@ public class AppRunner implements ApplicationRunner {
 
     @Value("${smok.searchrunner.version:0.1.0}")
     private String smpkSearchRunneVersionString;
-    
+
+
     public void run(ApplicationArguments args) throws SQLException {
 
         Set<String> activeProfiles = Arrays.stream(env.getActiveProfiles()).collect(Collectors.toSet());
@@ -80,9 +81,9 @@ public class AppRunner implements ApplicationRunner {
         }
 
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
-        ctx.register(DbBean.class);
-        ctx.register(DBEnvSetup.class);
-        ctx.register(YamlDBConfig.class);
+     //   ctx.register(DbBean.class);
+     //   ctx.register(DBEnvSetup.class);
+     //   ctx.register(YamlDBConfig.class);
         ctx.refresh();
 
         LOGGER.warn(String.format("smok %s Application startup completed - version: %s", smokAppVariantDesc, smokAppVersionDesc));

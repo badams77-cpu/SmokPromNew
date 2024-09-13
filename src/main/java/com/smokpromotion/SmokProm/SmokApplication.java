@@ -2,12 +2,10 @@ package com.smokpromotion.SmokProm;
 
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.CqlSessionBuilder;
-import com.majorana.maj_orm.ORM_ACCESS.DbBean;
 import com.smokpromotion.SmokProm.config.common.YamlDBConfig;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
-import org.apache.logging.log4j.core.appender.ConsoleAppender;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.boot.SpringApplication;
@@ -20,18 +18,10 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
 
+@SpringBootApplication
+public class SmokApplication  {
 
-public class SmokApplication extends SpringBootServletInitializer {
 
-	@Override
-	public void onStartup(ServletContext servletContext) throws ServletException {
-	//	DbBean dbBean = new DbBean();
-	//	try {
-	//		dbBean.connect();
-	//	} catch (Exception e){
-	//		LOGGER.warn("Error connecting to Database");
-	//	}
-	}
 
 	private static final Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(SmokApplication.class);
 
@@ -53,9 +43,13 @@ public class SmokApplication extends SpringBootServletInitializer {
 
 	}
 
-	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
 		return builder.sources(SmokApplication.class);
+	}
+
+
+	public void onStartup(ServletContext servletContext) throws ServletException {
+
 	}
 }
 
