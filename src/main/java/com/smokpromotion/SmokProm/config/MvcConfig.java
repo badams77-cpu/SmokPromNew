@@ -25,6 +25,7 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
+import javax.sql.DataSource;
 import java.util.Arrays;
 import java.util.Locale;
 @EnableScheduling
@@ -38,6 +39,7 @@ public class MvcConfig implements WebMvcConfigurer {
 
     @Autowired
     private Environment env;
+
 
 //    @Autowired
 //    private DR_AnalyticsToken drAnalyticsToken;
@@ -58,6 +60,11 @@ public class MvcConfig implements WebMvcConfigurer {
         }
         return dbBean;
     }
+
+ //   @Bean
+ //   public DataSource getDS() {
+ //       dbBean().getMainDataSource();
+ //   }
 
     @Bean
     public ResourceBundleMessageSource messageSource() {

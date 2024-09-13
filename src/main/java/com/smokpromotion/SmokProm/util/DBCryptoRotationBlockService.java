@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Service
+//@Service
 public class DBCryptoRotationBlockService {
 
     private Logger LOGGER = LoggerFactory.getLogger(DBCryptoRotationBlockService.class);

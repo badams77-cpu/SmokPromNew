@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 
-@Profile("smok_app")
-@Service()
+//@Profile("smok_app")
+//@Service()
 public class DBCryptoRotationService {
 
     private Logger LOGGER = LoggerFactory.getLogger(DBCryptoRotationService.class);

@@ -110,7 +110,7 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
     public FilterRegistrationBean someFilterRegistration() {
 
         FilterRegistrationBean registration = new FilterRegistrationBean();
-//        registration.setFilter(majoranaCustomAPISecurityFilter);
+        registration.setFilter(majoranaCustomAPISecurityFilter);
         registration.addUrlPatterns("/url/*");
         registration.addInitParameter("paramName", "paramValue");
         registration.setName("MajoranaCustomAPISecurityFilter");

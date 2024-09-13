@@ -6,7 +6,11 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesBindEx
 import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
 
-public class CustomFailureAnalyzer extends AbstractFailureAnalyzer<ConfigurationPropertiesBindException>  {
+
+public class CustomFailureAnalyzer {
+
+     /*
+        extends AbstractFailureAnalyzer<ConfigurationPropertiesBindException>  {
 
     private static final Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(SmokApplication.class);
 
@@ -33,5 +37,5 @@ public class CustomFailureAnalyzer extends AbstractFailureAnalyzer<Configuration
             return String.format("Consider creating a bean with name %s of type %s");
         }
 
-
+*/
 }

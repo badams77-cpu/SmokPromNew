@@ -13,32 +13,32 @@ public class AdminUser  extends BaseSmokEntity  {
 
     private static final String TABLE_NAME = "admin_users";
 
-    @org.springframework.data.cassandra.core.mapping.Column("username")
+//    @org.springframework.data.cassandra.core.mapping.Column("username")
     @Column(name="username")
     private String username;
-    @org.springframework.data.cassandra.core.mapping.Column("firstname")
+//    @org.springframework.data.cassandra.core.mapping.Column("firstname")
     @Column(name="firstname")
     private String firstname;
-    @org.springframework.data.cassandra.core.mapping.Column("lastname")
+//    @org.springframework.data.cassandra.core.mapping.Column("lastname")
     @Column(name="lastname")
     private String lastname;
-    @org.springframework.data.cassandra.core.mapping.Column("passwd")
+    //   @org.springframework.data.cassandra.core.mapping.Column("passwd")
     @Column(name="passwd")
     private String userpw;
     @Column(name="secVn")
-    @org.springframework.data.cassandra.core.mapping.Column("secVn")
+    //@org.springframework.data.cassandra.core.mapping.Column("secVn")
     private int secVn;
-    @org.springframework.data.cassandra.core.mapping.Column("last_login")
+    //@org.springframework.data.cassandra.core.mapping.Column("last_login")
     @Column(name="last_login")
     private LocalDateTime lastvisit;
     @Column(name="useractive")
-    @org.springframework.data.cassandra.core.mapping.Column("useractive")
+//    @org.springframework.data.cassandra.core.mapping.Column("useractive")
     private boolean useractive;
-    @org.springframework.data.cassandra.core.mapping.Column("change_pass_token")
+//    @org.springframework.data.cassandra.core.mapping.Column("change_pass_token")
     @Column(name="change_pass_token")
     private String changePassToken;
 
-    @org.springframework.data.cassandra.core.mapping.Column("change_pass_token_created")
+//    @org.springframework.data.cassandra.core.mapping.Column("change_pass_token_created")
     @Column(name="change_pass_token_created")
     private LocalDateTime changePassTokenCreate;
 

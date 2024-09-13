@@ -75,7 +75,7 @@ smok:
     version: 0.1.0
   searchrunner:
     version: 0.1.0
-smok-db:
+smok_db:
   cass1:
     name: smokCass
     enabled: false
@@ -107,22 +107,31 @@ smok-db:
     useSSL: false
     verifySSL: false
 
+server:
+  tomcat
+    :accept-count=100
+    :max-connections=10000
+    :threads=200
+    :min-spare-threads=10
+    :max-swallow-size=2MB
+    :max-http-post-size=2MB
+
 ---
 spring.config.activate.on-profile: smok_admin
 server:
-  port: 9002
+  port: 9202
 ---
 spring.config.activate.on-profile: smok_app
 server:
-  port: 9001
+  port: 9201
 ---
 spring.config.activate.on-profile: smok_demon
 server:
-  port: 9003
+  port: 9203
 ---
 spring.config.activate.on-profile: smok_init
 server:
-  port: 9004
+  port: 9204
 ---
 spring.cache.type=redis
 spring.redis.host=192.168.1.75
