@@ -20,18 +20,17 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
 
-@SpringBootApplication
-//@EnableConfigurationProperties(com.smokpromotion.SmokProm.config.common.YamlDBConfig.class)
+
 public class SmokApplication extends SpringBootServletInitializer {
 
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
-		DbBean dbBean = new DbBean();
-		try {
-			dbBean.connect();
-		} catch (Exception e){
-			LOGGER.warn("Error connecting to Database");
-		}
+	//	DbBean dbBean = new DbBean();
+	//	try {
+	//		dbBean.connect();
+	//	} catch (Exception e){
+	//		LOGGER.warn("Error connecting to Database");
+	//	}
 	}
 
 	private static final Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(SmokApplication.class);
@@ -39,7 +38,7 @@ public class SmokApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
 		try {
-			SpringApplication.run(SmokApplication.class, args);
+			SpringApplication.run(AppRunner.class, args);
 		} catch (Exception e){
 			LOGGER.warn("Exception e in Starting Spring",e);
 			Throwable cause = e.getCause();

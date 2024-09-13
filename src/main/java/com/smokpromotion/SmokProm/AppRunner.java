@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -19,12 +20,12 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Component
+@SpringBootApplication
 public class AppRunner implements ApplicationRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppRunner.class);
 
-    private static final String PROFILE_ADMIN = "admin";
+    private static final String PROFILE_ADMIN = "smok_admin";
     private static final String PROFILE_APP = "smok_app";
     private static final String PROFILE_DEMON = "smok_demon";
     private static final String PROFILE_INIT = "smok_init";
