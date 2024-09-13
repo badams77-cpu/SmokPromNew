@@ -10,6 +10,8 @@ import java.util.UUID;
 @Table(name="smok.oauth_log ")
 public class OAuthLog extends BaseSmokEntity {
 
+    private static final String TABLE_NAME = "oauth_log";
+
     @Column(name="!username")
     private String username;
     @Column(name="!log_Date")
@@ -17,6 +19,9 @@ public class OAuthLog extends BaseSmokEntity {
     @Column(name="!oauth_statuss")
     private String errorMessage;
 
+    public String getTableName(){
+        return TABLE_NAME;
+    }
 
     public int getid() {
         return uuid.hashCode();

@@ -1,6 +1,8 @@
 package com.smokpromotion.SmokProm.config.admin;
 
 import com.smokpromotion.SmokProm.domain.entity.AdminUser;
+import com.smokpromotion.SmokProm.domain.repo.REP_AdminUserService;
+import com.smokpromotion.SmokProm.exceptions.UserNotFoundException;
 import com.smokpromotion.SmokProm.util.GenericUtils;
 import com.smokpromotion.SmokProm.util.PwCryptUtil;
 import org.slf4j.Logger;
@@ -60,7 +62,13 @@ public class AdminCustomAuthenticationProvider implements AuthenticationProvider
 
 
         if (GenericUtils.isValid(email) && GenericUtils.isValid(password) ) {
-            AdminUser u = adminMajoranaUserService.getUser(email);
+
+            AdminUser u = null;
+            try {
+                u = adminMajoranaUserService.findByName(email);
+            } catch (UserNotFoundException e) {
+                throw new AuthenticationFailedException(AuthenticationFailureReasonEnum.UNKNOWN_USER,"User " + email + " not found");
+            }
 
 //            loginAttemptService.checkIfBlockedRaiseAuthError(p);
 
@@ -88,7 +96,7 @@ public class AdminCustomAuthenticationProvider implements AuthenticationProvider
 //                            adminMajoranaUserService.updateHash(email, password, u);
                             u.setUserpw( pwCrypt.getPasswd(password, u.getSecVn()));
                             u.setLastvisit(LocalDateTime.now());
-                            adminMajoranaUserService.updateUser(u);
+                            adminMajoranaUserService.update(u);
                             return new UsernamePasswordAuthenticationToken(principle, password, grantedAuths);
                         } else {
                             LOGGER.error("authenticate - Attempted login [" + email + "] - No Principole.");
@@ -140,8 +148,8 @@ public class AdminCustomAuthenticationProvider implements AuthenticationProvider
     // Private Methods
     // -----------------------------------------------------------------------------------------------------------------
 
-    private AdminUser getUserForEmail(String email) {
-        return adminMajoranaUserService.getUser(email);
+    private AdminUser getUserForEmail(String email) throws UserNotFoundException {
+        return adminMajoranaUserService.findByName(email);
     }
 
 

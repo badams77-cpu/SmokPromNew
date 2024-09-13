@@ -2,6 +2,9 @@ package com.smokpromotion.SmokProm;
 
 import com.smokpromotion.SmokProm.domain.entity.AdminUser;
 import com.smokpromotion.SmokProm.domain.entity.S_User;
+import com.smokpromotion.SmokProm.domain.repo.REP_AdminUserService;
+import com.smokpromotion.SmokProm.domain.repo.REP_UserService;
+import com.smokpromotion.SmokProm.exceptions.UserNotFoundException;
 import com.smokpromotion.SmokProm.util.PwCryptUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,10 +40,13 @@ public class Initialization {
 
 
 
-    public void init() throws SQLException {
-        S_User user = userService.getUser(USERNAME);
-        if (user==null){
-            user = new S_User();
+    public void init() throws SQLException  {
+        try {
+            S_User user = userService.findByName(USERNAME);
+        } catch (UserNotFoundException e){
+
+        //if (user==null){
+            S_User user = new S_User();
            user.setFirstname(FIRST);
             user.setLastname(LAST);
             user.setUsername(USERNAME);
@@ -53,9 +59,10 @@ public class Initialization {
                 LOGGER.warn("User creation failed");
             }
         }
-        AdminUser auser = adminUserService.getUser(USERNAME);
-        if (auser==null){
-            auser = new AdminUser();
+        try {
+        AdminUser auser = adminUserService.findByName(USERNAME);
+        } catch (UserNotFoundException e){
+            AdminUser auser = new AdminUser();
             auser.setFirstname(FIRST);
             auser.setLastname(LAST);
             auser.setUsername(USERNAME);

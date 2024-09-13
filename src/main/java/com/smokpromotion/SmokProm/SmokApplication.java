@@ -3,8 +3,6 @@ package com.smokpromotion.SmokProm;
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.CqlSessionBuilder;
 import com.majorana.maj_orm.ORM_ACCESS.DbBean;
-import com.smokpromotion.SmokProm.config.DBs.DBEnvSetup;
-import com.smokpromotion.SmokProm.config.DBs.MainDataSourceConfig;
 import com.smokpromotion.SmokProm.config.common.YamlDBConfig;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
 import jakarta.servlet.ServletContext;

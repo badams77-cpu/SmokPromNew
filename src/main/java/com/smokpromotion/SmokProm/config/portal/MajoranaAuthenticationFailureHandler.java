@@ -1,6 +1,7 @@
 package com.smokpromotion.SmokProm.config.portal;
 
 import com.smokpromotion.SmokProm.domain.entity.S_User;
+import com.smokpromotion.SmokProm.domain.repo.REP_UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,10 @@ public class MajoranaAuthenticationFailureHandler implements AuthenticationFailu
         errorMessage += "Unlock using the ‘Forgot your password’ link, ";
         errorMessage += "then fully complete the steps received by email.";
 
-        S_User possibleUser =  legacyMajoranaUserService.getUser(email);
-
+        S_User possibleUser =  null;
+        try {
+            possibleUser = legacyMajoranaUserService.findByName(email);
+        } catch (Exception e){}
         if (exception instanceof AuthenticationFailedException) {
 
             AuthenticationFailedException authFailedException = (AuthenticationFailedException)exception;

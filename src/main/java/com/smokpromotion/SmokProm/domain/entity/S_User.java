@@ -1,5 +1,6 @@
 package com.smokpromotion.SmokProm.domain.entity;
 
+import com.smokpromotion.SmokProm.util.SecVnEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Table;
 
@@ -108,6 +109,10 @@ public class S_User extends BaseSmokEntity implements Serializable {
 
     public String getTableName(){
         return TABLE_NAME;
+    }
+
+    public SecVnEnum getSecVNEnum() {
+        return SecVnEnum.getFromCode(secVn);
     }
 
     public String getUsername() {

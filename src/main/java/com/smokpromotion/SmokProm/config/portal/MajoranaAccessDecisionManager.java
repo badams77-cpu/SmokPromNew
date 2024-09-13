@@ -2,6 +2,7 @@ package com.smokpromotion.SmokProm.config.portal;
 
 
 import com.smokpromotion.SmokProm.config.common.SubscriptionAccessManager;
+import com.smokpromotion.SmokProm.domain.repo.REP_UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

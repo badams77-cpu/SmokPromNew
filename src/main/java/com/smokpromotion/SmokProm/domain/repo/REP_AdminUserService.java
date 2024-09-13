@@ -8,6 +8,8 @@ import com.smokpromotion.SmokProm.domain.entity.S_User;
 import com.smokpromotion.SmokProm.exceptions.UserNotFoundException;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLogger;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
+import com.smokpromotion.SmokProm.util.PwCryptUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -20,6 +22,8 @@ public class REP_AdminUserService {
 
     private DbBeanGenericInterface<AdminUser> adminRepo = null;
 
+    @Autowired
+    private PwCryptUtil pwCryptUtil;
 
     public REP_AdminUserService(){
         DbBean dBean = new DbBean();
@@ -38,10 +42,34 @@ public class REP_AdminUserService {
 
     }
 
+    public AdminUser getById(int uid) throws UserNotFoundException {
+        List<AdminUser> users = adminRepo.getBeansNP("SELECT "+adminRepo.getFields()+" FROM "+
+                AdminUser.getTableNameStatic()
+                +" WHERE id=:id", new String[]{"id"}, new Object[]{uid});
+        return users.stream().findFirst().orElseThrow( ()->new UserNotFoundException("uid="+uid, "User not found"));
+
+    }
+
+    public boolean isPasswordGood(AdminUser u, String pw){
+        return pwCryptUtil.isPasswordGood(u.getSecVNEnum().getCode(), u.getUsername(), u.getUserpw(), pw);
+    }
+
     public boolean update(AdminUser user){
         boolean ok = true;
         try {
             adminRepo.updateBean(new MultiId(user.getId()), user);
+        } catch (Exception e){
+            LOGGER.warn("Error updating user",e);
+            return false;
+        }
+        return ok;
+    }
+
+    public boolean create(AdminUser user, String pass){
+        boolean ok = true;
+        user.setUserpw(pwCryptUtil.getPasswd(pass, 0));
+        try {
+            adminRepo.storeBean( user);
         } catch (Exception e){
             LOGGER.warn("Error updating user",e);
             return false;

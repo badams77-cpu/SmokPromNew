@@ -50,6 +50,12 @@ public class AdminUser  extends BaseSmokEntity  {
 
     }
 
+
+    public String getTableName(){
+        return TABLE_NAME;
+    }
+
+
     public String getChangePassToken() {
         return changePassToken;
     }

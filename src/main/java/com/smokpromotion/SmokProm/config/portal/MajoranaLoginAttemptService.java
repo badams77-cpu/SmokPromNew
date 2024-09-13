@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import com.smokpromotion.SmokProm.domain.entity.S_User;
 import com.smokpromotion.SmokProm.domain.repo.REP_UserService;
 import com.smokpromotion.SmokProm.util.GenericUtils;
+import com.smokpromotion.SmokProm.util.PwCryptUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,8 @@ public class MajoranaLoginAttemptService {
     private static final String NULL_BLANK_USERNAME_FOR_LOG = "UNKNOWN";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MajoranaLoginAttemptService.class);
+
+
 
     @Value("${Majorana.lockout.period.minutes}")
     private int numberOfMinutesLockedOut;

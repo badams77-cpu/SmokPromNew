@@ -2,6 +2,8 @@ package com.smokpromotion.SmokProm.config.portal;
 
 
 import com.smokpromotion.SmokProm.domain.entity.S_User;
+import com.smokpromotion.SmokProm.domain.repo.REP_UserService;
+import com.smokpromotion.SmokProm.exceptions.UserNotFoundException;
 import com.smokpromotion.SmokProm.util.GenericUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,8 +61,12 @@ public class PortalCustomAuthenticationProvider implements AuthenticationProvide
 
 
         if (GenericUtils.isValid(email) && GenericUtils.isValid(password) ) {
-            S_User u = getUserForEmail(email);
-
+            S_User u = null;
+                    try {
+                        u = getUserForEmail(email);
+                    } catch (UserNotFoundException e){
+                        throw new AuthenticationFailedException(AuthenticationFailureReasonEnum.UNAUTHORIZED_ACCESS, "Username not found");
+                    }
             if (u != null && u.isUseractive()) {
 
               //  loginAttemptService.checkIfBlockedRaiseAuthError(u);
@@ -138,9 +144,9 @@ public class PortalCustomAuthenticationProvider implements AuthenticationProvide
     // Private Methods
     // -----------------------------------------------------------------------------------------------------------------
 
-    private S_User getUserForEmail(String email) {
+    private S_User getUserForEmail(String email) throws UserNotFoundException {
 
-        S_User user = legacyMajoranaUserService.getUser(email);
+        S_User user = legacyMajoranaUserService.findByName(email);
         user = restrictUser(user);
 
         return user;

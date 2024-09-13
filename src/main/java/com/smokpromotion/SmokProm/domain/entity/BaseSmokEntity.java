@@ -11,7 +11,9 @@ import jakarta.persistence.*;
 import com.majorana.maj_orm.persist.newannot.*;
 import com.majorana.maj_orm.ORM.BaseMajoranaEntity;
 
-public class BaseSmokEntity extends BaseMajoranaEntity {
+public abstract class BaseSmokEntity extends BaseMajoranaEntity {
+
+
 
 
     public String toString() {

@@ -1,5 +1,6 @@
 package com.smokpromotion.SmokProm.util;
 
+import com.majorana.maj_orm.ORM.AbstractRotatableKey;
 import com.smokpromotion.SmokProm.config.portal.PortalSecurityPrinciple;
 import com.smokpromotion.SmokProm.domain.entity.IdAndKeyId;
 import org.slf4j.Logger;

@@ -1,5 +1,6 @@
 package com.smokpromotion.SmokProm.util;
 
+import com.majorana.maj_orm.ORM.CryptoKeyIds;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

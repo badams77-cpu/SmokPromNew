@@ -4,9 +4,12 @@ import com.majorana.maj_orm.ORM_ACCESS.DbBean;
 import com.majorana.maj_orm.ORM_ACCESS.DbBeanGenericInstance;
 import com.majorana.maj_orm.ORM_ACCESS.DbBeanGenericInterface;
 import com.majorana.maj_orm.ORM_ACCESS.MultiId;
+import com.smokpromotion.SmokProm.domain.entity.AdminUser;
 import com.smokpromotion.SmokProm.exceptions.UserNotFoundException;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLogger;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
+import com.smokpromotion.SmokProm.util.PwCryptUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import com.smokpromotion.SmokProm.domain.entity.S_User;
@@ -23,6 +26,8 @@ public class REP_UserService {
 
     private static final int changePasswordTimeOut = 10000;
 
+    @Autowired
+    private PwCryptUtil pwCryptUtil;
 
     public REP_UserService(){
         DbBean dBean = new DbBean();
@@ -49,6 +54,22 @@ public class REP_UserService {
             return false;
         }
         return ok;
+    }
+
+    public boolean create(S_User user, String pass){
+        boolean ok = true;
+        user.setUserpw(pwCryptUtil.getPasswd(pass, 0));
+        try {
+            userRepo.storeBean( user);
+        } catch (Exception e){
+            LOGGER.warn("Error updating user",e);
+            return false;
+        }
+        return ok;
+    }
+
+    public boolean isPasswordGood(S_User u, String pw){
+        return pwCryptUtil.isPasswordGood(u.getSecVNEnum().getCode(), u.getUsername(), u.getUserpw(), pw);
     }
 
     public static int getChangePasswordTimeOut(){

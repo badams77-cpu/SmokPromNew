@@ -1,7 +1,7 @@
 package com.smokpromotion.SmokProm;
 
-import com.smokpromotion.SmokProm.config.DBs.DBEnvSetup;
-import com.smokpromotion.SmokProm.config.DBs.MainDataSourceConfig;
+import com.majorana.maj_orm.DBs.DBEnvSetup;
+import com.majorana.maj_orm.ORM_ACCESS.DbBean;
 import com.smokpromotion.SmokProm.config.common.YamlDBConfig;
 import org.apache.catalina.core.ApplicationContext;
 import org.slf4j.Logger;
@@ -79,7 +79,7 @@ public class AppRunner implements ApplicationRunner {
         }
 
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
-        ctx.register(MainDataSourceConfig.class);
+        ctx.register(DbBean.class);
         ctx.register(DBEnvSetup.class);
         ctx.register(YamlDBConfig.class);
         ctx.refresh();
