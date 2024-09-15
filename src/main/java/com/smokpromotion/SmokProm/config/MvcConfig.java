@@ -1,5 +1,6 @@
 package com.smokpromotion.SmokProm.config;
 
+import com.majorana.maj_orm.DBs.CassandraState;
 import com.majorana.maj_orm.ORM_ACCESS.DbBean;
 import com.smokpromotion.SmokProm.SmokApplication;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
@@ -27,6 +28,7 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import javax.sql.DataSource;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Locale;
 @EnableScheduling
 @Configuration

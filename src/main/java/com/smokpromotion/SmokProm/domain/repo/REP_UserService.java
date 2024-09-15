@@ -10,6 +10,7 @@ import com.smokpromotion.SmokProm.util.MethodPrefixingLogger;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
 import com.smokpromotion.SmokProm.util.PwCryptUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import com.smokpromotion.SmokProm.domain.entity.S_User;
@@ -18,6 +19,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Service
+@Lazy
 public class REP_UserService {
 
     private static MethodPrefixingLogger LOGGER = MethodPrefixingLoggerFactory.getLogger(REP_UserService.class);

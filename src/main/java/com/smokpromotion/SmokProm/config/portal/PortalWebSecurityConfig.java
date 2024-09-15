@@ -10,38 +10,12 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.authentication.ReactiveAuthenticationManager;
-import org.springframework.security.authorization.AuthorizationDecision;
-import org.springframework.security.authorization.ReactiveAuthorizationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.SecurityBuilder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
-import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
-import org.springframework.security.config.web.server.ServerHttpSecurity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
-import org.springframework.security.web.server.SecurityWebFilterChain;
-
-import org.springframework.security.web.server.authorization.AuthorizationContext;
-
-import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.http.server.reactive.ServerHttpResponse;
-
-import org.springframework.security.web.server.context.NoOpServerSecurityContextRepository;
-import reactor.core.publisher.Mono;
-
-import reactor.core.publisher.Mono;
-
-import reactor.core.publisher.Mono;
-
-import javax.naming.Context;
-
-import static org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers.anyExchange;
 
 //import reactor.publisher.Mono;
 
@@ -54,13 +28,11 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
     // Dependencies
     // -----------------------------------------------------------------------------------------------------------------
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(MajoranaAccessDecisionManager.class);
     @Autowired
     private PortalCustomAuthenticationProvider portalCustomAuthenticationProvider;
     @Autowired
     private CsrfTokenRepository csrfTokenRepository;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(MajoranaAccessDecisionManager.class);
-
     @Autowired
     private MajoranaCustomAPISecurityFilter majoranaCustomAPISecurityFilter;
 
@@ -76,19 +48,18 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
             //PortalCustomAuthenticationProvider portalCustomAuthenticationProvider,
             //                       CsrfTokenRepository csrfTokenRepository,
             //                       MajoranaAccessDecisionManager accessDecisionManager,
-                                   @Value("${Majorana_COOKIE_DOMAIN:localhost}") String cookieDomain) {
+            @Value("${Majorana_COOKIE_DOMAIN:localhost}") String cookieDomain) {
 
-    //    this.portalCustomAuthenticationProvider = portalCustomAuthenticationProvider;
-    //    this.csrfTokenRepository = csrfTokenRepository;
-    //    this.decisionManager = accessDecisionManager;
+        //    this.portalCustomAuthenticationProvider = portalCustomAuthenticationProvider;
+        //    this.csrfTokenRepository = csrfTokenRepository;
+        //    this.decisionManager = accessDecisionManager;
         this.majoranaCustomAPISecurityFilter = new MajoranaCustomAPISecurityFilter();
         CookieFactory.setCookieDomain(cookieDomain);
     }
 
     @Override
     public void init(SecurityBuilder auth) throws Exception {
-        if (auth instanceof AuthenticationManagerBuilder) {
-            AuthenticationManagerBuilder b = (AuthenticationManagerBuilder) auth;
+        if (auth instanceof AuthenticationManagerBuilder b) {
             b.authenticationProvider(portalCustomAuthenticationProvider);
         } else if (auth instanceof WebSecurity) {
 
@@ -98,8 +69,7 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
     //SecurityBuilder
     @Override
     public void configure(SecurityBuilder auth) throws Exception {
-        if (auth instanceof AuthenticationManagerBuilder) {
-            AuthenticationManagerBuilder b = (AuthenticationManagerBuilder) auth;
+        if (auth instanceof AuthenticationManagerBuilder b) {
             b.authenticationProvider(portalCustomAuthenticationProvider);
         } else if (auth instanceof WebSecurity) {
 
@@ -141,7 +111,6 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
         return Mono.just( new AuthorizationDecision(false));
     }
 */
-
 
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -259,7 +228,6 @@ SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
    */
 
 
-
 //    @Override
 //    public void configure(WebSecurity web){
 //            web.ignoring().antMatchers("/UK","/EIRE","/NLD","/AUS","/NZ","/UAE", "/UK/login","/EIRE/login","/NLD/login","/AUS/login","/NZ/login","/UAE/login");
@@ -278,7 +246,7 @@ SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
         return new MajoranaAccessDeniedHandler();
     }
 
-//    @Bean
+    //    @Bean
 //    public AuthenticationSuccessEventListener requestAuthenticationSuccessEventListener(){
 //        AuthenticationSuccessEventListener requestAuthenticationSuccessEventListener = new AuthenticationSuccessEventListener();
 //        return requestAuthenticationSuccessEventListener;
@@ -291,12 +259,10 @@ SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
 //    }
 //
     @Bean
-    public MajoranaAuthenticationFailureHandler getCustomAuthenticationFailureHandler(){
+    public MajoranaAuthenticationFailureHandler getCustomAuthenticationFailureHandler() {
         MajoranaAuthenticationFailureHandler customAuthenticationFailureHandler = new MajoranaAuthenticationFailureHandler();
         return customAuthenticationFailureHandler;
     }
-
-
 
 
 //    @Bean

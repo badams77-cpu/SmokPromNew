@@ -1,7 +1,6 @@
 package com.smokpromotion.SmokProm.config.admin;
 
 import com.smokpromotion.SmokProm.domain.entity.AdminUser;
-import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +25,6 @@ public class AdminSecurityPrincipleService {
     // Constructors
     // -----------------------------------------------------------------------------------------------------------------
 
-    @Autowired(required = false)
-    @Qualifier("legacyDC")
-    HikariDataSource legacyDCMajoranaDataSource;
 
     @Autowired
     public AdminSecurityPrincipleService(
@@ -48,7 +44,6 @@ public class AdminSecurityPrincipleService {
     public AdminSecurityPrinciple create(AdminUser legacyUser, String password) {
 
         AdminSecurityPrinciple authUser = new AdminSecurityPrinciple(legacyUser.getId(), legacyUser.getUsername());
-        authUser.setHasDCPortal(legacyDCMajoranaDataSource!=null);
 
         authUser.setFirstname(legacyUser.getFirstname());
         authUser.setLastname(legacyUser.getLastname());

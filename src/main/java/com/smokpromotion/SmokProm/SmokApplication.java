@@ -1,7 +1,5 @@
 package com.smokpromotion.SmokProm;
 
-import com.datastax.oss.driver.api.core.CqlSession;
-import com.datastax.oss.driver.api.core.CqlSessionBuilder;
 import com.smokpromotion.SmokProm.config.common.YamlDBConfig;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
 import jakarta.servlet.ServletContext;
@@ -25,7 +23,7 @@ import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
 @ComponentScan("com.smokpromotion")
-@SpringBootApplication
+@SpringBootApplication(exclude = { CassandraDataAutoConfiguration.class })
 @EnableAutoConfiguration(exclude = { CassandraDataAutoConfiguration.class })
 public class SmokApplication   extends SpringBootServletInitializer {
 	private static final Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(SmokApplication.class);
