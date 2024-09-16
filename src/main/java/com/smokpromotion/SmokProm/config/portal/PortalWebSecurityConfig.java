@@ -1,6 +1,8 @@
 package com.smokpromotion.SmokProm.config.portal;
 
+import com.amazonaws.HttpMethod;
 import com.smokpromotion.SmokProm.util.CookieFactory;
+import jakarta.servlet.http.HttpServletRequest;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,11 +12,22 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationManagerResolver;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.SecurityBuilder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.DefaultSecurityFilterChain;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 
 //import reactor.publisher.Mono;
@@ -31,12 +44,21 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
     private static final Logger LOGGER = LoggerFactory.getLogger(MajoranaAccessDecisionManager.class);
     @Autowired
     private PortalCustomAuthenticationProvider portalCustomAuthenticationProvider;
+
+    @Autowired
+    private UsernameAuthProvider usernameAuthenticationProvider;
     @Autowired
     private CsrfTokenRepository csrfTokenRepository;
     @Autowired
     private MajoranaCustomAPISecurityFilter majoranaCustomAPISecurityFilter;
 
+//    @Autowired
+//    private MajoranaAuthenticationFailureHandler majoranaAuthenticationFailureHandler;
+
     private MajoranaAccessDecisionManager decisionManager;
+
+    @Autowired
+    private  AuthenticationManagerResolver<HttpServletRequest> tokenAuthenticationManagerResolver;
 
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -60,14 +82,15 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
     @Override
     public void init(SecurityBuilder auth) throws Exception {
         if (auth instanceof AuthenticationManagerBuilder b) {
-            b.authenticationProvider(portalCustomAuthenticationProvider);
+            b.authenticationProvider(usernameAuthenticationProvider);
         } else if (auth instanceof WebSecurity) {
 
         }
     }
 
+
     //SecurityBuilder
-    @Override
+//    @Override
     public void configure(SecurityBuilder auth) throws Exception {
         if (auth instanceof AuthenticationManagerBuilder b) {
             b.authenticationProvider(portalCustomAuthenticationProvider);
@@ -75,6 +98,58 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
 
         }
     }
+
+/*
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeHttpRequests((requests) -> requests
+                        .requestMatchers("/", "/home").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .formLogin((form) -> {
+           //                 try {
+                                form
+                                        .loginPage("/login").permitAll()
+                                        .loginProcessingUrl("/login-handler").permitAll();
+                                        //.disable().csrf();
+                                //    .successHandler(majoranaLoginSuccessHandler)
+                 //               form.failureHandler(majoranaAuthenticationFailureHandler);
+             //               } catch (Exception e) {
+                 //               LOGGER.warn("configure form ex", e);
+
+               //             }
+                        }
+                )
+                .logout((logout) -> logout.permitAll());
+
+        return http.build();
+    }
+*/
+@Bean
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http
+
+            .authenticationProvider(portalCustomAuthenticationProvider)
+            .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                    .requestMatchers( "/login", "/public/**").permitAll()
+                    .requestMatchers("/api/**", "/events/**", "/competition/**").authenticated()
+            );
+    http.formLogin()  .loginPage("/login").permitAll()
+            .loginProcessingUrl("/login-handler").permitAll();
+    return http.httpBasic(Customizer.withDefaults()).build();
+
+}
+
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        UserDetails user = User.withDefaultPasswordEncoder()
+                .username("user")
+                .password("password")
+                .roles("USER")
+                .build();
+        auth.authenticationProvider(portalCustomAuthenticationProvider);
+    }
+
 
     @Bean
     public FilterRegistrationBean someFilterRegistration() {
@@ -87,6 +162,17 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
         registration.setOrder(1);
         return registration;
     }
+
+
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        DefaultSecurityFilterChain build = http.authorizeHttpRequests(request ->
+//                        request.requestMatchers( a->a.getPathInfo().startsWith("/auth"))
+//                        .authenticated())
+ //               .httpBasic(Customizer.withDefaults()).build();
+ //               http.authenticationProvider(portalCustomAuthenticationProvider);
+ //       return build;
+ //   }
 
     /*
     public Mono<AuthorizationDecision> checkAccess(Mono authentication, Object object) {
@@ -238,12 +324,6 @@ SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
     public MajoranaAccessDecisionManager MajoranaAccessDecision() {
 
         return new MajoranaAccessDecisionManager();
-    }
-
-    @Bean
-    public MajoranaAccessDeniedHandler MajoranaAccessDeniedHandler() {
-
-        return new MajoranaAccessDeniedHandler();
     }
 
     //    @Bean

@@ -14,6 +14,8 @@ public class PortalBaseController {
 
     protected static final String PRIBASE = "/portal/private/";
 
+    protected static final String PUBBASE = "/portal/public/";
+
     @Autowired
     REP_UserService userService;
 

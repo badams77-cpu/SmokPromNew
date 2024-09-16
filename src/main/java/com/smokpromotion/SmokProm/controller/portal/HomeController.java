@@ -18,4 +18,11 @@ public class HomeController extends PortalBaseController {
         S_User user = getAuthUser(auth);
         return PRIBASE+"home.html";
     }
+
+
+    @RequestMapping("/login")
+    public String login(Model m, Authentication auth)
+    {
+        return PUBBASE+"login.html";
+    }
 }

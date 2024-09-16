@@ -1,5 +1,6 @@
 package com.smokpromotion.SmokProm.config.portal;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.catalina.connector.Connector;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -7,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.AuthenticationManagerResolver;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -58,6 +60,19 @@ public class PortalMvcConfig implements WebMvcConfigurer {
 
     }
     */
+
+
+    @Bean
+    public AuthenticationManagerResolver<HttpServletRequest>
+    tokenAuthenticationManagerResolver(
+            UsernameAuthProvider
+                    //        AuthenticationProvider
+                    authProvider
+    ) {
+        return (request)-> {
+            return authProvider::authenticate;
+        };
+    }
 
     @Bean
     public CsrfTokenRepository csrfTokenRepository() {
