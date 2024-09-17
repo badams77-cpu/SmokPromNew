@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class S_User extends BaseSmokEntity implements Serializable {
 
     // Fields present in Majorana table.
-    private static final String TABLE_NAME = "users";
+    private static final String TABLE_NAME = "user";
 
     @Column(name="username")
     @org.springframework.data.cassandra.core.mapping.Column("username")
