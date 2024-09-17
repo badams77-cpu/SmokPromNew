@@ -48,6 +48,13 @@ public class REP_UserService {
 
     }
 
+    public S_User getById(int id) throws UserNotFoundException {
+        List<S_User> users = userRepo.getBeansNP("SELECT "+userRepo.getFields()+" FROM "+S_User.getTableNameStatic()
+                +" WHERE uid=:uid", new String[]{"uid"}, new Object[]{id});
+        return users.stream().findFirst().orElseThrow( ()->new UserNotFoundException("U"+id, "User not found"));
+
+    }
+
     public boolean update(S_User user){
         boolean ok = true;
         try {

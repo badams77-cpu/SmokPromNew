@@ -61,7 +61,7 @@ public class EmailTemplateController extends AdminBaseController {
     @RequestMapping(path="/edit/{id}", method= RequestMethod.GET)
     public String editById(HttpServletRequest request, @PathVariable(name="id", required=true) int id, Authentication authentication, Model model) throws Exception {
         checkAuthentication(authentication);
-        Optional<DE_EmailTemplate> template = drEmailTemplate.getById(PortalEnum.AWS,id);
+        Optional<DE_EmailTemplate> template = drEmailTemplate.getById(id);
         if (!template.isPresent()){
             LOGGER.error("editById: Template "+id+" not present");
             return "redirect:/email-templates/list";
@@ -78,7 +78,7 @@ public class EmailTemplateController extends AdminBaseController {
             Authentication authentication,
             @ModelAttribute("templateForm") DE_EmailTemplate template,
             BindingResult bindingResult,
-            Model model){
+            Model model) throws Exception {
         checkAuthentication(authentication);
         validateTemplate(template, bindingResult);
         if (bindingResult.hasErrors()){
@@ -86,7 +86,7 @@ public class EmailTemplateController extends AdminBaseController {
             model.addAttribute("templateForm",template);
             return getBase()+"private/edit_email_template";
         }
-        Optional<DE_EmailTemplate> originalTemplateOpt = drEmailTemplate.getById(PortalEnum.AWS,id);
+        Optional<DE_EmailTemplate> originalTemplateOpt = drEmailTemplate.getById(id);
         if (!originalTemplateOpt.isPresent()){
             LOGGER.error("postEdit: Template "+id+" not present");
             return "redirect:/email-templates/list";
@@ -98,12 +98,18 @@ public class EmailTemplateController extends AdminBaseController {
         originalTemplate.setSubject(template.getSubject());
         try {
             drEmailTemplate.update( originalTemplate);
-        } catch (DuplicateKeyException e){
-            bindingResult.rejectValue("name", "Name and language already used","Name and language already used");
-            List<DE_EmailTemplate> templateList = drEmailTemplate.getAll();
-            model.addAttribute("languages", EmailLanguage.values());
-            model.addAttribute("templateForm",template);
-            return getBase()+"private/edit_email_template";
+        } catch (DuplicateKeyException e) {
+            try {
+                bindingResult.rejectValue("name", "Name and language already used", "Name and language already used");
+                List<DE_EmailTemplate> templateList = drEmailTemplate.getAll();
+                model.addAttribute("languages", EmailLanguage.values());
+                model.addAttribute("templateForm", template);
+                return getBase() + "private/edit_email_template";
+            } catch (Exception e) {
+                LOGGER.warn("Error on duplicate", e);
+            }
+        } catch (Exception e) {
+            LOGGER.warn("Error sql",e);
         }
         return "redirect:/email-templates/list";
     }

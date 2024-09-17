@@ -3,11 +3,9 @@ package com.smokpromotion.SmokProm.analytics;
 
 import com.majorana.maj_orm.ORM_ACCESS.DbBean;
 import com.majorana.maj_orm.ORM_ACCESS.DbBeanGenericInterface;
+import com.smokpromotion.SmokProm.analytics.entity.AnalyticsUserLogins;
 import com.smokpromotion.SmokProm.domain.entity.DE_EmailTemplate;
-import com.urcompliant.analytics.entity.AnalyticsUserAllLogins;
-import com.urcompliant.analytics.entity.AnalyticsUserLogins;
-import com.urcompliant.domain.PortalEnum;
-import com.urcompliant.domain.repository.MPCAppDBConnectionFactory;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +35,7 @@ public class DR_AdminReportRequestAnalyticsData  {
 
     private static final int SECONDS_IN_LOGIN = 1800;
 
-    private DbBeanGenericInterface<DE_EmailTemplate> emailRepo = null;
+    private DbBeanGenericInterface<RequestAnalyticsData> analRepo = null;
     // -----------------------------------------------------------------------------------------------------------------
     // Constructors
     // -----------------------------------------------------------------------------------------------------------------
@@ -46,17 +44,20 @@ public class DR_AdminReportRequestAnalyticsData  {
         DbBean dBean = new DbBean();
         try {
             dBean.connect();
-            emailRepo = dBean.getTypedBean(DE_EmailTemplate.class);
+            analRepo = dBean.getTypedBean(RequestAnalyticsData.class);
         } catch (ClassNotFoundException | SQLException e){
             LOGGER.error("Class S_User not found");
         }
     }
-    private int clearTempTable() {
+    private int clearTempTable() {new D
         String sqlDelete = "DELETE FROM "+ADMIN_LOGIN_TABLE+";\n";
-        int rows= dbFactory.getJdbcTemplate(portal).map(template->template.update(sqlDelete)).orElse(0);
-        return rows;
+        //int rows = analRepo.deleteBeans(
+        //        sqlDelete,
+        //        new String[]{"1=1"}).getId();
+        return 0;
+        //return rows;
     }
-
+/*
     public List<AnalyticsUserLogins> getLoginsByUserAndDates(PortalEnum portal, AnalyticsSiteEnum site, LocalDate start, LocalDate end, List<String> emails, boolean hideInternal){
         if (emails.isEmpty()){ return new LinkedList<>(); }
         synchronized(this) {
@@ -83,7 +84,8 @@ public class DR_AdminReportRequestAnalyticsData  {
             return result;
         }
     }
-
+*/
+    /*
     public List<AnalyticsUserLogins> getLoginsByUserAndTimes(PortalEnum portal, AnalyticsSiteEnum site, LocalDateTime start, LocalDateTime end, List<String> emails, boolean hideInternal){
         if (emails.isEmpty()){ return new LinkedList<>(); }
         synchronized(this) {
@@ -107,7 +109,8 @@ public class DR_AdminReportRequestAnalyticsData  {
             return result;
         }
     }
-
+*/
+    /*
     public List<AnalyticsUserLogins> getLoginsByDates(PortalEnum portal, AnalyticsSiteEnum site, LocalDate start, LocalDate end){
 
         java.sql.Timestamp startTime = java.sql.Timestamp.valueOf(start.atTime(0,0));
@@ -123,7 +126,8 @@ public class DR_AdminReportRequestAnalyticsData  {
             return result;
         }
     }
-
+*/
+    /*
     public List<AnalyticsUserAllLogins> getAllLoginsByDates(PortalEnum portal, AnalyticsSiteEnum site, LocalDate start, LocalDate end){
 
         java.sql.Timestamp startTime = java.sql.Timestamp.valueOf(start.atTime(0,0));
@@ -139,7 +143,8 @@ public class DR_AdminReportRequestAnalyticsData  {
             return result;
         }
     }
-
+*/
+    /*
     public List<AnalyticsUserLogins> getLoginsByTimes(PortalEnum portal, AnalyticsSiteEnum site, LocalDateTime startTime, LocalDateTime endTime){
         synchronized (this) {
             int rowsDelete = clearTempTable(portal);
@@ -152,7 +157,8 @@ public class DR_AdminReportRequestAnalyticsData  {
             return result;
         }
     }
-
+*/
+    /*
     public List<AnalyticsUserAllLogins> getAllLoginsByTimes(PortalEnum portal, AnalyticsSiteEnum site, LocalDateTime startTime, LocalDateTime endTime){
         synchronized (this) {
             int rowsDelete = clearTempTable(portal);
@@ -165,7 +171,8 @@ public class DR_AdminReportRequestAnalyticsData  {
             return result;
         }
     }
-
+*/
+    /*
     private List<AnalyticsUserLogins> getAnalyticsUserLogins(PortalEnum portal) {
         String sqlLoginsUpdate = " UPDATE "+ADMIN_LOGIN_TABLE+" lg JOIN "+ADMIN_LOGIN_TABLE+" AS lg0 ON lg0.id=lg.id-1 SET lg.newlogin= CASE WHEN (lg0.email IS NULL OR lg.uid!=lg0.uid " +
                 " OR UNIX_TIMESTAMP(lg.created_at)-UNIX_TIMESTAMP(lg0.created_at)>" + SECONDS_IN_LOGIN + ") THEN 1 ELSE 0 END;\n";
@@ -175,6 +182,8 @@ public class DR_AdminReportRequestAnalyticsData  {
         return dbFactory.getJdbcTemplate(portal).map(template -> template.query(sqlRead, new AnalyticsUserLoginsMapper())).orElse(new LinkedList<>());
     }
 
+     */
+/*
     private List<AnalyticsUserAllLogins> getAnalyticsUserAllLogins(PortalEnum portal) {
         String sqlLoginsUpdate = " UPDATE "+ADMIN_LOGIN_TABLE+" lg JOIN "+ADMIN_LOGIN_TABLE+" AS lg0 ON lg0.id=lg.id-1 SET lg.newlogin= CASE WHEN (lg0.email IS NULL OR lg.uid!=lg0.uid " +
                 " OR UNIX_TIMESTAMP(lg.created_at)-UNIX_TIMESTAMP(lg0.created_at)>" + SECONDS_IN_LOGIN + ") THEN 1 ELSE 0 END;\n";
@@ -189,7 +198,8 @@ public class DR_AdminReportRequestAnalyticsData  {
         }
         return logins;
     }
-
+*/
+    /*
     private int firstRow(PortalEnum portal){
         int rowNumber = dbFactory.getJdbcTemplate(portal).map(template ->
                 template.queryForList("SELECT min(id) FROM "+ADMIN_LOGIN_TABLE, Integer.class)).orElse(new LinkedList<Integer>())
@@ -201,7 +211,7 @@ public class DR_AdminReportRequestAnalyticsData  {
                 template.update(" UPDATE "+ADMIN_LOGIN_TABLE+"SET newlogin=1 where id=?", new Object[]{rowNumber})).orElse(0);
         return rowNumber;
     }
-
+*/
     protected String hideInternal(boolean hide){
         if (hide){ return " NOT (get_action LIKE '%/api%') AND get_action!='/csrf-token' AND "; }
         return "";
@@ -222,7 +232,7 @@ public class DR_AdminReportRequestAnalyticsData  {
         }
 
     }
-
+/*
     protected class AnalyticsUserAllLoginsMapper implements RowMapper<AnalyticsUserAllLogins> {
         @Override
         public AnalyticsUserAllLogins mapRow(ResultSet rs, int row) throws SQLException {
@@ -242,4 +252,6 @@ public class DR_AdminReportRequestAnalyticsData  {
         }
 
     }
+
+ */
 }

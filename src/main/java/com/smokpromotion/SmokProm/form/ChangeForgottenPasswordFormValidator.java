@@ -15,8 +15,7 @@ import java.util.Optional;
 @Component
 public class ChangeForgottenPasswordFormValidator implements Validator {
 
-    private DS_UserService dsUserService;
-    private DR_DentistPortalUser drDentistPortalUser;
+    private REP_UserService dsUserService;
     private PasswordPolicyService passwordPolicyService;
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -25,13 +24,11 @@ public class ChangeForgottenPasswordFormValidator implements Validator {
 
     @Autowired
     public ChangeForgottenPasswordFormValidator(
-            DS_UserService dsUserService,
-            PasswordPolicyService passwordPolicyService,
-            DR_DentistPortalUser drDentistPortalUser) {
+            REP_UserService dsUserService,
+            PasswordPolicyService passwordPolicyService,) {
 
         this.dsUserService = dsUserService;
         this.passwordPolicyService = passwordPolicyService;
-        this.drDentistPortalUser = drDentistPortalUser;
 
     }
 
@@ -54,7 +51,7 @@ public class ChangeForgottenPasswordFormValidator implements Validator {
         boolean valid = genericValidation(errors, "current", form.getCurrent());
 
         // Check that current matches the users current password.
-        Optional<DE_User> optUser = dsUserService.getById(form.getPortal(), form.getUserId());
+        Optional<S_User> optUser = dsUserService.getById(form.getUserId());
 
         genericValidation(errors, "neww", form.getNeww());
 

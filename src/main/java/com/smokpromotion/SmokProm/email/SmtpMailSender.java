@@ -5,6 +5,8 @@ import com.smokpromotion.SmokProm.domain.dto.EmailLanguage;
 import com.smokpromotion.SmokProm.domain.entity.DE_EmailTemplate;
 import com.smokpromotion.SmokProm.domain.repo.DR_EmailTemplate;
 
+import com.smokpromotion.SmokProm.form.EmailTemplateValidator;
+import com.smokpromotion.SmokProm.util.GenericUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

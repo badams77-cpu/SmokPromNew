@@ -3,6 +3,7 @@ package com.smokpromotion.SmokProm.domain.repo;
 import com.majorana.maj_orm.ORM.MajoranaDBConnectionFactory;
 import com.majorana.maj_orm.ORM_ACCESS.DbBean;
 import com.majorana.maj_orm.ORM_ACCESS.DbBeanGenericInterface;
+import com.majorana.maj_orm.ORM_ACCESS.MultiId;
 import com.smokpromotion.SmokProm.domain.entity.DE_EmailTemplate;
 import com.smokpromotion.SmokProm.domain.entity.S_User;
 import com.urcompliant.domain.PortalEnum;
@@ -58,13 +59,12 @@ public class DR_EmailTemplate {
      * @param legacyPortal The portal db on which the practice group exists.
      * @return Optional DE_EmailTemplate the empty template
      */
-    public List<DE_EmailTemplate> getAll() {
+    public List<DE_EmailTemplate> getAll() throws SQLException {
 
         Optional<DE_EmailTemplate> opt = Optional.empty();
 
         List<DE_EmailTemplate> matches =
-                emailRepo.getBeans("SELECT * FROM "
-                        +DE_EmailTemplate.getTableNameStatic());
+                emailRepo.getBeans("SELECT * FROM " +DE_EmailTemplate.getTableNameStatic(), new Object[]{});
 
         return matches;
     }
@@ -75,14 +75,15 @@ public class DR_EmailTemplate {
      * @param id The template id.
      * @return Optional DE_EmailTemplate the empty template
      */
-    public Optional<DE_EmailTemplate> getById(PortalEnum legacyPortal, int id) {
+    public Optional<DE_EmailTemplate> getById( int id) {
 
         Optional<DE_EmailTemplate> opt = Optional.empty();
 
-        List<DE_EmailTemplate> matches = dbFactory.getJdbcTemplate(legacyPortal).map(template->template.query(
-                "SELECT id,name,template,subject,language FROM "+TABLE_NAME+" WHERE id = ?",
-                new Object[]{id},
-                new EmailTemplateMapper())).orElse(new LinkedList<>());
+        List<DE_EmailTemplate> matches = emailRepo.getBeansNP(
+                "SELECT id,name,template,subject,language FROM "+TABLE_NAME+" WHERE id = :id",
+                new String[]{"id"},
+                new Object[]{id}
+        );
 
         if (!matches.isEmpty()) {
             opt = Optional.of(matches.get(0));
@@ -98,15 +99,21 @@ public class DR_EmailTemplate {
      * @param name The template group name.
      * @return Optional DE_EmailTemplate the empty template
      */
-    public Optional<DE_EmailTemplate> getByNameAndLanguage(PortalEnum legacyPortal, String name, String language) {
+    public Optional<DE_EmailTemplate> getByNameAndLanguage( String name, String language) {
 
         Optional<DE_EmailTemplate> opt = Optional.empty();
 
-        List<DE_EmailTemplate> matches = dbFactory.getJdbcTemplate(legacyPortal).map(template->template.query(
+     /*   List<DE_EmailTemplate> matches = dbFactory.getJdbcTemplate(legacyPortal).map(template->template.query(
                 "SELECT id,name,template,subject,language FROM "+TABLE_NAME+" WHERE name = ? and language=?",
 
                 new Object[]{name, language},
                 new EmailTemplateMapper())).orElse(new LinkedList<>());
+*/
+        List<DE_EmailTemplate> matches = emailRepo.getBeansNP(
+                "SELECT id,name,template,subject,language FROM "+TABLE_NAME+" WHERE name = :name and language=:language",
+                new String[]{ "name", "language"},
+                new Object[]{name, language}
+        );
 
         if (!matches.isEmpty()) {
             opt = Optional.of(matches.get(0));
@@ -122,21 +129,11 @@ public class DR_EmailTemplate {
      * @param template The template object to insert
      * @return boolean Indication of success or failure.
      */
-    public boolean create(PortalEnum legacyPortal, DE_EmailTemplate template) {
+    public boolean create( DE_EmailTemplate template) throws Exception {
 
-        String sql = "INSERT INTO "+TABLE_NAME+" (name, template, subject, language) values (:name, :template, :subject, :language)";
+        MultiId id = emailRepo.storeBean(template);
 
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        SqlParameterSource params = generateSqlParameterSource(template,false);
-        int changed = dbFactory.getNamedParameterJdbcTemplate(legacyPortal).map(db->db.update(
-                sql, params,
-                keyHolder)).orElse(0);
-        if (keyHolder.getKey()==null){
-            LOGGER.error("Could not create email template database row");
-            return false;
-        }
-        template.setId(keyHolder.getKey().intValue());
-        return changed==1;
+        return id.hasAnyId();
     }
     /**
      * Update the email template
@@ -144,16 +141,10 @@ public class DR_EmailTemplate {
      * @param template The template object to insert
      * @return boolean Indication of success or failure.
      */
-    public boolean update(PortalEnum legacyPortal, DE_EmailTemplate template) {
+    public boolean update(DE_EmailTemplate template) throws Exception {
 
-        String sql = "UPDATE "+TABLE_NAME+" SET name=:name, template=:template, subject=:subject, language=:language where id=:id";
+        emailRepo.updateBean( new MultiId(template.getId()), template );
 
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        SqlParameterSource params = generateSqlParameterSource(template,true);
-        int changed = dbFactory.getNamedParameterJdbcTemplate(legacyPortal).map(db->db.update(
-                sql, params,
-                keyHolder)).orElse(0);
-        return changed==1;
     }
 
 
