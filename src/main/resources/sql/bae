@@ -1,0 +1,13 @@
+ URC-3191 Table for the MPC Pay Costs
+
+create table if not exists mpcpay_costs_cost_category (
+    id int NOT NULL PRIMARY KEY auto_increment,
+    created datetime not null,
+    created_by_userid int,
+    updated datetime not null,
+    updated_by_userid int,
+    deleted tinyint default 0 not null,
+    deleted_at datetime default null
+--    constraint uk_mpcpay_costs_cost_category UNIQUE (practiceGroupId, category_name, deleted, deleted_at),
+--    index (practiceGroupId, category_name)
+);

@@ -11,7 +11,7 @@ import jakarta.persistence.Column;
 
 public class AdminUser  extends BaseSmokEntity  {
 
-    private static final String TABLE_NAME = "admin_users";
+    private static final String TABLE_NAME = "admin_user";
 
 //    @org.springframework.data.cassandra.core.mapping.Column("username")
     @Column(name="username")

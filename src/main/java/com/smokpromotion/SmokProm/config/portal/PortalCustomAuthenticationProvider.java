@@ -165,7 +165,7 @@ public class PortalCustomAuthenticationProvider implements AuthenticationProvide
         }
 
 
-        roles.add("ROLE_LITE");
+        roles.add("USER");
 
         return roles;
 

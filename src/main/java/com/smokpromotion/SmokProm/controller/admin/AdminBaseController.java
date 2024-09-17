@@ -25,4 +25,12 @@ public class AdminBaseController {
         return userService.findByName(((PortalSecurityPrinciple) prince).getEmail());
     }
 
+    public void checkAuthentication(Authentication auth) throws Exception {
+        getAuthUser(auth);
+    }
+
+    public String getBase(){
+        return PRIBASE;
+    }
+
 }
