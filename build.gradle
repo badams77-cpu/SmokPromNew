@@ -116,7 +116,7 @@ jar {
 
 // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
 //         implementation 'ch.qos.logback:logback-classic:1.5.8'
-
+         implementation "com.twitter:twitter-api-java-sdk:2.0.3"
 
          // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
          implementation("org.springframework.boot:spring-boot-starter-security:3.3.3")
