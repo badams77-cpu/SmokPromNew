@@ -12,7 +12,6 @@ public class ChangePasswordForm {
     private String repeat;
     private int userId;
     private String portalAndUser;
-    private PortalEnum portal;
     private boolean policy = false;
 
     // ---------------------------------------------------------------------------------------------
@@ -49,14 +48,6 @@ public class ChangePasswordForm {
 
     public void setUserId(int userId) {
         this.userId = userId;
-    }
-
-    public void setPortal(PortalEnum portal) {
-        this.portal = portal;
-    }
-
-    public PortalEnum getPortal() {
-        return portal;
     }
 
     public boolean isPolicy() {

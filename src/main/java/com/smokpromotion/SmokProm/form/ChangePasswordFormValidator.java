@@ -1,23 +1,27 @@
 package com.smokpromotion.SmokProm.form;
 
-import com.urcompliant.config.Md5PasswordEncoder;
-import com.urcompliant.domain.entity.DE_User;
-import com.urcompliant.domain.service.DS_UserService;
-import com.urcompliant.service.PasswordPolicyService;
+import com.smokpromotion.SmokProm.config.Md5PasswordEncoder;
+import com.smokpromotion.SmokProm.domain.entity.S_User;
+import com.smokpromotion.SmokProm.domain.repo.REP_UserService;
+
+import com.smokpromotion.SmokProm.util.SecVnEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+import service.PasswordPolicyService;
 
 import java.util.Optional;
+
+import static com.smokpromotion.SmokProm.util.SecVnEnum.MD5;
 
 @Component
 public class ChangePasswordFormValidator implements Validator {
 
     public static final String PASSWORD_FORM_CURRENT_DOES_NOT_MATCH = "section.changePasswordForm.current.doesNotMatch";
     public static final String APROBLEM = "m.EncounteredAProblem";
-    private DS_UserService dsUserService;
+    private REP_UserService dsUserService;
     private PasswordPolicyService passwordPolicyService;
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -26,7 +30,7 @@ public class ChangePasswordFormValidator implements Validator {
 
     @Autowired
     public ChangePasswordFormValidator(
-            DS_UserService dsUserService,
+            REP_UserService dsUserService,
             PasswordPolicyService passwordPolicyService) {
 
         this.dsUserService = dsUserService;
@@ -44,7 +48,7 @@ public class ChangePasswordFormValidator implements Validator {
     }
 
     @Override
-    public void validate(Object target, Errors errors) {
+    public void validate(Object target, Errors errors)  {
 
         ChangePasswordForm form = (ChangePasswordForm) target;
 
@@ -57,12 +61,12 @@ public class ChangePasswordFormValidator implements Validator {
 
         // Check that current matches the users current password.
         // Only do if a value has been passed for current. If this is empty, the above validation will have an error for that case
-        Optional<DE_User> optUser = dsUserService.getById(form.getPortal(), form.getUserId());
-
+        S_User user = null;
+        try {
+            user = dsUserService.getById(form.getUserId());
+        } catch (Exception e){}
         if (!form.getCurrent().isEmpty()) {
-            if (optUser.isPresent()) {
-                DE_User user = optUser.get();
-                switch (user.getSecVNEnum()) {
+                switch (SecVnEnum.getFromCode(user.getSecVn())) {
                     case MD5:
                         Md5PasswordEncoder encoder = new Md5PasswordEncoder();
                         if (!encoder.encode(form.getCurrent()).equals(user.getUserpw())) {
@@ -82,7 +86,7 @@ public class ChangePasswordFormValidator implements Validator {
             } else {
                 errors.rejectValue(null, APROBLEM);
             }
-        }
+
 
         /*
         neww
@@ -92,27 +96,9 @@ public class ChangePasswordFormValidator implements Validator {
 
         // Ensure that the new password does not match the existing password.
 
-        if (optUser.isPresent()) {
 
-            DE_User user = optUser.get();
-            switch(user.getSecVNEnum()) {
-                case MD5:
-                    Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-                    if (encoder.encode(form.getNeww()).equals(user.getUserpw())) {
-                        errors.rejectValue("neww", "section.changePasswordForm.neww.sameAsCurrent");
-                    }
-                    break;
-                case BCRYPT:
-                    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-                    if (bCryptPasswordEncoder.matches(form.getNeww(),user.getUserpw())) {
-                        errors.rejectValue("neww", "section.changePasswordForm.neww.sameAsCurrent");
-                    }
-                    break;
-                default:
-                    errors.rejectValue(null, APROBLEM);
-            }
 
-        }
+
 
         /*
         repeat

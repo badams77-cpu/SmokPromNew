@@ -1,7 +1,6 @@
 package com.smokpromotion.SmokProm.analytics;
 
-import com.smokpromotion.SmokProm.analytics.DR_RequestAnalyticsData;
-import com.smokpromotion.SmokProm.config.RequestAnalyticsData;
+import com.smokpromotion.SmokProm.analytics.repository.DR_RequestAnalyticsData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;

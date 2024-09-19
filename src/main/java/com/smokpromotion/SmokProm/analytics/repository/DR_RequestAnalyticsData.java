@@ -1,13 +1,14 @@
-package com.smokpromotion.SmokProm.config.repository;
+package com.smokpromotion.SmokProm.analytics.repository;
 
-import com.urcompliant.analytics.AnalyticsSiteEnum;
-import com.urcompliant.analytics.RequestAnalyticsCount;
-import com.urcompliant.analytics.RequestAnalyticsData;
-import com.urcompliant.domain.PortalEnum;
-import com.urcompliant.domain.repository.MPCAppDBConnectionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.majorana.maj_orm.ORM_ACCESS.DbBean;
+import com.majorana.maj_orm.ORM_ACCESS.DbBeanGenericInterface;
+import com.smokpromotion.SmokProm.analytics.AnalyticsSiteEnum;
+import com.smokpromotion.SmokProm.analytics.RequestAnalyticsCount;
+import com.smokpromotion.SmokProm.analytics.RequestAnalyticsData;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
-import org.springframework.data.util.Pair;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -18,38 +19,52 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Profile({"portal","admin","dxpulse_admin"})
 @Service
 public class DR_RequestAnalyticsData {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(DR_RequestAnalyticsData.class);
+
     private static final int MAX_REQUEST_BODY_LENGTH=65535;
 
     private static final int SECONDS_IN_LOGIN = 1800;
 
-    private MPCAppDBConnectionFactory dbFactory;
+    private DbBeanGenericInterface<RequestAnalyticsData> reqRepo = null;
+    // -----------------------------------------------------------------------------------------------------------------
+    // Constructors
+    // -----------------------------------------------------------------------------------------------------------------
 
-    @Autowired
-    public DR_RequestAnalyticsData(MPCAppDBConnectionFactory dbFactory){
-        this.dbFactory = dbFactory;
+    public DR_RequestAnalyticsData() {
+        DbBean dBean = new DbBean();
+        try {
+            dBean.connect();
+            reqRepo = dBean.getTypedBean(RequestAnalyticsData.class);
+        } catch (ClassNotFoundException | SQLException e) {
+            LOGGER.error("Class S_User not found");
+        }
     }
 
-    public List<RequestAnalyticsData> getByUserAndDates(PortalEnum portal, AnalyticsSiteEnum site, String email, LocalDate start, LocalDate end, boolean hideInternal){
+    public List<RequestAnalyticsData> getByUserAndDates( String email, LocalDate start, LocalDate end, boolean hideInternal){
         java.sql.Timestamp startTime = java.sql.Timestamp.valueOf(start.atTime(0,0));
         java.sql.Timestamp endTime = java.sql.Timestamp.valueOf(end.atTime(23,59));
         String hideClause = hideInternal(hideInternal);
-        String sql = "SELECT * FROM analytics WHERE "+hideClause+" site=? AND email=? AND (created_at BETWEEN ? AND ?) ORDER BY created_at DESC";
-        return dbFactory.getJdbcTemplate(portal).map( template->template.query(sql, new Object[]{site.getCode(), email, start, end}, new RequestAnalyticsDataMapper())).orElse(new LinkedList<>());
+
+       String sql = "SELECT * FROM analytics WHERE "+hideClause+" AND email=:email AND (created_at BETWEEN :start AND :end)" +
+               " ORDER BY created_at DESC";
+        return reqRepo.getBeansNP(sql, new String[]{ "email", "start", "end"}, new Object[]{email, startTime, endTime});
     }
 
-    public Map<String, Integer> getPageViewsByUserAndDates(PortalEnum portal, AnalyticsSiteEnum site, String email, LocalDate start, LocalDate end, boolean hideInternal){
+/*
+    public Map<String, Integer> getPageViewsByUserAndDates(  String email, LocalDate start, LocalDate end, boolean hideInternal){
         java.sql.Timestamp startTime = java.sql.Timestamp.valueOf(start.atTime(0,0));
         java.sql.Timestamp endTime = java.sql.Timestamp.valueOf(end.atTime(23,59));
         String hideClause = hideInternal(hideInternal);
         String sql = "SELECT get_action,count(get_action) as cnt FROM analytics WHERE "+hideClause+" site=? AND email=? AND (created_at BETWEEN ? AND ?) GROUP BY get_action";
+
+
+
         List<Pair<String, Integer>> stats =  dbFactory.getJdbcTemplate(portal).map(template->template.query(sql, new Object[]{site.getCode(), email, startTime, endTime}, new RowMapper<Pair<String, Integer>>() {
             public Pair<String, Integer> mapRow(ResultSet rs, int row) throws SQLException {
                 return Pair.of(rs.getString("get_action"),rs.getInt("cnt"));
@@ -57,15 +72,15 @@ public class DR_RequestAnalyticsData {
         })).orElse(new LinkedList<>());
         return stats.stream().collect(Collectors.toMap(x->x.getFirst(),x->x.getSecond()));
     }
-
-    public List<RequestAnalyticsData> getByUserAndTimes(PortalEnum portal,AnalyticsSiteEnum site, String email, LocalDateTime start, LocalDateTime end, boolean hideInternal){
+*/
+    public List<RequestAnalyticsData> getByUserAndTimes( String email, LocalDateTime start, LocalDateTime end, boolean hideInternal){
         java.sql.Timestamp startTime = java.sql.Timestamp.valueOf(start);
         java.sql.Timestamp endTime = java.sql.Timestamp.valueOf(end);
         String hideClause = hideInternal(hideInternal);
-        String sql = "SELECT * FROM analytics WHERE "+hideClause+" site=? AND  email=? AND (created_at BETWEEN ? AND ?) ORDER BY created_at DESC";
-        return dbFactory.getJdbcTemplate(portal).map( template->template.query(sql, new Object[]{site.getCode(), email, start, end}, new RequestAnalyticsDataMapper())).orElse(new LinkedList<>());
+        String sql = "SELECT * FROM analytics WHERE "+hideClause+" site=? AND  email=:email AND (created_at BETWEEN :start AND :end) ORDER BY created_at DESC";
+        return reqRepo.getBeansNP(sql, new String[]{ "email", "start", "end"}, new Object[]{email, startTime, endTime});
     }
-
+    /*
     public Map<String, Integer> getPageViewsByUserAndTime(PortalEnum portal, AnalyticsSiteEnum site, String email, LocalDateTime start, LocalDateTime end, boolean hideInternal){
         java.sql.Timestamp startTime = java.sql.Timestamp.valueOf(start);
         java.sql.Timestamp endTime = java.sql.Timestamp.valueOf(end);
@@ -78,19 +93,18 @@ public class DR_RequestAnalyticsData {
         })).orElse(new LinkedList<>());
         return stats.stream().collect(Collectors.toMap(x->x.getFirst(),x->x.getSecond()));
     }
+*/
 
-
-    public List<RequestAnalyticsData> getAnalyticsByUserAndDates(PortalEnum portal, AnalyticsSiteEnum site, LocalDate start, LocalDate end, List<String> emails){
+    public List<RequestAnalyticsData> getAnalyticsByUserAndDates( LocalDate start, LocalDate end, List<String> emails) throws Exception{
 
         if (emails.isEmpty()){ return new LinkedList<>(); }
         java.sql.Timestamp startTime = java.sql.Timestamp.valueOf(start.atTime(0,0));
         java.sql.Timestamp endTime = java.sql.Timestamp.valueOf(end.atTime(23,59));
         String emailTokens = emails.stream().map(x->"?").collect(Collectors.joining(","));
-        Object[] params = new Object[3+emails.size()];
-        params[0]=site.getCode();
-        params[1]=startTime;
-        params[2]=endTime;
-        int insertPos=3;
+        Object[] params = new Object[2+emails.size()];
+        params[0]=startTime;
+        params[1]=endTime;
+        int insertPos=2;
 
         for(String email : emails){
             params[insertPos++]=email;
@@ -99,9 +113,9 @@ public class DR_RequestAnalyticsData {
                 "SELECT * FROM analytics WHERE site=? AND (created_at BETWEEN ? AND ?) AND email IN ("+emailTokens+") "+
 
                         " ORDER BY created_at ASC ;\n";
-        return dbFactory.getJdbcTemplate(portal).map(template -> template.query(sql, params, new RequestAnalyticsDataMapper())).orElse(new LinkedList<>());
+        return reqRepo.getBeans(sql, params);
     }
-
+/*
     public Map<String, Integer> getPageViewsByDates(PortalEnum portal,AnalyticsSiteEnum site, LocalDate start, LocalDate end, boolean hideInternal){
         java.sql.Timestamp startTime = java.sql.Timestamp.valueOf(start.atTime(0,0));
         java.sql.Timestamp endTime = java.sql.Timestamp.valueOf(end.atTime(23,59));
@@ -116,8 +130,8 @@ public class DR_RequestAnalyticsData {
         })).orElse(new LinkedList<>());
         return stats.stream().collect(Collectors.toMap(x->x.getFirst(),x->x.getSecond()));
     }
-
-    public List<RequestAnalyticsData> getAnalyticsByUserAndDatesNoApi(PortalEnum portal, AnalyticsSiteEnum site, LocalDate start, LocalDate end, List<String> emails, boolean hideInternal){
+*/
+    public List<RequestAnalyticsData> getAnalyticsByUserAndDatesNoApi( LocalDate start, LocalDate end, List<String> emails, boolean hideInternal) throws Exception{
 
         if (emails.isEmpty()){ return new LinkedList<>(); }
         java.sql.Timestamp startTime = java.sql.Timestamp.valueOf(start.atTime(0,0));
@@ -126,11 +140,10 @@ public class DR_RequestAnalyticsData {
 
         String hideClause = hideInternal(hideInternal);
 
-        Object[] params = new Object[3+emails.size()];
-        params[0] = site.getCode();
-        params[1]=startTime;
-        params[2]=endTime;
-        int insertPos=3;
+        Object[] params = new Object[2+emails.size()];
+        params[0]=startTime;
+        params[1]=endTime;
+        int insertPos=2;
         for(String email : emails){
             params[insertPos++]=email;
         }
@@ -138,14 +151,14 @@ public class DR_RequestAnalyticsData {
                 "SELECT * FROM analytics WHERE "+hideClause+" site=? AND (created_at BETWEEN ? AND ?) AND email IN ("+emailTokens+") "+
 
                         " ORDER BY created_at ASC ;\n";
-        return dbFactory.getJdbcTemplate(portal).map(template -> template.query(sql, params, new RequestAnalyticsDataMapper())).orElse(new LinkedList<>());
+        return reqRepo.getBeans(sql, params);
     }
 
 
 
 
-
-    public TreeMap<String, Long> getUsageByPage(PortalEnum portal, AnalyticsSiteEnum site, String pageStart, LocalDate start, LocalDate end){
+/*
+    public TreeMap<String, Long> getUsageByPage( String pageStart, LocalDate start, LocalDate end){
 
         java.sql.Timestamp startTime = java.sql.Timestamp.valueOf(start.atTime(0,0));
         java.sql.Timestamp endTime = java.sql.Timestamp.valueOf(end.atTime(23,59));
@@ -174,10 +187,17 @@ public class DR_RequestAnalyticsData {
         return dbFactory.getJdbcTemplate(portal).map( template->template.query(sql, new Object[]{site.getCode(), practiceGroupId, pageStart+"%", start, end}, new RequestAnalyticsCountMapper())).orElse(new LinkedList<>());
     }
 
-    public boolean create(PortalEnum portal, RequestAnalyticsData data){
-        String sql = dbFactory.translateSQL("INSERT INTO analytics (created_at,updated_at,host,method, uid, email, group_id, group_name, get_action, get_type, get_id, all_get, all_post, duration, agent_string, agent_ip, request_body, site) "
-                                            + " VALUES (now(), now(), :host, :method, :uid, :email, :group_id, :group_name, :get_action, :get_type, :get_id, :all_get, :all_post, :duration, :agent_string, :agent_ip, :request_body, :site); ");
-        return dbFactory.getNamedParameterJdbcTemplate(portal).map( template->template.update(sql,getParameterSource(data))).orElse(0)==1;
+*/
+    public boolean create( RequestAnalyticsData data){
+        try {
+            return reqRepo.storeBean(data).hasAnyId();
+        } catch (Exception e) {
+            LOGGER.warn("Exception storing analytics");
+            return false;
+        }
+        //        String sql = dbFactory.translateSQL("INSERT INTO analytics (created_at,updated_at,host,method, uid, email, group_id, group_name, get_action, get_type, get_id, all_get, all_post, duration, agent_string, agent_ip, request_body, site) "
+//                                            + " VALUES (now(), now(), :host, :method, :uid, :email, :group_id, :group_name, :get_action, :get_type, :get_id, :all_get, :all_post, :duration, :agent_string, :agent_ip, :request_body, :site); ");
+//        return dbFactory.getNamedParameterJdbcTemplate(portal).map( template->template.update(sql,getParameterSource(data))).orElse(0)==1;
     }
 
 

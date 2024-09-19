@@ -1,6 +1,8 @@
-package com.smokpromotion.SmokProm.config;
+package com.smokpromotion.SmokProm.analytics.entity;
 
 import com.smokpromotion.SmokProm.analytics.AnalyticsSiteEnum;
+import com.smokpromotion.SmokProm.config.ExtraParameterException;
+import com.smokpromotion.SmokProm.config.MissingParameterException;
 import com.urcompliant.config.admin.AdminSecurityPrinciple;
 import com.urcompliant.config.dentistportal.DentistPortalSecurityPrinciple;
 import com.urcompliant.config.portal.PortalSecurityPrinciple;

@@ -1,6 +1,7 @@
 package com.smokpromotion.SmokProm.controller.admin;
 
 
+import com.smokpromotion.SmokProm.config.common.SimpleUserLogger;
 import com.smokpromotion.SmokProm.domain.dto.EmailLanguage;
 import com.smokpromotion.SmokProm.domain.entity.DE_EmailTemplate;
 import com.smokpromotion.SmokProm.domain.repo.DR_EmailTemplate;
@@ -105,8 +106,8 @@ public class EmailTemplateController extends AdminBaseController {
                 model.addAttribute("languages", EmailLanguage.values());
                 model.addAttribute("templateForm", template);
                 return getBase() + "private/edit_email_template";
-            } catch (Exception e) {
-                LOGGER.warn("Error on duplicate", e);
+            } catch (Exception fl) {
+                LOGGER.warn("Error on duplicate", fl);
             }
         } catch (Exception e) {
             LOGGER.warn("Error sql",e);

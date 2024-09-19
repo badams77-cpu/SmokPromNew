@@ -1,5 +1,6 @@
 package com.smokpromotion.SmokProm.analytics;
 
+import com.smokpromotion.SmokProm.analytics.repository.DR_AnalyticsToken;
 import com.urcompliant.analytics.repository.DR_AnalyticsToken;
 import com.urcompliant.domain.PortalEnum;
 import org.slf4j.Logger;

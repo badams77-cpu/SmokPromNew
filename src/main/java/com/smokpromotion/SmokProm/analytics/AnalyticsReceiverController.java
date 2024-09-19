@@ -2,7 +2,7 @@ package com.smokpromotion.SmokProm.analytics;
 
 import com.smokpromotion.SmokProm.config.ExtraParameterException;
 import com.smokpromotion.SmokProm.config.MissingParameterException;
-import com.smokpromotion.SmokProm.config.RequestAnalyticsData;
+import com.smokpromotion.SmokProm.analytics.entity.RequestAnalyticsData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

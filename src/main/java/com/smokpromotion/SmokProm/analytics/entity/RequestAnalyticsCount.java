@@ -1,4 +1,4 @@
-package com.smokpromotion.SmokProm.config;
+package com.smokpromotion.SmokProm.analytics.entity;
 
 public class RequestAnalyticsCount  {
 

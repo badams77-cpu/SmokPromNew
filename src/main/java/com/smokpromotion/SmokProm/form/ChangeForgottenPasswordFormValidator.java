@@ -1,5 +1,7 @@
 package com.smokpromotion.SmokProm.form;
 
+import com.smokpromotion.SmokProm.domain.entity.S_User;
+import com.smokpromotion.SmokProm.domain.repo.REP_UserService;
 import com.urcompliant.domain.entity.DE_DentistPortalUser;
 import com.urcompliant.domain.entity.DE_User;
 import com.urcompliant.domain.repository.DR_DentistPortalUser;
@@ -51,8 +53,10 @@ public class ChangeForgottenPasswordFormValidator implements Validator {
         boolean valid = genericValidation(errors, "current", form.getCurrent());
 
         // Check that current matches the users current password.
-        Optional<S_User> optUser = dsUserService.getById(form.getUserId());
-
+        Optional<S_User> optUser = Optional.empty();
+                try {
+                    optUser=Optional.of(dsUserService.getById(form.getUserId()));
+                } catch (Exception e) {}
         genericValidation(errors, "neww", form.getNeww());
 
         genericValidation(errors, "repeat", form.getRepeat());
