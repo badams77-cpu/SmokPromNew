@@ -1,6 +1,5 @@
 package com.smokpromotion.SmokProm.form;
 
-import com.urcompliant.domain.PortalEnum;
 
 /**
  * Class backing a change password form.
@@ -78,7 +77,6 @@ public class ChangePasswordForm {
                 ", repeat='" + repeat + '\'' +
                 ", userId=" + userId +
                 ", portalAndUser='" + portalAndUser + '\'' +
-                ", portal=" + portal +
                 ", policy=" + policy +
                 '}';
     }

@@ -10,11 +10,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import service.PasswordPolicyService;
-
-import java.util.Optional;
-
-import static com.smokpromotion.SmokProm.util.SecVnEnum.MD5;
 
 @Component
 public class ChangePasswordFormValidator implements Validator {

@@ -39,34 +39,34 @@ public class PasswordPolicyService {
         } catch (Exception e) {}
 
         if (optUser.isPresent()) {
-            S_User user = optUser.get();
-            if (user.getPassword_policy() == 1 && !passwordValidByPolicy(password)) {
-                userNeedsToPassword = true;
-            } else if (passwordExpired(user.getPwd_change())) {
-                userNeedsToPassword = true;
-            }
+            //            S_User user = optUser.get();
+            //if (user.getPassword_policy() == 1 && !passwordValidByPolicy(password)) {
+            //    userNeedsToPassword = true;
+            //} else if (passwordExpired(user.getPwd_change())) {
+            //    userNeedsToPassword = true;
+            //}
         }
 
         return userNeedsToPassword;
 
     }
 
-    public int userNeedsNewPasswordReason(PortalEnum legacyMpcPortalEnum, int userid, String password) {
+    public int userNeedsNewPasswordReason( int userid, String password) {
 
         int reason = 0;
 
         Optional<S_User> optUser = Optional.empty();
         try {
-            optUser=Optional.of(userService.getById(userId()));
+            optUser=Optional.of(userService.getById(userid));
         } catch (Exception e) {}
 
         if (optUser.isPresent()) {
             S_User user = optUser.get();
-            if (user.getPassword_policy() == 1 && !passwordValidByPolicy(password)) {
-                reason = REASON_INADEQUATE;
-            } else if (passwordExpired(user.getPwd_change())) {
-                reason = REASON_EXPIRED;
-            }
+//            if (user.getPassword_policy() == 1 && !passwordValidByPolicy(password)) {
+//                reason = REASON_INADEQUATE;
+//            } else if (passwordExpired(user.getPwd_change())) {
+//                reason = REASON_EXPIRED;
+//            }
         }
 
         return reason;
