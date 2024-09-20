@@ -45,11 +45,11 @@ public class AnalyticsTokenService {
             LocalDateTime inThreeMinutes = LocalDateTime.now().plusMinutes(3);
             UUID token = UUID.randomUUID();
             try {
-                if (drAnalyticsToken.getForDate(PortalEnum.AWS, inThreeMinutes.toLocalDate())==null) {
-                    drAnalyticsToken.save(PortalEnum.AWS, inThreeMinutes.toLocalDate(), token);
+                if (drAnalyticsToken.getForDate( inThreeMinutes.toLocalDate())==null) {
+                    drAnalyticsToken.save( inThreeMinutes.toLocalDate(), token);
                 }
                 LocalDate today = LocalDate.now();
-                drAnalyticsToken.deleteOld(PortalEnum.AWS, LocalDate.now());
+                drAnalyticsToken.deleteOld( LocalDate.now());
                 tokensByDate = tokensByDate.entrySet().stream().filter(x->!x.getKey().isBefore(today) ).collect(Collectors.toMap(x->x.getKey(),x->x.getValue()));
                 LOGGER.info("setToken: Set new Analytics Token, cleared old");
             } catch (Exception e){
@@ -63,13 +63,13 @@ public class AnalyticsTokenService {
         if (token!=null){
             return token.toString();
         }
-        token = drAnalyticsToken.getForDate(PortalEnum.AWS, localDate);
+        token = drAnalyticsToken.getForDate( localDate);
         if (token!=null){
             tokensByDate.put(localDate, token);
             return token.toString();
         }
         setToken();
-        token = drAnalyticsToken.getForDate(PortalEnum.AWS, localDate);
+        token = drAnalyticsToken.getForDate( localDate);
         return token==null ? "" : token.toString();
     }
 

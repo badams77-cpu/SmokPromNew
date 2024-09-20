@@ -48,7 +48,7 @@ public class DR_AnalyticsToken {
         //dbFactory.getNamedParameterJdbcTemplate(portal).map(template->template.update(sql, new MapSqlParameterSource(paramMap))).orElse(0)==1;
     }
 
-    public UUID getForDate(PortalEnum portal, LocalDate date){
+    public UUID getForDate( LocalDate date){
         String sql = "select * FROM "+TABLE+" where token_date=?";
 /*       List<String> uuids = dbFactory.getJdbcTemplate(portal).map(template->template.query(sql, new Object[]{ java.sql.Date.valueOf(date)},  new TokenRowMapper())).orElse(new LinkedList<>());
         if (uuids.isEmpty()){ return null; }
@@ -60,9 +60,10 @@ public class DR_AnalyticsToken {
         }
 
  */
+        return null;
     }
 
-    public boolean deleteOld(PortalEnum portal, LocalDate date){
+    public boolean deleteOld( LocalDate date){
 /*        String sql = "DELETE FROM "+TABLE+" where token_date<:token_date";
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("token_date", java.sql.Date.valueOf(date));

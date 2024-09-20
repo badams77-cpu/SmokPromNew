@@ -41,7 +41,7 @@ public class DR_AdminReportRequestAnalyticsData  {
             LOGGER.error("Class S_User not found");
         }
     }
-    
+
     private int clearTempTable() {
         String sqlDelete = "DELETE FROM "+ADMIN_LOGIN_TABLE+";\n";
         //int rows = analRepo.deleteBeans(
