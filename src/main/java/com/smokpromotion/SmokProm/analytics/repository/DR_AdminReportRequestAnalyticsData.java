@@ -3,9 +3,9 @@ package com.smokpromotion.SmokProm.analytics.repository;
 
 import com.majorana.maj_orm.ORM_ACCESS.DbBean;
 import com.majorana.maj_orm.ORM_ACCESS.DbBeanGenericInterface;
-import com.smokpromotion.SmokProm.analytics.RequestAnalyticsData;
 import com.smokpromotion.SmokProm.analytics.entity.AnalyticsUserLogins;
 
+import com.smokpromotion.SmokProm.analytics.entity.RequestAnalyticsData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;

@@ -6,8 +6,6 @@ import com.majorana.maj_orm.ORM_ACCESS.DbBeanGenericInterface;
 import com.majorana.maj_orm.ORM_ACCESS.MultiId;
 import com.smokpromotion.SmokProm.domain.entity.DE_EmailTemplate;
 import com.smokpromotion.SmokProm.domain.entity.S_User;
-import com.urcompliant.domain.PortalEnum;
-import com.urcompliant.domain.entity.DE_EmailTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -143,7 +141,7 @@ public class DR_EmailTemplate {
      */
     public boolean update(DE_EmailTemplate template) throws Exception {
 
-        emailRepo.updateBean( new MultiId(template.getId()), template );
+        return emailRepo.updateBean( new MultiId(template.getId()), template ).hasAnyId();
 
     }
 

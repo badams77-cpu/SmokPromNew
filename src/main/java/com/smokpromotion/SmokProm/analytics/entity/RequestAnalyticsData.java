@@ -1,5 +1,6 @@
 package com.smokpromotion.SmokProm.analytics.entity;
 
+import com.majorana.maj_orm.ORM.BaseMajoranaEntity;
 import com.smokpromotion.SmokProm.analytics.AnalyticsSiteEnum;
 import com.smokpromotion.SmokProm.config.ExtraParameterException;
 import com.smokpromotion.SmokProm.config.MissingParameterException;
@@ -22,7 +23,10 @@ import java.util.stream.Collectors;
  *
  */
 
-public class RequestAnalyticsData {
+public class RequestAnalyticsData extends BaseMajoranaEntity {
+
+    private static final String TABLE_NAME="analytics";
+
 
     private static final String MASKED_VALUE = "*********";
 
@@ -76,6 +80,11 @@ public class RequestAnalyticsData {
 
     public RequestAnalyticsData(){
 
+    }
+
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
     }
 
 

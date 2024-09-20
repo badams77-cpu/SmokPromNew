@@ -1,6 +1,11 @@
 package com.smokpromotion.SmokProm.analytics.entity;
 
-public class RequestAnalyticsCount  {
+import com.majorana.maj_orm.ORM.BaseMajoranaEntity;
+
+public class RequestAnalyticsCount extends BaseMajoranaEntity {
+
+
+    private static final String TABLE_NAME="analytics";
 
     private String page;
 
@@ -30,6 +35,11 @@ public class RequestAnalyticsCount  {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
     }
 
     @Override
