@@ -1,12 +1,13 @@
 package com.smokpromotion.SmokProm.analytics;
 
+import com.smokpromotion.SmokProm.config.ExtraParameterException;
+import com.smokpromotion.SmokProm.config.MissingParameterException;
+import com.smokpromotion.SmokProm.config.admin.AdminSecurityPrinciple;
+import com.smokpromotion.SmokProm.config.portal.PortalSecurityPrinciple;
 import com.smokpromotion.SmokProm.domain.entity.BaseSmokEntity;
-import com.urcompliant.config.admin.AdminSecurityPrinciple;
-import com.urcompliant.config.dentistportal.DentistPortalSecurityPrinciple;
-import com.urcompliant.config.portal.PortalSecurityPrinciple;
 import org.springframework.web.method.HandlerMethod;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDate;
@@ -53,6 +54,10 @@ public class RequestAnalyticsData extends BaseSmokEntity {
         }
     }
 
+    public String getTableName(){
+        return TABLE_NAME;
+    }
+
     public static final int ACTION_LENGTH = 255;
 
     private String host;
@@ -97,14 +102,6 @@ public class RequestAnalyticsData extends BaseSmokEntity {
         requestBody ="";
     }
 
-    public RequestAnalyticsData(HttpServletRequest request, DentistPortalSecurityPrinciple principle, Object handler, long executeTime) {
-        extractFromRequest(request, handler);
-        setFromPrinciple(principle);
-        duration = formatter.format(executeTime/1000.0);
-        date = LocalDate.now();
-        requestBody ="";
-    }
-
     public RequestAnalyticsData(HttpServletRequest request, AdminSecurityPrinciple principle, Object handler, long executeTime) {
         extractFromRequest(request,  handler);
         setFromAdminPrinciple(principle);
@@ -123,14 +120,6 @@ public class RequestAnalyticsData extends BaseSmokEntity {
     }
 
 
-    public RequestAnalyticsData(HttpServletRequest request, DentistPortalSecurityPrinciple principle, Object handler, long executeTime, String body, AnalyticsSiteEnum profile) {
-        extractFromRequest(request, handler);
-        setFromPrinciple(principle);
-        duration = formatter.format(executeTime/1000.0);
-        date = LocalDate.now();
-        requestBody = body;
-        site = profile;
-    }
 
     public RequestAnalyticsData(HttpServletRequest request, AdminSecurityPrinciple principle, Object handler, long executeTime, String body, AnalyticsSiteEnum profile) {
         extractFromRequest(request,  handler);
@@ -171,8 +160,6 @@ public class RequestAnalyticsData extends BaseSmokEntity {
         if (principle != null) {
             uid = principle.getId();
             email = principle.getEmail();
-            groupId = principle.getPracticeGroupId();
-            groupName = principle.getPracticeGroupName();
         } else {
             groupId = 0;
             uid = 0;
@@ -181,19 +168,7 @@ public class RequestAnalyticsData extends BaseSmokEntity {
         }
     }
 
-    private void setFromPrinciple(DentistPortalSecurityPrinciple principle) {
-        if (principle != null) {
-            uid = principle.getId();
-            email = principle.getUsername(); // Note Here we store username not email, so the access stats can breakdown by user
-            groupId = principle.getPracticeGroupId();
-            groupName = principle.getPracticeGroupName();
-        } else {
-            groupId = 0;
-            uid = 0;
-            email = "";
-            groupName = "";
-        }
-    }
+
 
     private void setFromAdminPrinciple(AdminSecurityPrinciple principle) {
         if (principle != null) {

@@ -3,12 +3,11 @@ package com.smokpromotion.SmokProm.analytics.entity;
 import com.smokpromotion.SmokProm.analytics.AnalyticsSiteEnum;
 import com.smokpromotion.SmokProm.config.ExtraParameterException;
 import com.smokpromotion.SmokProm.config.MissingParameterException;
-import com.urcompliant.config.admin.AdminSecurityPrinciple;
-import com.urcompliant.config.dentistportal.DentistPortalSecurityPrinciple;
-import com.urcompliant.config.portal.PortalSecurityPrinciple;
+import com.smokpromotion.SmokProm.config.admin.AdminSecurityPrinciple;
+import com.smokpromotion.SmokProm.config.portal.PortalSecurityPrinciple;
 import org.springframework.web.method.HandlerMethod;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDate;
@@ -97,13 +96,6 @@ public class RequestAnalyticsData {
         requestBody ="";
     }
 
-    public RequestAnalyticsData(HttpServletRequest request, DentistPortalSecurityPrinciple principle, Object handler, long executeTime) {
-        extractFromRequest(request, handler);
-        setFromPrinciple(principle);
-        duration = formatter.format(executeTime/1000.0);
-        date = LocalDate.now();
-        requestBody ="";
-    }
 
     public RequestAnalyticsData(HttpServletRequest request, AdminSecurityPrinciple principle, Object handler, long executeTime) {
         extractFromRequest(request,  handler);

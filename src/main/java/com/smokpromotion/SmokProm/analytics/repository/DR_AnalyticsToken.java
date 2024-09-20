@@ -2,6 +2,7 @@ package com.smokpromotion.SmokProm.analytics.repository;
 
 import com.majorana.maj_orm.ORM_ACCESS.DbBean;
 import com.majorana.maj_orm.ORM_ACCESS.DbBeanGenericInterface;
+import com.smokpromotion.SmokProm.analytics.entity.AnalyticTokens;
 import com.smokpromotion.SmokProm.domain.entity.DE_EmailTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,17 +21,16 @@ import java.util.*;
 public class DR_AnalyticsToken {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DR_AnalyticsToken.class);
-    private DbBeanGenericInterface<> emailRepo = null;
+    private DbBeanGenericInterface<AnalyticTokens> nalyticsRepo = null;
     // -----------------------------------------------------------------------------------------------------------------
     // Constructors
     // -----------------------------------------------------------------------------------------------------------------
 
-    @Autowired
     public DR_AnalyticsToken(){
         DbBean dBean = new DbBean();
         try {
             dBean.connect();
-            emailRepo = dBean.getTypedBean(DE_EmailTemplate.class);
+            nalyticsRepo = dBean.getTypedBean(DE_EmailTemplate.class);
         } catch (ClassNotFoundException | SQLException e){
             LOGGER.error("Class S_User not found");
         }
@@ -44,6 +44,7 @@ public class DR_AnalyticsToken {
         paramMap.put("token_date", java.sql.Date.valueOf(date));
         paramMap.put("token", token.toString());
 
+        return false;
 
         //dbFactory.getNamedParameterJdbcTemplate(portal).map(template->template.update(sql, new MapSqlParameterSource(paramMap))).orElse(0)==1;
     }
@@ -64,13 +65,15 @@ public class DR_AnalyticsToken {
     }
 
     public boolean deleteOld( LocalDate date){
+
+
 /*        String sql = "DELETE FROM "+TABLE+" where token_date<:token_date";
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("token_date", java.sql.Date.valueOf(date));
 
         return dbFactory.getNamedParameterJdbcTemplate(portal).map(template->template.update(sql, new MapSqlParameterSource(paramMap))).orElse(0)>0;
         */
- */
+        return false;
     }
 
     protected class TokenRowMapper implements RowMapper<String> {
