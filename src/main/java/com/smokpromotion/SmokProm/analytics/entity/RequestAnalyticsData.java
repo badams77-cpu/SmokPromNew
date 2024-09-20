@@ -114,16 +114,6 @@ public class RequestAnalyticsData {
         site = profile;
     }
 
-
-    public RequestAnalyticsData(HttpServletRequest request, DentistPortalSecurityPrinciple principle, Object handler, long executeTime, String body, AnalyticsSiteEnum profile) {
-        extractFromRequest(request, handler);
-        setFromPrinciple(principle);
-        duration = formatter.format(executeTime/1000.0);
-        date = LocalDate.now();
-        requestBody = body;
-        site = profile;
-    }
-
     public RequestAnalyticsData(HttpServletRequest request, AdminSecurityPrinciple principle, Object handler, long executeTime, String body, AnalyticsSiteEnum profile) {
         extractFromRequest(request,  handler);
         setFromAdminPrinciple(principle);
@@ -163,8 +153,6 @@ public class RequestAnalyticsData {
         if (principle != null) {
             uid = principle.getId();
             email = principle.getEmail();
-            groupId = principle.getPracticeGroupId();
-            groupName = principle.getPracticeGroupName();
         } else {
             groupId = 0;
             uid = 0;
@@ -173,19 +161,6 @@ public class RequestAnalyticsData {
         }
     }
 
-    private void setFromPrinciple(DentistPortalSecurityPrinciple principle) {
-        if (principle != null) {
-            uid = principle.getId();
-            email = principle.getUsername(); // Note Here we store username not email, so the access stats can breakdown by user
-            groupId = principle.getPracticeGroupId();
-            groupName = principle.getPracticeGroupName();
-        } else {
-            groupId = 0;
-            uid = 0;
-            email = "";
-            groupName = "";
-        }
-    }
 
     private void setFromAdminPrinciple(AdminSecurityPrinciple principle) {
         if (principle != null) {
