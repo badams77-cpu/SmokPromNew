@@ -82,7 +82,7 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
     @Override
     public void init(SecurityBuilder auth) throws Exception {
         if (auth instanceof AuthenticationManagerBuilder b) {
-            b.authenticationProvider(usernameAuthenticationProvider);
+            b.authenticationProvider(portalCustomAuthenticationProvider);
         } else if (auth instanceof WebSecurity) {
 
         }
@@ -99,33 +99,39 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
         }
     }
 
-/*
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/home").permitAll()
+                        .requestMatchers("/", "login","login-handler","/home").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> {
-           //                 try {
+                            try {
                                 form
                                         .loginPage("/login").permitAll()
-                                        .loginProcessingUrl("/login-handler").permitAll();
-                                        //.disable().csrf();
-                                //    .successHandler(majoranaLoginSuccessHandler)
-                 //               form.failureHandler(majoranaAuthenticationFailureHandler);
-             //               } catch (Exception e) {
-                 //               LOGGER.warn("configure form ex", e);
+                                        .loginProcessingUrl("/login-handler").permitAll()
+                                        .passwordParameter("password")
+                                        .usernameParameter("username")
+                                        .successForwardUrl("/a/home")
+                                        .failureForwardUrl("/login/error=no_auth")
+                                        .disable().csrf()
 
-               //             }
+                                ;
+                            //        .successHandler(majoranaLoginSuccessHandler)
+                 //               form.failureHandler(majoranaAuthenticationFailureHandler);
+                            } catch (Exception e) {
+                                LOGGER.warn("configure form ex", e);
+
+                            }
                         }
                 )
                 .logout((logout) -> logout.permitAll());
 
         return http.build();
     }
-*/
+ /*
 @Bean
 public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
@@ -140,10 +146,10 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     return http.httpBasic(Customizer.withDefaults()).build();
 
 }
-
+*/
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         UserDetails user = User.withDefaultPasswordEncoder()
-                .username("user")
+                .username("username")
                 .password("password")
                 .roles("USER")
                 .build();

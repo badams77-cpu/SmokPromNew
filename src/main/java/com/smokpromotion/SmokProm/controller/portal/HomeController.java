@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class HomeController extends PortalBaseController {
 
-    @RequestMapping("/home")
+    @RequestMapping("/a/home")
     public String home(Model m, Authentication auth) throws UserNotFoundException, NotLoggedInException
     {
         S_User user = getAuthUser(auth);
