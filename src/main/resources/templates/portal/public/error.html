@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <!--suppress ALL -->
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-layout:decorate="~{portal/private/layout/private_portal_main.html}">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 
     <title th:text="#{t.Error}">Error</title>
@@ -14,7 +13,7 @@ layout:decorate="~{portal/private/layout/private_portal_main.html}">
 <!--/* ---------------------------------------------------------------------------------------------
 page_content++
 ---------------------------------------------------------------------------------------------- */-->
-<div layout:fragment="page_content" id="error-page">
+<div  id="error-page">
 
     <div class="row">
         <div class="error-container">

@@ -2,7 +2,7 @@ package com.smokpromotion.SmokProm.config.portal;
 
 import com.amazonaws.HttpMethod;
 import com.smokpromotion.SmokProm.util.CookieFactory;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,10 +18,10 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.SecurityBuilder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,9 +33,11 @@ import org.springframework.security.web.csrf.CsrfTokenRepository;
 //import reactor.publisher.Mono;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug=true)
 @Profile(value = "smok_app")
-public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBuilder<jakarta.servlet.Filter>> {
+public class PortalWebSecurityConfig extends WebSecurityConfigurerAdapter
+//        implements WebSecurityConfigurer
+{
 
     // -----------------------------------------------------------------------------------------------------------------
     // Dependencies
@@ -79,44 +81,102 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
         CookieFactory.setCookieDomain(cookieDomain);
     }
 
-    @Override
-    public void init(SecurityBuilder auth) throws Exception {
-        if (auth instanceof AuthenticationManagerBuilder b) {
-            b.authenticationProvider(portalCustomAuthenticationProvider);
-        } else if (auth instanceof WebSecurity) {
+//    @Override
+    public void init(HttpSecurity auth) throws Exception {
+      //  if (auth instanceof AuthenticationManagerBuilder b) {
+            auth.authenticationProvider(portalCustomAuthenticationProvider);
+      //  } else if (auth instanceof WebSecurity) {
 
-        }
+      //  }
     }
 
 
     //SecurityBuilder
-//    @Override
-    public void configure(SecurityBuilder auth) throws Exception {
-        if (auth instanceof AuthenticationManagerBuilder b) {
-            b.authenticationProvider(portalCustomAuthenticationProvider);
-        } else if (auth instanceof WebSecurity) {
+  //  @Override
+    public void configure(HttpSecurity http) throws Exception {
+  //      if (auth instanceof AuthenticationManagerBuilder b) {
+            http.authenticationProvider(portalCustomAuthenticationProvider);
+ //       } else if (auth instanceof WebSecurity) {
 
-        }
-    }
-
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+ //       }
         http
-                .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "login","login-handler","/home").permitAll()
-                        .anyRequest().authenticated()
-                )
+                .authenticationProvider(portalCustomAuthenticationProvider)
                 .formLogin((form) -> {
                             try {
                                 form
-                                        .loginPage("/login").permitAll()
-                                        .loginProcessingUrl("/login-handler").permitAll()
-                                        .passwordParameter("password")
+                                        .loginPage("/login")
+                                        .loginProcessingUrl("/login-handler")
+                                        .disable().csrf()
+                                ;
+                                form        .passwordParameter("password")
                                         .usernameParameter("username")
                                         .successForwardUrl("/a/home")
                                         .failureForwardUrl("/login/error=no_auth")
+
+                                ;
+                                //        .successHandler(majoranaLoginSuccessHandler)
+                                //               form.failureHandler(majoranaAuthenticationFailureHandler);
+                            } catch (Exception e) {
+                                LOGGER.warn("configure form ex", e);
+
+                            }
+                        }
+                );
+
+
+   //     return
+//                http.build();
+    }
+/*
+    //   https://github.com/spring-projects/spring-authorization-server/issues/633#issuecomment-1108334739
+    @Bean
+    public SecurityFilterChain securityFilterChainRest(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests((requests) ->
+                        requests
+                                .antMatchers("/", "/login","/logout","login-handler","/error"
+                                        ,"/login-handler","/home").permitAll()
+                                .antMatchers("/a/**").hasRole("USER")
+                );
+
+//        return http.build();
+        //   }
+
+
+//@Bean
+//public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf().disable();
+
+
+        http        .authenticationProvider(portalCustomAuthenticationProvider)
+                .authorizeRequests(authorizeRequests -> authorizeRequests
+                        .antMatchers( "/login", "/login-handler", "/","/public/**").permitAll()
+                        .antMatchers("/api/**", "/events/**", "/competition/**").authenticated()
+                );
+        http.formLogin()  .loginPage("/login");
+        //.permitAll();
+        //      .loginProcessingUrl("/login-handler").permitAll();
+        return http.build();
+    }
+
+
+
+/*
+    @Bean
+    public SecurityFilterChain securityFilterChainSignIn(HttpSecurity http) throws Exception {
+        http
+                .authenticationProvider(portalCustomAuthenticationProvider)
+                .formLogin((form) -> {
+                            try {
+                                form
+                                        .loginPage("/login")
+                                        .loginProcessingUrl("/login-handler")
                                         .disable().csrf()
+                                        ;
+                                form        .passwordParameter("password")
+                                        .usernameParameter("username")
+                                        .successForwardUrl("/a/home")
+                                        .failureForwardUrl("/login/error=no_auth")
 
                                 ;
                             //        .successHandler(majoranaLoginSuccessHandler)
@@ -126,35 +186,48 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
 
                             }
                         }
-                )
-                .logout((logout) -> logout.permitAll());
+                );
+
 
         return http.build();
     }
- /*
-@Bean
-public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http
 
-            .authenticationProvider(portalCustomAuthenticationProvider)
-            .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                    .requestMatchers( "/login", "/public/**").permitAll()
-                    .requestMatchers("/api/**", "/events/**", "/competition/**").authenticated()
+ //   https://github.com/spring-projects/spring-authorization-server/issues/633#issuecomment-1108334739
+    @Bean
+    public SecurityFilterChain securityFilterChainRest(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests((requests) ->
+                        requests
+                                .antMatchers("/", "/login","/logout","login-handler","/error"
+                                        ,"/login-handler","/home").permitAll()
+                                .antMatchers("/a/**").hasRole("USER")
+                );
+
+//        return http.build();
+ //   }
+
+
+//@Bean
+//public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http.csrf().disable();
+
+
+    http        .authenticationProvider(portalCustomAuthenticationProvider)
+            .authorizeRequests(authorizeRequests -> authorizeRequests
+                    .antMatchers( "/login", "/login-handler", "/","/public/**").permitAll()
+                    .antMatchers("/api/**", "/events/**", "/competition/**").authenticated()
             );
-    http.formLogin()  .loginPage("/login").permitAll()
-            .loginProcessingUrl("/login-handler").permitAll();
-    return http.httpBasic(Customizer.withDefaults()).build();
+    http.formLogin()  .loginPage("/login");
+            //.permitAll();
+      //      .loginProcessingUrl("/login-handler").permitAll();
+    return http.build();
 
 }
 */
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        UserDetails user = User.withDefaultPasswordEncoder()
-                .username("username")
-                .password("password")
-                .roles("USER")
-                .build();
-        auth.authenticationProvider(portalCustomAuthenticationProvider);
-    }
+
+
+
+
 
 
     @Bean
@@ -202,7 +275,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         }
         return Mono.just( new AuthorizationDecision(false));
     }
-*/
+
 
 
     // -----------------------------------------------------------------------------------------------------------------
