@@ -79,7 +79,7 @@ public class REP_UserService {
     }
 
     public boolean isPasswordGood(S_User u, String pw){
-        return pwCryptUtil.isPasswordGood(u.getSecVNEnum().getCode(), u.getUsername(), u.getUserpw(), pw);
+        return pwCryptUtil.isPasswordGood(u.getSecVNEnum().getCode(), u.getUsername(), pw,u.getUserpw());
     }
 
     public static int getChangePasswordTimeOut(){
