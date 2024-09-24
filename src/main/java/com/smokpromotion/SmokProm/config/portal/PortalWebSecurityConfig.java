@@ -22,12 +22,15 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
+import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 
 //import reactor.publisher.Mono;
@@ -47,8 +50,6 @@ public class PortalWebSecurityConfig extends WebSecurityConfigurerAdapter
     @Autowired
     private PortalCustomAuthenticationProvider portalCustomAuthenticationProvider;
 
-    @Autowired
-    private UsernameAuthProvider usernameAuthenticationProvider;
     @Autowired
     private CsrfTokenRepository csrfTokenRepository;
     @Autowired
@@ -91,7 +92,7 @@ public class PortalWebSecurityConfig extends WebSecurityConfigurerAdapter
     }
 
 
-    //SecurityBuilder
+ /*   //SecurityBuilder
   //  @Override
     public void configure(HttpSecurity http) throws Exception {
   //      if (auth instanceof AuthenticationManagerBuilder b) {
@@ -126,14 +127,13 @@ public class PortalWebSecurityConfig extends WebSecurityConfigurerAdapter
 
    //     return
 //                http.build();
-    }
-/*
-    //   https://github.com/spring-projects/spring-authorization-server/issues/633#issuecomment-1108334739
+    }*/
+    /* https://github.com/spring-projects/spring-authorization-server/issues/633#issuecomment-1108334739
     @Bean
     public SecurityFilterChain securityFilterChainRest(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests((requests) ->
-                        requests
+                        request
                                 .antMatchers("/", "/login","/logout","login-handler","/error"
                                         ,"/login-handler","/home").permitAll()
                                 .antMatchers("/a/**").hasRole("USER")
@@ -144,7 +144,7 @@ public class PortalWebSecurityConfig extends WebSecurityConfigurerAdapter
 
 
 //@Bean
-//public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+ //       public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
 
 
@@ -159,7 +159,7 @@ public class PortalWebSecurityConfig extends WebSecurityConfigurerAdapter
         return http.build();
     }
 
-
+*/
 
 /*
     @Bean
@@ -189,12 +189,6 @@ public class PortalWebSecurityConfig extends WebSecurityConfigurerAdapter
                 );
 
 
-        return http.build();
-    }
-
- //   https://github.com/spring-projects/spring-authorization-server/issues/633#issuecomment-1108334739
-    @Bean
-    public SecurityFilterChain securityFilterChainRest(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests((requests) ->
                         requests
@@ -203,10 +197,11 @@ public class PortalWebSecurityConfig extends WebSecurityConfigurerAdapter
                                 .antMatchers("/a/**").hasRole("USER")
                 );
 
-//        return http.build();
- //   }
+        return http.build();
+    }
+*/
 
-
+    /*
 //@Bean
 //public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf().disable();
@@ -298,7 +293,7 @@ public class PortalWebSecurityConfig extends WebSecurityConfigurerAdapter
 
 
 
-    /*
+
 @Bean
 SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
                                             ReactiveAuthenticationManager reactiveAuthenticationManager) {
@@ -329,56 +324,71 @@ SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
             .anyExchange().denyAll();
     return http.build();
 }
-      */
+*/
+
+    @Autowired
+    @Bean
+    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder authenticationManagerBuilder =
+                http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.authenticationProvider(portalCustomAuthenticationProvider);
+        return authenticationManagerBuilder.build();
+    }
 
 
-/*
     @Override
-    public void configure(uSecurityBuilder securityBilder) throws Exception {
+    public void configure(HttpSecurity http) throws Exception {
 
-       //         HttpBasicConfigurer http = (HttpBasicConfigurer) (
-       //         (HttpSecurityBuilder) securityBuilder)
-       //         .getConfigurer(HttpBasicConfigurer.class);
+        //         HttpBasicConfigurer http = (HttpBasicConfigurer) (
+        //         (HttpSecurityBuilder) securityBuilder)
+        //         .getConfigurer(HttpBasicConfigurer.class);
 
-        FormLoginConfigurer flc =         (FormLoginConfigurer) ((HttpSecurityBuilder) securityBuilder)
-                .getConfigurer(FormLoginConfigurer.class);
+        FormLoginConfigurer flc = http.formLogin();
+                //.getConfigurer(FormLoginConfigurer.class)
+        flc.failureForwardUrl("/login?error=un_auth");
+        flc.successForwardUrl("/a/home");
+        flc .usernameParameter("username");
+                flc.passwordParameter("password");
+                flc.defaultSuccessUrl("/a/home").permitAll();
+        flc.loginPage("/login");
+        flc.loginProcessingUrl("/login-handler").permitAll();
+        flc        .loginPage("/login").permitAll();
+//                .failureHandler(getCustomAuthenticationFailureHandler())
 
-        flc
-                //.formLogin()
+        CsrfConfigurer cc = http.csrf();
+        cc.csrfTokenRepository(csrfTokenRepository);
+        cc.disable();
 
-                .loginPage("/login")
-                .failureHandler(getCustomAuthenticationFailureHandler())
-//                .usernameParameter("email")
-//                .passwordParameter("password")
-                .defaultSuccessUrl("/login-handler")
 
-//               http
-//                .addFilterBefore(majoranaCustomAPISecurityFilter, BasicAuthenticationFilter.class)
-//                .csrfTokenRepository(csrfTokenRepository)
-//                .and()
-//                                .authorizeRequests()
-//                 permitAll items - should be a fairly restricted set of items
-//                .antMatchers("/","/css/**", "/images/**", "/public-js/**", "/login-handler","/login", "/client-login/**", "/exact-login","/favicon.ico", "/prec/**","/actuator/health" )
-//                .permitAll();
- //               .antMatchers(HttpMethod.POST, "/client-login-post").permitAll()
 
-                // authenticated only - not role group specific
-//                .antMatchers("/landing-page","/error", "/dashboard/ops/**", "/userpermission/api/**","/application-permission-admin/api/**","/dashboard/toReport/**", "/practices/lastupdate/**", "/development/**", "/dashboard/ceo/api/**", "/tips/api/**", "/notifications/**","/static/media/**",
-//                        "/practice-setup", "/settings/**", "/version-history", "/videos/**", "/accessDenied","/js-error", "/csrf-token", "/portal/api/userInformation", "/support","/your-account","/change-password/**", "/send-communication/**").authenticated()
-//                .antMatchers("/generic/api/**").authenticated()
+     //   http
+ //               .addFilterBefore(majoranaCustomAPISecurityFilter, BasicAuthenticationFilter.class);
+        http.authenticationProvider(portalCustomAuthenticationProvider);
+
+
+       http         .authorizeRequests()
+     //   permitAll items -should be a fairly restricted set of items
+                .antMatchers("/", "/css/**", "/images/**", "/public-js/**", "/login-handler", "/login", "/client-login/**", "/exact-login", "/favicon.ico", "/prec/**", "/actuator/health")
+                .permitAll();
+
+        // authenticated only - not role group specific
+                http.authorizeRequests().antMatchers("/landing-page","/error", "/a/**").authenticated()
+//
+//                         //"/practice-setup", "/settings/**", "/version-history", "/videos/**", "/accessDenied","/js-error", "/csrf-token", "/portal/api/userInformation", "/support","/your-account","/change-password/**", "/send-communication/**").authenticated()
+                .antMatchers("/generic/api/**").authenticated()
 //                .antMatchers("/timeout").authenticated()
-//                .antMatchers("/menu/api").authenticated()
+                .antMatchers("/menu/api").authenticated();
 //                .antMatchers("/js/adminportal/**").denyAll()
 //                .antMatchers("/js/dentistportal/**").denyAll()
 //                .antMatchers("/js/**").authenticated()
-                // used for users-in-group, email job endpoints, kpi goal endpoints
+        // used for users-in-group, email job endpoints, kpi goal endpoints
 //                .antMatchers(HttpMethod.GET, "/generic/api/**").authenticated()
 //                .antMatchers(HttpMethod.PATCH, "/generic/api/**").authenticated()
 //                .antMatchers(HttpMethod.POST, "/generic/api/**").authenticated()
 
 //                .antMatchers(HttpMethod.PUT, "/generic/api/**").authenticated()
 
-                // authenticated and role group specific
+        // authenticated and role group specific
 //                .antMatchers("/{basePath}/{path}/**").access("@MajoranaAccessDecision.allowSection(request, authentication, #basePath, #path)")
 //                .antMatchers("/{basePath}/**").access("@MajoranaAccessDecision.allowSection(request, authentication, #basePath)")
 //                .anyRequest().authenticated();
@@ -386,11 +396,9 @@ SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
 //        http.logout().logoutSuccessUrl("/");
 
 //        http.exceptionHandling().accessDeniedHandler(MajoranaAccessDeniedHandler());
-        
 
-
-
-   */
+//        http.build();
+    }
 
 
 //    @Override
