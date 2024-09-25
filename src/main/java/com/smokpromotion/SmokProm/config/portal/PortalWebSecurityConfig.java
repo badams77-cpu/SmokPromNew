@@ -104,8 +104,8 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "login","login-handler","/home").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/","/index", "login","login-handler","/home").permitAll()
+                        .requestMatchers("/a/**").authenticated()
                 )
                 .formLogin((form) -> {
                             try {

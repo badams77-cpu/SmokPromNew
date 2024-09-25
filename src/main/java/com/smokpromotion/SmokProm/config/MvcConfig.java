@@ -21,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
@@ -129,5 +130,13 @@ public class MvcConfig implements WebMvcConfigurer {
     public ServletWebServerFactory servletWebServerFactory() {
         return new TomcatServletWebServerFactory();
     }
+
+
+        @Override
+        public void addResourceHandlers(ResourceHandlerRegistry registry) {
+            registry
+                    .addResourceHandler("/resources/static/images/**")
+                    .addResourceLocations("/images/");
+        }
 
 }

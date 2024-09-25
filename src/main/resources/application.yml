@@ -16,13 +16,15 @@ Majorana:
       attempts: 5
 
 
-
 Majorana_AWS_REGION: eu-west-3
 SESSION_REDIS_HOST: 192.168.1.76
 SESSION_REDIS_PASSWORD: redis10123
 SESSION_REDIS_TIMEOUT:  2000
 
 spring:
+  web:
+    resources:
+      :static-locations: classpath:static/images
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.data.cassandra.CassandraDataAutoConfiguration
 

@@ -98,8 +98,6 @@ public class S_User extends BaseSmokEntity implements Serializable {
     // -----------------------------------------------------------------------------------------------------------------
 
 
-
-
     public S_User() {
     }
 

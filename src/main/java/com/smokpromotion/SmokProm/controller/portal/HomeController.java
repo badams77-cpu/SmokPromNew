@@ -19,6 +19,12 @@ public class HomeController extends PortalBaseController {
         return PRIBASE+"home.html";
     }
 
+    @RequestMapping("/")
+    public String pubhome(Model mh)
+    {
+        return PUBBASE+"index.html";
+    }
+
 
     @RequestMapping("/login")
     public String login(Model m, Authentication auth)
