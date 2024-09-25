@@ -61,6 +61,8 @@ public class Search4J {
 
     public int searchTwitter(DE_TwitterSearch dts){
 
+        int saved = 0;
+
         try {
 
             DE_SeduledTwitterSearch sts = new DE_SeduledTwitterSearch();
@@ -73,7 +75,7 @@ public class Search4J {
 
             twitter4j.v1.Query query = Query.of(dts.getSearchText());
             QueryResult result = twitter.v1().search().search(query);
-            int saved = 0;
+
 
             for (Status status : result.getTweets()) {
                 DE_SearchResult res = new DE_SearchResult();
@@ -98,7 +100,7 @@ public class Search4J {
         } catch (Exception te){
             LOGGER.warn("Database Exception searching twetter ",te);
         }
-
+        return saved;
     }
 
 }
