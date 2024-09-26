@@ -12,13 +12,13 @@
         </TR></TABLE>
     <TR th:each="sr: ${searches}">
         <TD><span th:text="${sr.id}"></span></TD>
-        <TD><span th:text="${lastSearchText}"></span></TD>
-        <TD><span th:text="${sedarchText}"></span></TD>
-        <TD><span th:text="${text}"></span></TD>
-        <TD><span th:text="${message}"></span></TD>
-        <TD><span><a th:if href="/a/search-add/{$sr.id}">Edit</a></span></TD>
-        <TD><span><a th:if="${resultDate!=null}" th:href="${'/a/search-add/'+sr.id}">View Results</a></span></TD>
-        <TD><span th:unless="${resultDate!=null}">No Results Yet</span></TD>
+        <TD><span th:text="${sr.lastSearchText}"></span></TD>
+        <TD><span th:text="${sr.searchText}"></span></TD>
+        <TD><span th:text="${sr.text}"></span></TD>
+        <TD><span th:text="${sr.message}"></span></TD>
+        <TD><span><a th:href="${'/a/search-edit/'+sr.id}">Edit</a></span></TD>
+        <TD><span><a th:if="${sr.resultDate!=null}" th:href="${'/a/search-add/'+sr.id}">View Results</a></span></TD>
+        <TD><span th:unless="${sr.resultDate!=null}">No Results Yet</span></TD>
         </TD>
     </TR>
 
