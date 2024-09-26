@@ -72,7 +72,7 @@ public class SearchController extends PortalBaseController{
         return PRIBASE+"search-form-edit";
     }
 
-    @RequestMapping("/a/search-edit-post/{id}")
+    @RequestMapping("/a/search-add-post")
     public String searchAddPost(@Valid DE_TwitterSearch twitterSearchForm, BindingResult bindingResult, Model m, Authentication auth) throws TwitterSearchNotFoundException, UserNotFoundException, NotLoggedInException
     {
         S_User user = getAuthUser(auth);
