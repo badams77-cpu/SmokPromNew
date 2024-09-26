@@ -1,0 +1,27 @@
+<HTML><HEAD>Smok Prom Home</HEAD>
+<BODY bgcolor="#fffff">
+<H2>Welcome to Vapid Promotions <a span th:text="${username}"></a></H2>
+<UL>
+    <LI><a href="/a/home">Signed In home</a></LI>
+
+    <TABLE><TR COLSPAN=""><TH>Your Marketing Searches</TH></TR>
+
+        <TR><TH>Id</TH></TH></TH><TH>Last Searched</TH><TH>Search Terms</TH>
+            <TH>Direct Message Text</TH><TH>Tweet Reply Text</TH>
+            <TH>Edit</TH><TH>View Results</TH>
+        </TR></TABLE>
+    <TR th:each="sr: ${searches}">
+        <TD><span th:text="${sr.id}"></span></TD>
+        <TD><span th:text="${lastSearchText}"></span></TD>
+        <TD><span th:text="${sedarchText}"></span></TD>
+        <TD><span th:text="${text}"></span></TD>
+        <TD><span th:text="${message}"></span></TD>
+        <TD><span><a th:if href="/a/search-add/{$sr.id}">Edit</a></span></TD>
+        <TD><span><a th:if="${resultDate!=null}" th:href="${'/a/search-add/'+sr.id}">View Results</a></span></TD>
+        <TD><span th:unless="${resultDate!=null}">No Results Yet</span></TD>
+        </TD>
+    </TR>
+
+</UL>
+</BODY>
+</HTML>

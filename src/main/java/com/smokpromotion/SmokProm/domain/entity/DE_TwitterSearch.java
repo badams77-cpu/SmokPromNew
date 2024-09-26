@@ -2,11 +2,13 @@ package com.smokpromotion.SmokProm.domain.entity;
 
 import com.majorana.maj_orm.ORM.BaseMajoranaEntity;
 import jakarta.persistence.Column;
+import jakarta.validation.constraints.Size;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twitter4j.v1.Query;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class DE_TwitterSearch extends BaseMajoranaEntity {
 
@@ -27,12 +29,17 @@ public class DE_TwitterSearch extends BaseMajoranaEntity {
     @Column(name="user_handle")
     private String userHandle;
 
+    @Size(min=2, max=80)
     @Column(name="search_text")
     private String searchText;
 
+
+    @Size(min=0, max=250)
     @Column(name="message")
     private String message;
 
+
+    @Size(min=0, max=250)
     @Column(name="text")
     private String text;
 
@@ -41,7 +48,7 @@ public class DE_TwitterSearch extends BaseMajoranaEntity {
 
 
 
-    private static final String fields = "userid, searchid, search_text  , title, message, text";
+    private static final String fields = "userid, searchid, search_text, results_date , title, message, text";
 
     public static String getTableNameStatic(){
         return TABLE_NAME;
@@ -49,6 +56,11 @@ public class DE_TwitterSearch extends BaseMajoranaEntity {
 
     public String getTableName(){
         return TABLE_NAME;
+    }
+
+    public String lastSearchText(){
+        if (resultDate==null){ return "Never"; }
+        return resultDate.format(DateTimeFormatter.BASIC_ISO_DATE);
     }
 
     public int getId() {
@@ -71,6 +83,14 @@ public class DE_TwitterSearch extends BaseMajoranaEntity {
         return searchId;
     }
 
+    public String getSearchText() {
+        return searchText;
+    }
+
+    public void setSearchText(String searchText) {
+        this.searchText = searchText;
+    }
+
     public void setSearchId(String searchId) {
         this.searchId = searchId;
     }
@@ -91,13 +111,7 @@ public class DE_TwitterSearch extends BaseMajoranaEntity {
         this.userHandle = userHandle;
     }
 
-    public String getSearchText() {
-        return searchText;
-    }
 
-    public void setSearchText(String searchText) {
-        this.searchText = searchText;
-    }
 
     public String getMessage() {
         return message;
@@ -122,6 +136,8 @@ public class DE_TwitterSearch extends BaseMajoranaEntity {
     public void setStatus(String status) {
         this.status = status;
     }
+
+
 
     @Override
     public String toString() {
