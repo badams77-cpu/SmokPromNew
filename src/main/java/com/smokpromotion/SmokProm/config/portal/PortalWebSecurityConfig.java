@@ -2,7 +2,7 @@ package com.smokpromotion.SmokProm.config.portal;
 
 import com.amazonaws.HttpMethod;
 import com.smokpromotion.SmokProm.util.CookieFactory;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,24 +18,29 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.SecurityBuilder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
+import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 
 //import reactor.publisher.Mono;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug=true)
 @Profile(value = "smok_app")
-public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBuilder<jakarta.servlet.Filter>> {
+public class PortalWebSecurityConfig extends WebSecurityConfigurerAdapter
+//        implements WebSecurityConfigurer
+{
 
     // -----------------------------------------------------------------------------------------------------------------
     // Dependencies
@@ -45,8 +50,6 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
     @Autowired
     private PortalCustomAuthenticationProvider portalCustomAuthenticationProvider;
 
-    @Autowired
-    private UsernameAuthProvider usernameAuthenticationProvider;
     @Autowired
     private CsrfTokenRepository csrfTokenRepository;
     @Autowired
@@ -79,47 +82,101 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
         CookieFactory.setCookieDomain(cookieDomain);
     }
 
-    @Override
-    public void init(SecurityBuilder auth) throws Exception {
-        if (auth instanceof AuthenticationManagerBuilder b) {
-            b.authenticationProvider(portalCustomAuthenticationProvider);
-        } else if (auth instanceof WebSecurity) {
-
-        }
-    }
-
-
-    //SecurityBuilder
 //    @Override
-    public void configure(SecurityBuilder auth) throws Exception {
-        if (auth instanceof AuthenticationManagerBuilder b) {
-            b.authenticationProvider(portalCustomAuthenticationProvider);
-        } else if (auth instanceof WebSecurity) {
+    public void init(HttpSecurity auth) throws Exception {
+      //  if (auth instanceof AuthenticationManagerBuilder b) {
+            auth.authenticationProvider(portalCustomAuthenticationProvider);
+      //  } else if (auth instanceof WebSecurity) {
 
-        }
+      //  }
     }
 
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+ /*   //SecurityBuilder
+  //  @Override
+    public void configure(HttpSecurity http) throws Exception {
+  //      if (auth instanceof AuthenticationManagerBuilder b) {
+            http.authenticationProvider(portalCustomAuthenticationProvider);
+ //       } else if (auth instanceof WebSecurity) {
+
+ //       }
         http
-                .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/","/index", "/login","login","login-handler",
-                                "/login-handler","/home").permitAll()
-                        .requestMatchers("/","/index", "/login","login","login-handler",
-                                "/login-handler","/home").csrf().d
-                        .requestMatchers("/a/**").authenticated()
-                )
+                .authenticationProvider(portalCustomAuthenticationProvider)
                 .formLogin((form) -> {
                             try {
                                 form
-                                        .loginPage("/login").permitAll()
-                                        .loginProcessingUrl("/login-handler").permitAll()
-                                        .passwordParameter("password")
+                                        .loginPage("/login")
+                                        .loginProcessingUrl("/login-handler")
+                                        .disable().csrf()
+                                ;
+                                form        .passwordParameter("password")
                                         .usernameParameter("username")
                                         .successForwardUrl("/a/home")
                                         .failureForwardUrl("/login/error=no_auth")
+
+                                ;
+                                //        .successHandler(majoranaLoginSuccessHandler)
+                                //               form.failureHandler(majoranaAuthenticationFailureHandler);
+                            } catch (Exception e) {
+                                LOGGER.warn("configure form ex", e);
+
+                            }
+                        }
+                );
+
+
+   //     return
+//                http.build();
+    }*/
+    /* https://github.com/spring-projects/spring-authorization-server/issues/633#issuecomment-1108334739
+    @Bean
+    public SecurityFilterChain securityFilterChainRest(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests((requests) ->
+                        request
+                                .antMatchers("/", "/login","/logout","login-handler","/error"
+                                        ,"/login-handler","/home").permitAll()
+                                .antMatchers("/a/**").hasRole("USER")
+                );
+
+//        return http.build();
+        //   }
+
+
+//@Bean
+ //       public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf().disable();
+
+
+        http        .authenticationProvider(portalCustomAuthenticationProvider)
+                .authorizeRequests(authorizeRequests -> authorizeRequests
+                        .antMatchers( "/login", "/login-handler", "/","/public/**").permitAll()
+                        .antMatchers("/api/**", "/events/**", "/competition/**").authenticated()
+                );
+        http.formLogin()  .loginPage("/login");
+        //.permitAll();
+        //      .loginProcessingUrl("/login-handler").permitAll();
+        return http.build();
+    }
+
+*/
+
+/*
+    @Bean
+    public SecurityFilterChain securityFilterChainSignIn(HttpSecurity http) throws Exception {
+        http
+                .authenticationProvider(portalCustomAuthenticationProvider)
+                .formLogin((form) -> {
+                            try {
+                                form
+                                        .loginPage("/login")
+                                        .loginProcessingUrl("/login-handler")
                                         .disable().csrf()
+                                        ;
+                                form        .passwordParameter("password")
+                                        .usernameParameter("username")
+                                        .successForwardUrl("/a/home")
+                                        .failureForwardUrl("/login/error=no_auth")
 
                                 ;
                             //        .successHandler(majoranaLoginSuccessHandler)
@@ -129,35 +186,43 @@ public class PortalWebSecurityConfig implements WebSecurityConfigurer<SecurityBu
 
                             }
                         }
-                )
-                .logout((logout) -> logout.permitAll());
+                );
+
+
+        http
+                .authorizeRequests((requests) ->
+                        requests
+                                .antMatchers("/", "/login","/logout","login-handler","/error"
+                                        ,"/login-handler","/home").permitAll()
+                                .antMatchers("/a/**").hasRole("USER")
+                );
 
         return http.build();
     }
- /*
-@Bean
-public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http
+*/
 
-            .authenticationProvider(portalCustomAuthenticationProvider)
-            .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                    .requestMatchers( "/login", "/public/**").permitAll()
-                    .requestMatchers("/api/**", "/events/**", "/competition/**").authenticated()
+    /*
+//@Bean
+//public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http.csrf().disable();
+
+
+    http        .authenticationProvider(portalCustomAuthenticationProvider)
+            .authorizeRequests(authorizeRequests -> authorizeRequests
+                    .antMatchers( "/login", "/login-handler", "/","/public/**").permitAll()
+                    .antMatchers("/api/**", "/events/**", "/competition/**").authenticated()
             );
-    http.formLogin()  .loginPage("/login").permitAll()
-            .loginProcessingUrl("/login-handler").permitAll();
-    return http.httpBasic(Customizer.withDefaults()).build();
+    http.formLogin()  .loginPage("/login");
+            //.permitAll();
+      //      .loginProcessingUrl("/login-handler").permitAll();
+    return http.build();
 
 }
 */
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        UserDetails user = User.withDefaultPasswordEncoder()
-                .username("username")
-                .password("password")
-                .roles("USER")
-                .build();
-        auth.authenticationProvider(portalCustomAuthenticationProvider);
-    }
+
+
+
+
 
 
     @Bean
@@ -205,7 +270,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         }
         return Mono.just( new AuthorizationDecision(false));
     }
-*/
+
 
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -228,7 +293,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
 
 
-    /*
+
 @Bean
 SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
                                             ReactiveAuthenticationManager reactiveAuthenticationManager) {
@@ -259,56 +324,71 @@ SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
             .anyExchange().denyAll();
     return http.build();
 }
-      */
+*/
+
+    @Autowired
+    @Bean
+    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder authenticationManagerBuilder =
+                http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.authenticationProvider(portalCustomAuthenticationProvider);
+        return authenticationManagerBuilder.build();
+    }
 
 
-/*
     @Override
-    public void configure(uSecurityBuilder securityBilder) throws Exception {
+    public void configure(HttpSecurity http) throws Exception {
 
-       //         HttpBasicConfigurer http = (HttpBasicConfigurer) (
-       //         (HttpSecurityBuilder) securityBuilder)
-       //         .getConfigurer(HttpBasicConfigurer.class);
+        //         HttpBasicConfigurer http = (HttpBasicConfigurer) (
+        //         (HttpSecurityBuilder) securityBuilder)
+        //         .getConfigurer(HttpBasicConfigurer.class);
 
-        FormLoginConfigurer flc =         (FormLoginConfigurer) ((HttpSecurityBuilder) securityBuilder)
-                .getConfigurer(FormLoginConfigurer.class);
+        FormLoginConfigurer flc = http.formLogin();
+                //.getConfigurer(FormLoginConfigurer.class)
+        flc.failureForwardUrl("/login?error=un_auth");
+        flc.successForwardUrl("/a/home");
+        flc .usernameParameter("username");
+                flc.passwordParameter("password");
+                flc.defaultSuccessUrl("/a/home").permitAll();
+        flc.loginPage("/login");
+        flc.loginProcessingUrl("/login-handler").permitAll();
+        flc        .loginPage("/login").permitAll();
+//                .failureHandler(getCustomAuthenticationFailureHandler())
 
-        flc
-                //.formLogin()
+        CsrfConfigurer cc = http.csrf();
+        cc.csrfTokenRepository(csrfTokenRepository);
+        cc.disable();
 
-                .loginPage("/login")
-                .failureHandler(getCustomAuthenticationFailureHandler())
-//                .usernameParameter("email")
-//                .passwordParameter("password")
-                .defaultSuccessUrl("/login-handler")
 
-//               http
-//                .addFilterBefore(majoranaCustomAPISecurityFilter, BasicAuthenticationFilter.class)
-//                .csrfTokenRepository(csrfTokenRepository)
-//                .and()
-//                                .authorizeRequests()
-//                 permitAll items - should be a fairly restricted set of items
-//                .antMatchers("/","/css/**", "/images/**", "/public-js/**", "/login-handler","/login", "/client-login/**", "/exact-login","/favicon.ico", "/prec/**","/actuator/health" )
-//                .permitAll();
- //               .antMatchers(HttpMethod.POST, "/client-login-post").permitAll()
 
-                // authenticated only - not role group specific
-//                .antMatchers("/landing-page","/error", "/dashboard/ops/**", "/userpermission/api/**","/application-permission-admin/api/**","/dashboard/toReport/**", "/practices/lastupdate/**", "/development/**", "/dashboard/ceo/api/**", "/tips/api/**", "/notifications/**","/static/media/**",
-//                        "/practice-setup", "/settings/**", "/version-history", "/videos/**", "/accessDenied","/js-error", "/csrf-token", "/portal/api/userInformation", "/support","/your-account","/change-password/**", "/send-communication/**").authenticated()
-//                .antMatchers("/generic/api/**").authenticated()
+     //   http
+ //               .addFilterBefore(majoranaCustomAPISecurityFilter, BasicAuthenticationFilter.class);
+        http.authenticationProvider(portalCustomAuthenticationProvider);
+
+
+       http         .authorizeRequests()
+     //   permitAll items -should be a fairly restricted set of items
+                .antMatchers("/", "/css/**", "/images/**", "/public-js/**", "/login-handler", "/login", "/client-login/**", "/exact-login", "/favicon.ico", "/prec/**", "/actuator/health")
+                .permitAll();
+
+        // authenticated only - not role group specific
+                http.authorizeRequests().antMatchers("/landing-page","/error", "/a/**").authenticated()
+//
+//                         //"/practice-setup", "/settings/**", "/version-history", "/videos/**", "/accessDenied","/js-error", "/csrf-token", "/portal/api/userInformation", "/support","/your-account","/change-password/**", "/send-communication/**").authenticated()
+                .antMatchers("/generic/api/**").authenticated()
 //                .antMatchers("/timeout").authenticated()
-//                .antMatchers("/menu/api").authenticated()
+                .antMatchers("/menu/api").authenticated();
 //                .antMatchers("/js/adminportal/**").denyAll()
 //                .antMatchers("/js/dentistportal/**").denyAll()
 //                .antMatchers("/js/**").authenticated()
-                // used for users-in-group, email job endpoints, kpi goal endpoints
+        // used for users-in-group, email job endpoints, kpi goal endpoints
 //                .antMatchers(HttpMethod.GET, "/generic/api/**").authenticated()
 //                .antMatchers(HttpMethod.PATCH, "/generic/api/**").authenticated()
 //                .antMatchers(HttpMethod.POST, "/generic/api/**").authenticated()
 
 //                .antMatchers(HttpMethod.PUT, "/generic/api/**").authenticated()
 
-                // authenticated and role group specific
+        // authenticated and role group specific
 //                .antMatchers("/{basePath}/{path}/**").access("@MajoranaAccessDecision.allowSection(request, authentication, #basePath, #path)")
 //                .antMatchers("/{basePath}/**").access("@MajoranaAccessDecision.allowSection(request, authentication, #basePath)")
 //                .anyRequest().authenticated();
@@ -316,11 +396,9 @@ SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
 //        http.logout().logoutSuccessUrl("/");
 
 //        http.exceptionHandling().accessDeniedHandler(MajoranaAccessDeniedHandler());
-        
 
-
-
-   */
+//        http.build();
+    }
 
 
 //    @Override

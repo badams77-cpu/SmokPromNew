@@ -2,8 +2,6 @@ package com.smokpromotion.SmokProm;
 
 import com.smokpromotion.SmokProm.config.common.YamlDBConfig;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.ServletException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -22,6 +20,9 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+
 @ComponentScan("com.smokpromotion")
 @SpringBootApplication(exclude = { CassandraDataAutoConfiguration.class })
 @EnableAutoConfiguration(exclude = { CassandraDataAutoConfiguration.class })
@@ -31,12 +32,12 @@ public class SmokApplication   extends SpringBootServletInitializer {
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		super.onStartup(servletContext);
-		DelegatingFilterProxy filter = new DelegatingFilterProxy("springSecurityFilterChain");
-		filter.setServletContext(servletContext);
-		filter.setTargetBeanName("Tomcat");
-		filter.setContextAttribute("org.springframework.web.servlet.FrameworkServlet.CONTEXT.dispatcher");
-		servletContext.addFilter("corsFilter", CorsFilter.class).addMappingForUrlPatterns(null, false, "/*");
-		servletContext.addFilter("springSecurityFilterChain", filter).addMappingForUrlPatterns(null, true, "/*");
+//		DelegatingFilterProxy filter = new DelegatingFilterProxy("springSecurityFilterChain");
+//		filter.setServletContext(servletContext);
+//		filter.setTargetBeanName("Tomcat");
+//		filter.setContextAttribute("org.springframework.web.servlet.FrameworkServlet.CONTEXT.dispatcher");
+//		servletContext.addFilter("corsFilter", CorsFilter.class).addMappingForUrlPatterns(null, false, "/*");
+//		servletContext.addFilter("springSecurityFilterChain", filter).addMappingForUrlPatterns(null, true, "/*");
 	}
 
 

@@ -2,7 +2,7 @@ package com.smokpromotion.SmokProm.util;
 
 import org.springframework.http.ResponseCookie;
 
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
 
 

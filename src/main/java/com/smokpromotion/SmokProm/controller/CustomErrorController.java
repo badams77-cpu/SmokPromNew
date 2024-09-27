@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.Map;
 
-@Profile({"portal"})
+@Profile("not_used")
 @Controller
 public class CustomErrorController extends AbstractErrorController {
 

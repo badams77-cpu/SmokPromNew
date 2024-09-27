@@ -13,9 +13,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -36,88 +36,88 @@ public class MajoranaAccessDeniedHandler implements AccessDeniedHandler {
     private static final String USERINFO = "/portal/api/userInformation";
 
 
-
-        public void handle(
-                HttpServletRequest request,
-                HttpServletResponse response,
-                AccessDeniedException exc) throws IOException, ServletException {
-            LOGGER.warn("handle: Access Denied Exception ",exc);
-            String redirectUrl = null;
-            try {
-                Authentication auth
-                        = SecurityContextHolder.getContext().getAuthentication();
+    public void handle(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse
+            response, AccessDeniedException accessDeniedException) throws IOException, javax.servlet.ServletException {
+        LOGGER.warn("handle: Access Denied Exception ",accessDeniedException );
+        String redirectUrl = null;
+        try {
+            Authentication auth
+                    = SecurityContextHolder.getContext().getAuthentication();
 
 
-                String action = "";
-                if (request instanceof HttpServletRequest) {
-                    HttpServletRequest httpRequest = (HttpServletRequest)request;
-                    action = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
-                };
+            String action = "";
+            if (request instanceof HttpServletRequest) {
+                HttpServletRequest httpRequest = (HttpServletRequest) request;
+                action = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
+            }
+            ;
 
-                if ( action.startsWith(MajoranaPAY_API) || action.startsWith(CASH_SHEETS_API) || action.startsWith(USERINFO) || action.startsWith(APP_PERMISSION_ADMIN_API) || action.startsWith(USER_PERMISSION_API)) {
-                    HttpServletResponse httpResponse = (HttpServletResponse)response;
+            if (action.startsWith(MajoranaPAY_API) || action.startsWith(CASH_SHEETS_API) || action.startsWith(USERINFO) || action.startsWith(APP_PERMISSION_ADMIN_API) || action.startsWith(USER_PERMISSION_API)) {
+                HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-                    // request has come from an API endpoint. Determine if authentication is valid, and if not, return a 403 response
+                // request has come from an API endpoint. Determine if authentication is valid, and if not, return a 403 response
 
-                    if (auth == null || !(auth.getPrincipal() instanceof PortalSecurityPrinciple)) {
-                        // authentication not valid - send 403 response
-                        LOGGER.warn("handle - API call for: " + action + " but invalid security principal, returning 403 response");
+                if (auth == null || !(auth.getPrincipal() instanceof PortalSecurityPrinciple)) {
+                    // authentication not valid - send 403 response
+                    LOGGER.warn("handle - API call for: " + action + " but invalid security principal, returning 403 response");
 
                     //    AccessDeniedResponse ret = new AccessDeniedResponse();
                     //    ret.setErrorCode(BaseResponse.AUTH_FAIL_CODE);
                     //    ret.setErrorMessage(BaseResponse.AUTH_FAIL_ERROR);
 
-                        httpResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                        httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                    httpResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                    httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-                        OutputStream out = httpResponse.getOutputStream();
-                        ObjectMapper mapper = new ObjectMapper();
+                    OutputStream out = httpResponse.getOutputStream();
+                    ObjectMapper mapper = new ObjectMapper();
                     //    mapper.writeValue(out, ret);
-                        out.flush();
-                        return;
-                    }
+                    out.flush();
+                    return;
                 }
+            }
 
-                PortalSecurityPrinciple principle = (PortalSecurityPrinciple) auth.getPrincipal();
+            PortalSecurityPrinciple principle = (PortalSecurityPrinciple) auth.getPrincipal();
+
+            redirectUrl = request.getContextPath() + "/accessDenied";
+            String marketingPageUrl = null; // findMarketingPageUrl(principle, request.getRequestURI());
+
+            if (GenericUtils.isValid(marketingPageUrl)) {
+                LOGGER.warn("User: " + auth.getName()
+                        + " attempted to access the APPLICATION FEATURE with path:  "
+                        + request.getRequestURI() + " - Redirected to Marketing Page");
+
+
+                redirectUrl = "/marketing?path=" + marketingPageUrl;
+            } else {
+                LOGGER.warn("User: " + auth.getName()
+                        + " attempted to access to a PROTECTED path:  "
+                        + request.getRequestURI() + " - Redirected to Access Denied");
 
                 redirectUrl = request.getContextPath() + "/accessDenied";
-                String marketingPageUrl =  null; // findMarketingPageUrl(principle, request.getRequestURI());
-
-                if (GenericUtils.isValid(marketingPageUrl)) {
-                    LOGGER.warn("User: " + auth.getName()
-                            + " attempted to access the APPLICATION FEATURE with path:  "
-                            + request.getRequestURI()+" - Redirected to Marketing Page");
-
-
-
-
-                    redirectUrl = "/marketing?path="+ marketingPageUrl;
-                } else {
-                    LOGGER.warn("User: " + auth.getName()
-                            + " attempted to access to a PROTECTED path:  "
-                            + request.getRequestURI()+" - Redirected to Access Denied");
-
-                    redirectUrl = request.getContextPath() + "/accessDenied";
-                }
-            } catch (NullPointerException e) {
-                redirectUrl = request.getContextPath() + "/login";
-                LOGGER.debug("Session Expired. ");
-                LOGGER.error(e.getMessage());
-            } catch (ClassCastException e) {
-                redirectUrl = request.getContextPath() + "/login";
-                LOGGER.debug("Session Expired. ");
-                LOGGER.error(e.getMessage());
-             } catch (Exception e) {
-                LOGGER.error(e.getMessage());
-                LOGGER.error(ExceptionUtils.getStackTrace(e));
             }
+        } catch (NullPointerException e) {
+            redirectUrl = request.getContextPath() + "/login";
+            LOGGER.debug("Session Expired. ");
+            LOGGER.error(e.getMessage());
+        } catch (ClassCastException e) {
+            redirectUrl = request.getContextPath() + "/login";
+            LOGGER.debug("Session Expired. ");
+            LOGGER.error(e.getMessage());
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            LOGGER.error(ExceptionUtils.getStackTrace(e));
+        }
 
-            if (redirectUrl != null) {
-                response.sendRedirect(redirectUrl);
-            }
+        if (redirectUrl != null) {
+            response.sendRedirect(redirectUrl);
+        }
     }
 
 
+    ;
 
 
 }
+
+
+

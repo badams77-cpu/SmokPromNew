@@ -8,7 +8,7 @@ import com.smokpromotion.SmokProm.config.admin.AdminSecurityPrinciple;
 import com.smokpromotion.SmokProm.config.portal.PortalSecurityPrinciple;
 import org.springframework.web.method.HandlerMethod;
 
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDate;
