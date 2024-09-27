@@ -2,7 +2,7 @@ package com.smokpromotion.SmokProm.domain.entity;
 
 import com.majorana.maj_orm.ORM.BaseMajoranaEntity;
 import jakarta.persistence.Column;
-import jakarta.validation.constraints.Size;
+import javax.validation.constraints.Size;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twitter4j.v1.Query;

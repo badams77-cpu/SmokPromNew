@@ -6,7 +6,7 @@ import com.smokpromotion.SmokProm.domain.repo.REP_TwitterSearch;
 import com.smokpromotion.SmokProm.exceptions.NotLoggedInException;
 import com.smokpromotion.SmokProm.exceptions.TwitterSearchNotFoundException;
 import com.smokpromotion.SmokProm.exceptions.UserNotFoundException;
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
