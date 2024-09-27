@@ -1,0 +1,38 @@
+<HTML><HEAD>Smok Prom Home</HEAD>
+<BODY bgcolor="#fffff">
+<H2>Welcome to Vapid Promotions <a span th:text="${username}"></a></H2>
+<UL>
+    <LI><a href="/a/home">Signed In home</a></LI>
+    <LI><a href="/a/search-home">List Searches</a></LI>
+    </UL>
+
+    <FORM action="/a/search-add-post" th:object="${form}" method="post">
+        <TABLE BORDER="0">
+            <TR><TD>Search for Tweet Texts</TD><TD>
+                <INPUT NAME="searchText" th:field="*{searchText}" SIZE="100" ></TD>
+                <p th:if="${#fields.hasErrors('searchText')}"
+                   th:text="${#strings.listJoin(#fields.errors('searchText'), ', ')}"></p>
+            </TR>
+            <TR><TD>Message to Tweet in Reply </TD><TD>
+                <TEXTAREA NAME="message" rows=8  cols="100"  SIZE="250" th:field="*{message}"></TEXTAREA>
+                <p th:if="${#fields.hasErrors('message')}"
+                   th:text="${#strings.listJoin(#fields.errors('message'), ', ')}"></p>
+            </TD>
+            </TR>
+            <TR><TD>Message Text to send Direct message</TD><TD>
+                <TEXTAREA NAME="text" rows=8  cols="100"  SIZE="250" th:field="*{text}" ></TEXTAREA>
+                <p th:if="${#fields.hasErrors('text')}"
+                   th:text="${#strings.listJoin(#fields.errors('text'), ', ')}"></p>
+            </TD>
+            </TR>
+
+            <TR><TD COLSPAN="2"><BUTTON TYPE="submit">SAVE SEARCH</BUTTON></TD></TR>
+
+        </TABLE>
+
+
+    </FORM>
+
+</UL>
+</BODY>
+</HTML>

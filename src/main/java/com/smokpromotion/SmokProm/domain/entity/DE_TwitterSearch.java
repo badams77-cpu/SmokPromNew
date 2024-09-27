@@ -18,7 +18,7 @@ public class DE_TwitterSearch extends BaseMajoranaEntity {
     protected int id;
 
     @Column(name="userid")
-    private String userId;
+    private int userId;
 
 
 
@@ -65,11 +65,11 @@ public class DE_TwitterSearch extends BaseMajoranaEntity {
         this.id = id;
     }
 
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 

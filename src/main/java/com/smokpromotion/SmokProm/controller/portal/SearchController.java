@@ -7,6 +7,10 @@ import com.smokpromotion.SmokProm.exceptions.NotLoggedInException;
 import com.smokpromotion.SmokProm.exceptions.TwitterSearchNotFoundException;
 import com.smokpromotion.SmokProm.exceptions.UserNotFoundException;
 import javax.validation.Valid;
+
+import com.smokpromotion.SmokProm.util.MethodPrefixingLogger;
+import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -19,6 +23,8 @@ import java.util.List;
 
 @Controller
 public class SearchController extends PortalBaseController{
+
+    private static Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(SearchController.class);
 
     @Autowired
     private REP_TwitterSearch searchRepo;
@@ -60,13 +66,11 @@ public class SearchController extends PortalBaseController{
     {
         S_User user = getAuthUser(auth);
 
-         m.addAttribute("edit-id", id);
+         m.addAttribute("edit_id", id);
 
-        DE_TwitterSearch searches = searchRepo.getById(user.getId(), id);
+        DE_TwitterSearch search = searchRepo.getById(id, user.getId());
 
-        m.addAttribute("form", new DE_TwitterSearch());
-
-
+        m.addAttribute("form", search);
 
         m.addAttribute("userName", user.getFirstname()+" "+user.getLastname());
 
@@ -79,16 +83,23 @@ public class SearchController extends PortalBaseController{
         S_User user = getAuthUser(auth);
 
         if (bindingResult.hasErrors()) {
+            LOGGER.warn("WARNING Search form binding ",bindingResult.getFieldErrors());
             return "search-form-add";
         }
 
+        twitterSearchForm.setUserId(user.getId());
+
         int newId = searchRepo.create(twitterSearchForm);
+
+        if (newId==0){
+            LOGGER.warn("WARNING *** NEW SEARCH WAS NOT SAVED");
+        }
 
         m.addAttribute("form", twitterSearchForm);
 
         m.addAttribute("userName", user.getFirstname()+" "+user.getLastname());
 
-        return PRIBASE+"search-form-add.html";
+        return "redirect:/a/search-home";
     }
 
     @RequestMapping("/a/search-edit-post/{id}")
@@ -97,24 +108,24 @@ public class SearchController extends PortalBaseController{
         S_User user = getAuthUser(auth);
 
 
-        m.addAttribute("edit-id", id);
-
-
-        if (bindingResult.hasErrors()) {
-            return "search-form";
-        }
-
-
-        twitterSearchForm.setId(id);
-
-        boolean changed = searchRepo.update(twitterSearchForm);
-
+        m.addAttribute("edit_id", id);
 
         m.addAttribute("form", twitterSearchForm);
 
         m.addAttribute("userName", user.getFirstname()+" "+user.getLastname());
 
-        return PRIBASE+"search-form.html";
+        if (bindingResult.hasErrors()) {
+            return "search-form-edit";
+        }
+
+
+        twitterSearchForm.setId(id);
+        twitterSearchForm.setUserId(user.getId());
+
+        boolean changed = searchRepo.update(twitterSearchForm);
+
+
+        return "redirect:/a/search-home";
     }
 
 

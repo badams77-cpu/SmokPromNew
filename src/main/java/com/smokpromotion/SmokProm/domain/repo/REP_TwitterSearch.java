@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class REP_TwitterSearch {
 
-    private static MethodPrefixingLogger LOGGER = MethodPrefixingLoggerFactory.getLogger(REP_UserService.class);
+    private static MethodPrefixingLogger LOGGER = MethodPrefixingLoggerFactory.getLogger(REP_TwitterSearch.class);
 
     private DbBeanGenericInterface<DE_TwitterSearch> searchRepo = null;
 
@@ -38,15 +38,15 @@ public class REP_TwitterSearch {
     public List<DE_TwitterSearch> findByUserId(int userId) {
         List<DE_TwitterSearch> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields()+" FROM "+
                 DE_TwitterSearch.getTableNameStatic()
-                +" WHERE user_id=:user_id", new String[]{"user_id"}, new Object[]{userId});
+                +" WHERE userid=:user_id", new String[]{"user_id"}, new Object[]{userId});
         return res;
 
     }
 
     public DE_TwitterSearch getById(int id, int uid) throws TwitterSearchNotFoundException {
-        List<DE_TwitterSearch> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields()+" FROM "+S_User.getTableNameStatic()
-                +" WHERE id=:id AND  user_id=:usid", new String[]{"id","uid"}, new Object[]{id, uid});
-        return res.stream().findFirst().orElseThrow( ()->new TwitterSearchNotFoundException("TS"+id, "User not found"));
+        List<DE_TwitterSearch> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields()+" FROM "+DE_TwitterSearch.getTableNameStatic()
+                +" WHERE id=:id AND  userid=:uid", new String[]{"id","uid"}, new Object[]{id, uid});
+        return res.stream().findFirst().orElseThrow( ()->new TwitterSearchNotFoundException("TS"+id, "Search "+id+" not found"));
 
     }
 
