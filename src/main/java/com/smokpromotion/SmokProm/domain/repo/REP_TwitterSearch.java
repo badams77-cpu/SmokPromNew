@@ -38,7 +38,7 @@ public class REP_TwitterSearch {
     public List<DE_TwitterSearch> findByUserId(int userId) {
         List<DE_TwitterSearch> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields()+" FROM "+
                 DE_TwitterSearch.getTableNameStatic()
-                +" WHERE user_id=:user_id", new String[]{"username"}, new Object[]{userId});
+                +" WHERE user_id=:user_id", new String[]{"user_id"}, new Object[]{userId});
         return res;
 
     }

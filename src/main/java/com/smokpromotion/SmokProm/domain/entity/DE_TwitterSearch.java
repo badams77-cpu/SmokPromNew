@@ -20,14 +20,10 @@ public class DE_TwitterSearch extends BaseMajoranaEntity {
     @Column(name="userid")
     private String userId;
 
-    @Column(name="searchid")
-    private String searchId;
+
 
     @Column(name="result_date")
     private LocalDateTime resultDate;
-
-    @Column(name="user_handle")
-    private String userHandle;
 
     @Size(min=2, max=80)
     @Column(name="search_text")
@@ -40,11 +36,9 @@ public class DE_TwitterSearch extends BaseMajoranaEntity {
 
 
     @Size(min=0, max=250)
-    @Column(name="text")
+    @Column(name="tweet_text")
     private String text;
 
-    @Column(name="status")
-    private String status;
 
 
 
@@ -79,10 +73,6 @@ public class DE_TwitterSearch extends BaseMajoranaEntity {
         this.userId = userId;
     }
 
-    public String getSearchId() {
-        return searchId;
-    }
-
     public String getSearchText() {
         return searchText;
     }
@@ -91,9 +81,6 @@ public class DE_TwitterSearch extends BaseMajoranaEntity {
         this.searchText = searchText;
     }
 
-    public void setSearchId(String searchId) {
-        this.searchId = searchId;
-    }
 
     public LocalDateTime getResultDate() {
         return resultDate;
@@ -102,15 +89,6 @@ public class DE_TwitterSearch extends BaseMajoranaEntity {
     public void setResultDate(LocalDateTime resultDate) {
         this.resultDate = resultDate;
     }
-
-    public String getUserHandle() {
-        return userHandle;
-    }
-
-    public void setUserHandle(String userHandle) {
-        this.userHandle = userHandle;
-    }
-
 
 
     public String getMessage() {
@@ -129,13 +107,6 @@ public class DE_TwitterSearch extends BaseMajoranaEntity {
         this.text = text;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
 
 
@@ -144,13 +115,10 @@ public class DE_TwitterSearch extends BaseMajoranaEntity {
         return "DE_TwitterSearch{" +
                 "id=" + id +
                 ", userId='" + userId + '\'' +
-                ", searchId='" + searchId + '\'' +
                 ", resultDate=" + resultDate +
-                ", userHandle='" + userHandle + '\'' +
                 ", searchText='" + searchText + '\'' +
                 ", message='" + message + '\'' +
                 ", text='" + text + '\'' +
-                ", status='" + status + '\'' +
                 ", id=" + id +
                 ", uuid=" + uuid +
                 ", deleted=" + deleted +

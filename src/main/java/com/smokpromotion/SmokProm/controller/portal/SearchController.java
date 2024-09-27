@@ -31,7 +31,7 @@ public class SearchController extends PortalBaseController{
 
         List<DE_TwitterSearch> searches = searchRepo.findByUserId(user.getId());
 
-        m.addAttribute("searches", m);
+        m.addAttribute("searches", searches);
 
         m.addAttribute("userName", user.getFirstname()+" "+user.getLastname());
 
@@ -46,6 +46,7 @@ public class SearchController extends PortalBaseController{
         S_User user = getAuthUser(auth);
 
         List<DE_TwitterSearch> searches = searchRepo.findByUserId(user.getId());
+
 
         m.addAttribute("form", new DE_TwitterSearch());
 
