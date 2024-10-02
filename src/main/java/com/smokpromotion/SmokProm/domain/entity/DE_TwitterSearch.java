@@ -1,6 +1,7 @@
 package com.smokpromotion.SmokProm.domain.entity;
 
 import com.majorana.maj_orm.ORM.BaseMajoranaEntity;
+import com.majorana.maj_orm.persist.newannot.Updateable;
 import jakarta.persistence.Column;
 import javax.validation.constraints.Size;
 import org.jetbrains.annotations.NotNull;
@@ -14,27 +15,31 @@ public class DE_TwitterSearch extends BaseMajoranaEntity {
 
     private final static String TABLE_NAME="twitter_search";
 
-    @Column(name="id")
-    protected int id;
+//    @Column(name="id")
+//    protected int id;
 
     @Column(name="userid")
     private int userId;
 
 
-
+    @Updateable
     @Column(name="result_date")
     private LocalDateTime resultDate;
 
     @Size(min=2, max=80)
+
+    @Updateable
     @Column(name="search_text")
     private String searchText;
 
 
     @Size(min=0, max=250)
     @Column(name="message")
+    @Updateable
     private String message;
 
 
+    @Updateable
     @Size(min=0, max=250)
     @Column(name="tweet_text")
     private String text;
@@ -42,7 +47,7 @@ public class DE_TwitterSearch extends BaseMajoranaEntity {
 
 
 
-    private static final String fields = "userid, searchid, search_text, results_date , title, message, text";
+    private static final String fields = "userid, searchid, search_text, results_date, message, text";
 
     public static String getTableNameStatic(){
         return TABLE_NAME;

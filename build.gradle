@@ -98,7 +98,7 @@ jar {
          implementation 'net.bytebuddy:byte-buddy:1.14.12'
 
 
-         implementation fileTree("libs/MajDbOrm-1.3.8-plain.jar")
+         implementation fileTree("libs/MajDbOrm-1.4.9-plain.jar")
 
          // https://mvnrepository.com/artifact/org.twitter4j/twitter4j-core
          implementation 'org.twitter4j:twitter4j-core:4.1.2'
