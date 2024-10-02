@@ -2,7 +2,7 @@
   <library name="Gradle: xerces:xercesImpl:2.11.0" type="java-imported" external-system-id="GRADLE">
     <properties groupId="xerces" artifactId="xercesImpl" version="2.11.0" />
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/xerces/xercesImpl/2.11.0/9bb329db1cfc4e22462c9d6b43a8432f5850e92c/xercesImpl-2.11.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../gradle/gradle-8.4/caches/modules-2/files-2.1/xerces/xercesImpl/2.11.0/9bb329db1cfc4e22462c9d6b43a8432f5850e92c/xercesImpl-2.11.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

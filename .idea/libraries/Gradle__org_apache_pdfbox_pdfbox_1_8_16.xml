@@ -2,7 +2,7 @@
   <library name="Gradle: org.apache.pdfbox:pdfbox:1.8.16" type="java-imported" external-system-id="GRADLE">
     <properties groupId="org.apache.pdfbox" artifactId="pdfbox" version="1.8.16" />
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.pdfbox/pdfbox/1.8.16/3ee5ba356834cb1899c84b40ce1aabc24ae6db25/pdfbox-1.8.16.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../gradle/gradle-8.4/caches/modules-2/files-2.1/org.apache.pdfbox/pdfbox/1.8.16/3ee5ba356834cb1899c84b40ce1aabc24ae6db25/pdfbox-1.8.16.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -2,7 +2,7 @@
   <library name="Gradle: org.openjfx:javafx-base:18" type="java-imported" external-system-id="GRADLE">
     <properties groupId="org.openjfx" artifactId="javafx-base" version="18" />
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-base/18/51880cf3f72ae60e7177d28cdafb745f1782bb35/javafx-base-18.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../gradle/gradle-8.4/caches/modules-2/files-2.1/org.openjfx/javafx-base/18/51880cf3f72ae60e7177d28cdafb745f1782bb35/javafx-base-18.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

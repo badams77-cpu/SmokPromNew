@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal" created-in="IU-242.23339.11">
+    <data-source name="@localhost-mysql [2]" uuid="c3dcd3ca-282c-4502-bca2-e781b31cb85c">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="MYSQL" />
+      <schema-mapping />
+    </data-source>
+    <data-source name="@localhost-cass" uuid="90ec4d4c-ed06-41fe-a234-6839e6e48819">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="CASSANDRA" />
+      <schema-mapping />
+    </data-source>
+  </component>
+</project>
