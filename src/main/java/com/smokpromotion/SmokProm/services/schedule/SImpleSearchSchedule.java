@@ -6,6 +6,7 @@ import com.smokpromotion.SmokProm.domain.repo.REP_TwitterSearch;
 import com.smokpromotion.SmokProm.domain.repo.REP_UserService;
 import com.smokpromotion.SmokProm.services.twitter.Search4J;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Profile("smok_app")
 @Service
 public class SImpleSearchSchedule {
 
@@ -25,7 +27,7 @@ public class SImpleSearchSchedule {
     @Autowired
     private Search4J searchService;
 
-    @Scheduled(cron="0 5 4 * * *")
+    @Scheduled(cron="0 04 5 * * *")
     public void scheduler(){
         List<S_User> user = userRepo.getAllActive();
         Map<Integer, S_User> userMap = user.stream().collect(Collectors.toMap(x->x.getId(), x->x));

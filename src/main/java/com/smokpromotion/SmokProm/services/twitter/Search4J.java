@@ -20,7 +20,7 @@ import twitter4j.v1.Status;
 @Service
 public class Search4J {
 
-    private static MethodPrefixingLogger LOGGER = MethodPrefixingLoggerFactory.getLogger(REP_UserService.class);
+    private static MethodPrefixingLogger LOGGER = MethodPrefixingLoggerFactory.getLogger(Search4J.class);
 
 
 
@@ -46,7 +46,7 @@ public class Search4J {
 
         try {
 
-            DE_TwitterSearch dts = searchRep.getById(userId, searchId);
+            DE_TwitterSearch dts = searchRep.getById( searchId, userId);
 
             return searchTwitter(dts);
 

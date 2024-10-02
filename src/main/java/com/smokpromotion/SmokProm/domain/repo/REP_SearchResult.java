@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class REP_SearchResult {
 
-    private static MethodPrefixingLogger LOGGER = MethodPrefixingLoggerFactory.getLogger(REP_UserService.class);
+    private static MethodPrefixingLogger LOGGER = MethodPrefixingLoggerFactory.getLogger(REP_SearchResult.class);
 
     private DbBeanGenericInterface<DE_SearchResult> searchRepo = null;
 
@@ -30,7 +30,7 @@ public class REP_SearchResult {
             dBean.connect();
             searchRepo = dBean.getTypedBean(DE_SearchResult.class);
         } catch (ClassNotFoundException | SQLException e){
-            LOGGER.error("Class S_User not found");
+            LOGGER.error("Class DE_SearchResult not found");
         }
     }
 
