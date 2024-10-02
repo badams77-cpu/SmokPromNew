@@ -16,7 +16,10 @@ public class DE_SearchResult extends BaseMajoranaEntity {
     @Column(name="tweet_id")
     private long tweetId;
 
-    @Column(name="twitter_user_hande")
+    @Column(name="twitter_user_id")
+    private long twitterUserId;
+
+    @Column(name="twitter_user_handle")
     private String twitterUserHandle;
 
     @Column(name="seduled_search_id")
@@ -76,11 +79,21 @@ public class DE_SearchResult extends BaseMajoranaEntity {
         this.seduledSearchNumber = seduledSearchNumber;
     }
 
+    public long getTwitterUserId() {
+        return twitterUserId;
+    }
+
+    public void setTwitterUserId(long twitterUserId) {
+        this.twitterUserId = twitterUserId;
+    }
+
     @Override
     public String toString() {
         return "DE_SearchResult{" +
-                "searchId='" + searchId + '\'' +
-                ", userId='" + userId + '\'' +
+                "searchId=" + searchId +
+                ", userId=" + userId +
+                ", tweetId=" + tweetId +
+                ", twitterUserId=" + twitterUserId +
                 ", twitterUserHandle='" + twitterUserHandle + '\'' +
                 ", seduledSearchNumber=" + seduledSearchNumber +
                 ", id=" + id +

@@ -83,6 +83,7 @@ public class Search4J {
                 res.setSeduledSearchNumber(stsId);
                 res.setUserId(sts.getCreatedByUserid());
                 res.setTwitterUserHandle(status.getUser().getScreenName());
+                res.setTwitterUserId(status.getUser().getId());
                 res.setTweetId(status.getId());
                 res.setUserId(dts.getCreatedByUserid());
                 boolean saved1 = resultsRep.create(res)!=0;
