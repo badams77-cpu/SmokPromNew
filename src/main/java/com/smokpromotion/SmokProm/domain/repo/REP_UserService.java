@@ -55,6 +55,13 @@ public class REP_UserService {
 
     }
 
+    public List<S_User> getAllActive() {
+        List<S_User> users = userRepo.getBeansNP("SELECT "+userRepo.getFields()+" FROM "+S_User.getTableNameStatic()
+                +" WHERE useractive=1", new String[]{""}, new Object[]{});
+        return users;
+
+    }
+
     public boolean update(S_User user){
         boolean ok = true;
         try {

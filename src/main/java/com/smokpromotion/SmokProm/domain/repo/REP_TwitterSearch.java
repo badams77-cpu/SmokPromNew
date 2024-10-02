@@ -50,6 +50,14 @@ public class REP_TwitterSearch {
 
     }
 
+
+    public List<DE_TwitterSearch> getAllActiveNotRunToday() {
+        List<DE_TwitterSearch> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields()+" FROM "+DE_TwitterSearch.getTableNameStatic()
+                +" WHERE active=true and (result_date<now() or result_date isnull);", new String[]{}, new Object[]{});
+        return res;
+
+    }
+
     public boolean update(DE_TwitterSearch ts){
         boolean ok = true;
         try {

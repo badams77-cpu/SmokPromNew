@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import twitter4j.v1.Query;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -24,7 +25,7 @@ public class DE_TwitterSearch extends BaseMajoranaEntity {
 
     @Updateable
     @Column(name="result_date")
-    private LocalDateTime resultDate;
+    private LocalDate resultDate;
 
     @Size(min=2, max=80)
 
@@ -44,10 +45,12 @@ public class DE_TwitterSearch extends BaseMajoranaEntity {
     @Column(name="tweet_text")
     private String text;
 
+    @Updateable
+    @Column(name="active")
+    private boolean active;
 
 
-
-    private static final String fields = "userid, searchid, search_text, results_date, message, text";
+    private static final String fields = "userid, searchid, search_text, active, results_date, message, text";
 
     public static String getTableNameStatic(){
         return TABLE_NAME;
@@ -87,11 +90,11 @@ public class DE_TwitterSearch extends BaseMajoranaEntity {
     }
 
 
-    public LocalDateTime getResultDate() {
+    public LocalDate getResultDate() {
         return resultDate;
     }
 
-    public void setResultDate(LocalDateTime resultDate) {
+    public void setResultDate(LocalDate resultDate) {
         this.resultDate = resultDate;
     }
 
