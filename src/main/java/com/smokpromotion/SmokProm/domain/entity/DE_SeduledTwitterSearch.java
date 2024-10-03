@@ -4,6 +4,8 @@ package com.smokpromotion.SmokProm.domain.entity;
 import com.majorana.maj_orm.ORM.BaseMajoranaEntity;
 import jakarta.persistence.Column;
 
+import java.time.LocalDate;
+
 // A Instance of call to the Twitter Search API
 public class DE_SeduledTwitterSearch  extends BaseMajoranaEntity {
 
@@ -17,6 +19,8 @@ public class DE_SeduledTwitterSearch  extends BaseMajoranaEntity {
     @Column(name="user_id")
     private int userId;
 
+    @Column(name="results_date")
+    private LocalDate resultsDate;
 
     @Column(name="nresult")
     private int nresults;
@@ -24,6 +28,13 @@ public class DE_SeduledTwitterSearch  extends BaseMajoranaEntity {
     @Column(name="nsent")
     private int nsent;
 
+    public LocalDate getResultsDate() {
+        return resultsDate;
+    }
+
+    public void setResultsDate(LocalDate resultsDate) {
+        this.resultsDate = resultsDate;
+    }
 
     private static final String fields = "user_id, twitter_searchid, nresult, nsent";
 

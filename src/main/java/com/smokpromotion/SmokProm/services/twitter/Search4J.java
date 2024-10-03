@@ -17,6 +17,8 @@ import twitter4j.v1.Query;
 import twitter4j.v1.QueryResult;
 import twitter4j.v1.Status;
 
+import java.time.LocalDate;
+
 @Service
 public class Search4J {
 
@@ -69,12 +71,15 @@ public class Search4J {
 
             sts.setTwitterSearchId(dts.getId());
             sts.setUserId(dts.getCreatedByUserid());
-
+            sts.setResultsDate(LocalDate.now());
             int stsId = searchTryRep.create(sts);
 
+            searchRep.update(dts);
 
             twitter4j.v1.Query query = Query.of(dts.getSearchText());
             QueryResult result = twitter.v1().search().search(query);
+
+            dts.setResultDate(LocalDate.now());
 
 
             for (Status status : result.getTweets()) {
@@ -92,6 +97,9 @@ public class Search4J {
                 }
             }
             sts.setNresults(saved);
+            sts.setNsent(0);
+//            searchTryRep.update(sts);
+
             LOGGER.warn(" UserId "+sts.createdByUserid+" search id "+sts.getId()+" saved "+saved+
                     " tweet results out of "+result.getTweets().size());
             searchTryRep.update(sts);

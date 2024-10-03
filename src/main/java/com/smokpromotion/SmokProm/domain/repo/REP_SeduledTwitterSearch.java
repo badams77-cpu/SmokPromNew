@@ -34,6 +34,13 @@ public class REP_SeduledTwitterSearch {
         }
     }
 
+    public List<DE_SeduledTwitterSearch>  findByUserIdLast7DaysUnsnet(int userId){
+        List<DE_SeduledTwitterSearch> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields()+" FROM "+
+                DE_SeduledTwitterSearch.getTableNameStatic()
+                +" WHERE user_id=:user_id AND nresults>0 AND nsent=0 AND results_date BETWEEN date_add(now() INTERVAL -7 DAY)" +
+                " AND now()", new String[]{"username"}, new Object[]{userId});
+        return res;
+    }
 
     public List<DE_SeduledTwitterSearch> findByUserId(int userId) {
         List<DE_SeduledTwitterSearch> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields()+" FROM "+

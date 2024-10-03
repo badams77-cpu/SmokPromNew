@@ -7,7 +7,7 @@ public class DE_SearchResult extends BaseMajoranaEntity {
 
     private final static String TABLE_NAME="seduled_twitter_search";
 
-    @Column(name="search_id")
+    @Column(name="seduled_search_id")
     private int searchId;
 
     @Column(name="user_id")
@@ -25,7 +25,8 @@ public class DE_SearchResult extends BaseMajoranaEntity {
     @Column(name="seduled_search_id")
     private int seduledSearchNumber;
     // Results for the given Tweeter Search Segedial Set
-    ;
+    @Column(name="sent")
+    private boolean sent;
 
 
     public static String getTableNameStatic(){
@@ -38,6 +39,14 @@ public class DE_SearchResult extends BaseMajoranaEntity {
 
     private static final String fields = "search_id, user_id, twitter_user_handler," +
             " seduled_search_id ";
+
+    public boolean isSent() {
+        return sent;
+    }
+
+    public void setSent(boolean sent) {
+        this.sent = sent;
+    }
 
     public int getSearchId() {
         return searchId;

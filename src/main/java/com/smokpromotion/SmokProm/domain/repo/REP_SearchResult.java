@@ -4,6 +4,7 @@ import com.majorana.maj_orm.ORM_ACCESS.DbBean;
 import com.majorana.maj_orm.ORM_ACCESS.DbBeanGenericInterface;
 import com.majorana.maj_orm.ORM_ACCESS.MultiId;
 import com.smokpromotion.SmokProm.domain.entity.DE_SearchResult;
+import com.smokpromotion.SmokProm.domain.entity.DE_SeduledTwitterSearch;
 import com.smokpromotion.SmokProm.domain.entity.DE_TwitterSearch;
 import com.smokpromotion.SmokProm.domain.entity.S_User;
 import com.smokpromotion.SmokProm.exceptions.TwitterSearchNotFoundException;
@@ -34,6 +35,14 @@ public class REP_SearchResult {
         }
     }
 
+
+    public List<DE_SearchResult>  findByUserUnsent(int userId, int seduledSearchId){
+        List<DE_SearchResult> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields()+" FROM "+
+                DE_SearchResult.getTableNameStatic()
+                +" WHERE user_id=:user_id  AND AND sent=0 AND seduled_search_id = seduled_search_id"
+                , new String[]{"username", "seduledSearchId"}, new Object[]{userId, seduledSearchId});
+        return res;
+    }
 /*
     public List<DE_SearchResult> findByUserId(int userId) {
         List<DE_TwitterSearch> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields()+" FROM "+
