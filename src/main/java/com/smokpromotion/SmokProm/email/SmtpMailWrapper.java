@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
-import service.EmailPreview;
+import com.smokpromotion.SmokProm.services.email.EmailPreview;
 
 import javax.mail.MessagingException;
 import java.util.Map;

@@ -1,11 +1,10 @@
 package com.smokpromotion.SmokProm.services.email;
 
-import com.urcompliant.domain.EmailLanguage;
-import com.urcompliant.domain.PortalEnum;
-import com.urcompliant.domain.entity.DE_EmailTemplate;
-import com.urcompliant.domain.repository.DR_EmailTemplate;
-import com.urcompliant.form.EmailTemplateValidator;
-import com.urcompliant.util.GenericUtils;
+import com.smokpromotion.SmokProm.domain.dto.EmailLanguage;
+import com.smokpromotion.SmokProm.domain.entity.DE_EmailTemplate;
+import com.smokpromotion.SmokProm.domain.repo.DR_EmailTemplate;
+import com.smokpromotion.SmokProm.form.EmailTemplateValidator;
+import com.smokpromotion.SmokProm.util.GenericUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -212,9 +211,9 @@ public class SmtpMailSender {
      * @return Pair of Subject and Body
      */
     public BodyAndSubject getMessageTemplate(String name, EmailLanguage language, Map<String, String> replacementMap) throws MessagingException {
-        Optional<DE_EmailTemplate> optTemplate = drEmailTemplate.getByNameAndLanguage(PortalEnum.AWS, name, language.getValue());
+        Optional<DE_EmailTemplate> optTemplate = drEmailTemplate.getByNameAndLanguage( name, language.getValue());
         if (!optTemplate.isPresent()){
-            optTemplate = drEmailTemplate.getByNameAndLanguage(PortalEnum.AWS, name, EmailLanguage.ENGLISH.getValue());
+            optTemplate = drEmailTemplate.getByNameAndLanguage( name, EmailLanguage.ENGLISH.getValue());
         }
         if (!optTemplate.isPresent()){ throw new MessagingException("Email Template: "+name+" for language "+language+" Does not exist"); }
         DE_EmailTemplate template = optTemplate.get();

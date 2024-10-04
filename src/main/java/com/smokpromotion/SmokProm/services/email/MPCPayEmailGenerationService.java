@@ -1,25 +1,5 @@
 package com.smokpromotion.SmokProm.services.email;
 
-import com.urcompliant.config.portal.PortalEmailConfig;
-import com.urcompliant.config.portal.PortalSecurityPrinciple;
-import com.urcompliant.config.portal.PortalSecurityPrincipleService;
-import com.urcompliant.controller.portal.mpcpay.domain.ProviderDetailData;
-import com.urcompliant.controller.portal.mpcpay.domain.ProviderEmailDetailData;
-import com.urcompliant.domain.EmailLanguage;
-import com.urcompliant.domain.PortalEnum;
-import com.urcompliant.domain.entity.DE_User;
-import com.urcompliant.domain.entity.LanguageSettingEnum;
-import com.urcompliant.domain.entity.mpcpay.*;
-import com.urcompliant.domain.repository.MPCAppDBConnectionFactory;
-import com.urcompliant.domain.repository.mpcpay.*;
-import com.urcompliant.domain.service.DS_UserService;
-import com.urcompliant.practicedata.mpcpay.PayCalculationData;
-import com.urcompliant.practicedata.mpcpay.ProviderPayDetailService;
-import com.urcompliant.practicedata.mpcpay.ProviderPayEmailDetailService;
-import com.urcompliant.service.EmailPreview;
-import com.urcompliant.service.SmtpMailWrapper;
-import com.urcompliant.util.CryptoException;
-import com.urcompliant.util.GenericUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +30,7 @@ public class MPCPayEmailGenerationService {
     private static final DateTimeFormatter DATETIME_FORMAT = DateTimeFormatter.ofPattern(("HH:mm:ss EEEE dd MMMM yy"));
     public static final int MINUTES_IN_HOUR = 60;
 
+    /*
     private final DR_PayPeriod drPayPeriod;
     private final DR_PeriodProvider drPeriodProvider;
     private final DR_PayCalculationDataRow drPayCalculationDataRow;
@@ -334,5 +315,5 @@ public class MPCPayEmailGenerationService {
     }
 
 
-
+*/
 }

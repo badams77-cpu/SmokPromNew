@@ -12,6 +12,7 @@ import com.smokpromotion.SmokProm.exceptions.TwitterSearchNotFoundException;
 import com.smokpromotion.SmokProm.exceptions.UserNotFoundException;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLogger;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -61,19 +62,7 @@ public class   REP_TwitterSearch {
     }
 
 
-    public List<Integer> getFindUserAllActiveWithResultsButNoAccessCode() {
-       MajoranaAnnotationRepository<DE_TwitterSearch> mj = searchRepo.getRepo();
 
-        List<Integer> res = searchRepo.getBeansNPUsingMapper(
-                "SELECT DISTINCT user_id FROM "+DE_TwitterSearch.getTableNameStatic()+" ts "
-                      " JOIN DE_SearchResult.getTableNameStatic() sr ON sr.user_ud=ts.user_id " +
-                        " WHERE ts.active=true and (sr.result_date=now()) and NOT EXISTS (" +
-                        " SELECT * FROM "+DE_AccessCode.getTableNameStatic()+" WHERE ac.user_id=ts.user_id AND ac.access_code_date=now()" +
-                              ")" +
-                        ";", mj.getIntegerMapper(), new String[]{}, new Object[]{});
-        return res;
-
-    }
 
     public boolean update(DE_TwitterSearch ts){
         boolean ok = true;

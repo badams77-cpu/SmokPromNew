@@ -1,6 +1,6 @@
 package com.smokpromotion.SmokProm.services.email;
 
-import com.urcompliant.domain.EmailLanguage;
+import com.smokpromotion.SmokProm.domain.dto.EmailLanguage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

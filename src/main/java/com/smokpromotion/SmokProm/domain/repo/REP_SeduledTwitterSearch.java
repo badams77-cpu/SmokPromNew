@@ -3,6 +3,7 @@ package com.smokpromotion.SmokProm.domain.repo;
 import com.majorana.maj_orm.ORM_ACCESS.DbBean;
 import com.majorana.maj_orm.ORM_ACCESS.DbBeanGenericInterface;
 import com.majorana.maj_orm.ORM_ACCESS.MultiId;
+import com.smokpromotion.SmokProm.domain.entity.DE_AccessCode;
 import com.smokpromotion.SmokProm.domain.entity.DE_SeduledTwitterSearch;
 import com.smokpromotion.SmokProm.domain.entity.DE_TwitterSearch;
 import com.smokpromotion.SmokProm.domain.entity.S_User;
@@ -34,13 +35,21 @@ public class REP_SeduledTwitterSearch {
         }
     }
 
-    public List<DE_SeduledTwitterSearch>  findByUserIdLast7DaysUnsnet(int userId){
-        List<DE_SeduledTwitterSearch> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields()+" FROM "+
-                DE_SeduledTwitterSearch.getTableNameStatic()
-                +" WHERE user_id=:user_id AND nresults>0 AND nsent=0 AND results_date BETWEEN date_add(now() INTERVAL -7 DAY)" +
-                " AND now()", new String[]{"username"}, new Object[]{userId});
+    public List<DE_SeduledTwitterSearch>  getUserIdsLast7DaysUnsentWithCodes(int userId){
+        List<DE_SeduledTwitterSearch> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields("tw")+" FROM "+
+                DE_SeduledTwitterSearch.getTableNameStatic()+" tw "+
+                " INNER JOIN "+ DE_AccessCode.getTableNameStatic()+" ac ON tw.user_id=ac+user_id "
+                +" WHERE tw.user_id=:user_id AND tw.nresults>0 AND tw.nsent=0 AND tw.results_date" +
+                        " BETWEEN date_add(now() INTERVAL -7 DAY)" +
+                " AND now()"+
+                " AND ac.code_date "+
+                        " BETWEEN date_add(now() INTERVAL -7 DAY) AND ac.code_used_date IS NULL;"
+                , new String[]{}, new Object[]{});
         return res;
     }
+
+
+
 
     public List<DE_SeduledTwitterSearch> findByUserId(int userId) {
         List<DE_SeduledTwitterSearch> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields()+" FROM "+

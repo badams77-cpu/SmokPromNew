@@ -12,6 +12,7 @@ import com.smokpromotion.SmokProm.exceptions.TwitterSearchNotFoundException;
 import com.smokpromotion.SmokProm.util.GenericUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import twitter4j.AccessToken;
 import twitter4j.OAuthAuthorization;
@@ -52,7 +53,16 @@ public class DM4J {
     //store accessToken.getTokenSecret()
     //   }
 
-    public void sendTweetsAndDMs(int userId) throws TwitterException {
+
+    @Scheduled(cron="0 0,10,20,30,40,50 * * * *")
+    public void seduleGetUsersWithAccess(){
+        List<Integer> usersWithCodes = repAccessCode.getUsersWithNewCodes();
+        for(Integer userId : usersWithCodes){
+            sendTweetsAndDMs(userId);
+        }
+    }
+
+    public void sendTweetsAndDMs(int userId) {
 
         String consumerKey = "";
         String consumerSecret = "";
@@ -116,7 +126,7 @@ public class DM4J {
         //persist to the accessToken for future reference.
         //storeAccessToken(twitter.v1().users().verifyCredentials().getId(), accessToken);
 
-        List<DE_SeduledTwitterSearch> sdt = repoSeduledTwitterSearch.findByUserIdLast7DaysUnsnet(userId);
+        List<DE_SeduledTwitterSearch> sdt = repoSeduledTwitterSearch.getUserIdsLast7DaysUnsentWithCodes(userId);
         for (DE_SeduledTwitterSearch sds : sdt) {
 
             DE_TwitterSearch ts = null;
@@ -126,7 +136,7 @@ public class DM4J {
                 repoTwitterSearch.getById(sds.getTwitterSearchId(), sds.getUserId());
 
             } catch (TwitterSearchNotFoundException e) {
-                continue;
+
             }
             // id sendDM(int userId, int searchId, int replyId) throws TwitterException {
             List<DE_SearchResult> todaysResults = resultRepo.findByUserUnsent(userId, sds.getId());
@@ -150,7 +160,8 @@ public class DM4J {
                         sent = true;
                         sentCount++;
                         // Mark Sent DM
-                    } catch (Exception e) {
+
+                    } catch (TwitterException e) {
                     }
                     //             System.out.printf("Sent: %s to @%d%n", directMessage.getText(), directMessage.getRecipientId());
                 }
@@ -167,8 +178,16 @@ public class DM4J {
 
                     //             GeoLocation location = new GeoLocation(latitude, longitude);
                     //             stat.s(location);
+                    try {
+                        twitter.v1().tweets().updateStatus(stat);
+                        sent = true;
+                        sentCount++;
+                    } catch (Exception e){
 
-                    twitter.v1().tweets().updateStatus(stat);
+                    }
+
+                    sds.setNsent(sentCount);
+                    repoSeduledTwitterSearch.update(sds);
 
                     // Mark reply sent
                 }

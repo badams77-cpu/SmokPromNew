@@ -1,4 +1,4 @@
-package service;
+package com.smokpromotion.SmokProm.services.email;
 
 public class EmailPreview {
 
