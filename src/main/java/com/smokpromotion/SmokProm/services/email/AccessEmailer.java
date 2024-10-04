@@ -8,6 +8,8 @@ import com.smokpromotion.SmokProm.domain.entity.S_User;
 import com.smokpromotion.SmokProm.domain.repo.DR_EmailTemplate;
 import com.smokpromotion.SmokProm.domain.repo.REP_AccessCode;
 import com.smokpromotion.SmokProm.domain.repo.REP_UserService;
+import com.smokpromotion.SmokProm.email.SmtpMailSender;
+import com.smokpromotion.SmokProm.email.SmtpMailWrapper;
 import com.smokpromotion.SmokProm.exceptions.UserNotFoundException;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
 import org.slf4j.Logger;
