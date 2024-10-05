@@ -94,7 +94,8 @@ page_content++
                                         <td th:text="${row?.languageLabel}">Language</td>
                                         <td th:text="${row?.subject}">Subject</td>
                                         <td>
-                                            <button class="btn btn-primary" th:text="#{t.EditTemplate}" th:attr="onclick=${'window.location.href=''/email-templates/edit/'+row.id+''';'}"></button>
+                                            <button class="btn btn-primary" th:text="#{t.EditTemplate}"
+                                                    th:attr="onclick=${'window.location.href=''/admin/email-templates/edit/'+row.id+''';'}"></button>
                                         </td>
                                     </th:block>
                                 </tr>

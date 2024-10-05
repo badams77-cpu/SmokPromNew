@@ -71,7 +71,7 @@ page_content++
     <div class="card report-card" >
             <h2 class="card-header card-header-practices" th:text="#{t.EditTemplate}">Edit Templates</h2>
             <div class="card-block">
-                <form th:action="${'/email-templates/edit/'+templateForm.id}" th:method="post" th:object="${templateForm}">
+                <form th:action="${'/admin/email-templates/edit/'+templateForm.id}" th:method="post" th:object="${templateForm}">
                     <input type="hidden" name="id" th:value="${templateForm.id}"/>
                     <table border="0" class="float-right">
                         <tr>
