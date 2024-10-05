@@ -55,7 +55,7 @@ public class EmailTemplateController extends AdminBaseController {
         model.addAttribute( "hasItems", !templateList.isEmpty());
         model.addAttribute("templateForm", new DE_EmailTemplate());
         model.addAttribute("languages", EmailLanguage.values());
-        return getBase()+"private/email_templates";
+        return getBase()+"email_templates";
     }
 
 
@@ -65,11 +65,11 @@ public class EmailTemplateController extends AdminBaseController {
         Optional<DE_EmailTemplate> template = drEmailTemplate.getById(id);
         if (!template.isPresent()){
             LOGGER.error("editById: Template "+id+" not present");
-            return "redirect:/email-templates/list";
+            return "redirect:/admin/email-templates/list";
         }
         model.addAttribute("templateForm", template.orElse(new DE_EmailTemplate()));
         model.addAttribute("languages", EmailLanguage.values());
-        return getBase()+"private/edit_email_template";
+        return getBase()+"edit_email_template";
     }
 
     @RequestMapping(path="/edit/{id}", method= RequestMethod.POST)
@@ -85,12 +85,12 @@ public class EmailTemplateController extends AdminBaseController {
         if (bindingResult.hasErrors()){
             model.addAttribute("languages", EmailLanguage.values());
             model.addAttribute("templateForm",template);
-            return getBase()+"private/edit_email_template";
+            return getBase()+"edit_email_template";
         }
         Optional<DE_EmailTemplate> originalTemplateOpt = drEmailTemplate.getById(id);
         if (!originalTemplateOpt.isPresent()){
             LOGGER.error("postEdit: Template "+id+" not present");
-            return "redirect:/email-templates/list";
+            return "redirect:/admin/email-templates/list";
         }
         DE_EmailTemplate originalTemplate = originalTemplateOpt.get();
         originalTemplate.setName(template.getName());
@@ -105,14 +105,14 @@ public class EmailTemplateController extends AdminBaseController {
                 List<DE_EmailTemplate> templateList = drEmailTemplate.getAll();
                 model.addAttribute("languages", EmailLanguage.values());
                 model.addAttribute("templateForm", template);
-                return getBase() + "private/edit_email_template";
+                return getBase() + "edit_email_template";
             } catch (Exception fl) {
                 LOGGER.warn("Error on duplicate", fl);
             }
         } catch (Exception e) {
             LOGGER.warn("Error sql",e);
         }
-        return "redirect:/email-templates/list";
+        return "redirect:/admin/email-templates/list";
     }
 
     @RequestMapping(path="/add", method= RequestMethod.POST)
@@ -131,7 +131,7 @@ public class EmailTemplateController extends AdminBaseController {
             model.addAttribute("templates", templateList);
             model.addAttribute( "hasItems", !templateList.isEmpty());
             model.addAttribute("templateForm",template);
-            return getBase()+"private/email_templates";
+            return getBase()+"email_templates";
         }
         try {
             drEmailTemplate.create( template);
@@ -142,9 +142,9 @@ public class EmailTemplateController extends AdminBaseController {
             model.addAttribute("templates", templateList);
             model.addAttribute( "hasItems", !templateList.isEmpty());
             model.addAttribute("templateForm",template);
-            return getBase()+"private/email_templates";
+            return getBase()+"email_templates";
         }
-        return "redirect:/email-templates/list";
+        return "redirect:/admin/email-templates/list";
     }
 
     private void validateTemplate(DE_EmailTemplate template, BindingResult bindingResult){
