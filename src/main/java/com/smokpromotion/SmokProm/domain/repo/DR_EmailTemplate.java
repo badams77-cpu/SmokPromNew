@@ -62,7 +62,7 @@ public class DR_EmailTemplate {
         Optional<DE_EmailTemplate> opt = Optional.empty();
 
         List<DE_EmailTemplate> matches =
-                emailRepo.getBeans("SELECT * FROM " +DE_EmailTemplate.getTableNameStatic(), new Object[]{});
+                emailRepo.getBeansNP("SELECT * FROM " +DE_EmailTemplate.getTableNameStatic(), new String[]{}, new Object[]{});
 
         return matches;
     }

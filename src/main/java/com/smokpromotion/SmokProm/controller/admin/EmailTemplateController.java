@@ -28,7 +28,7 @@ import java.util.Optional;
 
 @Controller
 @Profile(value={"smok_admin"})
-@RequestMapping(value="/email-templates")
+@RequestMapping(value="/admin/email-templates")
 public class EmailTemplateController extends AdminBaseController {
     private static final int MAX_BODY_LENGTH = 131071;
     private static final int MAX_NAME_LENGTH = 255;

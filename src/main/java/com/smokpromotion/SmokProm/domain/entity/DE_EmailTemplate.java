@@ -19,7 +19,7 @@ public class DE_EmailTemplate extends BaseMajoranaEntity {
 
 
     public static String getTableNameStatic() {
-        return "";
+        return TABLE_NAME;
     }
 
     @Override
