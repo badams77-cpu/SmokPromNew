@@ -164,3 +164,19 @@ CREATE table IF NOT EXISTS smok.sent_for_search_results (
                                                        deleted_at timestamp null default null
 
 );
+
+CREATE table IF NOT EXISTS smok.access_codes (
+                                                 id int PRIMARY KEY AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT AUTO_INCREMENT,
+                                                 user_id int,
+                                                access_code varchar(1000),
+                                                request_token varchar(1000),
+                                                access_code_used_date datetime,
+                                                access_code_date datetime,
+
+                                                 created timestamp default '1970-01-01 00:00:01',
+                                                 created_by int,
+                                                 updated timestamp default '1970-01-01 00:00:01',
+                                                 deleted boolean,
+                                                 deleted_at timestamp null default null
+
+);

@@ -39,7 +39,7 @@ public class REP_AdminUserService {
     public AdminUser findByName(String name) throws UserNotFoundException {
         List<AdminUser> users = adminRepo.getBeansNP("SELECT "+adminRepo.getFields()+" FROM "+
                 AdminUser.getTableNameStatic()
-                +" WHERE useremail=:username", new String[]{"username"}, new Object[]{name});
+                +" WHERE username=:username", new String[]{"username"}, new Object[]{name});
         return users.stream().findFirst().orElseThrow( ()->new UserNotFoundException(name, "User not found"));
 
     }
@@ -53,7 +53,7 @@ public class REP_AdminUserService {
     }
 
     public boolean isPasswordGood(AdminUser u, String pw){
-        return pwCryptUtil.isPasswordGood(u.getSecVNEnum().getCode(), u.getUsername(), u.getUserpw(), pw);
+        return pwCryptUtil.isPasswordGood(u.getSecVNEnum().getCode(), u.getUsername(), pw, u.getUserpw());
     }
 
     public boolean update(AdminUser user){

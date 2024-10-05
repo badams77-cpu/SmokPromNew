@@ -7,6 +7,6 @@ import org.springframework.stereotype.Component;
 public class TomcatCustomizer implements WebServerFactoryCustomizer<TomcatServletWebServerFactory> {
     @Override
     public void customize(TomcatServletWebServerFactory factory) {
-        factory.setPort(9101);
+ //       factory.setPort(9101); // Override appilcation.yml
     }
 }

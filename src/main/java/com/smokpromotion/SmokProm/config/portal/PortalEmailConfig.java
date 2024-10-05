@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile({"smok_app","smok_admin"})
+@Profile({"smok_app","smok_admin","smok_init","init"})
 public class PortalEmailConfig {
 
     @Value("${MPC_MAIL_FROM_ADDR:admin@imultipractice.com}")
