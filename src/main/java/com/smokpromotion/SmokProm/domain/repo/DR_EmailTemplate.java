@@ -78,14 +78,16 @@ public class DR_EmailTemplate {
         Optional<DE_EmailTemplate> opt = Optional.empty();
 
         List<DE_EmailTemplate> matches = emailRepo.getBeansNP(
-                "SELECT id,name,template,subject,language FROM "+TABLE_NAME+" WHERE id = :id",
+                "SELECT * FROM "+DE_EmailTemplate.getTableNameStatic()+" WHERE id = :id",
                 new String[]{"id"},
                 new Object[]{id}
         );
 
-        if (!matches.isEmpty()) {
-            opt = Optional.of(matches.get(0));
-        }
+        opt = matches.stream().findFirst();
+
+    //    if (!matches.isEmpty()) {
+    //        opt = Optional.of(matches.get(0));
+    //    }
 
         return opt;
 

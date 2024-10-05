@@ -3,6 +3,7 @@ package com.smokpromotion.SmokProm.domain.entity;
 
 import com.majorana.maj_orm.ORM.BaseMajoranaEntity;
 import com.smokpromotion.SmokProm.domain.dto.EmailLanguage;
+import jakarta.persistence.Column;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -11,10 +12,13 @@ public class DE_EmailTemplate extends BaseMajoranaEntity {
 
     private static final String TABLE_NAME = "email_templates";
 
-    private int id;
+    @Column(name="name")
     private String name;
+    @Column(name="template")
     private String templateBody;
+    @Column(name="subject")
     private String subject;
+    @Column(name="language")
     private String language;
 
 
