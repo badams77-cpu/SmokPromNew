@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@Profile(value = {"admin", "dxpulse_admin"})
+@Profile(value = {"smok_admin"})
 public class AdminCustomAuthenticationProvider implements AuthenticationProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminCustomAuthenticationProvider.class);

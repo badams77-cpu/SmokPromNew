@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Profile({"smok_app"})
+@Profile({"smok_app","smok_admin"})
 @Service
 public class DR_RequestAnalyticsData {
 

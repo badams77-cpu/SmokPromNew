@@ -73,7 +73,7 @@ public class REP_AccessCode {
 
                         +" WHERE tw.user_id=:user_id AND wt.nresults>0 AND tw.nsent=0 AND results_date BETWEEN date_add(now() INTERVAL -7 DAY)" +
                         " AND now() AND NOT EXISTS SELECT ("+
-                        " SELECT "+ DE_AccessCode.getTableNameStatic()+" ac WHERE tw.user_id=ac+user_id AND "+
+                        " SELECT "+ DE_AccessCode.getTableNameStatic()+" ac WHERE  "+
                         " AND ac.code_date "+
                         " BETWEEN date_add(now() INTERVAL -7 DAY) AND now() "+
                 ");"

@@ -1,5 +1,6 @@
 package com.smokpromotion.SmokProm.config.admin;
 
+import com.smokpromotion.SmokProm.config.portal.UsernameAuthProvider;
 import com.smokpromotion.SmokProm.util.RunEnvironmentUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -7,13 +8,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.security.authentication.AuthenticationManagerResolver;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Configuration
-@Profile(value = {"admin", "dxpulse_admin"})
+@Profile(value = {"smok_admin"})
 public class AdminMvcConfig implements WebMvcConfigurer {
 
     @Autowired
@@ -53,6 +57,19 @@ public class AdminMvcConfig implements WebMvcConfigurer {
         LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
         lci.setParamName("lang");
         return lci;
+    }
+
+
+    @Bean
+    public AuthenticationManagerResolver<HttpServletRequest>
+    tokenAuthenticationManagerResolver(
+            UsernameAuthProvider
+                    //        AuthenticationProvider
+                    authProvider
+    ) {
+        return (request)-> {
+            return authProvider::authenticate;
+        };
     }
 
 
