@@ -49,6 +49,15 @@ public class REP_SeduledTwitterSearch {
     }
 
 
+    public List<DE_SeduledTwitterSearch>  getUsersSearchesInLastMonth(int userId){
+        List<DE_SeduledTwitterSearch> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields("tw")+" FROM "+
+                        DE_SeduledTwitterSearch.getTableNameStatic()+" tw "+
+                        " WHERE tw.nsent>0 AND tw.results_date" +
+                        " BETWEEN date_add(now() INTERVAL -1 MONTH)" +
+                        " AND now()"
+                , new String[]{}, new Object[]{});
+        return res;
+    }
 
 
     public List<DE_SeduledTwitterSearch> findByUserId(int userId) {

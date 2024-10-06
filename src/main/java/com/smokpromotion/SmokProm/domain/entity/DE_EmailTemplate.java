@@ -28,7 +28,7 @@ public class DE_EmailTemplate extends BaseMajoranaEntity {
 
     @Override
     public String getTableName() {
-        return "";
+        return TABLE_NAME;
     }
 
     public int getId() {

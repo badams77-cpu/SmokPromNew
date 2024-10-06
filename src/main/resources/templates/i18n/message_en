@@ -1,0 +1,6 @@
+t.EmailTemplates=Email Templates
+t.AddTemplate=Add Template
+t.TemplateName=Template Name
+t.Language=Language
+t.Subject=Subject
+t.TemplateBody=Template Body
