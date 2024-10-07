@@ -17,15 +17,12 @@ import com.smokpromotion.SmokProm.services.email.EmailPreview;
 
 import javax.activation.DataHandler;
 import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
+import javax.mail.internet.*;
 import javax.mail.util.ByteArrayDataSource;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Properties;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -298,6 +295,7 @@ public class SmtpMailSender {
         return true;
     }
 
+
     public EmailPreview getEmailPreview(String to, String template, EmailLanguage language, Map<String,String> replaceMap) throws MessagingException {
         BodyAndSubject bodyAndSubject = getMessageTemplate(template, language, replaceMap);
         EmailPreview preview = new EmailPreview();
@@ -348,6 +346,21 @@ public class SmtpMailSender {
         Multipart multipart = new MimeMultipart();
         // Set text message part
         multipart.addBodyPart(messageBodyPart);
+        return multipart;
+    }
+
+    private Multipart getMultipartWithBody(String messageText, BodyPart messageBodyPart, BodyPart messageBody2) throws MessagingException {
+
+
+        // Now set the actual message
+        messageBodyPart.setContent(messageText, "text/html; charset=utf-8");
+        // Create a multipar message
+        Multipart multipart = new MimeMultipart();
+
+        // Set text message part
+        multipart.addBodyPart(messageBodyPart);
+
+
         return multipart;
     }
 

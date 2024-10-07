@@ -1,25 +1,36 @@
 package com.smokpromotion.SmokProm.services.payments;
 
+import com.smokpromotion.SmokProm.config.portal.PortalSecurityPrinciple;
+import com.smokpromotion.SmokProm.config.portal.PortalSecurityPrincipleService;
+import com.smokpromotion.SmokProm.domain.dto.EmailLanguage;
+import com.smokpromotion.SmokProm.domain.entity.DE_EmailTemplate;
 import com.smokpromotion.SmokProm.domain.entity.DE_Invoice;
 import com.smokpromotion.SmokProm.domain.entity.DE_SeduledTwitterSearch;
 import com.smokpromotion.SmokProm.domain.entity.S_User;
+import com.smokpromotion.SmokProm.domain.repo.DR_EmailTemplate;
 import com.smokpromotion.SmokProm.domain.repo.REP_Invoice;
 import com.smokpromotion.SmokProm.domain.repo.REP_SeduledTwitterSearch;
 import com.smokpromotion.SmokProm.domain.repo.REP_UserService;
+import com.smokpromotion.SmokProm.email.SmtpMailSender;
 import com.smokpromotion.SmokProm.services.email.AccessEmailer;
+import com.smokpromotion.SmokProm.util.FileToZip;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PaymentInvoiceService {
 
     private static final int MONTH_INVOICE_DATE = 28;
+
+    private static final String TEMPLATE = "invoice";
 
     public static final double chargePerSend = 0.01;
 
@@ -33,6 +44,18 @@ public class PaymentInvoiceService {
 
     @Autowired
     private REP_SeduledTwitterSearch stSearchRepo;
+
+    @Autowired
+    private DR_EmailTemplate drEmailTemplate;
+
+    @Autowired
+    private VapidInvoiceGenerationService vapidInvoiceService;
+
+    @Autowired
+    private SmtpMailSender smtpMailSender;
+
+    @Autowired
+    private PortalSecurityPrincipleService portalSecurityPrincipleService;
 
     @Scheduled(cron="0 0 0 * * *")
     private void countMessages(){
@@ -57,6 +80,20 @@ public class PaymentInvoiceService {
             inv.setnSent(nsent);
             inv.setAmtCharged(chargePerSend*nsent);
             repInvoice.create(inv);
+
+            Optional<DE_EmailTemplate> tempOpt = drEmailTemplate.getByNameAndLanguage(TEMPLATE, EmailLanguage.ENGLISH.name());
+
+            PortalSecurityPrinciple principle = portalSecurityPrincipleService.create(user, "");
+
+            try {
+
+                FileToZip zip = vapidInvoiceService.generateForUser(principle, user, inv, searches);
+
+                smtpMailSender.sendAttachmentTemplate(String user.getUsername(), zip.getFile(), "invoice.pdf", tempOpt.get(),
+                        EmailLanguage.ENGLISH);
+            } catch (Exception e){
+                smtpMailSender.sendAttachmentTemplate(String user.getUsername(), tempOpt.get(), EmailLanguage.ENGLISH);
+            }
 
         }
         
