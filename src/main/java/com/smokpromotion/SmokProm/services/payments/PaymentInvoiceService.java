@@ -21,7 +21,7 @@ public class PaymentInvoiceService {
 
     private static final int MONTH_INVOICE_DATE = 28;
 
-    private static final double chargePerSend = 0.01;
+    public static final double chargePerSend = 0.01;
 
     private static final Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(PaymentInvoiceService.class);
 
