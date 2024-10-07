@@ -3,6 +3,8 @@ package com.smokpromotion.SmokProm.config.portal;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.catalina.connector.Connector;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
+import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -11,9 +13,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManagerResolver;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 @Configuration
@@ -32,6 +32,21 @@ public class PortalMvcConfig implements WebMvcConfigurer {
         registry.addViewController("/login").setViewName("portal/public/login");
         registry.addViewController("/error").setViewName("portal/error");
         registry.addViewController("/403").setViewName("portal/403");
+    }
+    @Override
+    public void configureDefaultServletHandling(
+            DefaultServletHandlerConfigurer configurer) {
+        configurer.enable();
+    }
+
+    @Bean
+    WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> enableDefaultServlet() {
+        return (factory) -> factory.setRegisterDefaultServlet(true);
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/images/**").addResourceLocations("/WEB-INF/images/");
     }
 
     // Uncomment code below to set allowed characters in path and query Strings

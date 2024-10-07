@@ -45,7 +45,7 @@ import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Profile("portal")
+@Profile("smok_app")
 @Service
 public class VapidInvoiceGenerationService {
 
