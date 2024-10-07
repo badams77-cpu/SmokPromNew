@@ -104,7 +104,7 @@ public class PaymentInvoiceService {
             } catch (Exception e) {
                 try {
                     smtpMailSender.sendTemplate(user.getUsername(), TEMPLATE, EmailLanguage.ENGLISH, replacements);
-                } catch (Exception e) {
+                } catch (Exception f) {
                 }
             }
         }
