@@ -22,7 +22,10 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -85,16 +88,25 @@ public class PaymentInvoiceService {
 
             PortalSecurityPrinciple principle = portalSecurityPrincipleService.create(user, "");
 
+            Map<String, String> replacements = new HashMap<>();
+
+            replacements.put("username", user.getFirstname()+" "+user.getLastname());
+
+            replacements.put("invoice_date", inv.getInvoiceDate().format(DateTimeFormatter.ISO_DATE));
+
             try {
 
                 FileToZip zip = vapidInvoiceService.generateForUser(principle, user, inv, searches);
 
-                smtpMailSender.sendAttachmentTemplate(String user.getUsername(), zip.getFile(), "invoice.pdf", tempOpt.get(),
-                        EmailLanguage.ENGLISH);
-            } catch (Exception e){
-                smtpMailSender.sendAttachmentTemplate(String user.getUsername(), tempOpt.get(), EmailLanguage.ENGLISH);
-            }
 
+                smtpMailSender.sendAttachmentTemplate(user.getUsername(), zip.getFile(),
+                        "invoice.pdf", TEMPLATE,  EmailLanguage.ENGLISH, replacements);
+            } catch (Exception e) {
+                try {
+                    smtpMailSender.sendTemplate(user.getUsername(), TEMPLATE, EmailLanguage.ENGLISH, replacements);
+                } catch (Exception e) {
+                }
+            }
         }
         
     }
