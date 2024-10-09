@@ -21,6 +21,8 @@ SESSION_REDIS_HOST: 192.168.1.76
 SESSION_REDIS_PASSWORD: redis10123
 SESSION_REDIS_TIMEOUT:  2000
 
+stripe_api_key:
+
 spring:
   web:
     resources:
