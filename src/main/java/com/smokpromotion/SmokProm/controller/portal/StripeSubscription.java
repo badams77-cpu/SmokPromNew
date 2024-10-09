@@ -97,7 +97,7 @@ public class StripeSubscription extends PortalBaseController {
     }
 
     @GetMapping("/a/billing/{userId}/deactivate")
-    public String setBillingCancelled(@PathVariable("userId") int userId,  (@PathVariable("sessionId")
+    public String setBillingCancelled(@PathVariable("userId") int userId,  @PathVariable("sessionId")
     int sessionId,Authentication auth) throws NotLoggedInException,  UserNotFoundException {
         S_User user = getAuthUser(auth);
         if (user.getId()==userId && sessionIds.get(myUuidToStripeUuid.get(sessionId)).equals(userId)){
