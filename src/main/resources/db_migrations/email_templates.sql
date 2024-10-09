@@ -23,7 +23,9 @@ insert into email_templates (name, subject, language, template) values ('access_
 
         Your Twitter Search have run, now you need to authorise Twitter to send your direct messages and Tweet replies, you can do that by clicking here
 
-        <a href="{access_url">Click Here to Authorise Tweeter for us to send your tweets and DMs</a?
+        <a href="{access_url">Click Here to Authorise Tweeter for us to send your tweets and DMs</a>'
+
+        Emails was only be sent if you have a paid subscription, so check your subscription before signing into tweeter here.
 
         Attached is the scheduled report you requested. It is in a zip file locked by the password you gave.
 ');

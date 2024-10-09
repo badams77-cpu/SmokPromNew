@@ -83,6 +83,7 @@ public class AccessEmailer {
                 AccessToken accessToken = null;
 
                 S_User user = userService.getById(uid);
+
                 String email = user.getUsername();
 
                 DE_AccessCode codeEntity = new DE_AccessCode();

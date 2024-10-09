@@ -16,6 +16,9 @@ public class DE_SearchResult extends BaseMajoranaEntity {
     @Column(name="tweet_id")
     private long tweetId;
 
+    @Column(name="has_paid")
+    private boolean paid;
+
     @Column(name="twitter_user_id")
     private long twitterUserId;
 
@@ -46,6 +49,14 @@ public class DE_SearchResult extends BaseMajoranaEntity {
 
     public void setSent(boolean sent) {
         this.sent = sent;
+    }
+
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
     }
 
     public int getSearchId() {

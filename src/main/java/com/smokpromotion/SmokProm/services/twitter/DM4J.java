@@ -1,15 +1,12 @@
 package com.smokpromotion.SmokProm.services.twitter;
 
-import com.smokpromotion.SmokProm.domain.entity.DE_AccessCode;
-import com.smokpromotion.SmokProm.domain.entity.DE_SearchResult;
-import com.smokpromotion.SmokProm.domain.entity.DE_SeduledTwitterSearch;
-import com.smokpromotion.SmokProm.domain.entity.DE_TwitterSearch;
-import com.smokpromotion.SmokProm.domain.repo.REP_AccessCode;
-import com.smokpromotion.SmokProm.domain.repo.REP_SearchResult;
-import com.smokpromotion.SmokProm.domain.repo.REP_SeduledTwitterSearch;
-import com.smokpromotion.SmokProm.domain.repo.REP_TwitterSearch;
+import com.smokpromotion.SmokProm.domain.entity.*;
+import com.smokpromotion.SmokProm.domain.repo.*;
 import com.smokpromotion.SmokProm.exceptions.TwitterSearchNotFoundException;
+import com.smokpromotion.SmokProm.exceptions.UserNotFoundException;
 import com.smokpromotion.SmokProm.util.GenericUtils;
+import com.smokpromotion.SmokProm.util.MethodPrefixingLogger;
+import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -29,6 +26,8 @@ import java.util.Optional;
 @Service
 public class DM4J {
 
+    private static MethodPrefixingLogger LOGGER = MethodPrefixingLoggerFactory.getLogger(DM4J.class);
+
     @Value("${twitter_consumerKey:}")
     private String consumerKey;
 
@@ -40,6 +39,10 @@ public class DM4J {
 
     @Autowired
     private REP_SearchResult resultRepo;
+
+
+    @Autowired
+    private REP_UserService userRepo;
 
 
     @Autowired
@@ -58,11 +61,15 @@ public class DM4J {
     public void seduleGetUsersWithAccess(){
         List<Integer> usersWithCodes = repAccessCode.getUsersWithNewCodes();
         for(Integer userId : usersWithCodes){
-            sendTweetsAndDMs(userId);
+            try {
+                sendTweetsAndDMs(userId);
+            } catch (UserNotFoundException e){
+                LOGGER.warn("UserId not found: "+userId);
+            }
         }
     }
 
-    public void sendTweetsAndDMs(int userId) {
+    public void sendTweetsAndDMs(int userId) throws UserNotFoundException {
 
         String consumerKey = "";
         String consumerSecret = "";
@@ -125,6 +132,12 @@ public class DM4J {
                 .oAuthAccessToken(accessToken).build();
         //persist to the accessToken for future reference.
         //storeAccessToken(twitter.v1().users().verifyCredentials().getId(), accessToken);
+
+        S_User user = userRepo.getById(userId);
+
+        if (!user.isPaying()){
+            return;
+        }
 
         List<DE_SeduledTwitterSearch> sdt = repoSeduledTwitterSearch.getUserIdsLast7DaysUnsentWithCodes(userId);
         for (DE_SeduledTwitterSearch sds : sdt) {

@@ -15,6 +15,7 @@ plugins {
      apply plugin: 'io.spring.dependency-management'
 
      apply plugin: 'application'
+     apply plugin: 'war'
      mainClassName = 'com.example.WebApplication'
 
      group 'com.smokpromotion'
@@ -80,12 +81,27 @@ jar {
     from(sourceSets.main.output.getDirs())
 
     manifest {
-        attributes 'Main-Class': 'DistillerTweeter.Main'
+        attributes 'Main-Class': 'com.smokpromotion.SmokProm.SmokApplicatioln'
     }
 //
-    archivesBaseName = 'DistillerTweeter'
+    archivesBaseName = 'vapidprom'
     getDestinationDirectory().set(new File(projectDir, "./build/libs"))
 }
+
+war {
+    dependsOn processResources
+    dependsOn compileJava
+    dependsOn moveRes
+    from(sourceSets.main.output.getDirs())
+
+    manifest {
+        attributes 'Main-Class': 'com.smokpromotion.SmokProm.SmokApplicatioln'
+    }
+//
+    archivesBaseName = 'vapidprom'
+    getDestinationDirectory().set(new File(projectDir, "./build/libs"))
+}
+
 
      dependencies {
          testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
