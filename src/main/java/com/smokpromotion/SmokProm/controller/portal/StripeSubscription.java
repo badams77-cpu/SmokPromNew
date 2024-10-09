@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -47,13 +48,15 @@ public class StripeSubscription extends PortalBaseController {
         priceId = stripePriceId;
     }
 
+    @GetMapping("/a/billing")
+    public String billing(Model m, Authentication auth) throws StripeException, NotLoggedInException,  UserNotFoundException {
+        S_User user = getAuthUser(auth);
+        m.addAttribute("paying", user.isPaying());
+        return PRIBASE+"billing";
+    }
 
 
-    // The price ID passed from the client
-//   String priceId = request.queryParams("priceId");
-    String priceId = "{{PRICE_ID}}";
-
-    @GetMapping("/a/bill")
+    @GetMapping("/a/billing-stripe")
     public String billing(Authentication auth) throws StripeException, NotLoggedInException,  UserNotFoundException {
         S_User user = getAuthUser(auth);
         UUID mySessionId = UUID.randomUUID();
@@ -83,7 +86,7 @@ public class StripeSubscription extends PortalBaseController {
 
 
     @GetMapping("/a/billing/{userId}/{sessionUd}/activate")
-    public String setBillingActive(@PathVariable("userId") int userId, (@PathVariable("sessionId") int sessionId, Authentication auth)
+    public String setBillingActive(@PathVariable("userId") int userId, @PathVariable("sessionId") int sessionId, Authentication auth)
             throws NotLoggedInException,  UserNotFoundException {
         S_User user = getAuthUser(auth);
         if (user.getId()==userId && sessionIds.get(myUuidToStripeUuid.get(sessionId)).equals(userId)){
