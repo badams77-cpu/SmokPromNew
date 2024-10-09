@@ -9,8 +9,9 @@
 <H2>Welcome to Vapid Promotions <a span th:text="${username}"></a></H2>
 
 <UL>
-    <LI><a href="/a/searches">Your Twitter Searches (with autopost)</a></LI>
-    <LI><a href="/a/billing">Your Billing Details</a></LI>
+
+    <LI th:if="${paying}">Your Subscription is active - <a href="/a/billing">cancel here</a></LI>
+    <LI th:unless="${paying}">Your Subscription is not active  - <a href="/a/billing">Pay here </LI>
 
 </UL>
 

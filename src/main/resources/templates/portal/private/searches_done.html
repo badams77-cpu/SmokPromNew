@@ -1,4 +1,4 @@
-<HTML><HEAD><TITLE>Vapid Promotions - Searches </TITLE>
+<HTML><HEAD><TITLE>Vapid Promotions - Searches Done </TITLE>
 
     <style>
         body { background-color: purple;  color:lawngreen }
@@ -15,15 +15,15 @@
 <TABLE BORDER="2" bgcolor="#7fffd4" gcolor="aqua"><TR><TH COLSPAN="7"><center>Your Marketing Searches</center></TH></TR>
 
         <TR><TH>Id</TH></TH><TH>Last Searched</TH><TH>Search Terms</TH>
-            <TH>Direct Message Text</TH><TH>Tweet Reply Text</TH>
-            <TH>Edit</TH><TH>View Results</TH>
+            <TH>Direct Message Text</TH><TH>N FOUND</TH>
+            <TH>N SENT</TH><TH>View Search Results</TH>
         </TR>
     <TR th:each="sr: ${searches}">
         <TD><span th:text="${sr.id}"></span></TD>
         <TD><span th:text="${sr.lastSearchText}"></span></TD>
         <TD><span th:text="${sr.searchText}"></span></TD>
-        <TD><span th:text="${sr.text}"></span></TD>
-        <TD><span th:text="${sr.message}"></span></TD>
+        <TD><span th:text="${sr.nresults}"></span></TD>
+        <TD><span th:text="${sr.nsent}"></span></TD>
         <TD><span><a th:href="${'/a/search-edit/'+sr.id}">Edit</a></span></TD>
         <TD th:if="${sr.resultDate!=null}"><span><a  th:href="${'/a/search-add/'+sr.id}">View Results</a></span></TD>
         <TD  th:unless="${sr.resultDate!=null}"><span>No Results Yet</span></TD>

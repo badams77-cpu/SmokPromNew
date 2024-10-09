@@ -43,15 +43,15 @@ public class REP_SearchResult {
                 , new String[]{"user_id", "seduled_search_id"}, new Object[]{userId, seduledSearchId});
         return res;
     }
-/*
-    public List<DE_SearchResult> findByUserId(int userId) {
-        List<DE_TwitterSearch> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields()+" FROM "+
-                DE_SearchResult.getTableNameStatic()
-                +" WHERE user_id=:user_id ", new String[]{"username"}, new Object[]{userId});
+
+    public List<DE_SearchResult>  findByUserAndSearchId(int userId, int seduledSearchId){
+        List<DE_SearchResult> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields()+" FROM "+
+                        DE_SearchResult.getTableNameStatic()
+                        +" WHERE user_id=:user_id AND seduled_search_id = seduled_search_id"
+                , new String[]{"user_id", "seduled_search_id"}, new Object[]{userId, seduledSearchId});
         return res;
-
     }
-
+/*
     public DE_TwitterSearch getById(int id, int uid) throws TwitterSearchNotFoundException {
         List<DE_TwitterSearch> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields()+" FROM "+S_User.getTableNameStatic()
                 +" WHERE id=:id AND  user_id=:usid", new String[]{"id","uid"}, new Object[]{id, uid});

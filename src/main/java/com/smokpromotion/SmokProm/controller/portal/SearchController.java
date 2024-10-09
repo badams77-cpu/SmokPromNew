@@ -1,7 +1,11 @@
 package com.smokpromotion.SmokProm.controller.portal;
 
+import com.smokpromotion.SmokProm.domain.entity.DE_SearchResult;
+import com.smokpromotion.SmokProm.domain.entity.DE_SeduledTwitterSearch;
 import com.smokpromotion.SmokProm.domain.entity.DE_TwitterSearch;
 import com.smokpromotion.SmokProm.domain.entity.S_User;
+import com.smokpromotion.SmokProm.domain.repo.REP_SearchResult;
+import com.smokpromotion.SmokProm.domain.repo.REP_SeduledTwitterSearch;
 import com.smokpromotion.SmokProm.domain.repo.REP_TwitterSearch;
 import com.smokpromotion.SmokProm.exceptions.NotLoggedInException;
 import com.smokpromotion.SmokProm.exceptions.TwitterSearchNotFoundException;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class SearchController extends PortalBaseController{
@@ -29,6 +34,11 @@ public class SearchController extends PortalBaseController{
     @Autowired
     private REP_TwitterSearch searchRepo;
 
+    @Autowired
+    private REP_SeduledTwitterSearch seduledRepo;
+
+    @Autowired
+    private REP_SearchResult repSearchResult;
 
     @RequestMapping("/a/search-home")
     public String searchHome(Model m, Authentication auth) throws UserNotFoundException, NotLoggedInException
@@ -60,6 +70,41 @@ public class SearchController extends PortalBaseController{
 
         return PRIBASE+"search-form-add";
     }
+
+    @RequestMapping("/a/search-done/{id}")
+    public String searchDone(Model m, Authentication auth, @PathVariable("id") int id) throws TwitterSearchNotFoundException, UserNotFoundException, NotLoggedInException {
+        S_User user = getAuthUser(auth);
+
+        m.addAttribute("edit_id", id);
+
+        DE_TwitterSearch search = searchRepo.getById(id, user.getId());
+
+        m.addAttribute("tw", search);
+
+        List<DE_SeduledTwitterSearch> sds = seduledRepo.getUsersSearchesInLastMonthForSearch(user.getId(), search.getId());
+
+        m.addAttribute("sds", sds);
+
+        return PRIBASE+"searches-done";
+    }
+
+    public String searchResult(Model m, Authentication auth, @PathVariable("id") int id) throws TwitterSearchNotFoundException, UserNotFoundException, NotLoggedInException {
+        S_User user = getAuthUser(auth);
+
+        m.addAttribute("edit_id", id);
+
+
+        Optional<DE_SeduledTwitterSearch> sds = seduledRepo.getById(id);
+
+        m.addAttribute("sds", sds.get());
+
+        List<DE_SearchResult> results = repSearchResult.findByUserAndSearchId(user.getId(), id);
+
+        m.addAttribute("results", results);
+
+        return PRIBASE+"searches-done";
+    }
+
 
     @RequestMapping("/a/search-edit/{id}")
     public String searchEdit(Model m, Authentication auth, @PathVariable("id") int id) throws TwitterSearchNotFoundException, UserNotFoundException, NotLoggedInException

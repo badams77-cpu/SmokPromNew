@@ -23,6 +23,8 @@ public class AdminHomeController extends AdminBaseController {
         return PRIBASE+"home.html";
     }
 
+
+
     @RequestMapping("/login")
     public String login(Model m, Authentication auth)
     {

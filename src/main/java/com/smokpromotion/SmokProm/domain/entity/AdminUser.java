@@ -25,6 +25,7 @@ public class AdminUser  extends BaseSmokEntity  {
     //   @org.springframework.data.cassandra.core.mapping.Column("passwd")
     @Column(name="passwd")
     private String userpw;
+
     @Column(name="secVn")
     //@org.springframework.data.cassandra.core.mapping.Column("secVn")
     private int secVn;

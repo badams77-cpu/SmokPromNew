@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class REP_SeduledTwitterSearch {
@@ -52,10 +53,21 @@ public class REP_SeduledTwitterSearch {
     public List<DE_SeduledTwitterSearch>  getUsersSearchesInLastMonth(int userId){
         List<DE_SeduledTwitterSearch> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields("tw")+" FROM "+
                         DE_SeduledTwitterSearch.getTableNameStatic()+" tw "+
-                        " WHERE tw.nsent>0 AND tw.results_date" +
+                        " WHERE tw.nsent>0 AND userId=:user_id AND tw_results_date" +
                         " BETWEEN date_add(now() INTERVAL -1 MONTH)" +
                         " AND now()"
-                , new String[]{}, new Object[]{});
+                , new String[]{"user_id"}, new Object[]{userId});
+        return res;
+    }
+
+    public List<DE_SeduledTwitterSearch>  getUsersSearchesInLastMonthForSearch(int userId, int searchId){
+        List<DE_SeduledTwitterSearch> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields("tw")+" FROM "+
+                        DE_SeduledTwitterSearch.getTableNameStatic()+" tw "+
+                        " WHERE user_id=:user_id AND search_id=:search_id AND" +
+                        " tw.nsent>0 AND tw.results_date" +
+                        " BETWEEN date_add(now() INTERVAL -1 MONTH)" +
+                        " AND now()"
+                , new String[]{"user_id","search_id"}, new Object[]{userId, searchId});
         return res;
     }
 
@@ -63,8 +75,16 @@ public class REP_SeduledTwitterSearch {
     public List<DE_SeduledTwitterSearch> findByUserId(int userId) {
         List<DE_SeduledTwitterSearch> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields()+" FROM "+
                 DE_SeduledTwitterSearch.getTableNameStatic()
-                +" WHERE user_id=:user_id", new String[]{"username"}, new Object[]{userId});
+                +" WHERE user_id=:user_id", new String[]{"user_id"}, new Object[]{userId});
         return res;
+
+    }
+
+    public Optional<DE_SeduledTwitterSearch> getById(int searchId) {
+        List<DE_SeduledTwitterSearch> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields()+" FROM "+
+                DE_SeduledTwitterSearch.getTableNameStatic()
+                +" WHERE id=:search_id", new String[]{"search_id"}, new Object[]{searchId});
+        return res.stream().findFirst();
 
     }
 
