@@ -10,9 +10,26 @@
 
 <UL>
 
-    <LI th:if="${paying}">Your Subscription is active - <a href="/a/billing-stripe">cancel here</a></LI>
-    <LI th:unless="${paying}">Your Subscription is not active  - <a href="/a/billing-stripe">Pay here </LI>
+    <LI th:if="${paying!=0 && nsearch==npaying}">Your Subscription is active -
 
+        <UL><LI th:if=${paying>nsearches$">Uou are currently have <span $th:text="$paying}</span> Searches Paid for, but pnlu
+         <span $th:text="${nseearches}"></span> Searches active, you can add new searches <a href="/a/searches">Here</a></LI>
+
+            <span th:text=${paying<$nsearches</span?You are currently have <span $th:text="$nsearch}</span> Searches Active for, but pnlu
+                           $th:text="$paying}</span> paid for.  Click here to buy more subscriptions for each search - <a href="/a/billing-stripe">Pay here </LI>
+
+            <H2>Only the first,  <span th:text=${paying<"><span> Searches will be performed each day.
+
+         ><LI th:if=${paying>nsearches$">Uou are currently have <span $th:text="$paying}</span> Searches Paid for, but pnlu
+         <span $th:text="${nseearches}"></span> Searches active, you can add new searches <a href="/a/searches">Here</a></LI>
+
+         <LO><span $th:text="$nseearch}</span> Searches active, you can add new searches <a href="/a/searches">Here</a></LI>
+            </U></LI>
+        </UL>
+    <LI> if you want stop payments (and semding tweets) <a href="/a/billing-stripe">cancel here</a></LI>
+    <LI th:unless="${paying==0}">Your Subscription is not active  - <a href="/a/billing-stripe">Pay here </LI>
+
+    <LI><a href="/a/home">Back</a> to Home Page</LI></LIL>
 </UL>
 
 

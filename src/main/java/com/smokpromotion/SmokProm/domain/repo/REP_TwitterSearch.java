@@ -46,6 +46,13 @@ public class   REP_TwitterSearch {
         return res;
     }
 
+    public List<DE_TwitterSearch> findByUserIdActive(int userId) {
+        List<DE_TwitterSearch> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields()+" FROM "+
+                DE_TwitterSearch.getTableNameStatic()
+                +" WHERE userid=:user_id AND active=1", new String[]{"user_id"}, new Object[]{userId});
+        return res;
+    }
+
     public DE_TwitterSearch getById(int id, int uid) throws TwitterSearchNotFoundException {
         List<DE_TwitterSearch> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields()+" FROM "+DE_TwitterSearch.getTableNameStatic()
                 +" WHERE id=:id AND  userid=:uid", new String[]{"id","uid"}, new Object[]{id, uid});

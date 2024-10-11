@@ -24,7 +24,8 @@ public class Search4J {
 
     private static MethodPrefixingLogger LOGGER = MethodPrefixingLoggerFactory.getLogger(Search4J.class);
 
-
+    // This is set to that the 100 Users Searches each with 15 texts a day, uses tweeter BASIC limit of 50,000 posts writes per month.
+    private static final int SEARCH_COUNT = 15;
 
     @Autowired
     private REP_TwitterSearch searchRep;
@@ -44,13 +45,13 @@ public class Search4J {
     }
 
 
-    public int searchTwitter(int userId, int searchId) {
+    public int searchTwitter(int userId, int searchId, boolean firstTrial) {
 
         try {
 
             DE_TwitterSearch dts = searchRep.getById( searchId, userId);
 
-            return searchTwitter(dts);
+            return searchTwitter(dts, firstTrial);
 
         } catch (Exception  e){
             LOGGER.warn("Tweeter Search Not Found");
@@ -61,7 +62,7 @@ public class Search4J {
 
     // Search and Update Database
 
-    public int searchTwitter(DE_TwitterSearch dts){
+    public int searchTwitter(DE_TwitterSearch dts, boolean firstTrial){
 
         int saved = 0;
 
@@ -77,24 +78,32 @@ public class Search4J {
             searchRep.update(dts);
 
             twitter4j.v1.Query query = Query.of(dts.getSearchText());
+            query = query.count(SEARCH_COUNT);
+
             QueryResult result = twitter.v1().search().search(query);
 
             dts.setResultDate(LocalDate.now());
 
 
+
             for (Status status : result.getTweets()) {
-                DE_SearchResult res = new DE_SearchResult();
-                res.setSearchId(dts.getId());
-                res.setSeduledSearchNumber(stsId);
-                res.setUserId(sts.getCreatedByUserid());
-                res.setTwitterUserHandle(status.getUser().getScreenName());
-                res.setTwitterUserId(status.getUser().getId());
-                res.setTweetId(status.getId());
-                res.setUserId(dts.getCreatedByUserid());
-                boolean saved1 = resultsRep.create(res)!=0;
-                if (saved1){
-                    saved++;
+                if (!firstTrial) {
+                    DE_SearchResult res = new DE_SearchResult();
+                    res.setSearchId(dts.getId());
+                    res.setSeduledSearchNumber(stsId);
+                    res.setUserId(sts.getCreatedByUserid());
+                    res.setTwitterUserHandle(status.getUser().getScreenName());
+                    res.setTwitterUserId(status.getUser().getId());
+                    res.setTweetId(status.getId());
+                    res.setUserId(dts.getCreatedByUserid());
+                    boolean saved1 = resultsRep.create(res) != 0;
+                    if (saved1) {
+                        saved++;
+                    }
+                } else {
+                    saved++; // Fake count for first trial
                 }
+
             }
             sts.setNresults(saved);
             sts.setNsent(0);

@@ -135,11 +135,16 @@ public class DM4J {
 
         S_User user = userRepo.getById(userId);
 
-        if (!user.isPaying()){
+        if (user.getSubCount()==0){
+            // Send subscritpion reminder (but no code found there
             return;
         }
 
         List<DE_SeduledTwitterSearch> sdt = repoSeduledTwitterSearch.getUserIdsLast7DaysUnsentWithCodes(userId);
+
+        int nSearch = user.getSubCount();
+
+        int nSds = 0;
         for (DE_SeduledTwitterSearch sds : sdt) {
 
             DE_TwitterSearch ts = null;
@@ -154,6 +159,9 @@ public class DM4J {
             // id sendDM(int userId, int searchId, int replyId) throws TwitterException {
             List<DE_SearchResult> todaysResults = resultRepo.findByUserUnsent(userId, sds.getId());
 
+            if (!(nSds++ < nSearch)){
+                continue; // Seach limit reached
+            }
 
             long recipientId = 0; // get from ReplyId read from DB
             String message = "message"; // get from Twitter Search from DB

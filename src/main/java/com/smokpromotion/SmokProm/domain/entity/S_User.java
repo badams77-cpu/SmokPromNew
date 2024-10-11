@@ -21,7 +21,7 @@ public class S_User extends BaseSmokEntity implements Serializable {
   @org.springframework.data.cassandra.core.mapping.Column("firstname")
   private String firstname;
     @Column(name="stripe_payments_active")
-    private boolean paying;
+    private int subCount;
   @Column(name="lastname")
   @org.springframework.data.cassandra.core.mapping.Column("lastname")
   private String lastname;
@@ -103,12 +103,12 @@ public class S_User extends BaseSmokEntity implements Serializable {
     public S_User() {
     }
 
-    public boolean isPaying() {
-        return paying;
+    public int getSubCount() {
+        return subCount;
     }
 
-    public void setPaying(boolean paying) {
-        this.paying = paying;
+    public void setSubCount(int subCount) {
+        this.subCount = subCount;
     }
 
     public static String getTableNameStatic(){

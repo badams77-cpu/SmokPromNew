@@ -19,6 +19,9 @@ public class DE_SeduledTwitterSearch  extends BaseMajoranaEntity {
     @Column(name="user_id")
     private int userId;
 
+    @Column(name="trial_search")
+    private boolean trialSearch;
+
     @Column(name="results_date")
     private LocalDate resultsDate;
 
@@ -34,6 +37,14 @@ public class DE_SeduledTwitterSearch  extends BaseMajoranaEntity {
 
     public void setResultsDate(LocalDate resultsDate) {
         this.resultsDate = resultsDate;
+    }
+
+    public boolean isTrialSearch() {
+        return trialSearch;
+    }
+
+    public void setTrialSearch(boolean trialSearch) {
+        this.trialSearch = trialSearch;
     }
 
     private static final String fields = "user_id, twitter_searchid, nresult, nsent";

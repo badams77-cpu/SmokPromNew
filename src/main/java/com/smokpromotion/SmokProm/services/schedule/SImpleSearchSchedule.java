@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -31,12 +32,17 @@ public class SImpleSearchSchedule {
     public void scheduler(){
         List<S_User> user = userRepo.getAllActive();
         Map<Integer, S_User> userMap = user.stream().collect(Collectors.toMap(x->x.getId(), x->x));
+        Map<Integer, Integer> nseeachesPerUbux = new HashMap<>();
         List<DE_TwitterSearch> searches = searchRepo.getAllActiveNotRunToday();
         for(DE_TwitterSearch s : searches){
             S_User u = userMap.get(s.getUserId());
-            if (u.isUseractive()){
-                searchService.searchTwitter(u.getId(), s.getId());
+            int nSearchesDonePerUser = nseeachesPerUbux.getOrDefault(u.getId(),0);
+            boolean firstTrial = (nSearchesDonePerUser==0 && u.getSubCount()==0);
+            if (u.isUseractive() && nSearchesDonePerUser<u.getSubCount() || firstTrial){
+                searchService.searchTwitter(u.getId(), s.getId(), firstTrial);
             }
+            nSearchesDonePerUser+=1;
+            nseeachesPerUbux.put(u.getId(), nSearchesDonePerUser);
         }
     }
 }

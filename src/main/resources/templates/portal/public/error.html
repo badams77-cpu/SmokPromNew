@@ -10,7 +10,7 @@
     </style>
 </head>
 
-<BODY bgcolor="#220022" color="#77ff87">
+<body bgcolor="#220022" color="#77ff87">
 
 <center>
     <img border=1 src="/images/vapid-440x350.png"/>
@@ -37,7 +37,6 @@ page_content++
                 <th:block th:if="${email!=null && email!=''}">
                     <span th:text="|Email: ${email}|"></span>
                     <span th:text="|Name: ${fullName}|"></span>
-                    <span th:text="|Practice Group Code: ${practiceGroupCode}|"></span>
 
                 </th:block>
                 <span th:text="|Date: ${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}|"></span>

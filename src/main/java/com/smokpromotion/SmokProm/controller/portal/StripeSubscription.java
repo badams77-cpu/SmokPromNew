@@ -1,6 +1,9 @@
 package com.smokpromotion.SmokProm.controller.portal;
 
+import com.fasterxml.jackson.databind.deser.std.UUIDDeserializer;
+import com.smokpromotion.SmokProm.domain.entity.DE_TwitterSearch;
 import com.smokpromotion.SmokProm.domain.entity.S_User;
+import com.smokpromotion.SmokProm.domain.repo.REP_TwitterSearch;
 import com.smokpromotion.SmokProm.exceptions.NotLoggedInException;
 import com.smokpromotion.SmokProm.exceptions.UserNotFoundException;
 import com.stripe.Stripe;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 @Profile("smok_app")
@@ -32,7 +36,15 @@ public class StripeSubscription extends PortalBaseController {
 
     private HashMap<String, Integer> sessionIds;
 
+
     private HashMap<UUID, String> myUuidToStripeUuid;
+
+    private HashMap< String, UUID> stripeIdtoMyUuud;
+
+    private HashMap<UUID, Integer> myUuidToStripePaidQuant;
+
+    @Autowired
+    private REP_TwitterSearch repTwitterSearch;
 
 
     // Set your secret key. Remember to switch to your live secret key in production.
@@ -46,12 +58,17 @@ public class StripeSubscription extends PortalBaseController {
         sessionIds = new HashMap<>();
         myUuidToStripeUuid = new HashMap<>();
         priceId = stripePriceId;
+        myUuidToStripePaidQuant = new HashMap<>();
+        stripeIdtoMyUuud = new HashMap<>();
     }
 
     @GetMapping("/a/billing")
     public String billing(Model m, Authentication auth) throws StripeException, NotLoggedInException,  UserNotFoundException {
         S_User user = getAuthUser(auth);
-        m.addAttribute("paying", user.isPaying());
+        m.addAttribute("paying", user.getSubCount());
+        List<DE_TwitterSearch> searches = repTwitterSearch.findByUserIdActive(user.getId());
+        int nsearch = searches.size();
+        m.addAttribute("nsearches", nsearch);
         return PRIBASE+"billing";
     }
 
@@ -60,13 +77,19 @@ public class StripeSubscription extends PortalBaseController {
     public String billing(Authentication auth) throws StripeException, NotLoggedInException,  UserNotFoundException {
         S_User user = getAuthUser(auth);
         UUID mySessionId = UUID.randomUUID();
+
+        List<DE_TwitterSearch> searches = repTwitterSearch.findByUserIdActive(user.getId());
+        int nsearch = searches.size();
+
+        myUuidToStripePaidQuant.put(mySessionId, nsearch);
+
         SessionCreateParams params = new SessionCreateParams.Builder()
                 .setSuccessUrl("https://www.vapid-promotion.com/a/billing/"+user.getId()+"/"+mySessionId+"/activate")
                 .setCancelUrl("https://www.vapid-promotion.com/a/billing/a/billing/"+user.getId()+"/"+mySessionId+"/deactivate")
                 .setMode(SessionCreateParams.Mode.SUBSCRIPTION)
                 .addLineItem(new SessionCreateParams.LineItem.Builder()
                         // For metered billing, do not pass quantity
-                        .setQuantity(1L)
+                        .setQuantity(0L+nsearch)
                         .setPrice(priceId)
                         .build()
                 )
@@ -74,6 +97,7 @@ public class StripeSubscription extends PortalBaseController {
 
         Session session = Session.create(params);
         sessionIds.put(session.getId(), user.getId());
+        stripeIdtoMyUuud.put(session.getId(), mySessionId);
         myUuidToStripeUuid.put(mySessionId, session.getId());
 
 // Redirect to the URL returned on the Checkout Session.
@@ -89,8 +113,10 @@ public class StripeSubscription extends PortalBaseController {
     public String setBillingActive(@PathVariable("userId") int userId, @PathVariable("sessionId") int sessionId, Authentication auth)
             throws NotLoggedInException,  UserNotFoundException {
         S_User user = getAuthUser(auth);
-        if (user.getId()==userId && sessionIds.get(myUuidToStripeUuid.get(sessionId)).equals(userId)){
-            user.setPaying(true);
+        if (user.getId()==userId && sessionIds.get(stripeIdtoMyUuud.getOrDefault(sessionId, UUID.randomUUID())).equals(userId)){
+
+            user.setSubCount(myUuidToStripePaidQuant.getOrDefault(
+                    stripeIdtoMyUuud.getOrDefault(sessionId, UUID.randomUUID()), user.getSubCount()));
             userService.update(user);
         }
         return PRIBASE+"billing-success";
@@ -101,7 +127,7 @@ public class StripeSubscription extends PortalBaseController {
     int sessionId,Authentication auth) throws NotLoggedInException,  UserNotFoundException {
         S_User user = getAuthUser(auth);
         if (user.getId()==userId && sessionIds.get(myUuidToStripeUuid.get(sessionId)).equals(userId)){
-            user.setPaying(false);
+            user.setSubCount(0);
             userService.update(user);
         }
         return PRIBASE+"billing-cancelled";

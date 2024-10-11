@@ -44,7 +44,7 @@ public class REP_SeduledTwitterSearch {
                         " BETWEEN date_add(now() INTERVAL -7 DAY)" +
                 " AND now()"+
                 " AND ac.code_date "+
-                        " BETWEEN date_add(now() INTERVAL -7 DAY) AND ac.code_used_date IS NULL;"
+                        " BETWEEN date_add(now() INTERVAL -7 DAY) AND ac.code_used_date IS NULL ORDER BY tw.twitter_search_id, tw.id ;"
                 , new String[]{}, new Object[]{});
         return res;
     }
