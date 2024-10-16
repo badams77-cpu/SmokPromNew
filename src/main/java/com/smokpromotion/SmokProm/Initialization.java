@@ -1,5 +1,6 @@
 package com.smokpromotion.SmokProm;
 
+import com.majorana.maj_orm.DBs.DatabaseVariant;
 import com.smokpromotion.SmokProm.domain.entity.AdminUser;
 import com.smokpromotion.SmokProm.domain.entity.S_User;
 import com.smokpromotion.SmokProm.domain.repo.REP_AdminUserService;
@@ -10,8 +11,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 
 @Component
@@ -26,6 +31,9 @@ public class Initialization {
     private REP_AdminUserService adminUserService;
 
     @Autowired
+    private ResourceLoader resourceLoader;
+
+    @Autowired
     private ApplicationContext ctx;
 
     @Autowired
@@ -38,9 +46,13 @@ public class Initialization {
 
     private final static String FIRSTPASS = "changeme";
 
+;
 
 
-    public void init() throws SQLException  {
+    public void init() throws SQLException, IOException {
+        ;
+        File dbDir = new File(".");
+        com.majorana.maj_orm.SCHEME.WriteSchema.writeSchema(DatabaseVariant.MYSQL, dbDir, "com.smokpromotion");
         try {
             S_User user = userService.findByName(USERNAME);
         } catch (UserNotFoundException e){

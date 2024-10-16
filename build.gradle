@@ -16,7 +16,7 @@ plugins {
 
      apply plugin: 'application'
      apply plugin: 'war'
-     mainClassName = 'com.example.WebApplication'
+     mainClassName = 'com.smokpromotion.SmokProm.SmokApplication'
 
      group 'com.smokpromotion'
      version '1.0-SNAPSHOT'
@@ -81,7 +81,7 @@ jar {
     from(sourceSets.main.output.getDirs())
 
     manifest {
-        attributes 'Main-Class': 'com.smokpromotion.SmokProm.SmokApplicatioln'
+        attributes 'Main-Class': 'com.smokpromotion.SmokProm.SmokApplication'
     }
 //
     archivesBaseName = 'vapidprom'
@@ -95,7 +95,7 @@ war {
     from(sourceSets.main.output.getDirs())
 
     manifest {
-        attributes 'Main-Class': 'com.smokpromotion.SmokProm.SmokApplicatioln'
+        attributes 'Main-Class': 'com.smokpromotion.SmokProm.SmokApplication'
     }
 //
     archivesBaseName = 'vapidprom'
@@ -115,7 +115,7 @@ war {
 
          implementation "com.stripe:stripe-java:27.1.0"
 
-         implementation fileTree("libs/MajDbOrm-1.5.2-plain.jar")
+         implementation fileTree("libs/MajDbOrm-1.6.1-plain.jar")
 
          // https://mvnrepository.com/artifact/org.twitter4j/twitter4j-core
          implementation 'org.twitter4j:twitter4j-core:4.1.2'
@@ -134,7 +134,9 @@ war {
 // https://mvnrepository.com/artifact/javax.servlet/javax.servlet-a
  //implementation  'javax.servlet:javax.servlet-api'
 
-
+//         implementation 'jakarta.validation:jakarta.validation-api:3.1.0'
+         implementation files('libs/jakarta.validation-api-3.1.0.jar')
+         implementation 'javax.validation:validation-api:2.0.1.Final'
 // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-logging
          implementation 'org.springframework.boot:spring-boot-starter-logging:3.1.12'
 
@@ -204,6 +206,8 @@ war {
          implementation('org.apache.commons:commons-text:1.10.0')
          implementation('com.sun.mail:javax.mail:1.5.5')
          implementation group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.12.268'
+
+         implementation 'org.reflections:reflections:0.10.2'
 
          implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
          implementation group: 'net.lingala.zip4j', name: 'zip4j', version: '2.11.2'

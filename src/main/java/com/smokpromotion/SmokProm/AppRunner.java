@@ -15,6 +15,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Set;
@@ -56,7 +57,7 @@ public class AppRunner implements ApplicationRunner {
     private String smpkSearchRunneVersionString;
 
 
-    public void run(ApplicationArguments args) throws SQLException {
+    public void run(ApplicationArguments args) throws SQLException, IOException {
 
         Set<String> activeProfiles = Arrays.stream(env.getActiveProfiles()).collect(Collectors.toSet());
 
@@ -85,6 +86,7 @@ public class AppRunner implements ApplicationRunner {
      //   ctx.register(DBEnvSetup.class);
      //   ctx.register(YamlDBConfig.class);
         ctx.refresh();
+
 
         LOGGER.warn(String.format("smok %s Application startup completed - version: %s", smokAppVariantDesc, smokAppVersionDesc));
 
