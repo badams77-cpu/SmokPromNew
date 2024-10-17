@@ -1,11 +1,13 @@
-DROP TABLE IF EXISTS email_templates;
+DROP TABLE IF EXISTS invoices;
 
-CREATE TABLE IF NOT EXISTS email_templates (
+CREATE TABLE IF NOT EXISTS invoices (
 id int auto_increment primary key
-, name text
-, template text
-, subject text
-, language text
+, user_id int
+, invoice_date date
+, payed_date date
+, nsent int
+, amtCharged double
+, amtPaid double
 , uuid varchar(80)
 , deleted int
 , deleted_at datetime

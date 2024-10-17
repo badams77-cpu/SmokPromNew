@@ -47,7 +47,7 @@ public class DE_EmailLog extends BaseMajoranaEntity {
 
     @Override
     public String getTableName() {
-        return "";
+        return TABLE_NAME;
     }
 
     @Override

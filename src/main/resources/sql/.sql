@@ -1,11 +1,11 @@
-DROP TABLE IF EXISTS email_templates;
-
-CREATE TABLE IF NOT EXISTS email_templates (
+CREATE TABLE IF NOT EXISTS  (
 id int auto_increment primary key
-, name text
-, template text
-, subject text
-, language text
+, userid text
+, userid text
+, error_message text
+, error_message text
+, status text
+, status text
 , uuid varchar(80)
 , deleted int
 , deleted_at datetime

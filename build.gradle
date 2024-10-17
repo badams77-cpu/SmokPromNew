@@ -115,7 +115,7 @@ war {
 
          implementation "com.stripe:stripe-java:27.1.0"
 
-         implementation fileTree("libs/MajDbOrm-1.6.1-plain.jar")
+         implementation fileTree("libs/MajDbOrm-1.6.6-plain.jar")
 
          // https://mvnrepository.com/artifact/org.twitter4j/twitter4j-core
          implementation 'org.twitter4j:twitter4j-core:4.1.2'

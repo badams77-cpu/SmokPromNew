@@ -1,10 +1,13 @@
 package com.smokpromotion.SmokProm.domain.entity;
 
+import com.majorana.maj_orm.ORM.BaseMajoranaEntity;
 import jakarta.persistence.Column;
 
 import java.time.LocalDate;
 
-public class DE_TodaysAccessCode {
+public class DE_TodaysAccessCode extends BaseMajoranaEntity {
+
+    public static final String TABLE_NAME="todays_access_code";
 
     @Column(name = "user_id")
     private int userid;
@@ -14,6 +17,8 @@ public class DE_TodaysAccessCode {
 
     @Column(name = "auth_code")
     private String auth_code;
+
+
 
     public int getUserid() {
         return userid;
@@ -37,5 +42,14 @@ public class DE_TodaysAccessCode {
 
     public void setAuth_code(String auth_code) {
         this.auth_code = auth_code;
+    }
+
+    public static String getTableNameStatic() {
+        return TABLE_NAME;
+    }
+
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
     }
 }

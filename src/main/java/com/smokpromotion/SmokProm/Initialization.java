@@ -10,6 +10,7 @@ import com.smokpromotion.SmokProm.util.PwCryptUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -46,13 +47,17 @@ public class Initialization {
 
     private final static String FIRSTPASS = "changeme";
 
-;
+    @Value("${dropOldTable:true}")
+    private boolean dropOld;
+
+    @Value("${SchemaOutDir}")
+    private String schemaDir;
 
 
     public void init() throws SQLException, IOException {
         ;
-        File dbDir = new File(".");
-        com.majorana.maj_orm.SCHEME.WriteSchema.writeSchema(DatabaseVariant.MYSQL, dbDir, "com.smokpromotion");
+        File dbDir = new File(schemaDir);
+        com.majorana.maj_orm.SCHEME.WriteSchema.writeSchema(DatabaseVariant.MYSQL, dbDir, "com.smokpromotion", dropOld);
         try {
             S_User user = userService.findByName(USERNAME);
         } catch (UserNotFoundException e){
@@ -86,8 +91,9 @@ public class Initialization {
             } else {
                 LOGGER.warn("AdminUser creation failed");
             }
-        }
 
+        }
+        System.exit(0);
     }
 
 }

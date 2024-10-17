@@ -1,11 +1,10 @@
-DROP TABLE IF EXISTS email_templates;
+DROP TABLE IF EXISTS paid_days;
 
-CREATE TABLE IF NOT EXISTS email_templates (
+CREATE TABLE IF NOT EXISTS paid_days (
 id int auto_increment primary key
-, name text
-, template text
-, subject text
-, language text
+, user_id int
+, paid_date date
+, has_paid int
 , uuid varchar(80)
 , deleted int
 , deleted_at datetime
