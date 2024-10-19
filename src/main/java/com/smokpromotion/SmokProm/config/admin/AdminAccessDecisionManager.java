@@ -6,13 +6,12 @@ import com.smokpromotion.SmokProm.config.portal.PortalSecurityPrinciple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.server.reactive.ServerHttpRequest;
 
@@ -46,13 +45,11 @@ public class AdminAccessDecisionManager extends BaseAccessDecisionManager  {
             if (auth.getPrincipal() instanceof String){
                 LOGGER.debug("checkPath: Principal was a String:"+ (String) auth.getPrincipal());
             }
-        } catch(BadSqlGrammarException e){
+        } catch(Exception e){
             LOGGER.error("checkPath: DB error, please check roles rolegroup and application feature Schema",e);
             ret = true;
 
             LOGGER.error("checkPath: "+e.getMessage());
-        } catch(Exception e){
-            LOGGER.error("checkPath ",e);
         }
 
 

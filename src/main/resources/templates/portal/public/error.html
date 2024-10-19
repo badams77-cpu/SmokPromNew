@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+
+    <title th:text="#{t.Error}">Error</title>
+    <style>
+        body { background-color: purple;  color:lawngreen }
+    </style>
+</head>
+
+<body bgcolor="#220022" color="#77ff87">
+
+<center>
+    <img border=1 src="/images/vapid-440x350.png"/>
+</center>
+<H2>Vapid Promotions</H2>
+
+<!--/* ---------------------------------------------------------------------------------------------
+page_content++
+---------------------------------------------------------------------------------------------- */-->
+<div  id="error-page">
+
+    <div class="row">
+        <div class="error-container">
+            <img th:src="@{/images/dont_know_error.png}" />
+            <!--<p th:text="${exception}"></p>-->
+            <p>&nbsp;</p>
+            <h1>MPC</h1>
+
+            <p>An error occurred in processing your request.<br>Please revise your inputs and try again</p>
+            <p><a href="/landing-page">Back to MPC landing page</a></p>
+            <div class="user-details">
+                <h2><span th:text="${outOfResources}" th:if="${outOfResources!=null}"></span></h2>
+                <span th:text="|Referer: ${referer}|"></span>
+                <th:block th:if="${email!=null && email!=''}">
+                    <span th:text="|Email: ${email}|"></span>
+                    <span th:text="|Name: ${fullName}|"></span>
+
+                </th:block>
+                <span th:text="|Date: ${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}|"></span>
+                <span th:text="|URL: ${url}|"></span>
+
+                <th:block th:if="${showException}">
+                    <span th:text="|Exception Name: ${exceptionName}|"></span>
+                    <span th:text="|Exception Message: ${exceptionMessage}|"></span>
+                </th:block>
+            </div>
+
+        </div>
+    </div> <!--/* .row */-->
+
+
+</div> <!-- layout:fragment="page_content" -->
+<!--/* ---------------------------------------------------------------------------------------------
+page_content--
+---------------------------------------------------------------------------------------------- */-->
+
+<th:block layout:fragment="bottom_script">
+</th:block> <!-- bottom_script -->
+
+</body>
+
+</html>

@@ -5,24 +5,24 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile({"smok_app","admin","dxpulse_portal","dxpulse_admin", "dentistportal"})
+@Profile({"smok_app","smok_admin","smok_init","init"})
 public class PortalEmailConfig {
 
-    @Value("${Majorana_MAIL_FROM_ADDR:admin@imultipractice.com}")
-    private  String Majorana_MAIL_FROM_ADDR;
+    @Value("${MPC_MAIL_FROM_ADDR:admin@imultipractice.com}")
+    private  String MPC_MAIL_FROM_ADDR;
 
-    @Value("${Majorana_MAIL_FROM_NAME:Majorana}")
-    private String Majorana_MAIL_FROM_NAME;
+    @Value("${MPC_MAIL_FROM_NAME:MPC}")
+    private String MPC_MAIL_FROM_NAME;
 
-    @Value("${Majorana_EMAIL_LINK_ENSURE_HTTPS:false}")
+    @Value("${MPC_EMAIL_LINK_ENSURE_HTTPS:false}")
     private boolean useHttps;
 
-    public  String getMajoranaMailFromAddr() {
-        return Majorana_MAIL_FROM_ADDR;
+    public  String getMpcMailFromAddr() {
+        return MPC_MAIL_FROM_ADDR;
     }
 
-    public  String getMajoranaMailFromName() {
-        return Majorana_MAIL_FROM_NAME;
+    public  String getMpcMailFromName() {
+        return MPC_MAIL_FROM_NAME;
     }
 
     public boolean isUseHttps() {

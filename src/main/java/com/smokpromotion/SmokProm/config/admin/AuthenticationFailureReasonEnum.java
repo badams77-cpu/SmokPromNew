@@ -5,7 +5,8 @@ public enum AuthenticationFailureReasonEnum {
     INVALID_PRINCIPAL(1, "The authentication is incorrect"),
     BLOCKED_AFTER_INVALID_ATTEMPTS(2, "User blocked after too many invalid login attempts"),
     BLOCKED_PWD_RECOVERY(3, "User blocked as password recovery in progress"),
-    UNAUTHORIZED_ACCESS(3, "User is not authorized to access")
+    UNAUTHORIZED_ACCESS(3, "User is not authorized to access"),
+    UNKNOWN_USER(4, "No Known User")
     ;
 
     AuthenticationFailureReasonEnum(int id, String description) {

@@ -1,7 +1,6 @@
 package com.smokpromotion.SmokProm.config.admin;
 
 import com.smokpromotion.SmokProm.domain.entity.AdminUser;
-import com.zaxxer.hikari.HikariDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +12,11 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
-@Profile(value = {"admin", "dxpulse_admin"})
+@Profile(value = {"smok_admin"})
 @Service
 public class AdminSecurityPrincipleService {
 
-    private static final String ADMIN_HASH = "$2a$10$Dro7gKfxS7qyGBHiel8d4u8eJKZD9g6IzVZnbDNduSY4Rd91E86oO";
+//    private static final String ADMIN_HASH = "$2a$10$Dro7gKfxS7qyGBHiel8d4u8eJKZD9g6IzVZnbDNduSY4Rd91E86oO";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminSecurityPrincipleService.class);
 
@@ -26,18 +25,15 @@ public class AdminSecurityPrincipleService {
     // Constructors
     // -----------------------------------------------------------------------------------------------------------------
 
-    @Autowired(required = false)
-    @Qualifier("legacyDC")
-    HikariDataSource legacyDCMajoranaDataSource;
 
     @Autowired
     public AdminSecurityPrincipleService(
         @Value("${Majorana_ADMIN_PASSWORD:xxx}")    String adminPass
     ) {
-        BCryptPasswordEncoder  crypt = new BCryptPasswordEncoder();
-        if (!crypt.matches(adminPass, ADMIN_HASH)) {
-            throw new IllegalArgumentException("Majorana_ADMIN_PASSWORD is incorrect");
-        }
+//        BCryptPasswordEncoder  crypt = new BCryptPasswordEncoder();
+//        if (!crypt.matches(adminPass, ADMIN_HASH)) {
+//            throw new IllegalArgumentException("Majorana_ADMIN_PASSWORD is incorrect");
+//        }
     }
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -48,7 +44,6 @@ public class AdminSecurityPrincipleService {
     public AdminSecurityPrinciple create(AdminUser legacyUser, String password) {
 
         AdminSecurityPrinciple authUser = new AdminSecurityPrinciple(legacyUser.getId(), legacyUser.getUsername());
-        authUser.setHasDCPortal(legacyDCMajoranaDataSource!=null);
 
         authUser.setFirstname(legacyUser.getFirstname());
         authUser.setLastname(legacyUser.getLastname());

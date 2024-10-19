@@ -1,21 +1,19 @@
 package com.smokpromotion.SmokProm.util;
 
-import com.smokpromotion.SmokProm.domain.repository.AbstractRotatableKey;
-import com.smokpromotion.SmokProm.domain.repository.CryptoKeyIds;
-import jakarta.annotation.PostConstruct;
+import com.majorana.maj_orm.ORM.CryptoKeyIds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.Arrays;
 
-@Profile("smok_app")
-@Service()
+//@Profile("smok_app")
+//@Service()
 public class DBCryptoRotationService {
 
     private Logger LOGGER = LoggerFactory.getLogger(DBCryptoRotationService.class);

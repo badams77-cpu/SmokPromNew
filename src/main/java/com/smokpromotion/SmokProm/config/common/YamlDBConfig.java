@@ -7,6 +7,7 @@ import java.nio.charset.Charset;
 
 import org.slf4j.Logger;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.core.io.ClassPathResource;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 
 @Component()
 @Primary
-//@ConfigurationProperties()//(prefix= "smok-db")
+@ConfigurationProperties(prefix= "smok")
 public class YamlDBConfig {
 
     private static final String YAML_FILE = "/application.yml";

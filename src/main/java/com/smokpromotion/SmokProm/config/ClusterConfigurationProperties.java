@@ -8,7 +8,7 @@ import java.util.List;
 
 @Profile({"dxpulse_portal", "dxpulse_admin"})
 @Component
-    @ConfigurationProperties(prefix = "session.redis.cluster")
+//    @ConfigurationProperties(prefix = "session.redis.cluster")
     public class ClusterConfigurationProperties {
 
         /*

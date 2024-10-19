@@ -2,7 +2,7 @@
   <library name="Gradle: nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:2.3.0" type="java-imported" external-system-id="GRADLE">
     <properties groupId="nz.net.ultraq.thymeleaf" artifactId="thymeleaf-layout-dialect" version="2.3.0" />
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/nz.net.ultraq.thymeleaf/thymeleaf-layout-dialect/2.3.0/51c8c3fd5341e7f5e0410dc7056f7bece1acb4ad/thymeleaf-layout-dialect-2.3.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../gradle/gradle-8.4/caches/modules-2/files-2.1/nz.net.ultraq.thymeleaf/thymeleaf-layout-dialect/2.3.0/51c8c3fd5341e7f5e0410dc7056f7bece1acb4ad/thymeleaf-layout-dialect-2.3.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

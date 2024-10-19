@@ -1,6 +1,7 @@
 package com.smokpromotion.SmokProm.config.common;
 
-import com.smokpromotion.SmokProm.config.DBs.SmokDatasourceName;
+
+import com.majorana.maj_orm.DBs.MajDataSourceName;
 
 import java.io.Serializable;
 import java.util.*;
@@ -18,7 +19,7 @@ public abstract class BaseSecurityPrinciple implements Serializable {
     protected String lastname;
     protected String userLanguage;
 
-    protected SmokDatasourceName dbSrcName;
+    protected MajDataSourceName dbSrcName;
 
     protected String currencySymbol;
 
@@ -49,11 +50,11 @@ public abstract class BaseSecurityPrinciple implements Serializable {
         this.email = email;
     }
 
-    public SmokDatasourceName getDbSrcName() {
+    public MajDataSourceName getDbSrcName() {
         return dbSrcName;
     }
 
-    public void setDbSrcName(SmokDatasourceName dbSrcName) {
+    public void setDbSrcName(MajDataSourceName dbSrcName) {
         this.dbSrcName = dbSrcName;
     }
 

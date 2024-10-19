@@ -2,7 +2,7 @@
   <library name="Gradle: com.amazonaws:aws-java-sdk-kms:1.12.268" type="java-imported" external-system-id="GRADLE">
     <properties groupId="com.amazonaws" artifactId="aws-java-sdk-kms" version="1.12.268" />
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.12.268/fc9f00e008c88ce63f310b742970f94651ca6b19/aws-java-sdk-kms-1.12.268.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../gradle/gradle-8.4/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.12.268/fc9f00e008c88ce63f310b742970f94651ca6b19/aws-java-sdk-kms-1.12.268.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -4,7 +4,7 @@ package com.smokpromotion.SmokProm.config.admin;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-@Profile(value = {"admin", "dxpulse_admin"})
+@Profile(value = {"smok_admin"})
 @Service
 public class AdminMajoranaLoginAttemptService {
 

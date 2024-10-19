@@ -3,14 +3,13 @@ package com.smokpromotion.SmokProm.config.portal;
 import com.smokpromotion.SmokProm.util.GenericUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.security.core.Authentication;
 
 
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -80,15 +79,6 @@ public abstract class BaseAccessDecisionManager {
             if (auth.getPrincipal() instanceof String){
                 LOGGER.debug("Principal was a String:"+ (String) auth.getPrincipal());
             }
-        } catch(BadSqlGrammarException noTable){
-            LOGGER.error("*****************************************************");
-            LOGGER.error("*** TABLES FOR THE SUBSCRIPTION LEVEL NOT EXIST *****");
-            LOGGER.error("*** RUN THE DEVELOPMENT COMPONENT FOR SUBSCRIPTION **");
-            LOGGER.error("*****************************************************");
-            LOGGER.error("*****************************************************");
-            ret = true;
-
-            LOGGER.error(noTable.getMessage());
         } catch(Exception e){
             LOGGER.error(e.getMessage());
         }

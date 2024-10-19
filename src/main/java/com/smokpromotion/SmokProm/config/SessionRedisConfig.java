@@ -20,11 +20,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Configuration
-@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 3600)
+//@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 3600)
 @Profile("!memory-session")
 public class SessionRedisConfig {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SessionRedisConfig.class);
+   /* private static final Logger LOGGER = LoggerFactory.getLogger(SessionRedisConfig.class);
 
     private static final String HOST_KEY = "SESSION_REDIS_HOST";
 
@@ -104,5 +104,5 @@ public class SessionRedisConfig {
     public static ConfigureRedisAction configureRedisAction() {
         return ConfigureRedisAction.NO_OP;
     }
-
+*/
 }

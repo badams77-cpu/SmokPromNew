@@ -1,0 +1,26 @@
+<HTML><HEAD><TITLE>Vapid Promotions</TITLE>
+    <style>
+        body { background-color: purple;  color:lawngreen }
+    </style>
+    </HEAD>
+<body bgcolor="#220022" color="#77ff87">
+
+<center>
+    <img border=1 src="/images/vapid-440x350.png"/>
+
+<H2>Welcome to Vapid Promotions</H2>
+
+
+<span th:text="${error}"></span>
+
+
+
+<FORM th:action="@{/login-handler}"  method="POST">
+
+    <label for="username">Username: </label><INPUT id="username" TYPE="text" name="username" SIZE="40"><p/>
+    <label for="password">Password: </label><INPUT id="password" TYPE="password" name="password" SIZE="40"><p/>
+    <button type="submit">signin </button>
+</FORM>
+</center>
+</body>
+</HTML>

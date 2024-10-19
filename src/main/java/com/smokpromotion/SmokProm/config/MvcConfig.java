@@ -1,5 +1,12 @@
 package com.smokpromotion.SmokProm.config;
 
+import com.majorana.maj_orm.DBs.CassandraState;
+import com.majorana.maj_orm.ORM_ACCESS.DbBean;
+import com.smokpromotion.SmokProm.SmokApplication;
+import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
@@ -14,12 +21,15 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
+import javax.sql.DataSource;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Locale;
 @EnableScheduling
 @Configuration
@@ -28,8 +38,11 @@ public class MvcConfig implements WebMvcConfigurer {
     private static final String DEFAULT_ANALYTICS_URL = "https://Majoranaadmin.imultipractice.com/analytics";
     private static final String LOCAL_ANALYTICS_URL = "http://localhost:9567/analytics";
 
+    private static final Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(SmokApplication.class);
+
     @Autowired
     private Environment env;
+
 
 //    @Autowired
 //    private DR_AnalyticsToken drAnalyticsToken;
@@ -39,6 +52,22 @@ public class MvcConfig implements WebMvcConfigurer {
 
  //   @Autowired
  //   private AnalyticsTokenService tokenService;
+
+    @Bean
+    public DbBean dbBean() {
+        DbBean dbBean = new DbBean();
+        try {
+            dbBean.connect();
+        } catch (Exception e){
+            LOGGER.warn("Error connecting to Database");
+        }
+        return dbBean;
+    }
+
+ //   @Bean
+ //   public DataSource getDS() {
+ //       dbBean().getMainDataSource();
+ //   }
 
     @Bean
     public ResourceBundleMessageSource messageSource() {
@@ -101,5 +130,13 @@ public class MvcConfig implements WebMvcConfigurer {
     public ServletWebServerFactory servletWebServerFactory() {
         return new TomcatServletWebServerFactory();
     }
+
+
+        @Override
+        public void addResourceHandlers(ResourceHandlerRegistry registry) {
+            registry
+                    .addResourceHandler("/resources/static/images/**")
+                    .addResourceLocations("/images/");
+        }
 
 }

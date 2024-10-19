@@ -1,0 +1,33 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+
+</head>
+<body>
+
+<!--/* -----------------------------------------------------------------------------------------------------------------
+English
+------------------------------------------------------------------------------------------------------------------ */-->
+<div th:fragment="en" class="container">
+    <p class="top-line">The Edit Template page, collects information about a Template.
+        The Save button updates the template if the data entered is valid, cancel returns to the Email Template Pages.</p>
+
+
+    <h2>Fields in Edit Template</h2>
+    <ul>
+        <li><strong>Template Name - </strong>Each template has a name, and a fixed value of this name, is used in Portal when sending
+        messages. You can have two templates with the same name is they are in different language</li>
+        <li><strong>Language - </strong> The correct language is selected from the users settings, when sending the email</li>
+        <li><strong>Subject - </strong> The subject line of the email sent</li>
+        <li><strong>Template Body - </strong> The body of the Email</li>
+    </ul>
+    <h2>Interpolition</h2>
+    If the variable exists in the system creating email, subject and body text in curly brackets {variable} is replaced by the
+    value of the variable.
+    <h2>Conditionals</h2>
+    Between {ifVar} and {/ifVar} text in the body is on sent if the var has a value of true.
+    <h2></h2>
+</div>
+
+</body>
+</html>

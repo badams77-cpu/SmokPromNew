@@ -1,8 +1,8 @@
 package com.smokpromotion.SmokProm.util;
 
+import com.majorana.maj_orm.ORM.AbstractRotatableKey;
 import com.smokpromotion.SmokProm.config.portal.PortalSecurityPrinciple;
 import com.smokpromotion.SmokProm.domain.entity.IdAndKeyId;
-import com.smokpromotion.SmokProm.domain.repository.AbstractRotatableKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Service
+//@Service
 public class DBCryptoRotationBlockService {
 
     private Logger LOGGER = LoggerFactory.getLogger(DBCryptoRotationBlockService.class);

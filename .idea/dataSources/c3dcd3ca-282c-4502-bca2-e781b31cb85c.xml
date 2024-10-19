@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="@localhost-mysql [2]">
+<<<<<<< HEAD
   <database-model serializer="dbm" dbms="MYSQL" family-id="MYSQL" format-version="4.52">
+=======
+  <database-model serializer="dbm" dbms="MYSQL" family-id="MYSQL" format-version="4.53">
+>>>>>>> 90f411879a2c8b2810af35b1f1ebe0779c88f100
     <root id="1"/>
     <collation id="2" parent="1" name="big5_chinese_ci">
       <Charset>big5</Charset>

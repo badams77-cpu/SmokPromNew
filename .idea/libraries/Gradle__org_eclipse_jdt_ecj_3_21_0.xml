@@ -2,7 +2,7 @@
   <library name="Gradle: org.eclipse.jdt:ecj:3.21.0" type="java-imported" external-system-id="GRADLE">
     <properties groupId="org.eclipse.jdt" artifactId="ecj" version="3.21.0" />
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.jdt/ecj/3.21.0/d06974eec06892e5594bdb8fbbc95cd81f1c57b2/ecj-3.21.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../gradle/gradle-8.4/caches/modules-2/files-2.1/org.eclipse.jdt/ecj/3.21.0/d06974eec06892e5594bdb8fbbc95cd81f1c57b2/ecj-3.21.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

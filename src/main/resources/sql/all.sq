@@ -1,0 +1,214 @@
+DROP TABLE IF EXISTS access_codes;
+
+CREATE TABLE IF NOT EXISTS access_codes (
+id int auto_increment primary key
+, access_code text
+, user_id int
+, request_token text
+, access_code_date date
+, access_code_used_date date
+, uuid varchar(80)
+, deleted int
+, deleted_at datetime
+, created_by_userid int
+, updated_by_userid int
+, created datetime
+, updated datetime
+);
+DROP TABLE IF EXISTS admin_user;
+
+CREATE TABLE IF NOT EXISTS admin_user (
+id int auto_increment primary key
+, username text
+, firstname text
+, lastname text
+, passwd text
+, secVn int
+, last_login datetime
+, change_pass_token text
+, change_pass_token_created datetime
+, uuid varchar(80)
+, deleted int
+, deleted_at datetime
+, created_by_userid int
+, updated_by_userid int
+, created datetime
+, updated datetime
+);
+DROP TABLE IF EXISTS email_log;
+
+CREATE TABLE IF NOT EXISTS email_log (
+id int auto_increment primary key
+, userid text
+, error_message text
+, status text
+, uuid varchar(80)
+, deleted int
+, deleted_at datetime
+, created_by_userid int
+, updated_by_userid int
+, created datetime
+, updated datetime
+);
+DROP TABLE IF EXISTS email_queue;
+
+CREATE TABLE IF NOT EXISTS email_queue (
+id int auto_increment primary key
+, receipient_email text
+, title_text text
+, body_text text
+, uuid varchar(80)
+, deleted int
+, deleted_at datetime
+, created_by_userid int
+, updated_by_userid int
+, created datetime
+, updated datetime
+);
+DROP TABLE IF EXISTS email_templates;
+
+CREATE TABLE IF NOT EXISTS email_templates (
+id int auto_increment primary key
+, name text
+, template text
+, subject text
+, language text
+, uuid varchar(80)
+, deleted int
+, deleted_at datetime
+, created_by_userid int
+, updated_by_userid int
+, created datetime
+, updated datetime
+);
+DROP TABLE IF EXISTS invoices;
+
+CREATE TABLE IF NOT EXISTS invoices (
+id int auto_increment primary key
+, user_id int
+, invoice_date date
+, payed_date date
+, nsent int
+, amtCharged double
+, amtPaid double
+, uuid varchar(80)
+, deleted int
+, deleted_at datetime
+, created_by_userid int
+, updated_by_userid int
+, created datetime
+, updated datetime
+);
+DROP TABLE IF EXISTS oauth_log;
+
+CREATE TABLE IF NOT EXISTS oauth_log (
+id int auto_increment primary key
+, uuid varchar(80)
+, deleted int
+, deleted_at datetime
+, created_by_userid int
+, updated_by_userid int
+, created datetime
+, updated datetime
+);
+DROP TABLE IF EXISTS paid_days;
+
+CREATE TABLE IF NOT EXISTS paid_days (
+id int auto_increment primary key
+, user_id int
+, paid_date date
+, has_paid int
+, uuid varchar(80)
+, deleted int
+, deleted_at datetime
+, created_by_userid int
+, updated_by_userid int
+, created datetime
+, updated datetime
+);
+DROP TABLE IF EXISTS seduled_twitter_search;
+
+CREATE TABLE IF NOT EXISTS seduled_twitter_search (
+id int auto_increment primary key
+, twitter_search_id int
+, user_id int
+, trial_search int
+, results_date date
+, nresult int
+, nsent int
+, uuid varchar(80)
+, deleted int
+, deleted_at datetime
+, created_by_userid int
+, updated_by_userid int
+, created datetime
+, updated datetime
+);
+DROP TABLE IF EXISTS todays_access_code;
+
+CREATE TABLE IF NOT EXISTS todays_access_code (
+id int auto_increment primary key
+, user_id int
+, day date
+, auth_code text
+, uuid varchar(80)
+, deleted int
+, deleted_at datetime
+, created_by_userid int
+, updated_by_userid int
+, created datetime
+, updated datetime
+);
+DROP TABLE IF EXISTS twitter_search;
+
+CREATE TABLE IF NOT EXISTS twitter_search (
+id int auto_increment primary key
+, userid int
+, result_date date
+, search_text varchar(80)
+, message varchar(250)
+, tweet_text varchar(250)
+, uuid varchar(80)
+, deleted int
+, deleted_at datetime
+, created_by_userid int
+, updated_by_userid int
+, created datetime
+, updated datetime
+);
+DROP TABLE IF EXISTS user;
+
+CREATE TABLE IF NOT EXISTS user (
+id int auto_increment primary key
+, username text
+, firstname text
+, stripe_payments_active int
+, lastname text
+, secVn int
+, passwd text
+, last_login datetime
+, company_name text
+, cc_email text
+, address1 text
+, address2 text
+, town text
+, country text
+, postcode text
+, change_pass_token text
+, change_pass_token_created datetime
+, twitter_handler text
+, oauth_reg_token text
+, oauth_reg_secret text
+, oauth_verifier text
+, access_token text
+, access_token_expiry datetime
+, useractive int
+, passwd_change_date datetime
+, uuid varchar(80)
+, deleted int
+, deleted_at datetime
+, created_by_userid int
+, updated_by_userid int
+, created datetime
+, updated datetime
+);

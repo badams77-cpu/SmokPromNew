@@ -1,0 +1,30 @@
+<HTML><HEAD><TITLE>Vapid Promotions - Search Results </TITLE>
+
+    <style>
+        body { background-color: purple;  color:lawngreen }
+    </style>
+
+</HEAD>
+<BODY bgcolor="#fffff">
+<H2>Welcome to Vapid Promotions <a span th:text="${username}"></a></H2>
+<UL>
+    <LI><a href="/a/home">Signed In home</a></LI>
+    <LI><a href="/a/search-add">Add New Search for Tweets</a></LI>
+    </UL>
+
+<TABLE BORDER="2" bgcolor="#7fffd4" gcolor="aqua"><TR><TH COLSPAN="7"><center>Your Marketing Searches</center></TH></TR>
+
+        <TR><TH>Id</TH></TH><TH>Last Searched</TH><TH>Search Terms</TH>
+            <TH>Direct Message Text</TH><TH>N FOUND</TH>
+            <TH>N SENT</TH><TH>View Search Results</TH>
+        </TR>
+    <TR th:each="sr: ${results}">
+        <TD><span th:text="${sr.id}"></span></TD>
+        <TD><span th:text="${sr.searchDate}"></span></TD>
+        <TD><span th:text="${sr.twitterUserHandle}"></span></TD>
+        </TD>
+    </TR>
+        </TABLE>
+</UL>
+</BODY>
+</HTML>

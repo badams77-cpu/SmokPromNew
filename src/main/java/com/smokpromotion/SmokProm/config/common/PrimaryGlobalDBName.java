@@ -7,7 +7,7 @@ public class PrimaryGlobalDBName {
 
 
 
-    private static final String MAIN_DB = "mysql";
+    private static final String MAIN_DB = "maindb";
 
     public String getMainDb(){
         return MAIN_DB;
