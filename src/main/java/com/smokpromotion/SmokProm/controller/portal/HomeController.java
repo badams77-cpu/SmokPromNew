@@ -48,14 +48,14 @@ public class HomeController extends PortalBaseController {
         return PUBBASE+"login.html";
     }
 
-    @GetMapping("/admin/signup")
+    @GetMapping("/signup")
     public String signup(Model m, Authentication auth) throws UserNotFoundException, NotLoggedInException
     {
         S_User user = getAuthUser(auth);
         return PRIBASE+"signup.html";
     }
 
-    @PostMapping("/admin/signup")
+    @PostMapping("/signup")
     public String signup(Model model, @Valid @ModelAttribute("userForm") UserForm userForm, BindingResult bindingResult) throws UserNotFoundException, NotLoggedInException
     {
        // validateTemplate(template, bindingResult);
