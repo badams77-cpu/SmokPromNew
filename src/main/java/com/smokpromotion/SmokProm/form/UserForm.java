@@ -1,5 +1,6 @@
 package com.smokpromotion.SmokProm.form;
 
+import jakarta.validation.constraints.Size;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.util.HtmlUtils;
 
@@ -12,20 +13,28 @@ import java.util.List;
 public class UserForm {
 
     private String id;
+    @Size(min=1, max=40)
     private String firstname;
+    @Size(min=1, max=40)
     private String lastname;
+    @Size(min=1, max=40)
+    private String address1;
+    @Size(min=1, max=40)
+    private String address2;
+    @Size(min=1, max=40)
+    private String town;
+    @Size(min=1, max=40)
+    private String country;
+    @Size(min=1, max=12)
+    private String postcode;
+    @Size(min=1, max=60)
     private String email;
-    private String organization;
-    private String language;
     private boolean useractive = true;
-    private int practiceGroupId;
+    @Size(min=6, max=20)
     private String password;
     private boolean passwordPolicy = false;
     private boolean validEmail =true;
     private boolean isLocked = false;
-    private boolean manageAdminRoles = false;
-    private boolean subscriptionExempt = false;
-    private boolean manageUsers = false;
     private boolean specifyPassword = false;
 
     // ---------------------------------------------------------------------------------------------
@@ -93,13 +102,7 @@ public class UserForm {
         this.email = email.trim();
     }
 
-    public String getLanguage() {
-        return language;
-    }
 
-    public void setLanguage(String language) {
-        this.language = language==null ? null :  language.trim();
-    }
 
     public boolean isUseractive() {
         return useractive;
@@ -109,14 +112,44 @@ public class UserForm {
         this.useractive = useractive;
     }
 
-
-
-    public int getPracticeGroupId() {
-        return practiceGroupId;
+    public @Size(min = 1, max = 40) String getAddress1() {
+        return address1;
     }
 
-    public void setPracticeGroupId(int practiceGroupId) {
-        this.practiceGroupId = practiceGroupId;
+    public void setAddress1(@Size(min = 1, max = 40) String address1) {
+        this.address1 = address1;
+    }
+
+    public @Size(min = 1, max = 40) String getAddress2() {
+        return address2;
+    }
+
+    public void setAddress2(@Size(min = 1, max = 40) String address2) {
+        this.address2 = address2;
+    }
+
+    public @Size(min = 1, max = 40) String getTown() {
+        return town;
+    }
+
+    public void setTown(@Size(min = 1, max = 40) String town) {
+        this.town = town;
+    }
+
+    public @Size(min = 1, max = 40) String getCountry() {
+        return country;
+    }
+
+    public void setCountry(@Size(min = 1, max = 40) String country) {
+        this.country = country;
+    }
+
+    public @Size(min = 1, max = 12) String getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(@Size(min = 1, max = 12) String postcode) {
+        this.postcode = postcode;
     }
 
     public String getPassword() {
@@ -152,29 +185,6 @@ public class UserForm {
         isLocked = locked;
     }
 
-    public boolean isManageAdminRoles() {
-        return manageAdminRoles;
-    }
-
-    public void setManageAdminRoles(boolean manageAdminRoles) {
-        this.manageAdminRoles = manageAdminRoles;
-    }
-
-    public boolean isSubscriptionExempt() {
-        return subscriptionExempt;
-    }
-
-    public void setSubscriptionExempt(boolean subscriptionExempt) {
-        this.subscriptionExempt = subscriptionExempt;
-    }
-
-    public boolean isManageUsers() {
-        return manageUsers;
-    }
-
-    public void setManageUsers(boolean manageUsers) {
-        this.manageUsers = manageUsers;
-    }
 
     public boolean isSpecifyPassword() {
         return specifyPassword;
@@ -184,13 +194,6 @@ public class UserForm {
         this.specifyPassword = specifyPassword;
     }
 
-    public String getOrganization() {
-        return organization;
-    }
-
-    public void setOrganization(String organization) {
-        this.organization = organization;
-    }
 
     // ---------------------------------------------------------------------------------------------
     // Public Methods - toString
@@ -202,20 +205,18 @@ public class UserForm {
                 "id='" + id + '\'' +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
+                ", address1='" + address1 + '\'' +
+                ", address2='" + address2 + '\'' +
+                ", town='" + town + '\'' +
+                ", country='" + country + '\'' +
+                ", postcode='" + postcode + '\'' +
                 ", email='" + email + '\'' +
-                ", org='" + organization + '\'' +
-                ", language='" + language + '\'' +
                 ", useractive=" + useractive +
-                ", practiceGroupId=" + practiceGroupId +
                 ", password='" + password + '\'' +
                 ", passwordPolicy=" + passwordPolicy +
                 ", validEmail=" + validEmail +
                 ", isLocked=" + isLocked +
-                ", manageAdminRoles=" + manageAdminRoles +
-                ", subscriptionExempt=" + subscriptionExempt +
-                ", manageUsers=" + manageUsers +
                 ", specifyPassword=" + specifyPassword +
                 '}';
     }
-
 }

@@ -64,7 +64,7 @@ public class HomeController extends PortalBaseController {
             model.addAttribute("userForm", userForm);
             return PRIBASE+"signup";
         }
-        S_User user = new S_User();
+        S_User user = new S_User(userForm);
 
         userService.create(user, userForm.getPassword());
         return PRIBASE+"/index.html";

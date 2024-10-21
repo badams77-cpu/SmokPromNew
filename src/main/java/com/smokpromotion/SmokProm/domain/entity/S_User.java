@@ -1,5 +1,6 @@
 package com.smokpromotion.SmokProm.domain.entity;
 
+import com.smokpromotion.SmokProm.form.UserForm;
 import com.smokpromotion.SmokProm.util.SecVnEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Table;
@@ -102,6 +103,19 @@ public class S_User extends BaseSmokEntity implements Serializable {
 
     public S_User() {
     }
+
+    public S_User(UserForm uf) {
+      username = uf.getEmail();
+      address1 = uf.getAddress1();
+      address2 = uf.getAddress2();
+      town = uf.getTown();
+      country = uf.getCountry();
+      userpw = uf.getPassword();
+      firstname = uf.getFirstname();
+      lastname = uf.getLastname();
+      postcode = uf.getPostcode();
+    }
+
 
     public int getSubCount() {
         return subCount;

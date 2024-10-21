@@ -1,0 +1,34 @@
+<HTML><HEAD><TITLE>Vapid Promotions</TITLE>
+    <style>
+        body { background-color: purple;  color:lawngreen }
+    </style>
+    </HEAD>
+<body bgcolor="#220022" color="#77ff87">
+
+<center>
+    <img border=1 src="/images/vapid-440x350.png"/>
+
+<H2>Welcome to Vapid Promotions</H2>
+
+
+<span th:text="${error}"></span>
+
+
+
+<FORM th:action="${'/signup'}"  method="POST">
+
+
+    <label for="username">Email: </label><INPUT id="username" TYPE="text" name="username" SIZE="40"><p/>
+    <label for="password">Password: </label><INPUT id="password" TYPE="password" name="password" SIZE="40"><p/>
+    <label for="firstname">Firstname: </label><INPUT id="firstname" TYPE="text" name="firstname" SIZE="40"><p/>
+    <label for="lastname">Lastname: </label><INPUT id="lastname" TYPE="text" name="lastname" SIZE="40"><p/>
+    <label for="address1">Address 1: </label><INPUT id="address1" TYPE="text" name="address1" SIZE="40"><p/>
+    <label for="address2">Address 2: </label><INPUT id="address2" TYPE="text" name="address2" SIZE="40"><p/>
+    <label for="town">Town: </label><INPUT id="town" TYPE="text" name="town" SIZE="40"><p/>
+    <label for="country">Country: </label><INPUT id="country" TYPE="text" name="country" SIZE="40"><p/>
+    <label for="postcode">Postcode: </label><INPUT id="postcode" TYPE="text" name="postcode" SIZE="40"><p/>
+    <button type="submit">signin </button>
+</FORM>
+</center>
+</body>
+</HTML>
