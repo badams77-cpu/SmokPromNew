@@ -43,6 +43,7 @@ public class SmokApplication   extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
 		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			new SpringApplicationBuilder(SmokApplication.class).web(WebApplicationType.SERVLET).run( args);
 		} catch (Exception e){
 			LOGGER.warn("Exception e in Starting Spring",e);
