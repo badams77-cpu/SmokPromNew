@@ -2,7 +2,7 @@
   <library name="Gradle: com.amazonaws:aws-java-sdk-s3:1.12.268" type="java-imported" external-system-id="GRADLE">
     <properties groupId="com.amazonaws" artifactId="aws-java-sdk-s3" version="1.12.268" />
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../../../gradle/gradle-8.4/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.12.268/be1e3fbc8442d4970ac2e46ab7c6cf280c312e61/aws-java-sdk-s3-1.12.268.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.12.268/be1e3fbc8442d4970ac2e46ab7c6cf280c312e61/aws-java-sdk-s3-1.12.268.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

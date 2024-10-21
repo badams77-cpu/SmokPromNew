@@ -2,7 +2,7 @@
   <library name="Gradle: io.github.classgraph:classgraph:4.8.43" type="java-imported" external-system-id="GRADLE">
     <properties groupId="io.github.classgraph" artifactId="classgraph" version="4.8.43" />
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../../../gradle/gradle-8.4/caches/modules-2/files-2.1/io.github.classgraph/classgraph/4.8.43/1df53b72a468dcf8acaceb1de27b96195247e7ac/classgraph-4.8.43.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.github.classgraph/classgraph/4.8.43/1df53b72a468dcf8acaceb1de27b96195247e7ac/classgraph-4.8.43.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

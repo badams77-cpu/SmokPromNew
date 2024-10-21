@@ -2,7 +2,7 @@
   <library name="Gradle: org.springframework.security:spring-security-config:5.7.11" type="java-imported" external-system-id="GRADLE">
     <properties groupId="org.springframework.security" artifactId="spring-security-config" version="5.7.11" />
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../../../gradle/gradle-8.4/caches/modules-2/files-2.1/org.springframework.security/spring-security-config/5.7.11/f145824f159befc8067a9d509a1fbb6746ebf50b/spring-security-config-5.7.11.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-config/5.7.11/f145824f159befc8067a9d509a1fbb6746ebf50b/spring-security-config-5.7.11.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -2,7 +2,7 @@
   <library name="Gradle: org.javers:javers-core:5.6.3" type="java-imported" external-system-id="GRADLE">
     <properties groupId="org.javers" artifactId="javers-core" version="5.6.3" />
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../../../gradle/gradle-8.4/caches/modules-2/files-2.1/org.javers/javers-core/5.6.3/b37a7758a80d5b75d09e110f340a011cf26a8811/javers-core-5.6.3.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.javers/javers-core/5.6.3/b37a7758a80d5b75d09e110f340a011cf26a8811/javers-core-5.6.3.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

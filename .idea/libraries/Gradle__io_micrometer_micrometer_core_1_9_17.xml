@@ -2,7 +2,7 @@
   <library name="Gradle: io.micrometer:micrometer-core:1.9.17" type="java-imported" external-system-id="GRADLE">
     <properties groupId="io.micrometer" artifactId="micrometer-core" version="1.9.17" />
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../../../gradle/gradle-8.4/caches/modules-2/files-2.1/io.micrometer/micrometer-core/1.9.17/48bf67c0c7028e5f3124d1f9a31bdcf345596e65/micrometer-core-1.9.17.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.micrometer/micrometer-core/1.9.17/48bf67c0c7028e5f3124d1f9a31bdcf345596e65/micrometer-core-1.9.17.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

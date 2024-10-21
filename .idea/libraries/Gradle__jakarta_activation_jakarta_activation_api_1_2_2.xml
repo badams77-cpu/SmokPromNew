@@ -2,7 +2,7 @@
   <library name="Gradle: jakarta.activation:jakarta.activation-api:1.2.2" type="java-imported" external-system-id="GRADLE">
     <properties groupId="jakarta.activation" artifactId="jakarta.activation-api" version="1.2.2" />
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../../../gradle/gradle-8.4/caches/modules-2/files-2.1/jakarta.activation/jakarta.activation-api/1.2.2/99f53adba383cb1bf7c3862844488574b559621f/jakarta.activation-api-1.2.2.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/jakarta.activation/jakarta.activation-api/1.2.2/99f53adba383cb1bf7c3862844488574b559621f/jakarta.activation-api-1.2.2.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

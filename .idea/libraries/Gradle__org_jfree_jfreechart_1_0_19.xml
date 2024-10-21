@@ -2,7 +2,7 @@
   <library name="Gradle: org.jfree:jfreechart:1.0.19" type="java-imported" external-system-id="GRADLE">
     <properties groupId="org.jfree" artifactId="jfreechart" version="1.0.19" />
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../../../gradle/gradle-8.4/caches/modules-2/files-2.1/org.jfree/jfreechart/1.0.19/ba9ee7dbb2e4c57a6901c79f614ed2dea9cc0e20/jfreechart-1.0.19.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jfree/jfreechart/1.0.19/ba9ee7dbb2e4c57a6901c79f614ed2dea9cc0e20/jfreechart-1.0.19.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

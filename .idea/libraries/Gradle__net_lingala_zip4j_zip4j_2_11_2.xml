@@ -2,7 +2,7 @@
   <library name="Gradle: net.lingala.zip4j:zip4j:2.11.2" type="java-imported" external-system-id="GRADLE">
     <properties groupId="net.lingala.zip4j" artifactId="zip4j" version="2.11.2" />
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../../../gradle/gradle-8.4/caches/modules-2/files-2.1/net.lingala.zip4j/zip4j/2.11.2/609b5fa146624999d0a65737e0e0aad4191fc244/zip4j-2.11.2.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.lingala.zip4j/zip4j/2.11.2/609b5fa146624999d0a65737e0e0aad4191fc244/zip4j-2.11.2.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

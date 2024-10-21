@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/SmokProm.iml" filepath="$PROJECT_DIR$/.idea/modules/SmokProm.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SmokProm.main.iml" filepath="$PROJECT_DIR$/.idea/modules/SmokProm.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SmokProm.test.iml" filepath="$PROJECT_DIR$/.idea/modules/SmokProm.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.smokpromotion.SmokProm.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.smokpromotion.SmokProm.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.smokpromotion.SmokProm.test.iml" filepath="$PROJECT_DIR$/.idea/modules/com.smokpromotion.SmokProm.test.iml" />
     </modules>
   </component>
 </project>

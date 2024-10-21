@@ -2,7 +2,7 @@
   <library name="Gradle: org.springframework.boot:spring-boot-starter-thymeleaf:2.7.18" type="java-imported" external-system-id="GRADLE">
     <properties groupId="org.springframework.boot" artifactId="spring-boot-starter-thymeleaf" version="2.7.18" />
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../../../gradle/gradle-8.4/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-thymeleaf/2.7.18/c87a27e30720c43372ceb0476b5b00c6f5296df3/spring-boot-starter-thymeleaf-2.7.18.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-thymeleaf/2.7.18/c87a27e30720c43372ceb0476b5b00c6f5296df3/spring-boot-starter-thymeleaf-2.7.18.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -2,7 +2,7 @@
   <library name="Gradle: org.springframework.session:spring-session-data-redis:2.7.4" type="java-imported" external-system-id="GRADLE">
     <properties groupId="org.springframework.session" artifactId="spring-session-data-redis" version="2.7.4" />
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../../../gradle/gradle-8.4/caches/modules-2/files-2.1/org.springframework.session/spring-session-data-redis/2.7.4/dbe1bf61d5366070a1ba9c55130a2c01b4ec48/spring-session-data-redis-2.7.4.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.session/spring-session-data-redis/2.7.4/dbe1bf61d5366070a1ba9c55130a2c01b4ec48/spring-session-data-redis-2.7.4.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

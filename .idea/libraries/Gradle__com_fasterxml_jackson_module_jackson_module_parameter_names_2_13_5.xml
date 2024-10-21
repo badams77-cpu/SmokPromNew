@@ -2,7 +2,7 @@
   <library name="Gradle: com.fasterxml.jackson.module:jackson-module-parameter-names:2.13.5" type="java-imported" external-system-id="GRADLE">
     <properties groupId="com.fasterxml.jackson.module" artifactId="jackson-module-parameter-names" version="2.13.5" />
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../../../gradle/gradle-8.4/caches/modules-2/files-2.1/com.fasterxml.jackson.module/jackson-module-parameter-names/2.13.5/a401a99e7a45450fd3ef76e82ba39005fd1a8c22/jackson-module-parameter-names-2.13.5.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.module/jackson-module-parameter-names/2.13.5/a401a99e7a45450fd3ef76e82ba39005fd1a8c22/jackson-module-parameter-names-2.13.5.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
