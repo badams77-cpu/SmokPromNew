@@ -114,6 +114,8 @@ public class S_User extends BaseSmokEntity implements Serializable {
       firstname = uf.getFirstname();
       lastname = uf.getLastname();
       postcode = uf.getPostcode();
+
+      useractive = true;
     }
 
 

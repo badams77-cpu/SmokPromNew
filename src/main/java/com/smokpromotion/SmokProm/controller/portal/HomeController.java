@@ -49,10 +49,10 @@ public class HomeController extends PortalBaseController {
     }
 
     @GetMapping("/signup")
-    public String signup(Model m, Authentication auth) throws UserNotFoundException, NotLoggedInException
+    public String signup(Model m) throws UserNotFoundException, NotLoggedInException
     {
-        S_User user = getAuthUser(auth);
-        return PRIBASE+"signup.html";
+//        S_User user = getAuthUser(auth);
+        return PUBBASE+"signup.html";
     }
 
     @PostMapping("/signup")
@@ -62,11 +62,11 @@ public class HomeController extends PortalBaseController {
         if (bindingResult.hasErrors()){
             model.addAttribute("languages", EmailLanguage.values());
             model.addAttribute("userForm", userForm);
-            return PRIBASE+"signup";
+            return PUBBASE+"signup";
         }
         S_User user = new S_User(userForm);
 
         userService.create(user, userForm.getPassword());
-        return PRIBASE+"/index.html";
+        return "redirect:/login";
     }
 }
