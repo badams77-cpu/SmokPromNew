@@ -7,8 +7,10 @@ import com.smokpromotion.SmokProm.domain.repo.REP_TwitterSearch;
 import com.smokpromotion.SmokProm.exceptions.NotLoggedInException;
 import com.smokpromotion.SmokProm.exceptions.UserNotFoundException;
 import com.stripe.Stripe;
+import com.stripe.Stripe.*;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
+import com.stripe.net.RequestOptions;
 import com.stripe.param.checkout.SessionCreateParams;
 import kotlin.random.Random;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +36,7 @@ public class StripeSubscription extends PortalBaseController {
 
 
 
-    private String priceId = "{{price_1QCuBoC5jvKI3njfi6HcYdjo}}";
+    private String priceId = "price_1QCuBoC5jvKI3njfi6HcYdjo";
 
     private HashMap<String, Integer> sessionIds;
 
@@ -84,6 +86,11 @@ public class StripeSubscription extends PortalBaseController {
         int nsearch = searches.size();
 
         myUuidToStripePaidQuant.put(mySessionId, nsearch);
+
+        RequestOptions ops = RequestOptions.builder()
+                .setApiKey(apiKey)                 .build();
+
+        Stripe.apiKey=  apiKey;
 
         SessionCreateParams params = new SessionCreateParams.Builder()
                 .setSuccessUrl("https://www.vapid-promotion.com/a/billing/"+user.getId()+"/"+mySessionId+"/activate")
