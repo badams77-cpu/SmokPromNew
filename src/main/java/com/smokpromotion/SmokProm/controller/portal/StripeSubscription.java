@@ -29,10 +29,12 @@ import java.util.UUID;
 @Controller
 public class StripeSubscription extends PortalBaseController {
 
-    @Value("${apiKey:null}")
+    @Value("${apiKey:ca_OOkA27VvkqYZJrloSfsCyVQwUAU3zsin}")
     private String apiKey;
 
-    private String priceId = "{{PRICE_ID}}";
+
+
+    private String priceId = "{{price_1QCuBoC5jvKI3njfi6HcYdjo}}";
 
     private HashMap<String, Integer> sessionIds;
 
