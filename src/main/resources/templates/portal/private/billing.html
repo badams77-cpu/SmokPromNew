@@ -1,7 +1,31 @@
 <HTML><HEAD><TITLE>Vapid Promotions Home</TITLE>
 
-    <style>
+    <style>        a:link {
+        color: lawngreen;
+        background-color: transparent;
+        text-decoration: none;
+    }
+
+    a:visited {
+        color: white;
+        background-color: palevioletred;
+        text-decoration: none;
+    }
+
+
+    a:hover {
+        color: palegreen;
+        background-color: transparent;
+        text-decoration: underline;
+    }
+
+    a:active {
+        color: yellow;
+        background-color: transparent;
+        text-decoration: underline;
+    }
         body { background-color: purple;  color:lawngreen }
+
     </style>
 
 </HEAD>
@@ -12,8 +36,8 @@
 
     <LI th:if="${paying!=0 && nsearch==npaying}">Your Subscription is active -</LI>
 
-        <LI th:if="${paying>nsearches}">Uou are currently have <span th:text="$paying"></span> Searches Paid for, but pnly
-         <span th:text="${nsearches}"></span> Searches active, you can add new searches <a href="/a/searches">Here</a></LI>
+        <LI th:if="${paying>nsearches}">Uou are currently have <span th:text="${paying}"></span> Searches Paid for, but only
+         <span th:text="${nsearches}"></span> Searches active, you can add new searches <a href="/a/search-home">Here</a></LI>
 
             <LI th:if="${paying<nsearches}">You are currently have <span th:text="${nsearches}"></span> Searches Active for, but pnlu
                            $th:text="$paying}</span> paid for.  Click here to buy more subscriptions for each search - <a href="/a/billing-stripe">Pay here</a>
@@ -21,7 +45,7 @@
             <H2>Only the first,  <span th:text="${paying}"></span> Searches will be performed each day</H2></LI>.
 
 
-         <LI><span th:text="${nsearches}"></span> Searches active, you can add new searches <a href="/a/searches">Here</a></LI>
+         <LI><span th:text="${nsearches}"></span> Searches active, you can add new searches <a href="/a/search-home">Here</a></LI>
 
 
     <LI> if you want stop payments (and semding tweets) <a href="/a/billing-stripe">cancel here</a></LI>
