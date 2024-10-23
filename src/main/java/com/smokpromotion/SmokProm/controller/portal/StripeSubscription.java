@@ -29,7 +29,7 @@ import java.util.UUID;
 @Controller
 public class StripeSubscription extends PortalBaseController {
 
-    @Value("${apiKey:ca_OOkA27VvkqYZJrloSfsCyVQwUAU3zsin}")
+    @Value("${apiKey:sk_test_51QCuAPC5jvKI3njfL5QYiTOSBtcwjjDo0a7LrpyXpkQRFjlxiAWFpoiYwIyTKimfqz3iRvCxZuI5k7GPCk3KSHey00oTIz4A4j}")
     private String apiKey;
 
 
