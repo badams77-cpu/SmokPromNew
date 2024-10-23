@@ -85,6 +85,14 @@ public class DE_TwitterSearch extends BaseMajoranaEntity {
         return searchText;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     public void setSearchText(String searchText) {
         this.searchText = searchText;
     }

@@ -43,7 +43,7 @@ public class REP_UserService {
 
     public S_User findByName(String name) throws UserNotFoundException {
         List<S_User> users = userRepo.getBeansNP("SELECT "+userRepo.getFields()+" FROM "+S_User.getTableNameStatic()
-                +" WHERE useremail=:username", new String[]{"username"}, new Object[]{name});
+                +" WHERE username=:username", new String[]{"username"}, new Object[]{name});
         return users.stream().findFirst().orElseThrow( ()->new UserNotFoundException(name, "User not found"));
 
     }

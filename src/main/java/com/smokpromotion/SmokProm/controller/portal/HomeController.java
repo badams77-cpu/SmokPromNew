@@ -48,25 +48,25 @@ public class HomeController extends PortalBaseController {
         return PUBBASE+"login.html";
     }
 
-    @GetMapping("/admin/signup")
-    public String signup(Model m, Authentication auth) throws UserNotFoundException, NotLoggedInException
+    @GetMapping("/signup")
+    public String signup(Model m) throws UserNotFoundException, NotLoggedInException
     {
-        S_User user = getAuthUser(auth);
-        return PRIBASE+"signup.html";
+//        S_User user = getAuthUser(auth);
+        return PUBBASE+"signup.html";
     }
 
-    @PostMapping("/admin/signup")
+    @PostMapping("/signup")
     public String signup(Model model, @Valid @ModelAttribute("userForm") UserForm userForm, BindingResult bindingResult) throws UserNotFoundException, NotLoggedInException
     {
        // validateTemplate(template, bindingResult);
         if (bindingResult.hasErrors()){
             model.addAttribute("languages", EmailLanguage.values());
             model.addAttribute("userForm", userForm);
-            return PRIBASE+"signup";
+            return PUBBASE+"signup";
         }
         S_User user = new S_User(userForm);
 
         userService.create(user, userForm.getPassword());
-        return PRIBASE+"/index.html";
+        return "redirect:/login";
     }
 }

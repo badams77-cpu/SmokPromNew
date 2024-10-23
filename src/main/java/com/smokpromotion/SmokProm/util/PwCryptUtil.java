@@ -57,5 +57,9 @@ public class PwCryptUtil {
         return passwordGood;
     }
 
+    public static void main(String argv[]){
+        PwCryptUtil pw = new PwCryptUtil();
+        System.err.println(pw.getPasswd("barry28",0));
+    }
 
 }
