@@ -27,6 +27,8 @@ public class UserForm {
     private String country;
     @Size(min=1, max=12)
     private String postcode;
+    @Size(min=0, max=60)
+    private String reseller;
     @Size(min=1, max=60)
     private String email;
     private boolean useractive = true;
@@ -49,6 +51,14 @@ public class UserForm {
 
         return StringUtils.isNumeric(id);
 
+    }
+
+    public String getReseller() {
+        return reseller;
+    }
+
+    public void setReseller(String reseller) {
+        this.reseller = reseller;
     }
 
     public int idAsInt() {

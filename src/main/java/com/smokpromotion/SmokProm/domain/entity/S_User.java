@@ -56,6 +56,11 @@ public class S_User extends BaseSmokEntity implements Serializable {
     @org.springframework.data.cassandra.core.mapping.Column("postcode")
     @Column(name="postcode")
     private String postcode;
+
+    @org.springframework.data.cassandra.core.mapping.Column("reseller")
+    @Column(name="reseller")
+    private String resellerName;
+
     @org.springframework.data.cassandra.core.mapping.Column("change_pass_token")
     @Column(name="change_pass_token")
     private String changePassToken;
@@ -78,6 +83,8 @@ public class S_User extends BaseSmokEntity implements Serializable {
     @org.springframework.data.cassandra.core.mapping.Column("oauth_verifier")
     @Column(name="oauth_verifier")
     private String oauthVerifier;
+
+
 
     @org.springframework.data.cassandra.core.mapping.Column("access_token")
     @Column(name="access_token")
@@ -114,7 +121,7 @@ public class S_User extends BaseSmokEntity implements Serializable {
       firstname = uf.getFirstname();
       lastname = uf.getLastname();
       postcode = uf.getPostcode();
-
+      resellerName = uf.getReseller();
       useractive = true;
     }
 
@@ -129,6 +136,14 @@ public class S_User extends BaseSmokEntity implements Serializable {
 
     public static String getTableNameStatic(){
         return TABLE_NAME;
+    }
+
+    public String getResellerName() {
+        return resellerName;
+    }
+
+    public void setResellerName(String resellerName) {
+        this.resellerName = resellerName;
     }
 
     public String getTableName(){

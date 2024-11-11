@@ -55,10 +55,63 @@ public class HomeController extends PortalBaseController {
         return PUBBASE+"signup.html";
     }
 
+    @GetMapping("/resell")
+    public String reseller(Model m) throws UserNotFoundException, NotLoggedInException
+    {
+//        S_User user = getAuthUser(auth);
+        return PUBBASE+"resell.html";
+    }
+
+    @GetMapping("/signup-reseller")
+    public String signupReseller(Model m) throws UserNotFoundException, NotLoggedInException
+    {
+//        S_User user = getAuthUser(auth);
+        return PUBBASE+"signup-reseller.html";
+    }
+
+    @GetMapping("/signup-from-reseller")
+    public String signupFromReseller(Model m) throws UserNotFoundException, NotLoggedInException
+    {
+//        S_User user = getAuthUser(auth);
+        return PUBBASE+"signup-from-reseller.html";
+    }
+
+
     @PostMapping("/signup")
     public String signup(Model model, @Valid @ModelAttribute("userForm") UserForm userForm, BindingResult bindingResult) throws UserNotFoundException, NotLoggedInException
     {
        // validateTemplate(template, bindingResult);
+        if (bindingResult.hasErrors()){
+            model.addAttribute("languages", EmailLanguage.values());
+            model.addAttribute("userForm", userForm);
+            return PUBBASE+"signup";
+        }
+        S_User user = new S_User(userForm);
+
+        userService.create(user, userForm.getPassword());
+        return "redirect:/login";
+    }
+
+    @PostMapping("/signup-reseller")
+    public String signupReseller(Model model, @Valid @ModelAttribute("userForm") UserForm userForm, BindingResult bindingResult) throws UserNotFoundException, NotLoggedInException
+    {
+        // vaateTemplate(template, bindingResult);
+        if (bindingResult.hasErrors()){
+            model.addAttribute("languages", EmailLanguage.values());
+            model.addAttribute("userForm", userForm);
+            return PUBBASE+"signup";
+        }
+        S_User user = new S_User(userForm);
+        user.setResellerName("isa_reseller");
+
+        userService.create(user, userForm.getPassword());
+        return "redirect:/login";
+    }
+
+    @PostMapping("/signup-from-reseller")
+    public String signupFromReseller(Model model, @Valid @ModelAttribute("userForm") UserForm userForm, BindingResult bindingResult) throws UserNotFoundException, NotLoggedInException
+    {
+        // vaateTemplate(template, bindingResult);
         if (bindingResult.hasErrors()){
             model.addAttribute("languages", EmailLanguage.values());
             model.addAttribute("userForm", userForm);
