@@ -27,4 +27,8 @@ public class PortalBaseController {
         return userService.findByName(((PortalSecurityPrinciple) prince).getEmail());
     }
 
+    public S_User getAdminUser(String s) throws UserNotFoundException{
+        return userService.findByName(s);
+    }
+
 }

@@ -1,0 +1,61 @@
+<HTML><HEAD><TITLE>Vapid Promotions - Searches </TITLE>
+
+    <style>        a:link {
+        color: lawngreen;
+        background-color: transparent;
+        text-decoration: none;
+    }
+
+    a:visited {
+        color: white;
+        background-color: palevioletred;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: palegreen;
+        background-color: transparent;
+        text-decoration: underline;
+    }
+
+    a:active {
+        color: yellow;
+        background-color: transparent;
+        text-decoration: underline;
+    }
+        body { background-color: purple;  color:lawngreen }
+
+    </style>
+
+</HEAD>
+<BODY bgcolor="#fffff">
+<H2>Welcome to Vapid Promotions <a span th:text="${username}"></a></H2>
+<UL>
+    <LI><a href="/a/home">Signed In home</a></LI>
+    <LI><a href="/a/search-add">Add New Search for Tweets</a></LI>
+    </UL>
+
+<TABLE BORDER="2" bgcolor="#2f2224" color="aqua"><TR><TH COLSPAN="7"><center>Your Marketing Searches</center></TH></TR>
+        <TR><TH colspan="3">Your Messages</TH></TR>
+        <TR><TH>Id</TH></TH><TH>Id</TH><TH>Date</TH>
+            <TH>Message</TH>
+            <TH th:if="toId==fromId">Set Reply</TH>
+        </TR>
+    <TR th:each="sr: ${messages}">
+        <TD><span th:text="${sr.id}"></span></TD>
+        <TD><span th:text="${sr.createdDate}"></span></TD>
+        <TD><span th:text="${sr.message}"></span></TD>
+        <TD th:if="toId==fromId"><Button onclick="${'getElementById(''toid'').value=sr.fromId}"></Button></TD>
+    </TR>
+        </TABLE>
+</UL>
+<H2>Post to our Staff</H2>
+<FORM th:action="message-add-post" method="POST">
+    <INPUT TYPE="hidden" NAME="to" ID="toid" value="${toId}">
+    <INPUT TYPE="hidden" NAME="from" value="${fromId}">
+    <textarea name="" columns="80" rows="6"></textarea>
+    <BUTTON TYPE="submit">Message Our Staff</BUTTON>
+</FORM>
+
+</BODY>
+</HTML>

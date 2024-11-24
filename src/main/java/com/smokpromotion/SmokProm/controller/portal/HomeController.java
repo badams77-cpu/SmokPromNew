@@ -41,6 +41,13 @@ public class HomeController extends PortalBaseController {
         return PUBBASE+"index.html";
     }
 
+    @RequestMapping("/spash")
+    public String pubhome(Model mh)
+    {
+        return PUBBASE+"splash.html";
+    }
+
+
 
     @RequestMapping("/login")
     public String login(Model m, Authentication auth)
