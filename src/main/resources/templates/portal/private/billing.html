@@ -30,17 +30,17 @@
 
 </HEAD>
 <BODY bgcolor="#fffff">
-<H2>Welcome to Vapid Promotions <a span th:text="${username}"></a></H2>
+<H2>Welcome to Vapid Promotions <span th:text="${username}"></a></H2>
 
 <UL>
 
-    <LI th:if="${paying!=0 && nsearch==npaying}">Your Subscription is active -</LI>
+    <LI th:if="${paying!=0 && nsearch<npaying}">Your Subscription is active -</LI>
 
-        <LI th:if="${paying>nsearches}">Uou are currently have <span th:text="${paying}"></span> Searches Paid for, but only
+        <LI th:if="${paying>nsearches}">You are currently have <span th:text="${paying}"></span> Searches Paid for, but only
          <span th:text="${nsearches}"></span> Searches active, you can add new searches <a href="/a/search-home">Here</a></LI>
 
             <LI th:if="${paying<nsearches}">You are currently have <span th:text="${nsearches}"></span> Searches Active for, but pnlu
-                           $th:text="$paying}</span> paid for.  Click here to buy more subscriptions for each search - <a href="/a/billing-stripe">Pay here</a>
+                           th:text="${paying}</span> paid for.  Click here to buy more subscriptions for each search - <a href="/a/billing-stripe">Pay here</a>
 
             <H2>Only the first,  <span th:text="${paying}"></span> Searches will be performed each day</H2></LI>.
 
@@ -49,7 +49,7 @@
 
 
     <LI> if you want stop payments (and semding tweets) <a href="/a/billing-stripe">cancel here</a></LI>
-    <LI th:unless="${paying==0}">Your Subscription is not active  - <a href="/a/billing-stripe">Pay here </a></LI>
+    <LI th:unless="${paying!=0}">Your Subscription is not active  - <a href="/a/billing-stripe">Pay here </a></LI>
 
     <LI><a href="/a/home">Back</a> to Home Page</LI>
 </UL>

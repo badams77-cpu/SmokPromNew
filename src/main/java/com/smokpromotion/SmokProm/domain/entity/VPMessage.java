@@ -16,9 +16,9 @@ public class VPMessage extends BaseMajoranaEntity implements Serializable {
 
     @Column(name="message")
     private String message;
-    @Column(name="from")
+    @Column(name="from_user")
     private int from;
-    @Column(name="to")
+    @Column(name="to_user")
     private int to;
     @Column(name="reply_to")
     private int replyTo;

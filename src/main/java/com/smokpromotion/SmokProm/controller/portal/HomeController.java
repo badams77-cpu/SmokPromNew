@@ -42,7 +42,7 @@ public class HomeController extends PortalBaseController {
     }
 
     @RequestMapping("/spash")
-    public String pubhome(Model mh)
+    public String sphome(Model mh)
     {
         return PUBBASE+"splash.html";
     }

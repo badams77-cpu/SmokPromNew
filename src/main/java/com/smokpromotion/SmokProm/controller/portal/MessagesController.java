@@ -1,10 +1,7 @@
 package com.smokpromotion.SmokProm.controller.portal;
 
 import com.smokpromotion.SmokProm.domain.entity.*;
-import com.smokpromotion.SmokProm.domain.repo.REP_SearchResult;
-import com.smokpromotion.SmokProm.domain.repo.REP_SeduledTwitterSearch;
-import com.smokpromotion.SmokProm.domain.repo.REP_TwitterSearch;
-import com.smokpromotion.SmokProm.domain.repo.REP_VPMessage;
+import com.smokpromotion.SmokProm.domain.repo.*;
 import com.smokpromotion.SmokProm.exceptions.NotLoggedInException;
 import com.smokpromotion.SmokProm.exceptions.TwitterSearchNotFoundException;
 import com.smokpromotion.SmokProm.exceptions.UserNotFoundException;
@@ -37,8 +34,10 @@ public class MessagesController extends PortalBaseController{
     @Autowired
     private REP_VPMessage messageRepo;
 
-    public MessagesController(){
+    @Autowired
+    public MessagesController(REP_UserService userService) {
         try {
+            setUserService(userService);
             S_User adminUser = getAdminUser(adminEmail);
             adminId = adminUser.getId();
         } catch (UserNotFoundException e){}

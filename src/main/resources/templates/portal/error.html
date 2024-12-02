@@ -50,7 +50,7 @@ page_content++
         <div class="error-container">
             <!--<p th:text="${exception}"></p>-->
             <p>&nbsp;</p>
-            <h1>Vapid Promotions</h1>
+            <h1>Vapid Promotion</h1>
 
             <p>An error occurred in processing your request.<br>Please revise your inputs and try again</p>
             <p><a href="/a/home">Back to Home Page</a></p>
@@ -63,7 +63,6 @@ page_content++
                     <span th:text="|Exception Name: ${exceptionName}|"></span>
                     <span th:text="|Exception Message: ${exceptionMessage}|"></span>
                     <span th:text="|Exception Message: ${message}|"></span>
-                    <span th:text="|Exception Message: ${Message}|"></span>
                     <pre th:text="${trace}"/>
                 </th:block>
             </div>

@@ -17,8 +17,11 @@ public class PortalBaseController {
     protected static final String PUBBASE = "/portal/public/";
 
     @Autowired
-    REP_UserService userService;
+    protected REP_UserService userService;
 
+    public void setUserService(REP_UserService userService) {
+        this.userService = userService;
+    }
 
     public S_User getAuthUser(Authentication auth) throws UserNotFoundException, NotLoggedInException {
         Object prince = auth.getPrincipal();
