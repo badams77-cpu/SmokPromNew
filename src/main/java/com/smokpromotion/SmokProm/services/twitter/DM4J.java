@@ -11,12 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import twitter4j.AccessToken;
-import twitter4j.OAuthAuthorization;
+import twitter4j.StatusUpdate;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.v1.DirectMessage;
-import twitter4j.v1.StatusUpdate;
+import twitter4j.TwitterFactory;
+import twitter4j.auth.AccessToken;
+import twitter4j.auth.OAuthAuthorization;
+import twitter4j.conf.ConfigurationBuilder;
 
 import java.util.List;
 import java.util.Optional;
@@ -73,8 +74,11 @@ public class DM4J {
 
         String consumerKey = "";
         String consumerSecret = "";
-        OAuthAuthorization oAuth = OAuthAuthorization.newBuilder()
-                .oAuthConsumer(consumerKey, consumerSecret).build();
+        var conf = new ConfigurationBuilder()
+                .setJSONStoreEnabled(true)
+                .build();
+        OAuthAuthorization oAuth = new OAuthAuthorization(conf);
+           //     .oAuthConsumer(consumerKey, consumerSecret).build();
         //    RequestToken requestToken = oAuth.getOAuthRequestToken();
         //    AccessToken accessToken = null;
      /*   try (Scanner scanner = new Scanner(System.in)) {
@@ -126,10 +130,7 @@ public class DM4J {
                 //     }
             }
         }
-
-
-        Twitter twitter = Twitter.newBuilder().oAuthConsumer(consumerKey, consumerSecret)
-                .oAuthAccessToken(accessToken).build();
+        Twitter twitter = new TwitterFactory(conf).getInstance();
         //persist to the accessToken for future reference.
         //storeAccessToken(twitter.v1().users().verifyCredentials().getId(), accessToken);
 
@@ -172,12 +173,15 @@ public class DM4J {
 
             if (GenericUtils.isValid(ts.getText())) {
                 for (DE_SearchResult sr : todaysResults) {
-                    long receip = sr.getTwitterUserId();
-                    if (receip == 0) {
-                        continue;
-                    }
+
                     try {
-                        DirectMessage directMessage = twitter.v1().directMessages().sendDirectMessage(receip, ts.getMessage());
+                        long receip = sr.getTwitterUserId();
+                        if (receip == 0) {
+                            continue;
+                        }
+                    //    DirectMessage directMessage =
+                                //
+                                 twitter.directMessages().sendDirectMessage(receip, ts.getMessage());
                         sent = true;
                         sentCount++;
                         // Mark Sent DM
@@ -194,13 +198,13 @@ public class DM4J {
                     if (twiNum == 0) {
                         continue;
                     }
-                    StatusUpdate stat = StatusUpdate.of(ts.getMessage());
+                    StatusUpdate stat = new StatusUpdate(ts.getMessage());
                     stat.inReplyToStatusId(twiNum);
 
                     //             GeoLocation location = new GeoLocation(latitude, longitude);
                     //             stat.s(location);
                     try {
-                        twitter.v1().tweets().updateStatus(stat);
+                        twitter.tweets().updateStatus(stat);
                         sent = true;
                         sentCount++;
                     } catch (Exception e){

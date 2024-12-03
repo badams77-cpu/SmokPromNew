@@ -3,6 +3,7 @@ package com.smokpromotion.SmokProm.controller.portal;
 
 import com.smokpromotion.SmokProm.util.MethodPrefixingLogger;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -39,6 +41,7 @@ public class AppErrorController implements ErrorController {
      * Controller for the Error Controller
      * @param errorAttributes
      */
+    @Autowired
     public AppErrorController(ErrorAttributes errorAttributes) {
         this.errorAttributes = errorAttributes;
     }
@@ -49,26 +52,15 @@ public class AppErrorController implements ErrorController {
      * @return
      */
     @RequestMapping(value = ERROR_PATH, produces = "text/html")
-    public ModelAndView errorHtml(HttpServletRequest request, WebRequest wr) {
-        Map<String, Object> m = getErrorAttributes(request, wr, true);
+    public ModelAndView errorHtml(ServletWebRequest request) {
+        Map<String, Object> m = getErrorAttributes(request,true);
         for(String s : m.keySet()){
             LOGGER.warn(s+": "+m.get(s));
         }
         return new ModelAndView("/error", m);
     }
 
-    /**
-     * Supports other formats like JSON, XML
-     * @param request
-     * @return
-     */
-    @RequestMapping(value = ERROR_PATH)
-    @ResponseBody
-    public ResponseEntity<Map<String, Object>> error(HttpServletRequest request, WebRequest wr) {
-        Map<String, Object> body = getErrorAttributes(request, wr, getTraceParameter(request));
-        HttpStatus status = getStatus(request);
-        return new ResponseEntity<Map<String, Object>>(body, status);
-    }
+
 
 
 
@@ -82,9 +74,8 @@ public class AppErrorController implements ErrorController {
     }
 
 
-    private Map<String, Object> getErrorAttributes(HttpServletRequest request, WebRequest wr,
+    private Map<String, Object> getErrorAttributes(ServletWebRequest wr,
                                                   boolean includeStackTrace) {
-        RequestAttributes requestAttributes = new ServletRequestAttributes(request);
         Set<ErrorAttributeOptions.Include> set = new HashSet<>();
         set.add(ErrorAttributeOptions.Include.MESSAGE);
         set.add(ErrorAttributeOptions.Include.STACK_TRACE);

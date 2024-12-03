@@ -19,10 +19,13 @@ import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import twitter4j.AccessToken;
-import twitter4j.OAuthAuthorization;
-import twitter4j.RequestToken;
+
+import twitter4j.HttpParameter;
 import twitter4j.TwitterException;
+import twitter4j.auth.AccessToken;
+import twitter4j.auth.OAuthAuthorization;
+import twitter4j.auth.RequestToken;
+import twitter4j.conf.ConfigurationBuilder;
 
 import javax.mail.MessagingException;
 import java.time.LocalDate;
@@ -68,8 +71,10 @@ public class AccessEmailer {
 
     @Scheduled(cron="0 5,15,25,35,45,55 * * * *")
     public void AccessEmailScheduledRun(){
-        OAuthAuthorization oAuth = OAuthAuthorization.newBuilder()
-                .oAuthConsumer(consumerKey, consumerSecret).build();
+        var conf = new ConfigurationBuilder()
+                .setJSONStoreEnabled(true)
+                .build();
+        OAuthAuthorization oAuth = new OAuthAuthorization(conf);
 
         List<Integer> usersNeedingKeys = accessCodeRepo.getUserIdsLast7DaysWithoutCodes();
         Optional<DE_EmailTemplate> template = emailTemplateRepo.getByNameAndLanguage(TEMPLATE, EmailLanguage.ENGLISH.getLabel());

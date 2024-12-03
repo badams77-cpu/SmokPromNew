@@ -4,9 +4,7 @@ import com.majorana.maj_orm.ORM.BaseMajoranaEntity;
 import com.majorana.maj_orm.persist.newannot.Updateable;
 import jakarta.persistence.Column;
 import javax.validation.constraints.Size;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import twitter4j.v1.Query;
+
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

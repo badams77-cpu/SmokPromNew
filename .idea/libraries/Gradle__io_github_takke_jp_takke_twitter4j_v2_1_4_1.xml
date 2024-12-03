@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: io.github.takke:jp.takke.twitter4j-v2:1.4.1" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="io.github.takke" artifactId="jp.takke.twitter4j-v2" version="1.4.1" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.github.takke/jp.takke.twitter4j-v2/1.4.1/95093ffdcda1f7e2f2e3f64d64cfb0f05d0233ec/jp.takke.twitter4j-v2-1.4.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

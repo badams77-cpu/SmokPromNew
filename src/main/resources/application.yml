@@ -124,7 +124,8 @@ server:
     :min-spare-threads=10
     :max-swallow-size=2MB
     :max-http-post-size=2MB
-
+  error
+    :include-message: always
 ---
 spring.config.activate.on-profile: smok_admin
 server:

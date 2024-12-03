@@ -11,16 +11,15 @@ import com.smokpromotion.SmokProm.util.MethodPrefixingLogger;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.v1.Query;
-import twitter4j.v1.QueryResult;
-import twitter4j.v1.Status;
+import twitter4j.*;
 
 import java.time.LocalDate;
+import twitter4j.conf.ConfigurationBuilder;
 
 @Service
 public class Search4J {
+
+
 
     private static MethodPrefixingLogger LOGGER = MethodPrefixingLoggerFactory.getLogger(Search4J.class);
 
@@ -41,7 +40,10 @@ public class Search4J {
     private Twitter twitter;
 
     public Search4J(){
-        twitter = Twitter.getInstance();
+        var conf = new ConfigurationBuilder()
+                .setJSONStoreEnabled(true)
+                .build();
+        twitter = new TwitterFactory(conf).getInstance();
     }
 
 
@@ -77,24 +79,48 @@ public class Search4J {
 
             searchRep.update(dts);
 
-            twitter4j.v1.Query query = Query.of(dts.getSearchText());
-            query = query.count(SEARCH_COUNT);
+  //          twitter4j.v2.Query query = twitter4j.v2.Query.of(dts.getSearchText());
+  //          query = query.count(SEARCH_COUNT);
 
-            QueryResult result = twitter.v1().search().search(query);
+     //       QueryResult result = twitter.v1().search().search(query);
+
+
+
+
+            TweetsResponse result = twitter.v2.searchRecent(dts.getSearchText(), null, null, SEARCH_COUNT,
+            null,null,null,null,null,null,
+                    null
+                    ,null,null);
+
+  /*          fun searchRecent(
+                    query: String,
+                    endTime: Date? = null,
+                    expansions: String? = null,
+                    maxResults: Int? = null,
+                    mediaFields: String? = null,
+                    nextToken: PaginationToken? = null,
+                    placeFields: String? = null,
+                    pollFields: String? = null,
+                    sinceId: Long? = null,
+                    startTime: Date? = null,
+                    tweetFields: String? = null,
+                    untilId: Long? = null,
+                    userFields: String? = null,
+    ): */
 
             dts.setResultDate(LocalDate.now());
 
 
 
-            for (Status status : result.getTweets()) {
+            for (Tweet tw: result.getTweets()) {
                 if (!firstTrial) {
                     DE_SearchResult res = new DE_SearchResult();
                     res.setSearchId(dts.getId());
                     res.setSeduledSearchNumber(stsId);
                     res.setUserId(sts.getCreatedByUserid());
-                    res.setTwitterUserHandle(status.getUser().getScreenName());
-                    res.setTwitterUserId(status.getUser().getId());
-                    res.setTweetId(status.getId());
+                 //   res.setTwitterUserHandle(tw.getUser().getScreenName());
+                    res.setTwitterUserId(tw.getAuthorId()==null ? 0 :tw.getAuthorId());
+                    res.setTweetId(tw.getId());
                     res.setUserId(dts.getCreatedByUserid());
                     boolean saved1 = resultsRep.create(res) != 0;
                     if (saved1) {

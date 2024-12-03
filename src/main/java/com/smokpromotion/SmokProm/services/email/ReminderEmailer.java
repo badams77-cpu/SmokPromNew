@@ -20,10 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import twitter4j.AccessToken;
-import twitter4j.OAuthAuthorization;
-import twitter4j.RequestToken;
-import twitter4j.TwitterException;
+
 
 import javax.mail.MessagingException;
 import java.time.LocalDate;
