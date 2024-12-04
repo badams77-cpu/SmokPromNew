@@ -37,13 +37,14 @@ public class Search4J {
     @Autowired
     private REP_SearchResult resultsRep;
 
-    private Twitter twitter;
+    private TwitterV2 twitter;
 
     public Search4J(){
         var conf = new ConfigurationBuilder()
                 .setJSONStoreEnabled(true)
                 .build();
-        twitter = new TwitterFactory(conf).getInstance();
+        Twitter twitter1 = new TwitterFactory().getInstance();
+        twitter = TwitterV2ExKt.getV2(twitter1);
     }
 
 
@@ -87,7 +88,7 @@ public class Search4J {
 
 
 
-            TweetsResponse result = twitter.v2.searchRecent(dts.getSearchText(), null, null, SEARCH_COUNT,
+            TweetsResponse result = twitter.searchRecent(dts.getSearchText(), null, null, SEARCH_COUNT,
             null,null,null,null,null,null,
                     null
                     ,null,null);
