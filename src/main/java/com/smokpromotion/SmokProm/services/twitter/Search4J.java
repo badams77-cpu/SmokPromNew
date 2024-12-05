@@ -10,6 +10,7 @@ import com.smokpromotion.SmokProm.domain.repo.REP_UserService;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLogger;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import twitter4j.*;
 
@@ -39,9 +40,20 @@ public class Search4J {
 
     private TwitterV2 twitter;
 
-    public Search4J(){
+
+    @Autowired
+    public Search4J(@Value("${twitter.consumerKey:}") String conkey,
+                    @Value("${twitter.consumerSecret:}") String conSecret,
+                            @Value("${twitter.accessToken:}") String accessToken,
+    @Value("${twitter.accessTokenSecret:}") String accessTokenSecret
+
+    ){
         var conf = new ConfigurationBuilder()
                 .setJSONStoreEnabled(true)
+                .setOAuthConsumerSecret(conSecret)
+                .setOAuthConsumerKey(conkey)
+                .setOAuthAccessToken(accessToken)
+                .setOAuthAccessTokenSecret(accessTokenSecret)
                 .build();
         Twitter twitter1 = new TwitterFactory().getInstance();
         twitter = TwitterV2ExKt.getV2(twitter1);
@@ -77,7 +89,8 @@ public class Search4J {
             sts.setUserId(dts.getCreatedByUserid());
             sts.setResultsDate(LocalDate.now());
             int stsId = searchTryRep.create(sts);
-
+            sts.setId(stsId);
+            dts.setResultDate(LocalDate.now());
             searchRep.update(dts);
 
   //          twitter4j.v2.Query query = twitter4j.v2.Query.of(dts.getSearchText());
@@ -118,11 +131,10 @@ public class Search4J {
                     DE_SearchResult res = new DE_SearchResult();
                     res.setSearchId(dts.getId());
                     res.setSeduledSearchNumber(stsId);
-                    res.setUserId(sts.getCreatedByUserid());
-                 //   res.setTwitterUserHandle(tw.getUser().getScreenName());
-                    res.setTwitterUserId(tw.getAuthorId()==null ? 0 :tw.getAuthorId());
+                    res.setUserId(dts.getUserId());
+                    //   res.setTwitterUserHandle(tw.getUser().getScreenName());
+                    res.setTwitterUserId(tw.getAuthorId() == null ? 0 : tw.getAuthorId());
                     res.setTweetId(tw.getId());
-                    res.setUserId(dts.getCreatedByUserid());
                     boolean saved1 = resultsRep.create(res) != 0;
                     if (saved1) {
                         saved++;
@@ -131,14 +143,15 @@ public class Search4J {
                     saved++; // Fake count for first trial
                 }
 
-            }
-            sts.setNresults(saved);
-            sts.setNsent(0);
-//            searchTryRep.update(sts);
 
+                sts.setNresults(saved);
+                sts.setNsent(0);
+//                ResultsRepo.create(sts);
+            }
             LOGGER.warn(" UserId "+sts.createdByUserid+" search id "+sts.getId()+" saved "+saved+
                     " tweet results out of "+result.getTweets().size());
             searchTryRep.update(sts);
+
 
         } catch (TwitterException te){
             LOGGER.warn("Exception searching twetter ",te);

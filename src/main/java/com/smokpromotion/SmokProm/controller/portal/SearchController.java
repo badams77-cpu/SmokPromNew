@@ -85,9 +85,10 @@ public class SearchController extends PortalBaseController{
 
         m.addAttribute("sds", sds);
 
-        return PRIBASE+"searches-done";
+        return PRIBASE+"searches_done";
     }
 
+    @RequestMapping("/a/search-results/{id}")
     public String searchResult(Model m, Authentication auth, @PathVariable("id") int id) throws TwitterSearchNotFoundException, UserNotFoundException, NotLoggedInException {
         S_User user = getAuthUser(auth);
 
@@ -102,7 +103,7 @@ public class SearchController extends PortalBaseController{
 
         m.addAttribute("results", results);
 
-        return PRIBASE+"searches-done";
+        return PRIBASE+"searches_results";
     }
 
 

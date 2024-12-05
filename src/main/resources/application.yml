@@ -1,4 +1,8 @@
-
+twitter:
+    consumerKey: YS9ZsLmfjsDOPdFXEBeo4dqRI
+    consumerSecret: 5jCQn9Gpg1G6dOwPVnZ4rnvS12K5gWi5p7nBf0hlerphhCKkFU
+    accessToken: 1511798514535346188-awV7RbNV470h4h4ThrzYImy7viCcc1
+    accessTokenSecret: qRjOyEqkbxFhrW6TY9VVml6Zc2fSdV6XdBf2GAQth8LPW
 net:
   sf:
     jasperreports:
@@ -70,8 +74,15 @@ management:
 logging:
   level:
     ROOT: debug
-    com.com.smokpromotion: debug
+    org:
+       springframework:
+         web:
+            servlet:
+              mvc: DEBUG
+    com.smokpromotion: debug
     org.javers: warn
+  file:
+    name: /usr/tomcat9/logs/spring.log
 
 smok:
   admin:
@@ -125,7 +136,7 @@ server:
     :max-swallow-size=2MB
     :max-http-post-size=2MB
   error
-    :include-message: always
+    :include-message=always
 ---
 spring.config.activate.on-profile: smok_admin
 server:
