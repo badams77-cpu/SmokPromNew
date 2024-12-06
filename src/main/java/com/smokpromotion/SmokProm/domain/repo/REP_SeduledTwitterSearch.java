@@ -41,10 +41,10 @@ public class REP_SeduledTwitterSearch {
                 DE_SeduledTwitterSearch.getTableNameStatic()+" tw "+
                 " INNER JOIN "+ DE_AccessCode.getTableNameStatic()+" ac ON tw.user_id=ac+user_id "
                 +" WHERE tw.user_id=:user_id AND tw.nresults>0 AND tw.nsent=0 AND tw.results_date" +
-                        " BETWEEN date_add(now() INTERVAL -7 DAY)" +
+                        " BETWEEN DATE_SUB(NOW(), INTERVAL 1 MONTH) " +
                 " AND now()"+
                 " AND ac.code_date "+
-                        " BETWEEN date_add(now() INTERVAL -7 DAY) AND ac.code_used_date IS NULL ORDER BY tw.twitter_search_id, tw.id ;"
+                        " BETWEEN DATE_SUB(NOW(), INTERVAL 1 MONTH) AND ac.code_used_date IS NULL ORDER BY tw.twitter_search_id, tw.id ;"
                 , new String[]{}, new Object[]{});
         return res;
     }

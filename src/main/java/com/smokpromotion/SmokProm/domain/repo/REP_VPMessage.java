@@ -35,8 +35,8 @@ public class REP_VPMessage {
 
     public List<VPMessage>  findByUser(int userId){
         List<VPMessage> res = vpMessageRepo.getBeansNP("SELECT "+ vpMessageRepo.getFields()+" FROM "+
-                DE_SearchResult.getTableNameStatic()
-                +" WHERE from=:user_id OR to=:user_id"
+                VPMessage.getTableNameStatic()
+                +" WHERE from_user=:user_id OR to_user=:user_id"
                 , new String[]{"user_id"}, new Object[]{userId});
         return res;
     }

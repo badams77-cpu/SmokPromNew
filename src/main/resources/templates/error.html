@@ -59,13 +59,11 @@ page_content++
                 <span th:text="|Date: ${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}|"></span>
                 <span th:text="|URL: ${url}|"></span>
 
-                <th:block th:if="${showException}">
-                    <span th:text="|Exception Name: ${exceptionName}|"></span>
-                    <span th:text="|Exception Message: ${exceptionMessage}|"></span>
+                <span th:text="|Exception Name: ${exceptionName}|"></span>
+                <span th:text="|Exception Message: ${exceptionMessage}|"></span>
                     <span th:text="|Exception Message: ${message}|"></span>
                     <span th:text="|Exception Message: ${Message}|"></span>
                     <pre th:text="${trace}"/>
-                </th:block>
             </div>
 
         </div>

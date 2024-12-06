@@ -54,10 +54,10 @@ public class CustomErrorController extends AbstractErrorController {
             model.addAttribute("url", errorUrlTrigger);
             model.addAttribute("email", null);
             model.addAttribute("showException",showException);
-            if (showException) {
+//            if (showException) {
                 model.addAttribute("exceptionName", exceptionName);
                 model.addAttribute("exceptionMessage", exceptionMessage);
-            }
+//            }
         } catch (Exception e ) {
             LOGGER.error(methodClass+"An error occurred INSIDE the ErrorController.");
             LOGGER.error(methodClass+"Probably an expired session triggered the Exception.");

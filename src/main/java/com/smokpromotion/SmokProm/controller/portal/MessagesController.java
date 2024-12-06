@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 import java.util.Optional;
@@ -68,7 +69,7 @@ public class MessagesController extends PortalBaseController{
 
 
 
-    @RequestMapping("/a/message-add-post")
+    @RequestMapping(value = "/a/message-add-post", method = RequestMethod.POST)
     public String searchAddPost(@Valid VPMessage vpMessageForm, BindingResult bindingResult, Model m, Authentication auth) throws TwitterSearchNotFoundException, UserNotFoundException, NotLoggedInException
     {
         S_User user = getAuthUser(auth);

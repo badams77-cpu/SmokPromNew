@@ -49,7 +49,7 @@
         <TD><span th:text="${sr.text}"></span></TD>
         <TD><span th:text="${sr.message}"></span></TD>
         <TD><span><a th:href="${'/a/search-edit/'+sr.id}">Edit</a></span></TD>
-        <TD th:if="${sr.resultDate!=null}"><span><a  th:href="${'/a/search-results/'+sr.id}">View Results</a></span></TD>
+        <TD th:if="${sr.resultDate!=null}"><span><a  th:href="${'/a/search-done/'+sr.id}">View Results</a></span></TD>
         <TD  th:unless="${sr.resultDate!=null}"><span>No Results Yet</span></TD>
         </TD>
     </TR>

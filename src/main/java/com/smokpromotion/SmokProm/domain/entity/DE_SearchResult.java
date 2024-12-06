@@ -5,9 +5,9 @@ import jakarta.persistence.Column;
 
 public class DE_SearchResult extends BaseMajoranaEntity {
 
-    private final static String TABLE_NAME="seduled_twitter_search";
+    private final static String TABLE_NAME="search_results";
 
-    @Column(name="seduled_search_id")
+    @Column(name="search_id")
     private int searchId;
 
     @Column(name="user_id")
