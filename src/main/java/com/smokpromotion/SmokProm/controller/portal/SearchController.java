@@ -83,7 +83,7 @@ public class SearchController extends PortalBaseController{
 
         List<DE_SeduledTwitterSearch> sds = seduledRepo.getUsersSearchesInLastMonthForSearch(user.getId(), search.getId());
 
-        m.addAttribute("sds", sds);
+        m.addAttribute("searches", sds);
 
         return PRIBASE+"searches_done";
     }

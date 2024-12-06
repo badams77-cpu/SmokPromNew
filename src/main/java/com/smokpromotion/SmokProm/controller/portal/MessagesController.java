@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,7 +28,7 @@ public class MessagesController extends PortalBaseController{
 
     private static Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(SearchController.class);
 
-    private static int adminId;
+    private static int adminId=0;
 
     private static final String adminEmail="vapidpromotions@gmail.com";
 
@@ -44,7 +45,7 @@ public class MessagesController extends PortalBaseController{
         } catch (UserNotFoundException e){}
     }
 
-    @RequestMapping("/a/message-home")
+    @GetMapping("/a/message-home")
     public String messageHome(Model m, Authentication auth) throws UserNotFoundException, NotLoggedInException
     {
         S_User user = getAuthUser(auth);
