@@ -50,9 +50,9 @@
         </TABLE>
 </UL>
 <H2>Post to our Staff</H2>
-<FORM th:action="message-add-post" method="POST">
-    <INPUT TYPE="hidden" NAME="to" ID="toid" value="${toId}">
-    <INPUT TYPE="hidden" NAME="from" value="${fromId}">
+<FORM th:action="/a/message-add-post" method="POST">
+    <INPUT TYPE="hidden" NAME="to_user" ID="toid" value="${toId}">
+    <INPUT TYPE="hidden" NAME="from_user" value="${fromId}">
     <textarea name="" columns="80" rows="6"></textarea>
     <BUTTON TYPE="submit">Message Our Staff</BUTTON>
 </FORM>

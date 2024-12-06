@@ -9,10 +9,13 @@ import jakarta.persistence.Table;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class VPMessage extends BaseMajoranaEntity implements Serializable {
 
     private static final String TABLE_NAME="vpmessages";
+
+    private static final DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Column(name="message")
     private String message;
@@ -64,6 +67,11 @@ public class VPMessage extends BaseMajoranaEntity implements Serializable {
         this.replyTo = replyTo;
     }
 
+    public String getCreatedDate(){
+            if (created==null){ return "";}
+            return df.format(created);
+    )
+
     @Override
     public String toString() {
         return "VPMessage{" +
@@ -82,5 +90,10 @@ public class VPMessage extends BaseMajoranaEntity implements Serializable {
                 ", createdByUserEmail='" + createdByUserEmail + '\'' +
                 ", updatedByUserEmail='" + updatedByUserEmail + '\'' +
                 '}';
+    }
+
+    @Override
+    public LocalDateTime getCreated() {
+        return super.getCreated();
     }
 }
