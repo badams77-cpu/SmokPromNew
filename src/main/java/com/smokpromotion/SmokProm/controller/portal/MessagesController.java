@@ -15,7 +15,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,7 +27,7 @@ public class MessagesController extends PortalBaseController{
 
     private static Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(SearchController.class);
 
-    private static int adminId=0;
+    private static int adminId;
 
     private static final String adminEmail="vapidpromotions@gmail.com";
 
@@ -45,7 +44,7 @@ public class MessagesController extends PortalBaseController{
         } catch (UserNotFoundException e){}
     }
 
-    @GetMapping("/a/message-home")
+    @RequestMapping("/a/message-home")
     public String messageHome(Model m, Authentication auth) throws UserNotFoundException, NotLoggedInException
     {
         S_User user = getAuthUser(auth);
@@ -70,7 +69,7 @@ public class MessagesController extends PortalBaseController{
 
 
 
-    @RequestMapping(path="/a/message-add-post", method= RequestMethod.POST)
+    @RequestMapping(value = "/a/message-add-post", method = RequestMethod.POST)
     public String searchAddPost(@Valid VPMessage vpMessageForm, BindingResult bindingResult, Model m, Authentication auth) throws TwitterSearchNotFoundException, UserNotFoundException, NotLoggedInException
     {
         S_User user = getAuthUser(auth);

@@ -48,11 +48,12 @@
         <TD th:if="toId==fromId"><Button onclick="${'getElementById(''toid'').value=sr.fromId}"></Button></TD>
     </TR>
         </TABLE>
+</UL>
 <H2>Post to our Staff</H2>
-<FORM th:action="/a/message-add-post" method="POST">
+<FORM th:action="message-add-post" method="POST">
     <INPUT TYPE="hidden" NAME="to_user" ID="toid" value="${toId}">
     <INPUT TYPE="hidden" NAME="from_user" value="${fromId}">
-    <textarea name="message" cols="80" rows="6"></textarea>
+    <textarea name="" cols="80" rows="6"></textarea>
     <BUTTON TYPE="submit">Message Our Staff</BUTTON>
 </FORM>
 

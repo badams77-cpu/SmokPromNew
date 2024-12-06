@@ -5,11 +5,15 @@ import com.majorana.maj_orm.ORM.BaseMajoranaEntity;
 import jakarta.persistence.Column;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 // A Instance of call to the Twitter Search API
 public class DE_SeduledTwitterSearch  extends BaseMajoranaEntity {
 
     private final static String TABLE_NAME="seduled_twitter_search";
+
+
+    private static final DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     // Fields present in Majorana table.
 
@@ -33,6 +37,10 @@ public class DE_SeduledTwitterSearch  extends BaseMajoranaEntity {
 
     public LocalDate getResultsDate() {
         return resultsDate;
+    }
+
+    public String getResultsDateString() {
+        return resultsDate==null ? "" : df.format(resultsDate);
     }
 
     public void setResultsDate(LocalDate resultsDate) {

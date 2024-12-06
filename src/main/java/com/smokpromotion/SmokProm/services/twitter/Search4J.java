@@ -86,7 +86,7 @@ public class Search4J {
             DE_SeduledTwitterSearch sts = new DE_SeduledTwitterSearch();
 
             sts.setTwitterSearchId(dts.getId());
-            sts.setUserId(dts.getCreatedByUserid());
+            sts.setUserId(dts.getUserId());
             sts.setResultsDate(LocalDate.now());
             int stsId = searchTryRep.create(sts);
             sts.setId(stsId);

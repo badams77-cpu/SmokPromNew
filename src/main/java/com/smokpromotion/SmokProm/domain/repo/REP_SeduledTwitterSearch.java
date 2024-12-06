@@ -64,7 +64,7 @@ public class REP_SeduledTwitterSearch {
         List<DE_SeduledTwitterSearch> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields()+" FROM "+
                         DE_SeduledTwitterSearch.getTableNameStatic()+
                         " WHERE user_id=:user_id AND twitter_search_id=:search_id AND" +
-                        " nsent>0 AND results_date" +
+                        " results_date" +
                         " BETWEEN DATE_SUB(NOW(), INTERVAL 1 MONTH) " +
                         " AND now()"
                 , new String[]{"user_id","search_id"}, new Object[]{userId, searchId});
