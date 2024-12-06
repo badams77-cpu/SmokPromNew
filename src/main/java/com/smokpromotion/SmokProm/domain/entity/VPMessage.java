@@ -17,6 +17,7 @@ public class VPMessage extends BaseMajoranaEntity implements Serializable {
 
     private static final DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
+
     @Column(name="message")
     private String message;
     @Column(name="from_user")

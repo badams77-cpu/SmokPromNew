@@ -11,14 +11,15 @@ import com.smokpromotion.SmokProm.util.MethodPrefixingLogger;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,31 +70,39 @@ public class MessagesController extends PortalBaseController{
 
 
 
-    @RequestMapping(value = "/a/message-add-post", method = RequestMethod.POST)
-    public String searchAddPost(@Valid VPMessage vpMessageForm, BindingResult bindingResult, Model m, Authentication auth) throws TwitterSearchNotFoundException, UserNotFoundException, NotLoggedInException
+    @RequestMapping(value = "/a/message-add-post", method = RequestMethod.POST,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE )
+    public String searchAddPost(@RequestBody MultiValueMap<String, String> data, Model m, Authentication auth) throws Exception, UserNotFoundException, NotLoggedInException
     {
         S_User user = getAuthUser(auth);
-
-        if (bindingResult.hasErrors()) {
-            LOGGER.warn("WARNING Search form binding ",bindingResult.getFieldErrors());
-            return "search-form-add";
-        }
+        VPMessage mess = new VPMessage();
+        List<String> def = new LinkedList<>();
+        def.add("0");
+ //       try {
+            mess.setFrom((Integer.parseInt(data.getOrDefault("from",def).get(0).toString())));
+            mess.setTo((Integer.parseInt(data.getOrDefault("to",def).get(0).toString())));
+            mess.setMessage(data.getOrDefault("message",def).get(0).toString());
+  //      } catch (Exception e){
+            LOGGER.warn("WARNING Search form binding ");
+  //          return PRIBASE+"messages";
+  //      }
 
      //   twitterSearchForm.setUserId(user.getId());
 
-        int newId = messageRepo.create(vpMessageForm);
+
+
+        int newId = messageRepo.create(mess);
 
         if (newId==0){
             LOGGER.warn("WARNING *** NEW SEARCH WAS NOT SAVED");
         }
 
-        m.addAttribute("form", vpMessageForm);
+        m.addAttribute("form", data);
 
         m.addAttribute("userName", user.getFirstname()+" "+user.getLastname());
 
 
 
-        return "redirect:/a/messages";
+        return "redirect:/a/message-home";
     }
 
 

@@ -39,21 +39,22 @@
         <TR><TH colspan="3">Your Messages</TH></TR>
         <TR><TH>Id</TH></TH><TH>Date</TH>
             <TH>Message</TH>
-            <TH th:if="toId==fromId">Set Reply</TH>
+            <TH th:if="${toId==fromId}">Set Reply</TH>
         </TR>
     <TR th:each="sr: ${messages}">
         <TD><span th:text="${sr.id}"></span></TD>
         <TD><span th:text="${sr.createdDate}"></span></TD>
         <TD><span th:text="${sr.message}"></span></TD>
-        <TD th:if="toId==fromId"><Button onclick="${'getElementById(''toid'').value=sr.fromId}"></Button></TD>
+        <TD th:if="${toId==fromId}"><Button onclick="${'getElementById(''toid'').value=sr.fromId}"></Button></TD>
     </TR>
         </TABLE>
 </UL>
 <H2>Post to our Staff</H2>
 <FORM th:action="message-add-post" method="POST">
-    <INPUT TYPE="hidden" NAME="to_user" ID="toid" value="${toId}">
-    <INPUT TYPE="hidden" NAME="from_user" value="${fromId}">
-    <textarea name="" cols="80" rows="6"></textarea>
+    <INPUT TYPE="hidden" NAME="context-type" ID="" value="application/x-www-form-urlencoded">
+    <INPUT TYPE="hidden" NAME="to" ID="toid" th:value="${toId}">
+    <INPUT TYPE="hidden" NAME="from" th:value="${fromId}">
+    <textarea name="message" cols="80" rows="6"></textarea>
     <BUTTON TYPE="submit">Message Our Staff</BUTTON>
 </FORM>
 

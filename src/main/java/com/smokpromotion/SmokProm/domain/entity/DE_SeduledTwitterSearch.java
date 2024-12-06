@@ -13,7 +13,7 @@ public class DE_SeduledTwitterSearch  extends BaseMajoranaEntity {
     private final static String TABLE_NAME="seduled_twitter_search";
 
 
-    private static final DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     // Fields present in Majorana table.
 
