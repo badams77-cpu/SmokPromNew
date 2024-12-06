@@ -68,7 +68,7 @@ public class MessagesController extends PortalBaseController{
 
 
 
-
+    
     @RequestMapping(path="/a/message-add-post", method= RequestMethod.POST)
     public String searchAddPost(@Valid VPMessage vpMessageForm, BindingResult bindingResult, Model m, Authentication auth) throws TwitterSearchNotFoundException, UserNotFoundException, NotLoggedInException
     {

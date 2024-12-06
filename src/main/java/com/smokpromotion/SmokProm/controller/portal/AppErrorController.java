@@ -10,6 +10,7 @@ import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
@@ -26,7 +27,7 @@ import java.util.Set;
 /**
  * Basic Controller which is called for unhandled errors
  */
-@Controller
+//@Controller
 public class AppErrorController implements ErrorController {
 
     private MethodPrefixingLogger LOGGER = MethodPrefixingLoggerFactory.getLogger(ErrorController.class);
@@ -37,6 +38,7 @@ public class AppErrorController implements ErrorController {
 
     private final static String ERROR_PATH = "/error";
 
+    protected static final String PUBBASE = "/portal/public/";
     /**
      * Controller for the Error Controller
      * @param errorAttributes
@@ -52,7 +54,7 @@ public class AppErrorController implements ErrorController {
      * @return
      */
     @RequestMapping(value = ERROR_PATH, produces = "text/html")
-    public ModelAndView errorHtml(ServletWebRequest request) {
+    public String errorHtml(Model model, ServletWebRequest request) {
         Map<String, Object> m = getErrorAttributes(request,true);
         for(String s : m.keySet()){
             LOGGER.warn(s+": "+m.get(s));
@@ -60,7 +62,20 @@ public class AppErrorController implements ErrorController {
         if (m.isEmpty()){
             LOGGER.warn("errorHtml no model variables");
         }
-        return new ModelAndView("/error", m);
+        Map<String, Object> errorMap = errorAttributes.getErrorAttributes(request, ErrorAttributeOptions.defaults());
+        String exceptionName = (String) errorMap.get("exception");
+        String exceptionMessage = (String) errorMap.get("message");
+        String errorUrlTrigger = (String) errorMap.get("path");
+        exceptionName = (String) errorMap.get("exception");
+        exceptionMessage = (String) errorMap.get("message");
+        errorUrlTrigger = (String) errorMap.get("path");
+        model.addAttribute("url", errorUrlTrigger);
+        model.addAttribute("email", null);
+//            if (showException) {
+        model.addAttribute("exceptionName", exceptionName);
+        model.addAttribute("exceptionMessage", exceptionMessage);
+//            }
+        return PUBBASE+ERROR_PATH;
     }
 
 
