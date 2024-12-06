@@ -67,10 +67,12 @@ public class VPMessage extends BaseMajoranaEntity implements Serializable {
         this.replyTo = replyTo;
     }
 
-    public String getCreatedDate(){
-            if (created==null){ return "";}
-            return df.format(created);
-    )
+    public String getCreatedDate() {
+        if (created == null) {
+            return "";
+        }
+        return df.format(created);
+    }
 
     @Override
     public String toString() {
