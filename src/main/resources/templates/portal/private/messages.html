@@ -45,7 +45,7 @@
         <TD><span th:text="${sr.id}"></span></TD>
         <TD><span th:text="${sr.createdDate}"></span></TD>
         <TD><span th:text="${sr.message}"></span></TD>
-        <TD th:if="${toId==fromId}"><Button onclick="${'getElementById(''toid'').value=sr.fromId}"></Button></TD>
+        <TD th:if="${toId==fromId}"><Button onclick="${'getElementById(''toid'').value=sr.toId}"></Button></TD>
     </TR>
         </TABLE>
 </UL>
