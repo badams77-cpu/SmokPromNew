@@ -36,17 +36,18 @@
     <LI><a href="/a/search-add">Add New Search for Tweets</a></LI>
     </UL>
 
-<TABLE BORDER="2" bgcolor="black" <TR><TH COLSPAN="7"><center>Your Marketing Searches</center></TH></TR>
+<TABLE BORDER="2" bgcolor="black"><TR><TH COLSPAN="7"><center>Your Searche Results</center></TH></TR>
 
-        <TR><TH>Id</TH></TH><TH>Last Searched</TH><TH>Search Terms</TH>
-            <TH>Direct Message Text</TH><TH>N FOUND</TH>
-            <TH>N SENT</TH><TH>View Search Results</TH>
+        <TR><TH>Id</TH><TH>Tweet Id</TH><TH>Tweeter User Id</TH>
+            <TH>Tweet Text</TH>
+            <TH>Was Sent</TH>
         </TR>
     <TR th:each="sr: ${results}">
         <TD><span th:text="${sr.id}"></span></TD>
-        <TD><span th:text="${sr.searchDate}"></span></TD>
-        <TD><span th:text="${sr.twitterUserHandle}"></span></TD>
-        </TD>
+        <TD><span th:text="${sr.tweetId}"></span></TD>
+        <TD><span th:text="${sr.twitterUserId}"></span></TD>
+        <TD><span th:text="${sr.tweetText}"></span></TD>
+        <TD><span th:text="${sr.sent?'yes':'no'}"></span></TD>
     </TR>
         </TABLE>
 </UL>

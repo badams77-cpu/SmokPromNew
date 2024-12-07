@@ -28,7 +28,7 @@ public class SImpleSearchSchedule {
     @Autowired
     private Search4J searchService;
 
-    @Scheduled(cron="0 0 0 * * *")
+    @Scheduled(cron="0 32 17 * * *")
     public void scheduler(){
         List<S_User> user = userRepo.getAllActive();
         Map<Integer, S_User> userMap = user.stream().collect(Collectors.toMap(x->x.getId(), x->x));

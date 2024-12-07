@@ -164,9 +164,11 @@ public class SearchController extends PortalBaseController{
             return "search-form-edit";
         }
 
+        DE_TwitterSearch s = searchRepo.getById(id, user.getId());
 
         twitterSearchForm.setId(id);
         twitterSearchForm.setUserId(user.getId());
+        twitterSearchForm.setResultDate(s.getResultDate());
 
         boolean changed = searchRepo.update(twitterSearchForm);
 

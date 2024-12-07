@@ -127,28 +127,29 @@ public class Search4J {
 
 
             for (Tweet tw: result.getTweets()) {
-                if (!firstTrial) {
+//                if (!firstTrial) {
                     DE_SearchResult res = new DE_SearchResult();
                     res.setSearchId(dts.getId());
+                    res.setPaid(!firstTrial);
                     res.setSeduledSearchNumber(stsId);
                     res.setUserId(dts.getUserId());
                     //   res.setTwitterUserHandle(tw.getUser().getScreenName());
                     res.setTwitterUserId(tw.getAuthorId() == null ? 0 : tw.getAuthorId());
                     res.setTweetId(tw.getId());
+                    res.setTweetText(tw.getText());
+                    res.setUserId(dts.getUserId());
                     boolean saved1 = resultsRep.create(res) != 0;
                     if (saved1) {
                         saved++;
                     }
-                } else {
-                    saved++; // Fake count for first trial
-                }
-
-
-                sts.setNresults(saved);
-                sts.setNsent(0);
-//                ResultsRepo.create(sts);
+//                } else {
+    //                saved++; // Fake count for first trial
+  //              }
             }
-            LOGGER.warn(" UserId "+sts.createdByUserid+" search id "+sts.getId()+" saved "+saved+
+
+            sts.setNresults(result.getTweets().size());
+            sts.setNsent(0);
+            LOGGER.warn(" UserId "+sts.getUserId()+" search id "+sts.getId()+" saved "+saved+
                     " tweet results out of "+result.getTweets().size());
             searchTryRep.update(sts);
 
