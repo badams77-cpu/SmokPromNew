@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Profile({"smok_app","smok_admin","smok_init","init"})
 public class PortalEmailConfig {
 
-    @Value("${MPC_MAIL_FROM_ADDR:admin@imultipractice.com}")
+    @Value("${MPC_MAIL_FROM_ADDR:vapidpromotions@gmail.com}")
     private  String MPC_MAIL_FROM_ADDR;
 
     @Value("${MPC_MAIL_FROM_NAME:MPC}")

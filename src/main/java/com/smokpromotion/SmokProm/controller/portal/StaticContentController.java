@@ -22,5 +22,12 @@ public class StaticContentController {
         // Load and return your static HTML file
         return resourceLoader.getResource("classpath:/static/images/"+file);
     }
+
+    @GetMapping(value = "/js/{file}",  produces ="text/javascript")
+    @ResponseBody
+    public Resource serveJSContent(@PathVariable String file) {
+        // Load and return your static HTML file
+        return resourceLoader.getResource("classpath:/static/js/"+file);
+    }
 }
 

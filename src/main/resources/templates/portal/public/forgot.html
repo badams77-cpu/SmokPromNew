@@ -1,0 +1,54 @@
+<HTML><HEAD><TITLE>Vapid Promotions</TITLE>
+    <style>
+        body { background-color: purple;  color:lawngreen }
+        a:link {
+            color: lawngreen;
+            background-color: transparent;
+            text-decoration: none;
+        }
+
+        a:visited {
+            color: white;
+            background-color: palevioletred;
+            text-decoration: none;
+        }
+
+
+        a:hover {
+            color: palegreen;
+            background-color: transparent;
+            text-decoration: underline;
+        }
+
+        a:active {
+            color: yellow;
+            background-color: transparent;
+            text-decoration: underline;
+        }
+    </style>
+    </HEAD>
+<body bgcolor="#220022" color="#77ff87">
+
+<center>
+    <img border=1 src="/images/vapid-440x350.png"/>
+
+<H2>Vapid Promotions - Forgot Password</H2>
+
+
+<span th:text="${error}"></span>
+
+
+
+    <p id="reminder" class="show"><a href="#remind">Forgot your password?</a></p>
+    <form id="remind" name="frmLogin2" method="POST" action="/prec" validate>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <fieldset>
+            <legend>Enter your sign up email address</legend>
+            <label  id="error_remind"></label>
+            <label class="text">Email <input type="email" id="email2" name="username" value="" class="required email" autocomplete="off" ></label><br>
+            <button type="submit" name="submit" id="submit2" value="Forgotten Password">REMIND</button>
+        </fieldset>
+    </form>
+</center>
+</body>
+</HTML>

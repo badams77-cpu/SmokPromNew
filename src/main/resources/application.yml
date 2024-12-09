@@ -1,3 +1,9 @@
+SMTP_MAIL_USEPASSWORD: true
+SMTP_MAIL_USERNAME: vapidpromotions
+SMTP_MAIL_PASSWORD: md-n8EsGIhYJE2KAQQ-uo8PRg
+SMTP_MAIL_HOSTNAME: smtp.mandrillapp.com
+SMTP_MAIL_PORT: 587
+
 twitter:
     consumerKey: YS9ZsLmfjsDOPdFXEBeo4dqRI
     consumerSecret: 5jCQn9Gpg1G6dOwPVnZ4rnvS12K5gWi5p7nBf0hlerphhCKkFU
