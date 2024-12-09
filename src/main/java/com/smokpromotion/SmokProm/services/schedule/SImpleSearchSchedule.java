@@ -19,6 +19,8 @@ import java.util.stream.Collectors;
 @Service
 public class SImpleSearchSchedule {
 
+    private static final long WAIT_TIME_RATE_LIMIT = 3000;
+
     @Autowired
     private REP_TwitterSearch searchRepo;
 
@@ -28,7 +30,7 @@ public class SImpleSearchSchedule {
     @Autowired
     private Search4J searchService;
 
-    @Scheduled(cron="0 32 17 * * *")
+    @Scheduled(cron="0 0 6 * * *")
     public void scheduler(){
         List<S_User> user = userRepo.getAllActive();
         Map<Integer, S_User> userMap = user.stream().collect(Collectors.toMap(x->x.getId(), x->x));
@@ -40,6 +42,9 @@ public class SImpleSearchSchedule {
             boolean firstTrial = (nSearchesDonePerUser==0 && u.getSubCount()==0);
             if (u.isUseractive() && nSearchesDonePerUser<u.getSubCount() || firstTrial){
                 searchService.searchTwitter(u.getId(), s.getId(), firstTrial);
+                try {
+                    Thread.sleep(WAIT_TIME_RATE_LIMIT);
+                } catch (InterruptedException e) {}
             }
             nSearchesDonePerUser+=1;
             nseeachesPerUbux.put(u.getId(), nSearchesDonePerUser);

@@ -101,7 +101,7 @@ public class Search4J {
 
 
 
-            TweetsResponse result = twitter.searchRecent(dts.getSearchText(), null, null, SEARCH_COUNT,
+            TweetsResponse result = twitter.searchRecent(dts.getSearchText(), null, "author_id", SEARCH_COUNT,
             null,null,null,null,null,null,
                     null
                     ,null,null);

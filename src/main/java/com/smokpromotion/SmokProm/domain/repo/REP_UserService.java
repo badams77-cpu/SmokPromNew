@@ -17,6 +17,7 @@ import com.smokpromotion.SmokProm.domain.entity.S_User;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Lazy
@@ -55,6 +56,13 @@ public class REP_UserService {
 
     }
 
+    public Optional<S_User> getOptional(int id) {
+        List<S_User> users = userRepo.getBeansNP("SELECT "+userRepo.getFields()+" FROM "+S_User.getTableNameStatic()
+                +" WHERE uid=:uid", new String[]{"uid"}, new Object[]{id});
+        return users.stream().findFirst();
+
+    }
+
     public List<S_User> getAllActive() {
         List<S_User> users = userRepo.getBeansNP("SELECT "+userRepo.getFields()+" FROM "+S_User.getTableNameStatic()
                 +" WHERE useractive=1", new String[]{""}, new Object[]{});
@@ -78,6 +86,12 @@ public class REP_UserService {
             return false;
         }
         return ok;
+    }
+
+    public boolean changePassword(int userId, String pass) throws UserNotFoundException {
+        S_User user = getById(userId);
+        user.setUserpw(pwCryptUtil.getPasswd(pass, 0));
+        return update(user);
     }
 
     public boolean create(S_User user, String pass){
