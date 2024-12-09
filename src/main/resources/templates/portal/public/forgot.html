@@ -1,4 +1,5 @@
-<HTML><HEAD><TITLE>Vapid Promotions</TITLE>
+<!DOCTYPE html>
+<html lang="en"><HEAD><TITLE>Vapid Promotions</TITLE>
     <style>
         body { background-color: purple;  color:lawngreen }
         a:link {
@@ -27,28 +28,28 @@
         }
     </style>
     </HEAD>
-<body bgcolor="#220022" color="#77ff87">
+<body bgcolor="#220022">
 
 <center>
-    <img border=1 src="/images/vapid-440x350.png"/>
+    <img alt="" border=1 src="/images/vapid-440x350.png"/>
 
 <H2>Vapid Promotions - Forgot Password</H2>
 
 
-<span th:text="${error}"></span>
-
 
 
     <p id="reminder" class="show"><a href="#remind">Forgot your password?</a></p>
-    <form id="remind" name="frmLogin2" method="POST" action="/prec" validate>
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-        <fieldset>
-            <legend>Enter your sign up email address</legend>
-            <label  id="error_remind"></label>
-            <label class="text">Email <input type="email" id="email2" name="username" value="" class="required email" autocomplete="off" ></label><br>
-            <button type="submit" name="submit" id="submit2" value="Forgotten Password">REMIND</button>
-        </fieldset>
+
+    <p/>
+    <span th:if="${forgottenPasswordMsg!=null}" th:text="${forgottenPasswordMsg}"></span>
+    <p/>
+    <form id="remind" method="POST" th:action="${'/prec'}">
+            <label for="email2" class="text"></label>Email
+        <input type="email" id="email2" name="username"
+           size="50"    value="" class="required email" autocomplete="off"
+            <button type="submit" name="submit" id="submit2"
+                    value="Forgotten Password">REMIND</button>
     </form>
 </center>
 </body>
-</HTML>
+</html>

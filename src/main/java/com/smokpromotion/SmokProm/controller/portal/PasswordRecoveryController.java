@@ -7,6 +7,7 @@ import com.smokpromotion.SmokProm.domain.entity.UserLoginActivity;
 import com.smokpromotion.SmokProm.domain.repo.REP_UserLoginActivity;
 import com.smokpromotion.SmokProm.domain.repo.REP_UserService;
 import com.smokpromotion.SmokProm.email.SmtpQueue;
+import com.smokpromotion.SmokProm.exceptions.UserNotFoundException;
 import com.smokpromotion.SmokProm.form.ChangeForgottenPasswordFormValidator;
 import com.smokpromotion.SmokProm.form.ChangePasswordForm;
 import com.smokpromotion.SmokProm.services.SecurityTokenManager;
@@ -41,7 +42,7 @@ import java.util.UUID;
 
 
 @Controller
-@Profile({"profile"})
+@Profile({"smok_app"})
 @SessionAttributes({
         "userActivity",
         "user"})
@@ -94,7 +95,12 @@ public class PasswordRecoveryController extends PortalBaseController {
 //            simpleUserLogging.registerEvent(SimpleUserLogger.APP_PORTAL, request, null);
             message = "An email has been sent, check your inbox and follow the instructions";
             UUID random = UUID.randomUUID();
-            user = userService.findByName(username);
+            try {
+                user = userService.findByName(username);
+            } catch (UserNotFoundException e1){
+                LOGGER.error("postPrec: error user not found ",e1);
+                message = "An error occurred, please try again.";
+            }
             UserLoginActivity userActivityRecover = null;
 
             if (user != null && user.getUsername() != null && user.getUsername().equalsIgnoreCase(username) && user.isUseractive()) {
@@ -419,7 +425,7 @@ public class PasswordRecoveryController extends PortalBaseController {
      * @return Login template path appropriate to this admin portal
      */
     private String getLoginTemplatePath() {
-        return PUBBASE + "login";
+        return PUBBASE + "forgot";
     }
 
     private String logInfo(S_User user){

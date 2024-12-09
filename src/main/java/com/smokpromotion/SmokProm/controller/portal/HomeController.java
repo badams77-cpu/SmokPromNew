@@ -41,6 +41,18 @@ public class HomeController extends PortalBaseController {
         return PUBBASE+"index.html";
     }
 
+    @RequestMapping("/forgot")
+    public String forgotpass(Model mh)
+    {
+        return PUBBASE+"forgot.html";
+    }
+
+    @RequestMapping("/forgot1")
+    public String forgotpass1(Model mh)
+    {
+        return PUBBASE+"forgot";
+    }
+
     @RequestMapping("/splash")
     public String sphome(Model mh)
     {

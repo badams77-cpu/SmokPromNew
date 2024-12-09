@@ -72,6 +72,19 @@ public class FilterConfig {
         return resolver;
     }
 
+
+/**
+ * @return thymeleaf error filter
+ */
+    @Bean
+    public FilterRegistrationBean thymeleafErrorFilter() {
+        FilterRegistrationBean thymeleafErrorFilter = new FilterRegistrationBean();
+        thymeleafErrorFilter.setName("thymeleafErrorFilter");
+        thymeleafErrorFilter.setFilter(new ThymeleafErrorFilter());
+        thymeleafErrorFilter.addUrlPatterns("/*");
+        return thymeleafErrorFilter;
+    }
+
     @Bean
     public ViewResolver javascriptViewResolver() {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();

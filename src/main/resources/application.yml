@@ -4,6 +4,8 @@ SMTP_MAIL_PASSWORD: md-n8EsGIhYJE2KAQQ-uo8PRg
 SMTP_MAIL_HOSTNAME: smtp.mandrillapp.com
 SMTP_MAIL_PORT: 587
 
+
+
 twitter:
     consumerKey: YS9ZsLmfjsDOPdFXEBeo4dqRI
     consumerSecret: 5jCQn9Gpg1G6dOwPVnZ4rnvS12K5gWi5p7nBf0hlerphhCKkFU
@@ -55,6 +57,9 @@ spring:
   thymeleaf:
     cache: false
     mode: HTML
+    check-template: true # Check that the template exists before rendering it.
+    check-template-location: true # Check that the templates location exists.
+    enabled: true
   messages:
     basename: messages
     encoding: UTF-8
@@ -84,7 +89,7 @@ logging:
        springframework:
          web:
             servlet:
-              mvc: DEBUG
+              mvc: debug
     com.smokpromotion: debug
     org.javers: warn
   file:
