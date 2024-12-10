@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Profile({"smok_app","smok-admin"})
@@ -28,12 +29,14 @@ public class TokenCreationService {
         UUID random = UUID.randomUUID();
         UserLoginActivity userActivityRecover = null;
 
-        userActivityRecover = userLoginActivity.findByUserIdForPasswordRecovery( user.getId()).get();
-        if userActivityRecover==null){
+        Optional<UserLoginActivity> userActivityRecoverOpt = userLoginActivity.findByUserIdForPasswordRecovery( user.getId());
+        if (!userActivityRecoverOpt.isPresent()){
             userActivityRecover =new UserLoginActivity();
             userActivityRecover.setUserId(user.getId());
             int id = userLoginActivity.create(userActivityRecover);
             userActivityRecover.setId(id);
+        } else {
+            userActivityRecover = userActivityRecoverOpt.get();
         }
         String hashedBCrypt="";
         if (!GenericUtils.isNull(userActivityRecover)) {
