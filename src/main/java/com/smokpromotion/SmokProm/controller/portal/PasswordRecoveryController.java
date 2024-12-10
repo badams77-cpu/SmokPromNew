@@ -99,7 +99,7 @@ public class PasswordRecoveryController extends PortalBaseController {
                 user = userService.findByName(username);
             } catch (UserNotFoundException e1){
                 LOGGER.error("postPrec: error user not found ",e1);
-                message = "An error occurred, please try again.";
+                message = "An error occurred, not found, please try again.";
             }
             UserLoginActivity userActivityRecover = null;
 
@@ -111,10 +111,10 @@ public class PasswordRecoveryController extends PortalBaseController {
                     LOGGER.info("postPrec: password revovery initiated for "+logInfo(user));
                 } catch (MessagingException e) {
                     LOGGER.error("postPrec: error "+logInfo(user)+e.getMessage());
-                    message = "An error occurred, please try again.";
+                    message = "An error occurred, mess, please try again.";
                 } catch (Exception e) {
                     LOGGER.error("postPrec: error "+logInfo(user)+e.getMessage());
-                    message = "An error occurred, please try again.";
+                    message = "An error occurred, exec, please try again."+e.getMessage();
                 }
             }
 

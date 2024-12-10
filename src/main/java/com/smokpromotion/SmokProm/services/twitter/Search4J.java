@@ -149,9 +149,10 @@ public class Search4J {
 
             sts.setNresults(result.getTweets().size());
             sts.setNsent(0);
-            LOGGER.warn(" UserId "+sts.getUserId()+" search id "+sts.getId()+" saved "+saved+
+
+            LOGGER.warn("SDS: "+sts.getId()+","+stsId+" UserId "+sts.getUserId()+" search id "+sts.getId()+" saved "+saved+
                     " tweet results out of "+result.getTweets().size());
-            searchTryRep.update(sts);
+            searchTryRep.update(stsId, sts);
 
 
         } catch (TwitterException te){

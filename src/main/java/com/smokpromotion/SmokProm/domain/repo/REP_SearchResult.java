@@ -47,7 +47,7 @@ public class REP_SearchResult {
     public List<DE_SearchResult>  findByUserAndSearchId(int userId, int seduledSearchId){
         List<DE_SearchResult> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields()+" FROM "+
                         DE_SearchResult.getTableNameStatic()
-                        +" WHERE user_id=:user_id AND seduled_search_id = seduled_search_id"
+                        +" WHERE user_id=:user_id AND seduled_search_id = :seduled_search_id"
                 , new String[]{"user_id", "seduled_search_id"}, new Object[]{userId, seduledSearchId});
         return res;
     }

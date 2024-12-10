@@ -34,7 +34,7 @@ public class REP_UserLoginActivity {
         DbBean dBean = new DbBean();
         try {
             dBean.connect();
-            userRepo = dBean.getTypedBean(S_User.class);
+            userRepo = dBean.getTypedBean(UserLoginActivity.class);
         } catch (ClassNotFoundException | SQLException e){
             LOGGER.error("Class S_User not found");
         }
@@ -79,15 +79,14 @@ public class REP_UserLoginActivity {
         return ok;
     }
 
-    public boolean create(UserLoginActivity user, String pass){
+    public int create(UserLoginActivity user){
         boolean ok = true;
         try {
-            userRepo.storeBean( user);
+            return userRepo.storeBean( user).getId();
         } catch (Exception e){
-            LOGGER.warn("Error updating user",e);
-            return false;
+            LOGGER.warn("Error updating user login activity",e);
+            return 0;
         }
-        return ok;
     }
 
 }

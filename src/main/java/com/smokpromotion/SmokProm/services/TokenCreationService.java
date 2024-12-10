@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Profile({"admin","portal"})
+@Profile({"smok_app","smok-admin"})
 @Service
 public class TokenCreationService {
 
@@ -29,6 +29,12 @@ public class TokenCreationService {
         UserLoginActivity userActivityRecover = null;
 
         userActivityRecover = userLoginActivity.findByUserIdForPasswordRecovery( user.getId()).get();
+        if userActivityRecover==null){
+            userActivityRecover =new UserLoginActivity();
+            userActivityRecover.setUserId(user.getId());
+            int id = userLoginActivity.create(userActivityRecover);
+            userActivityRecover.setId(id);
+        }
         String hashedBCrypt="";
         if (!GenericUtils.isNull(userActivityRecover)) {
             String toBeHashed = user.getUsername() + user.getId() + random + LocalDateTime.now();

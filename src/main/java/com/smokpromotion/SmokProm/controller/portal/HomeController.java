@@ -44,6 +44,7 @@ public class HomeController extends PortalBaseController {
     @RequestMapping("/forgot")
     public String forgotpass(Model mh)
     {
+        mh.addAttribute("forgottenPasswordMsg","");
         return PUBBASE+"forgot.html";
     }
 
