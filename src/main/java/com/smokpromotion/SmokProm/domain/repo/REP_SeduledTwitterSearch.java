@@ -94,7 +94,10 @@ public class REP_SeduledTwitterSearch {
             LOGGER.warn("Error updating scheduled twitter search id=0");
         }
         try {
-            searchRepo.updateBean(new MultiId(id), ts);
+
+            searchRepo.deleteBeanById(new MultiId(id));
+            int i= searchRepo.storeBean(ts).getId();
+            ts.setId(i);
         } catch (Exception e){
             LOGGER.warn("Error updating scheduled twitter search",e);
             return false;

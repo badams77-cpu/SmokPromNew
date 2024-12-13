@@ -54,7 +54,7 @@ public class PasswordRecoveryController extends PortalBaseController {
     @Autowired
     PortalEmailConfig portalEmailConfig;
 
-    @Value("${mpc.password.recovery.token.expires.after.minutes:15}")
+    @Value("${vapid.password.recovery.token.expires.after.minutes:15}")
     private int recoveryTokenValidityMinutes;
 
 
@@ -162,7 +162,7 @@ public class PasswordRecoveryController extends PortalBaseController {
                 if (!userActivity.isPresent()) {
                     LOGGER.debug("Tried to recover a password with an unknown token but:  No user found with this token (maybe expired?), redirect to login page");
                     ret = getLoginTemplatePath();
-                    errorMessage = "An error occurred, please click again on Forgot your Password ";
+                    errorMessage = "An error occurred, no token , please click again on Forgot your Password ";
                     model.addAttribute("forgottenPasswordMsg", errorMessage);
 //                } else if (userActivity.getToken() != null && userActivity.getTokenCreationDate() != null && userActivity.getTokenCreationDate().plusMinutes(numberOfMinutesLockedOut).isBefore(LocalDateTime.now())) {
                 } else if (userActivity.get().getToken() != null && userActivity.get().isTokenExpired(recoveryTokenValidityMinutes)) {
@@ -173,7 +173,7 @@ public class PasswordRecoveryController extends PortalBaseController {
                     ret = getLoginTemplatePath();
                 } else if (userActivity.isPresent()) {
                     model.addAttribute("userActivity", userActivity.get());
-                    ret = "redirect:/adm/prec/confirm-email";
+                    ret = "redirect:/prec/confirm-email";
                     LOGGER.debug("recovery -"+logInfo(userActivity.get())+" recovering a password with a correct token and correct email");
                     LOGGER.debug("recovery - Redirect to this URL to "+ret+" hide the TOKEN from GET params");
 
@@ -207,7 +207,7 @@ public class PasswordRecoveryController extends PortalBaseController {
         String errorMessage = "";
         String ret = "redirect: login?error="+errorMessage;
         try {
-            ret = PUBBASE + "confirmEmail";
+            ret = PUBBASE + "confirm_email";
         } catch (Exception e) {
             LOGGER.warn("confirmEmail: exception "+e);
             e.printStackTrace();
@@ -271,8 +271,8 @@ public class PasswordRecoveryController extends PortalBaseController {
                 changePasswordForm.setUserId(user.getId());
                 model.addAttribute("changePasswordForm", changePasswordForm);
                 model.addAttribute("user", user);
-
-                ret = PRIBASE + "recovery_password";
+                model.addAttribute("id", user.getId());
+                ret = PUBBASE + "recovery_password";
             }
 
 
@@ -317,7 +317,7 @@ public class PasswordRecoveryController extends PortalBaseController {
 
             if (bindingResult.hasErrors()) {
 
-                ret = PRIBASE + "recovery_password";
+                ret = PUBBASE + "recovery_password";
 
             } else {
 
@@ -327,7 +327,7 @@ public class PasswordRecoveryController extends PortalBaseController {
                     String emailBody = generateMessageBodyPasswordChanged(user,request);
                     smtpMailSender.send( portalEmailConfig.getMpcMailFromAddr(),portalEmailConfig.getMpcMailFromName() ,user.getUsername(), "Password Changed", emailBody);
                     LOGGER.warn("post: changed password "+logInfo(user));
-                    ret = PRIBASE + "recovery_password_success";
+                    ret = PUBBASE + "recovery_password_success";
                 } catch (Exception e) {
                     LOGGER.warn("post: exception "+logInfo(user)+": "+e.toString());
                     ret = getLoginTemplatePath();
@@ -349,12 +349,14 @@ public class PasswordRecoveryController extends PortalBaseController {
         if (!GenericUtils.isNull(body)) {
 
             URI contextUrl = URI.create(request.getRequestURL().toString()).resolve(request.getContextPath());
+            String conString = contextUrl.toString().replace(portalEmailConfig.getDefaultContext(), portalEmailConfig.getExternalContext());
+
             try {
                 hashed = Base64.getUrlEncoder().encodeToString( hashed.getBytes("UTF-8"));
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            String url = portalEmailConfig.isUseHttps() ? contextUrl.toString().replace("http:", "https:") : contextUrl.toString();
+            String url = portalEmailConfig.isUseHttps() ? conString.replace("http:", "https:") : conString;
             body+="<html><head><title></title></head><body> " +
                     "<p>Dear "+user.getFirstname()+" "+user.getLastname()+", </p>"+
                     "<p>"+
@@ -372,8 +374,8 @@ public class PasswordRecoveryController extends PortalBaseController {
                     "</p>"+
                     "<p>"+
                     "Thank You.</p>"+
-                    "<h3> Vapid Promotiokns Admin Team</h3>" +
-                             "<img src='"+url.replace("/adm", "") + VAPID_LOGO+"'><br>"+
+                    "<h3> Vapid Promotions Admin Team</h3>" +
+                             "<img src='"+url.replace("/prec/reset", "") + VAPID_LOGO+"'><br>"+
 
                     "<br><br>"
                     + "</body>"
@@ -386,15 +388,18 @@ public class PasswordRecoveryController extends PortalBaseController {
 
     private String generateMessageBodyPasswordChanged(S_User user,HttpServletRequest request ) {
         String body = "";
-        if (!GenericUtils.isNull(body)) {
+        if (!GenericUtils.isNull("not null")) {
             URI contextUrl = URI.create(request.getRequestURL().toString()).resolve(request.getContextPath());
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy HH:mm:ss");
             String formatDateTime = LocalDateTime.now().format(formatter);
-            String emailUrl = contextUrl.toString().replace("/adm/prec/", "/login");
-            String url = portalEmailConfig.isUseHttps() ? contextUrl.toString().replace("http:", "https:") : contextUrl.toString();
+            String conString = contextUrl.toString().replace(portalEmailConfig.getDefaultContext(), portalEmailConfig.getExternalContext());
+            String emailUrl = conString.replace("/prec/reset", "/login");
+            String url = portalEmailConfig.isUseHttps() ? conString.replace("http:", "https:") : contextUrl.toString();
             if (portalEmailConfig.isUseHttps()){
                 emailUrl = emailUrl.replace("http:","https:");
             }
+            LOGGER.warn("emailURL: "+emailUrl);
+            LOGGER.warn("url: "+url);
             body+="<html><head><title></title></head><body> " +
                     "<p>Dear "+user.getFirstname()+" "+user.getLastname()+", </p>"+
 
@@ -406,8 +411,8 @@ public class PasswordRecoveryController extends PortalBaseController {
                     "<a href='"+emailUrl+"' mc:disable-tracking> Click here to access the Vapid Promotions Login page</a>" +
 
                     "<p>Thank You.</p>" +
-                    "<h3>Vaid Promotions Team</h3>" +
-                             "<img src='"+url.replace("/adm/prec", "") + VAPID_LOGO +"'><br>"+
+                    "<h3>Vapid Promotions Team</h3>" +
+                             "<img src='"+url.replace("/prec/reset", "") + VAPID_LOGO +"'><br>"+
 
 
                     "<br><br>"

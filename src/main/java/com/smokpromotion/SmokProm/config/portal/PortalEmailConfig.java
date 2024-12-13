@@ -8,18 +8,34 @@ import org.springframework.stereotype.Component;
 @Profile({"smok_app","smok_admin","smok_init","init"})
 public class PortalEmailConfig {
 
-    @Value("${MPC_MAIL_FROM_ADDR:vapidpromotions@gmail.com}")
+    @Value("${VAPID_MAIL_FROM_ADDR:admin@vapidpromotions.com}")
     private  String MPC_MAIL_FROM_ADDR;
 
-    @Value("${MPC_MAIL_FROM_NAME:MPC}")
+    @Value("${VAPID_MAIL_FROM_NAME:admin}")
     private String MPC_MAIL_FROM_NAME;
 
-    @Value("${MPC_EMAIL_LINK_ENSURE_HTTPS:false}")
+    @Value("${VAPID_EMAIL_LINK_ENSURE_HTTPS:true}")
     private boolean useHttps;
+
+    @Value("${VAPID_EMAIL_LINK_DEFAULT_CONTEXT:localhost:8085}")
+    private String defaultContext;
+
+    @Value("${VAPID_EMAIL_LINK_EXTERNAL_CONEXT:vapidpromotions.com}")
+    private String externalContext;
 
     public  String getMpcMailFromAddr() {
         return MPC_MAIL_FROM_ADDR;
     }
+
+    public String getDefaultContext() {
+        return defaultContext;
+    }
+
+
+    public String getExternalContext() {
+        return externalContext;
+    }
+
 
     public  String getMpcMailFromName() {
         return MPC_MAIL_FROM_NAME;

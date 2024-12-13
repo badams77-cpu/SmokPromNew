@@ -7,9 +7,9 @@
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%kvp- %msg%n</pattern>
         </encoder>
     </appender>
-    <logger name="com.smokpromotion" level="debug"
-            additivity="false">
-        <appender-ref ref="FILE-AUDIT" />
+    <logger name="com.smokpromotion" level="fine"
+            additivity="true">
+        <appender-ref ref="STDOUT" />
     </logger>
     <root level="debug">
         <appender-ref ref="STDOUT" />

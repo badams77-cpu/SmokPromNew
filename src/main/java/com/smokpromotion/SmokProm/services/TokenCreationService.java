@@ -29,28 +29,34 @@ public class TokenCreationService {
         UUID random = UUID.randomUUID();
         UserLoginActivity userActivityRecover = null;
 
+
         Optional<UserLoginActivity> userActivityRecoverOpt = userLoginActivity.findByUserIdForPasswordRecovery( user.getId());
-        if (!userActivityRecoverOpt.isPresent()){
-            userActivityRecover =new UserLoginActivity();
-            userActivityRecover.setUserId(user.getId());
-            int id = userLoginActivity.create(userActivityRecover);
-            userActivityRecover.setId(id);
-        } else {
-            userActivityRecover = userActivityRecoverOpt.get();
+        if (userActivityRecoverOpt.isPresent()){
+            userLoginActivity.reset(userActivityRecoverOpt.get().id);
         }
+//        if (!userActivityRecoverOpt.isPresent()){
+//            userActivityRecover =new UserLoginActivity();
+//            userActivityRecover.setUserId(user.getId());
+//            int id = userLoginActivity.create(userActivityRecover);
+//            userActivityRecover.setId(id);
+//        } else {
+//            userActivityRecover = userActivityRecoverOpt.get();
+//        }
         String hashedBCrypt="";
-        if (!GenericUtils.isNull(userActivityRecover)) {
+ //       if (!GenericUtils.isNull(userActivityRecover)) {
             String toBeHashed = user.getUsername() + user.getId() + random + LocalDateTime.now();
             hashedBCrypt = SecurityTokenManager.encode(toBeHashed);
-
+            userActivityRecover = new UserLoginActivity();
             userActivityRecover.setLocked(true);
+            userActivityRecover.setUserId(user.getId());
             userActivityRecover.setTokenDate(LocalDateTime.now());
             String md5Hashed = SecurityTokenManager.encodeHash(hashedBCrypt);
             userActivityRecover.setToken(md5Hashed);
-            userLoginActivity.update( userActivityRecover);
-        } else {
-            LOGGER.debug("Admin User attempting to recover a password on an email not present on MPC admin_user table, INPUT=" + user.getUsername());
-        }
+            LOGGER.info("Updating "+userLoginActivity);
+            userLoginActivity.create( userActivityRecover);
+//        } else {
+//            LOGGER.debug("Admin User attempting to recover a password on an email not present on MPC admin_user table, INPUT=" + user.getUsername());
+//        }
         return hashedBCrypt;
     }
 
