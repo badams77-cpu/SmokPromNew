@@ -14,7 +14,7 @@ import org.springframework.validation.Validator;
 @Component
 public class ChangePasswordFormValidator implements Validator {
 
-    public static final String PASSWORD_FORM_CURRENT_DOES_NOT_MATCH = "section.changePasswordForm.current.doesNotMatch";
+    public static final String PASSWORD_FORM_CURRENT_DOES_NOT_MATCH = "Passwords Do not match";
     public static final String APROBLEM = "m.EncounteredAProblem";
     private REP_UserService dsUserService;
     private PasswordPolicyService passwordPolicyService;
@@ -104,12 +104,12 @@ public class ChangePasswordFormValidator implements Validator {
         // Check that repeat matches neww.
 
         if (!form.getNeww().equals(form.getRepeat())) {
-            errors.rejectValue("repeat", "section.changePasswordForm.repeat.doesNotMatch");
+            errors.rejectValue("repeat", PASSWORD_FORM_CURRENT_DOES_NOT_MATCH);
         }
 
         if (form.isPolicy() && !form.getNeww().isEmpty()) {
             if (!passwordPolicyService.passwordValidByPolicy(form.getNeww())) {
-                errors.rejectValue("neww", "section.changePasswordForm.neww.inadequate");
+                errors.rejectValue("neww", "Password not strong enough");
             }
         }
 

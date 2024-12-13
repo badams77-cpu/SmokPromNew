@@ -51,14 +51,14 @@ public class REP_UserService {
 
     public S_User getById(int id) throws UserNotFoundException {
         List<S_User> users = userRepo.getBeansNP("SELECT "+userRepo.getFields()+" FROM "+S_User.getTableNameStatic()
-                +" WHERE uid=:uid", new String[]{"uid"}, new Object[]{id});
+                +" WHERE id=:id", new String[]{"id"}, new Object[]{id});
         return users.stream().findFirst().orElseThrow( ()->new UserNotFoundException("U"+id, "User not found"));
 
     }
 
     public Optional<S_User> getOptional(int id) {
         List<S_User> users = userRepo.getBeansNP("SELECT "+userRepo.getFields()+" FROM "+S_User.getTableNameStatic()
-                +" WHERE uid=:uid", new String[]{"uid"}, new Object[]{id});
+                +" WHERE id=:id", new String[]{"id"}, new Object[]{id});
         return users.stream().findFirst();
 
     }
@@ -72,9 +72,8 @@ public class REP_UserService {
 
     public List<S_User> getAll() {
         List<S_User> users = userRepo.getBeansNP("SELECT "+userRepo.getFields()+" FROM "+S_User.getTableNameStatic()
-                +"", new String[]{""}, new Object[]{});
+                +" WHERE 1=1", new String[]{""}, new Object[]{});
         return users;
-
     }
 
     public boolean update(S_User user){
@@ -88,10 +87,11 @@ public class REP_UserService {
         return ok;
     }
 
-    public boolean changePassword(int userId, String pass) throws UserNotFoundException {
+    public boolean changePassword(int userId, String pass) throws UserNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         S_User user = getById(userId);
         user.setUserpw(pwCryptUtil.getPasswd(pass, 0));
-        return update(user);
+        userRepo.deleteBeanById(new MultiId(user.getId()));
+        return create(user,pass);
     }
 
     public boolean create(S_User user, String pass){

@@ -331,7 +331,7 @@ public class PasswordRecoveryController extends PortalBaseController {
                 } catch (Exception e) {
                     LOGGER.warn("post: exception "+logInfo(user)+": "+e.toString());
                     ret = getLoginTemplatePath();
-
+                    model.addAttribute("forgottenPasswordMsg", e.getMessage());
                     e.printStackTrace();
                 }
 
