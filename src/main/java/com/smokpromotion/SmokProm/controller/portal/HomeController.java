@@ -135,7 +135,7 @@ public class HomeController extends PortalBaseController {
         try {
             String hashedBCrypt = adminTokenCreationService.createToken( user);
             String emailBody = generateMessageBodySignup(hashedBCrypt, user,request);
-            smtpMailSender.send(portalEmailConfig.getMpcMailFromAddr(), portalEmailConfig.getMpcMailFromName(), user.getUsername(), "Password Changed", emailBody);
+            smtpMailSender.send(portalEmailConfig.getMpcMailFromAddr(), portalEmailConfig.getMpcMailFromName(), user.getUsername(), "Vapid Promotions - confirm your email", emailBody);
         } catch (Exception e){
             LOGGER.warn("Exception sending signup email",e);
         }
@@ -160,7 +160,7 @@ public class HomeController extends PortalBaseController {
         try {
             String hashedBCrypt = adminTokenCreationService.createToken( user);
             String emailBody = generateMessageBodySignup(hashedBCrypt, user,request);
-            smtpMailSender.send(portalEmailConfig.getMpcMailFromAddr(), portalEmailConfig.getMpcMailFromName(), user.getUsername(), "Password Changed", emailBody);
+            smtpMailSender.send(portalEmailConfig.getMpcMailFromAddr(), portalEmailConfig.getMpcMailFromName(), user.getUsername(), "Vapid promotions - confirm your email", emailBody);
         } catch (Exception e){
             LOGGER.warn("Exception sending signup email",e);
         }
@@ -182,7 +182,7 @@ public class HomeController extends PortalBaseController {
         try {
             String hashedBCrypt = adminTokenCreationService.createToken( user);
             String emailBody = generateMessageBodySignup(hashedBCrypt, user,request);
-            smtpMailSender.send(portalEmailConfig.getMpcMailFromAddr(), portalEmailConfig.getMpcMailFromName(), user.getUsername(), "Password Changed", emailBody);
+            smtpMailSender.send(portalEmailConfig.getMpcMailFromAddr(), portalEmailConfig.getMpcMailFromName(), user.getUsername(), "Vapid Promotions confirm your email", emailBody);
         } catch (Exception e){
             LOGGER.warn("Exception sending signup email",e);
         }
