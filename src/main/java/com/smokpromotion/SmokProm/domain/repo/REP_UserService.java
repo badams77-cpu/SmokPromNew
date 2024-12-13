@@ -98,7 +98,8 @@ public class REP_UserService {
         boolean ok = true;
         user.setUserpw(pwCryptUtil.getPasswd(pass, 0));
         try {
-            userRepo.storeBean( user);
+            int id = userRepo.storeBean( user).getId();
+            user.setId(id);
         } catch (Exception e){
             LOGGER.warn("Error updating user",e);
             return false;
