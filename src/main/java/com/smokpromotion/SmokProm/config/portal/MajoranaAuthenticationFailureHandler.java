@@ -61,18 +61,7 @@ public class MajoranaAuthenticationFailureHandler implements AuthenticationFailu
             LOGGER.debug("onAuthenticationFailure(...) - Account " + email + " has entered bad credential");
         }
         String referrer = request.getHeader("referer");
-        if (referrer!=null && referrer.contains("exact-login")){
-            Pattern pat = Pattern.compile("exact=([A-Z]+)");
-            Matcher matcher = pat.matcher(referrer);
-            String langcode = "UK";
-            if (matcher.find()){
-                langcode = matcher.group(1);
-            }
-            LOGGER.debug("onAuthenticationFailure(...) referrer="+referrer+" langcode="+langcode);
-            request.getSession().setAttribute(ERROR_PARAM, errorMessage);
-            response.sendRedirect("/exact-login?exact="+langcode);
-            return;
-        }
+
 
         request.getSession().setAttribute(ERROR_PARAM, errorMessage);
         // response.sendRedirect("/login?error="+URLEncoder.encode(errorMessage, "UTF-8"));

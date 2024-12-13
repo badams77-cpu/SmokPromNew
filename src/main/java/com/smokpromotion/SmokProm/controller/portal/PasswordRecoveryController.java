@@ -193,6 +193,59 @@ public class PasswordRecoveryController extends PortalBaseController {
 
     }
 
+    @RequestMapping(path = "/signup-confirm", method = { RequestMethod.GET })
+    public String confirmsignup(
+
+            HttpServletRequest request,
+            @RequestParam(required = false) String pr,
+            Model model) {
+
+
+        String errorMessage = "";
+        String ret = "login?error="+errorMessage;
+        byte[] decodedURLBytes = Base64.getUrlDecoder().decode(pr);
+        pr= new String(decodedURLBytes);
+        try {
+
+            if (GenericUtils.isValid(pr)) {
+                String md5Hashed = SecurityTokenManager.encodeHash(pr);
+                Optional<UserLoginActivity> userActivity = adminUserLoginActivity.findByToken( md5Hashed);
+
+                if (!userActivity.isPresent()) {
+                    LOGGER.debug("Signup Tried to recover a password with an unknown token but:  No user found with this token (maybe expired?), redirect to login page");
+                    ret = getLoginTemplatePath();
+                    errorMessage = "An error occurred, no token , please click again on Forgot your Password ";
+                    model.addAttribute("forgottenPasswordMsg", errorMessage);
+//                } else if (userActivity.getToken() != null && userActivity.getTokenCreationDate() != null && userActivity.getTokenCreationDate().plusMinutes(numberOfMinutesLockedOut).isBefore(LocalDateTime.now())) {
+                } else if (userActivity.get().getToken() != null && userActivity.get().isTokenExpired(recoveryTokenValidityMinutes)) {
+                    LOGGER.debug("signup - Tried to recover a password - a user found id="+logInfo(userActivity.get())+"with this token but token expired - redirect to login page");
+                    errorMessage = "Your password recovery link has now expired. Please restart the process, by clicking on 'Forgot Your Password' again.";
+                    //                errorMessage = URLEncoder.encode(errorMessage, "UTF-8");
+                    model.addAttribute("forgottenPasswordMsg", errorMessage);
+                    ret = getLoginTemplatePath();
+                } else if (userActivity.isPresent()) {
+                    model.addAttribute("userActivity", userActivity.get());
+                    ret = "signup-confirmed";
+                    adminUserLoginActivity.reset(userActivity.get().getId());
+                    LOGGER.debug("recovery -"+logInfo(userActivity.get())+" recovering a password with a correct token and correct email");
+                    LOGGER.debug("recovery - Redirect to this URL to "+ret+" hide the TOKEN from GET params");
+
+                }
+            } else {
+                LOGGER.debug("recovery(...) - /prec/reset without pr parameter specified.");
+                ret = getLoginTemplatePath();
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
+        return ret;
+
+    }
+
     /***
      * This method purpose is purely to do not show the token on the GET parameter.
      *

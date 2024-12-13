@@ -34,8 +34,11 @@
 
 <H2>Welcome to Vapid Promotions</H2>
 
+    <span th:text="${error}"></span>
 
-<span th:text="${error}"></span>
+<span
+        th:if="${#ctx.session.containsKey('loginError')}"
+        th:text="${#ctx.session.get('loginError')}"></span>
 
 
 

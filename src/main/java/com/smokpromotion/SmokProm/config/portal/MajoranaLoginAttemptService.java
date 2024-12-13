@@ -128,7 +128,7 @@ public class MajoranaLoginAttemptService {
             LOGGER.error("loginFailed for user "+user.getUsername());
             //    PortalEnum legacyMajoranaPortalEnum = (user.portalDbIsAws() ? PortalEnum.AWS : PortalEnum.DC);
         }
-//
+
 //            DE_UserLoginActivity loginActivity = userLoginActivity.findOrAddNewByUserId(legacyMajoranaPortalEnum, user);
 //            if (loginActivity == null) {
 //                LOGGER.error("loginFailed: No user login activity record retrieved for user: " + user.getUserid());

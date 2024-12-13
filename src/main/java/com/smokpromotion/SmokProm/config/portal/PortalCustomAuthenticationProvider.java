@@ -69,11 +69,16 @@ public class PortalCustomAuthenticationProvider implements AuthenticationProvide
                     }
             if (u != null && u.isUseractive()) {
 
-              //  loginAttemptService.checkIfBlockedRaiseAuthError(u);
+                boolean locked = loginAttemptService.isPasswordRecoveryInProgress(u.getUsername());
+
+                if (locked){
+                    loginAttemptService.loginFailed(email);
+                    throw new AuthenticationFailedException(AuthenticationFailureReasonEnum.BLOCKED_PWD_RECOVERY,"Check your email to proceed");
+                }
 
                 boolean passwordGood = legacyMajoranaUserService.isPasswordGood(u, password);
 
-                if (passwordGood) {
+                if (passwordGood && !locked) {
 
                     List<String> userRoles = getRolesForUsername(u.getUsername());
 

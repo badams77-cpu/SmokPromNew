@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+
+    <title th:text="#{t.ChangePassword}">Forgotten Password Changed </title>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- link rel="icon" href="../../favicon.ico"/-->
+    <script src="/public-js/jquery-3.6.1.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" />
+    <style>
+        body { background-color: #220022;  color: #77ff87;}
+        a:link {
+            color: lawngreen;
+            background-color: transparent;
+            text-decoration: none;
+        }
+        a:visited {
+            color: white;
+            background-color: palevioletred;
+            text-decoration: none;
+        }
+
+
+        a:hover {
+            color: palegreen;
+            background-color: transparent;
+            text-decoration: underline;
+        }
+
+        a:active {
+            color: yellow;
+            background-color: transparent;
+            text-decoration: underline;
+        }
+    </style>
+
+</head>
+
+<body bgcolor="#220022" color="#77ff87">
+
+<center>
+    <img border=1 src="/images/vapid-440x350.png"/>
+</center>
+<H2>Vapid Promotions</H2>
+<!--/* ---------------------------------------------------------------------------------------------
+page_content++
+---------------------------------------------------------------------------------------------- */-->
+<div >
+
+
+    <div class="password-changed-confirmation">
+        <div id="login-panel">
+
+            <div class="left">
+                <h1><a href="/"></a></h1>
+                <h2>Welcome to your dedicated twitter marketing platform</h2>
+                <p>A secure, responsive way to market your business</p>
+            </div>
+            <div class="right">
+                <div class="card-block">
+                    <h2>You have successfully confirmed your email.</h2>
+                    <a href="/login" class="btn btn-primary">Click here to proceed with the login.</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+</div> <!-- layout:fragment="page_content" -->
+<!--/* ---------------------------------------------------------------------------------------------
+page_content--
+---------------------------------------------------------------------------------------------- */-->
+
+</body>
+</html>
+
