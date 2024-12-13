@@ -1,8 +1,11 @@
 package com.smokpromotion.SmokProm.config.portal;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import com.smokpromotion.SmokProm.domain.entity.S_User;
+import com.smokpromotion.SmokProm.domain.entity.UserLoginActivity;
+import com.smokpromotion.SmokProm.domain.repo.REP_UserLoginActivity;
 import com.smokpromotion.SmokProm.domain.repo.REP_UserService;
 import com.smokpromotion.SmokProm.util.GenericUtils;
 import com.smokpromotion.SmokProm.util.PwCryptUtil;
@@ -25,7 +28,8 @@ public class MajoranaLoginAttemptService {
     @Autowired private HttpServletRequest request;
 //    @Autowired private DR_UserLoginActivity userLoginActivity;
      @Autowired  private REP_UserService userService;
-//    @Autowired DA_PortalUserLoginActivity daUserLoginActivity;
+    @Autowired
+    REP_UserLoginActivity userLoginActivity;
 
     private static final String NULL_BLANK_USERNAME_FOR_LOG = "UNKNOWN";
 
@@ -164,6 +168,10 @@ public class MajoranaLoginAttemptService {
         S_User user = new S_User();
         try {
            user = userService.findByName(key);
+           Optional<UserLoginActivity> ula = userLoginActivity.findByUserId(user.getId());
+           if (ula.isPresent() && ula.get().isLocked()){
+               return true;
+           }
         } catch (Exception e){
             LOGGER.warn("Could not find user "+key);
         }
