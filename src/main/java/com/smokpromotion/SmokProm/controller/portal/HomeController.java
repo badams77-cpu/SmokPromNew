@@ -41,6 +41,8 @@ public class HomeController extends PortalBaseController {
 
     private static Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(HomeController.class);
 
+    private static final String EMAIL_SUBJECT = "Thank you for signing up to Vapid Promotions";
+
     @Autowired
     private PortalEmailConfig portalEmailConfig;
 
@@ -135,7 +137,9 @@ public class HomeController extends PortalBaseController {
         try {
             String hashedBCrypt = adminTokenCreationService.createToken( user);
             String emailBody = generateMessageBodySignup(hashedBCrypt, user,request);
-            smtpMailSender.send(portalEmailConfig.getMpcMailFromAddr(), portalEmailConfig.getMpcMailFromName(), user.getUsername(), "Vapid Promotions - confirm your email", emailBody);
+            smtpMailSender.send(portalEmailConfig.getMpcMailFromAddr(),
+                    portalEmailConfig.getMpcMailFromName(), user.getUsername(),
+                    EMAIL_SUBJECT, emailBody);
         } catch (Exception e){
             LOGGER.warn("Exception sending signup email",e);
         }
@@ -160,7 +164,9 @@ public class HomeController extends PortalBaseController {
         try {
             String hashedBCrypt = adminTokenCreationService.createToken( user);
             String emailBody = generateMessageBodySignup(hashedBCrypt, user,request);
-            smtpMailSender.send(portalEmailConfig.getMpcMailFromAddr(), portalEmailConfig.getMpcMailFromName(), user.getUsername(), "Vapid promotions - confirm your email", emailBody);
+            smtpMailSender.send(portalEmailConfig.getMpcMailFromAddr(),
+                    portalEmailConfig.getMpcMailFromName(), user.getUsername(),
+                    EMAIL_SUBJECT, emailBody);
         } catch (Exception e){
             LOGGER.warn("Exception sending signup email",e);
         }
@@ -182,7 +188,9 @@ public class HomeController extends PortalBaseController {
         try {
             String hashedBCrypt = adminTokenCreationService.createToken( user);
             String emailBody = generateMessageBodySignup(hashedBCrypt, user,request);
-            smtpMailSender.send(portalEmailConfig.getMpcMailFromAddr(), portalEmailConfig.getMpcMailFromName(), user.getUsername(), "Vapid Promotions confirm your email", emailBody);
+            smtpMailSender.send(portalEmailConfig.getMpcMailFromAddr(),
+                    portalEmailConfig.getMpcMailFromName(), user.getUsername(),
+                    EMAIL_SUBJECT, emailBody);
         } catch (Exception e){
             LOGGER.warn("Exception sending signup email",e);
         }
