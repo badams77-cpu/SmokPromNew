@@ -225,7 +225,7 @@ public class PasswordRecoveryController extends PortalBaseController {
                     ret = getLoginTemplatePath();
                 } else if (userActivity.isPresent()) {
                     model.addAttribute("userActivity", userActivity.get());
-                    ret = "signup-confirmed";
+                    ret = PUBBASE+"signup-confirmed";
                     adminUserLoginActivity.reset(userActivity.get().getId());
                     LOGGER.debug("recovery -"+logInfo(userActivity.get())+" recovering a password with a correct token and correct email");
                     LOGGER.debug("recovery - Redirect to this URL to "+ret+" hide the TOKEN from GET params");
