@@ -37,7 +37,7 @@ public class REP_SalesLeadNote {
     public List<SalesLeadNote>  findByUserAndEntityId(int userId, int entityId){
         List<SalesLeadNote> res = salesRepo.getBeansNP("SELECT "+ salesRepo.getFields()+" FROM "+
                         SalesLeadNote.getTableNameStatic()
-                        +" WHERE user_id=:user_id AND sales_entity_id=:entity_id"
+                        +" WHERE user_id=:user_id AND sales_lead_id=:entity_id"
                 , new String[]{"user_id","entity_id"}, new Object[]{userId,entityId});
         return res;
     }
