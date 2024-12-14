@@ -59,7 +59,7 @@ public class SalesLeadsController extends PortalBaseController{
 
         m.addAttribute("userName", user.getFirstname()+" "+user.getLastname());
 
-        return PRIBASE+"sale_leads";
+        return PRIBASE+"sales_leads";
     }
 
 
@@ -121,7 +121,7 @@ public class SalesLeadsController extends PortalBaseController{
 
 
 
-        return "redirect:/a/message-home";
+        return "redirect:/a/sales-leads";
     }
 
 

@@ -1,4 +1,4 @@
-<HTML><HEAD><TITLE>Vapid Promotions - Searches </TITLE>
+<HTML><HEAD><TITLE>Vapid Promotions - Sales Leads </TITLE>
 
     <style>        a:link {
         color: lawngreen;
@@ -29,7 +29,7 @@
 
 </HEAD>
 <BODY bgcolor="#fffff">
-<H2>Welcome to Vapid Promotions <span th:text="${username}"></span></H2>
+<H2>Welcome to Vapid Promotions <span th:text="${userName}"></span></H2>
 <UL>
     <LI><a href="/a/home">Signed In home</a></LI>
     <LI><a href="/a/search-add">Add New Search for Tweets</a></LI>
@@ -42,13 +42,13 @@
       <OPTION value="7" th:selected="${period==7}">THIS WEEK</OPTION>
       <OPTION value="14" th:selected="${period==14}">THIS FORTNIGHT</OPTION>
       <OPTION value="30" th:selected="${period==31}">30 DAYS</OPTION>
-      <OPTION value="10000" th:selected="${period==10000}">All Time</OPTION>
+      <OPTION value="10000" th:selected="${period==10000}">ALL TIME</OPTION>
   </SELECT>
-  <BUTTON VALUE="Change Time Period"></BUTTON>
+  <BUTTON VALUE="Change Time Period">Change Time Period</BUTTON>
 </FORM>
 
 <TABLE BORDER="2" bgcolor="#000000" color="black"><TR><TH COLSPAN="7"><center>Your Marketing Searches</center></TH></TR>
-        <TR><TH colspan="3">Your Sales Lead</TH></TR>
+        <TR><TH colspan="5">Your Sales Lead</TH></TR>
         <TR><TH>Id</TH><TH>Twitter Handle</TH><TH>Date</TH>
             <TH>Lead Status</TH>
             <TH>View Lead</TH>
@@ -56,7 +56,7 @@
     <TR th:each="sr: ${leads}">
         <TD><span th:text="${sr.id}"></span></TD>
         <TD><span th:text="${sr.twitterHandle}"></span></TD>
-        <TD><span th:text="${sr.createdDate}"></span></TD>
+        <TD><span th:text="${sr.createdDateString}"></span></TD>
         <TD><a th:href="${'/a/sales-leads-cycle/id?period=$period'}">
             <span th:text="${sr.leadStatusString}"></span></a></TD>
         <TD><a th:href="${'/a/sales-notes/'+sr.id}" >View Lead</a></TD>
@@ -66,7 +66,7 @@
 <FORM th:action="${'/a/sales-lead-post'}" method="POST">
     <INPUT TYPE="hidden" NAME="context-type" ID="" value="application/x-www-form-urlencoded">
     <INPUT name="twitter_handle" size="80"></INPUT>
-    <BUTTON TYPE="submit">Add Sales Lead</BUTTON>
+    <BUTTON TYPE="submit" VALUE="Add Sales Lead">Add Sales Lead</BUTTON>
 </FORM>
 
 </BODY>
