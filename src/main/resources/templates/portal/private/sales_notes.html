@@ -44,7 +44,7 @@
             <TH>Note Type</TH>
             <TH>Note Test</TH>
         </TR>
-    <TR th:each="sr: ${leads}">
+    <TR th:each="sr: ${notes}">
         <TD><span th:text="${sr.id}"></span></TD>
         <TD><span th:text="${sr.createdDateString}"></span></TD>
         <TD><span th:text="${sr.noteTypeString}"></span></a></TD>
@@ -61,7 +61,7 @@
       /OPTION>
     </SELECT>
     <TEXTAREA name="note_text" cols="60" rows="6"></TEXTAREA>
-    <BUTTON TYPE="submit" VALUE="Add Sales Lead">Add Sales Lead</BUTTON>
+    <BUTTON TYPE="submit" VALUE="Add Sales Lead">Add Sales Note</BUTTON>
 </FORM>
 
 </BODY>
