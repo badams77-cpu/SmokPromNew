@@ -66,7 +66,7 @@ public class SalesLeadsController extends PortalBaseController{
     }
 
     @RequestMapping("/a/sales-notes/{id}")
-    public String leadsHome(Model m, @PathVariable(name="id") int id, Authentication auth) throws UserNotFoundException, NotLoggedInException
+    public String notesHome(Model m, @PathVariable(name="id") int id, Authentication auth) throws UserNotFoundException, NotLoggedInException
     {
         S_User user = getAuthUser(auth);
 
