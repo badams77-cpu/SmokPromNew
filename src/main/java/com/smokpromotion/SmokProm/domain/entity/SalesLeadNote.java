@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 
 public class SalesLeadNote extends BaseSmokEntity{
 
-    private static final String TABLE_NAME = "sales_leads.sql";
+    private static final String TABLE_NAME = "sales_leads";
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 

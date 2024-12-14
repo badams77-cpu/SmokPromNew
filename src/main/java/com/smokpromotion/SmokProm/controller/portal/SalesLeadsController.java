@@ -43,9 +43,11 @@ public class SalesLeadsController extends PortalBaseController{
     }
 
     @RequestMapping("/a/sales-leads")
-    public String leadsHome(Model m, @RequestParam(name="period") int period, Authentication auth) throws UserNotFoundException, NotLoggedInException
+    public String leadsHome(Model m, @RequestParam(name="period", required = false) Integer periodInt, Authentication auth) throws UserNotFoundException, NotLoggedInException
     {
         S_User user = getAuthUser(auth);
+
+        int period = periodInt==null ? 0 : periodInt;
 
         if (period==0){period = 10000; }
 

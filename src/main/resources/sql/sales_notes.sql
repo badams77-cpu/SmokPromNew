@@ -5,7 +5,6 @@ CREATE TABLE IF NOT EXISTS sales_notes (
     , user_id int
     , sales_lead_id int
     , note_text varchar(100)
-    , twitter_user_id long,
     , note_type enum("UNKNOWN","LIKES","DISLIKES","WANTS")
     , uuid varchar(80)
     , deleted int
