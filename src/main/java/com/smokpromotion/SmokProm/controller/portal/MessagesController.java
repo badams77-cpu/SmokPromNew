@@ -93,7 +93,7 @@ public class MessagesController extends PortalBaseController{
         int newId = messageRepo.create(mess);
 
         if (newId==0){
-            LOGGER.warn("WARNING *** NEW SEARCH WAS NOT SAVED");
+            LOGGER.warn("WARNING *** NEW MESSAGE WAS NOT SAVED");
         }
 
         m.addAttribute("form", data);
