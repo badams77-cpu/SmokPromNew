@@ -47,7 +47,7 @@
   <BUTTON VALUE="Change Time Period">Change Time Period</BUTTON>
 </FORM>
 
-<TABLE BORDER="2" bgcolor="#000000" color="black"><TR><TH COLSPAN="7"><center>Your Marketing Searches</center></TH></TR>
+<TABLE BORDER="2" bgcolor="#000000" color="black">
         <TR><TH colspan="5">Your Sales Lead</TH></TR>
         <TR><TH>Id</TH><TH>Twitter Handle</TH><TH>Date</TH>
             <TH>Lead Status</TH>
@@ -63,7 +63,7 @@
     </TR>
         </TABLE>
 <H2>New Sales Lead</H2>
-<FORM th:action="${'/a/sales-lead-post'}" method="POST">
+<FORM th:action="${'/a/sales-leads-post'}" method="POST">
     <INPUT TYPE="hidden" NAME="context-type" ID="" value="application/x-www-form-urlencoded">
     <INPUT name="twitter_handle" size="80"></INPUT>
     <BUTTON TYPE="submit" VALUE="Add Sales Lead">Add Sales Lead</BUTTON>

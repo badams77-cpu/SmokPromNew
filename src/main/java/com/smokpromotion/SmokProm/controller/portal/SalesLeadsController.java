@@ -91,6 +91,7 @@ public class SalesLeadsController extends PortalBaseController{
         S_User user = getAuthUser(auth);
         SalesLeadEntity mess = new SalesLeadEntity();
         mess.setLeadStatus(LeadStatus.NEW);
+        mess.setUserId(user.getId());
         List<String> def = new LinkedList<>();
         def.add("10000");
 
@@ -121,7 +122,7 @@ public class SalesLeadsController extends PortalBaseController{
 
 
 
-        return "redirect:/a/sales-leads";
+        return "redirect:/a/sales-leads?period="+period;
     }
 
 
