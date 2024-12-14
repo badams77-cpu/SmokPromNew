@@ -1,10 +1,8 @@
 package com.smokpromotion.SmokProm.controller.portal;
 
-import com.smokpromotion.SmokProm.domain.entity.LeadStatus;
-import com.smokpromotion.SmokProm.domain.entity.S_User;
-import com.smokpromotion.SmokProm.domain.entity.SalesLeadEntity;
-import com.smokpromotion.SmokProm.domain.entity.VPMessage;
+import com.smokpromotion.SmokProm.domain.entity.*;
 import com.smokpromotion.SmokProm.domain.repo.REP_SalesLeadEntity;
+import com.smokpromotion.SmokProm.domain.repo.REP_SalesLeadNote;
 import com.smokpromotion.SmokProm.domain.repo.REP_UserService;
 import com.smokpromotion.SmokProm.domain.repo.REP_VPMessage;
 import com.smokpromotion.SmokProm.exceptions.NotLoggedInException;
@@ -39,6 +37,9 @@ public class SalesLeadsController extends PortalBaseController{
     private REP_SalesLeadEntity salesRepo;
 
     @Autowired
+    private REP_SalesLeadNote notesRepo;
+
+    @Autowired
     public SalesLeadsController(REP_UserService userService) {
     }
 
@@ -57,15 +58,39 @@ public class SalesLeadsController extends PortalBaseController{
 
         m.addAttribute("leads", leads);
 
+        m.addAttribute("period",period);
+
         m.addAttribute("userName", user.getFirstname()+" "+user.getLastname());
 
         return PRIBASE+"sales_leads";
     }
 
+    @RequestMapping("/a/sales-notes/{id}")
+    public String leadsHome(Model m, @PathVariable(name="id") int id, Authentication auth) throws UserNotFoundException, NotLoggedInException
+    {
+        S_User user = getAuthUser(auth);
+
+        Optional<SalesLeadEntity> ent = salesRepo.getById(user.getId(), id);
+
+        if (!ent.isPresent()){
+            return "redirect:/a/sales_leads";
+        }
+
+        List<SalesLeadNote> notes = notesRepo.findByUserAndEntityId(user.getId(), id);
+
+        m.addAttribute("notes", notes);
+
+        m.addAttribute("lead", ent.get());
+
+        m.addAttribute("userName", user.getFirstname()+" "+user.getLastname());
+
+        return PRIBASE+"sales_notes";
+    }
+
 
 
     @RequestMapping(value="/a/sales-lead-cycle/{$id}")
-    public String leadsHome(Model m, @RequestParam(name="period") int period, @PathVariable("id") int id, Authentication auth) throws UserNotFoundException, NotLoggedInException {
+    public String leadsCycle(Model m, @RequestParam(name="period") int period, @PathVariable("id") int id, Authentication auth) throws UserNotFoundException, NotLoggedInException {
         S_User user = getAuthUser(auth);
         Optional<SalesLeadEntity> ent = salesRepo.getById(user.getId(), id);
         if (ent.isPresent()){
@@ -86,7 +111,7 @@ public class SalesLeadsController extends PortalBaseController{
 
 
     @RequestMapping(value = "/a/sales-leads-post", method = RequestMethod.POST,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE )
-    public String searchAddPost(@RequestBody MultiValueMap<String, String> data, Model m, Authentication auth) throws Exception, UserNotFoundException, NotLoggedInException
+    public String leadAddPost(@RequestBody MultiValueMap<String, String> data, Model m, Authentication auth) throws Exception, UserNotFoundException, NotLoggedInException
     {
         S_User user = getAuthUser(auth);
         SalesLeadEntity mess = new SalesLeadEntity();
@@ -123,6 +148,51 @@ public class SalesLeadsController extends PortalBaseController{
 
 
         return "redirect:/a/sales-leads?period="+period;
+    }
+
+    @RequestMapping(value = "/a/sales-notes-post/{id}", method = RequestMethod.POST,  consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE )
+    public String noteAddPost(
+            @PathVariable(name="id") int id,
+            @RequestBody MultiValueMap<String, String> data, Model m, Authentication auth) throws Exception, UserNotFoundException, NotLoggedInException
+    {
+        S_User user = getAuthUser(auth);
+        SalesLeadNote mess = new SalesLeadNote();
+        mess.setLeadEntityId(id);
+        mess.setUserId(user.getId());
+        List<String> def = new LinkedList<>();
+        def.add("10000");
+
+        List<String> defHandle = new LinkedList<>();
+        def.add("Empty");
+
+        //       try {
+        mess.setNoteType(
+                NoteType.fromString(
+                    data.getOrDefault("note_type",defHandle).get(0).toString()));
+        mess.setText(
+                        data.getOrDefault("note_text",defHandle).get(0).toString());
+        //      } catch (Exception e){
+        //          LOGGER.warn("WARNING Search form binding ");
+        //          return PRIBASE+"messages";
+        //      }
+
+        //   twitterSearchForm.setUserId(user.getId());
+
+
+
+        int newId = notesRepo.create(mess);
+
+        if (newId==0){
+            LOGGER.warn("WARNING *** NEW SALES LEAD NOTE WAS NOT SAVED");
+        }
+
+        m.addAttribute("form", data);
+
+        m.addAttribute("userName", user.getFirstname()+" "+user.getLastname());
+
+
+
+        return "redirect:/a/sales-notes/"+id;
     }
 
 

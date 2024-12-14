@@ -64,6 +64,10 @@ public class SalesLeadNote extends BaseSmokEntity{
         return noteType;
     }
 
+    public String getNoteTypeString() {
+        return noteType==null?"":noteType.toString();
+    }
+
     public void setNoteType(NoteType noteType) {
         this.noteType = noteType;
     }

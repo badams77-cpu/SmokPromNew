@@ -33,39 +33,34 @@
 <UL>
     <LI><a href="/a/home">Signed In home</a></LI>
     <LI><a href="/a/search-add">Add New Search for Tweets</a></LI>
+    <LI><a href="/a/sales-leads">Return to sales leads</a></LI>
     </UL>
 
-
-<FORM th:action="${'/a/sales-leads'}" METHOD="GET">
-  <SELECT name="period">
-      <OPTION th:value="${1}" th:selected="${period}==${1}">TODAY</OPTION>
-      <OPTION th:value="${7}" th:selected="${period}==${7}">THIS WEEK</OPTION>
-      <OPTION th:value="${14}" th:selected="${period}==${14}">THIS FORTNIGHT</OPTION>
-      <OPTION th:value="${30}" th:selected="${period}==${31}">30 DAYS</OPTION>
-      <OPTION th:value="${10000}" th:selected="${period}==${10000}">ALL TIME</OPTION>
-  </SELECT>
-  <BUTTON VALUE="Change Time Period">Change Time Period</BUTTON>
-</FORM>
+<H2>Sales Leads Notes for <span th:text="${lead.twitterHandle}"></span></H2></H3>
 
 <TABLE BORDER="2" bgcolor="#000000" color="black">
-        <TR><TH colspan="5">Your Sales Lead</TH></TR>
-        <TR><TH>Id</TH><TH>Twitter Handle</TH><TH>Date</TH>
-            <TH>Lead Status</TH>
-            <TH>View Lead</TH>
+        <TR><TH colspan="5">Notes on your sales lead</TH></TR>
+        <TR><TH>Id</TH><TH></TH><TH>Date</TH>
+            <TH>Note Type</TH>
+            <TH>Note Test</TH>
         </TR>
     <TR th:each="sr: ${leads}">
         <TD><span th:text="${sr.id}"></span></TD>
-        <TD><span th:text="${sr.twitterHandle}"></span></TD>
         <TD><span th:text="${sr.createdDateString}"></span></TD>
-        <TD><a th:href="${'/a/sales-leads-cycle/id?period=$period'}">
-            <span th:text="${sr.leadStatusString}"></span></a></TD>
-        <TD><a th:href="${'/a/sales-notes/'+sr.id}" >View Lead</a></TD>
+        <TD><span th:text="${sr.noteTypeString}"></span></a></TD>
+        <TD><span th:text="${sr.noteText}">Note</TD>
     </TR>
         </TABLE>
 <H2>New Sales Lead</H2>
-<FORM th:action="${'/a/sales-leads-post'}" method="POST">
+<FORM th:action="${'/a/sales-notes-post/'+lead.id}" method="POST">
     <INPUT TYPE="hidden" NAME="context-type" ID="" value="application/x-www-form-urlencoded">
-    <INPUT name="twitter_handle" size="80"></INPUT>
+    <SELECT name="note_type">
+        <OPTION th:value="${'LIKES'}">Likes</OPTION>
+        <OPTION th:value="${'DISLIKES'}">Dislikes</OPTION>
+        <OPTION th:value="${'WANTS'}">Wants</OPTION>
+      /OPTION>
+    </SELECT>
+    <TEXTAREA name="note_text" cols="60" rows="6"></TEXTAREA>
     <BUTTON TYPE="submit" VALUE="Add Sales Lead">Add Sales Lead</BUTTON>
 </FORM>
 
