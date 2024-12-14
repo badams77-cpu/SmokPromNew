@@ -18,6 +18,13 @@ public enum LeadStatus {
                 .findFirst().orElse(UKNOWN);
     }
 
+    public static  fromString(String s){
+        int i;
+        for( Arrays.stream(values())
+                .filter(x->x.getType().equalsIgnoreCase(s))
+                .findFirst().orElse(UKNOWN);
+    }
+
     public String getType() {
         return type;
     }

@@ -17,15 +17,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.temporal.TemporalUnit;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class SalesLeadsController extends PortalBaseController{
@@ -43,7 +42,7 @@ public class SalesLeadsController extends PortalBaseController{
     public SalesLeadsController(REP_UserService userService) {
     }
 
-    @RequestMapping("/a/message-home")
+    @RequestMapping("/a/sales-leads")
     public String leadsHome(Model m, @RequestParam(name="period") int period, Authentication auth) throws UserNotFoundException, NotLoggedInException
     {
         S_User user = getAuthUser(auth);
@@ -63,6 +62,22 @@ public class SalesLeadsController extends PortalBaseController{
 
 
 
+    @RequestMapping(value="/a/sales-lead-cycle/{$id}")
+    public String leadsHome(Model m, @RequestParam(name="period") int period, @PathVariable("id") int id, Authentication auth) throws UserNotFoundException, NotLoggedInException {
+        S_User user = getAuthUser(auth);
+        Optional<SalesLeadEntity> ent = salesRepo.getById(user.getId(), id);
+        if (ent.isPresent()){
+            SalesLeadEntity ent1 = ent.get();
+            LeadStatus ls = ent.get().getLeadStatus();
+            int i =  ls.ordinal();
+            List<LeadStatus>  stats = Arrays.asList(LeadStatus.values());
+            stats.addAll(Arrays.asList(LeadStatus.values()));
+            ls = stats.get(i+1);
+            ent1.setLeadStatus(ls);
+            salesRepo.update(ent1);
+        }
+        return "redirect:/a/sales-leads?period="+period;
+    }
 
 
 
