@@ -83,11 +83,14 @@ public class AccessEmailer {
         OAuthAuthorization oAuth = new OAuthAuthorization(conf);
 
         List<Integer> usersNeedingKeys = accessCodeRepo.getUserIdsLast7DaysWithoutCodes();
-        Optional<DE_EmailTemplate> template = emailTemplateRepo.getByNameAndLanguage(TEMPLATE, EmailLanguage.ENGLISH.getLabel());
-        if (template.isEmpty()){
-            LOGGER.warn("Email Template "+TEMPLATE+" Not found");
-            return;
-        }
+
+        LOGGER.warn(usersNeedingKeys+" users needing keys");
+
+        //     Optional<DE_EmailTemplate> template = emailTemplateRepo.getByNameAndLanguage(TEMPLATE, EmailLanguage.ENGLISH.getLabel());
+   //     if (template.isEmpty()){
+   //         LOGGER.warn("Email Template "+TEMPLATE+" Not found");
+   //         return;
+   //     }
         String url="https://www.vapidpromotions.com/twitter_access";
         for(int uid : usersNeedingKeys) {
             try {
