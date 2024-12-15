@@ -111,13 +111,20 @@ public class AccessEmailer {
 
                 String emailBody = generateMessageBody(requestToken.getToken(), user, url);
 
-                mailSender.sendTemplate(email, TEMPLATE, EmailLanguage.ENGLISH,  replaceMap);
+                LOGGER.warn("Sending twitter access message to user "+user.getUsername());
+
+                mailSender.send(emailConfig.getMpcMailFromAddr(), emailConfig.getMpcMailFromName(),
+                        user.getUsername(),"Vapid Promotion - Twitter Access"  ,  emailBody);
+
+
+                LOGGER.warn("Sent twitter access message to user "+user.getUsername());
+
 
             } catch (UserNotFoundException e) {
                 LOGGER.warn("UserId "+uid+ "not found",e);
             } catch (TwitterException e) {
                 LOGGER.warn(" twitter exception getting request Token",e);
-            } catch (MessagingException e){
+            } catch (Exception e){
                 LOGGER.warn(" exception sending message",e);
             }
         }
