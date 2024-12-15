@@ -72,7 +72,7 @@ public class REP_AccessCode {
         List<Integer> res = searchRepo.getListNPUsingIntegerMapper("SELECT DISTINCT tw.user_id FROM "+
                         DE_SeduledTwitterSearch.getTableNameStatic()+" tw "
 
-                        +" WHERE  tw.nresults>0 AND tw.nsent=0 AND " +
+                        +" WHERE  tw.nresult>0 AND tw.nsent=0 AND " +
                         " (results_date BETWEEN DATE_SUB(now(), INTERVAL 7 DAY)" +
                         " AND now()) AND NOT EXISTS ("+
                         " SELECT * FROM "+ DE_AccessCode.getTableNameStatic()+" ac WHERE  "+
