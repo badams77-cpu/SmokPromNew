@@ -76,7 +76,7 @@ public class REP_AccessCode {
                         " (results_date BETWEEN DATE_SUB(now(), INTERVAL 7 DAY)" +
                         " AND now()) AND NOT EXISTS ("+
                         " SELECT * FROM "+ DE_AccessCode.getTableNameStatic()+" ac WHERE  "+
-                        " AND ac.code_date "+
+                        " ac.code_date "+
                         " BETWEEN DATE_SUB(now(), INTERVAL 7 DAY) AND now() "+
                 ");"
                 , new String[]{}, new Object[]{});
