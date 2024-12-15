@@ -1,6 +1,7 @@
 package com.smokpromotion.SmokProm.services.email;
 
 import com.smokpromotion.SmokProm.config.portal.PortalEmailConfig;
+import com.smokpromotion.SmokProm.controller.portal.PortalBaseController;
 import com.smokpromotion.SmokProm.domain.dto.EmailLanguage;
 import com.smokpromotion.SmokProm.domain.entity.DE_AccessCode;
 import com.smokpromotion.SmokProm.domain.entity.DE_EmailTemplate;
@@ -11,6 +12,7 @@ import com.smokpromotion.SmokProm.domain.repo.REP_UserService;
 import com.smokpromotion.SmokProm.email.SmtpMailSender;
 import com.smokpromotion.SmokProm.email.SmtpMailWrapper;
 import com.smokpromotion.SmokProm.exceptions.UserNotFoundException;
+import com.smokpromotion.SmokProm.util.GenericUtils;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import org.springframework.web.bind.annotation.RequestMapping;
 import twitter4j.HttpParameter;
 import twitter4j.TwitterException;
 import twitter4j.auth.AccessToken;
@@ -28,15 +31,18 @@ import twitter4j.auth.RequestToken;
 import twitter4j.conf.ConfigurationBuilder;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Profile("smok_App")
 @Service
 public class AccessEmailer {
+
+
+        private static final String VAPID_LOGO="images/vapid-440x350.png";
 
     private static final Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(AccessEmailer.class);
 
@@ -82,6 +88,7 @@ public class AccessEmailer {
             LOGGER.warn("Email Template "+TEMPLATE+" Not found");
             return;
         }
+        String url="https://www.vapidpromotions.com/twitter_access";
         for(int uid : usersNeedingKeys) {
             try {
                 RequestToken requestToken = oAuth.getOAuthRequestToken();
@@ -102,6 +109,8 @@ public class AccessEmailer {
                 replaceMap.put("username", user.getFirstname()+" "+user.getLastname());
                 replaceMap.put("access_url", requestToken.getAuthorizationURL());
 
+                String emailBody = generateMessageBody(requestToken.getToken(), user, url);
+
                 mailSender.sendTemplate(email, TEMPLATE, EmailLanguage.ENGLISH,  replaceMap);
 
             } catch (UserNotFoundException e) {
@@ -116,6 +125,37 @@ public class AccessEmailer {
     }
 
 //     Remember for more searches than subs email.
+private String generateMessageBody(String token, S_User user, String url ) {
+    String body = "";
+    if (!GenericUtils.isNull(body)) {
+        String conString = url.toString().replace(emailConfig.getDefaultContext(), emailConfig.getExternalContext());
+        String hashed="";
+        try {
+            hashed = Base64.getUrlEncoder().encodeToString( token.getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        String url1 = emailConfig.isUseHttps() ? conString.replace("http:", "https:") : conString;
+        body+="<html><head><title></title></head><body> " +
+                "<p>Dear "+user.getFirstname()+" "+user.getLastname()+", </p>"+
+                "<p>"+
+                "We have sent you this message because you requested that you have search results that need messages sent</p>"+
+                "<p>"+
+                "To do this, click the link below to authorise twitter to send your messages. </p>"+
+                "<a href='"+url+"?pr="+hashed+"' mc:disable-tracking  > Click here to authorise twitter to send your messages </a></p>"+
+                "<p>"+
+                "Thank You.</p>"+
+                "<h3> Vapid Promotions Admin Team</h3>" +
+                "<img src='"+url.replace("/twitter_access", "") + VAPID_LOGO+"'><br>"+
+
+                "<br><br>"
+                + "</body>"
+                + "</html>";
+
+    }
+    return body;
+
+}
 
 
 }
