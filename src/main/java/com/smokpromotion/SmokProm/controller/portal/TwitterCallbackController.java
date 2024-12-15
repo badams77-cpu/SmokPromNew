@@ -55,6 +55,8 @@ public class TwitterCallbackController extends PortalBaseController{
         Optional<DE_AccessCode> accessCodeOpt = accessRepo.getLastCodeForUser(user.getId());
 
         if (!accessCodeOpt.isPresent() || !state.equalsIgnoreCase("state_code_0")) {
+            LOGGER.warn("Access code present"+accessCodeOpt.isPresent());
+            LOGGER.warn("State was "+state);
             return PRIBASE+"callback_failed";
         }
 
