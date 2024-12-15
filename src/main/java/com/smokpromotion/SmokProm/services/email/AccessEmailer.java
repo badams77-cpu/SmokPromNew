@@ -37,7 +37,7 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.util.*;
 
-@Profile("smok_App")
+@Profile("smok_app")
 @Service
 public class AccessEmailer {
 
