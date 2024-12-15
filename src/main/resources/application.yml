@@ -12,7 +12,7 @@ twitter:
     accessToken: 1511798514535346188-awV7RbNV470h4h4ThrzYImy7viCcc1
     accessTokenSecret: qRjOyEqkbxFhrW6TY9VVml6Zc2fSdV6XdBf2GAQth8LPW
 
-twitouth:
+twitoauth:
   clientSecret: JOuQtl8H6439jCXu6DSshsn0dZlOmEAZQKYdF7amHkL_BxOLRf
   clientId: S1YzVFVBVVdmY3hjZnRyY1NmQlE6MTpjaQ
 
