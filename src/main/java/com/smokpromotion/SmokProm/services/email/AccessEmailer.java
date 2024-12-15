@@ -110,8 +110,6 @@ public class AccessEmailer {
         String url="https://www.vapidpromotions.com/twitter_access";
         for(int uid : usersNeedingKeys) {
             try {
-                RequestToken requestToken = oAuth.getOAuthRequestToken();
-                AccessToken accessToken = null;
 
                 PKCE pkce = new PKCE();
                 pkce.setCodeChallenge("challenge");
