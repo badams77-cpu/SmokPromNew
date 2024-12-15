@@ -189,8 +189,8 @@ private String generateMessageBody(String tokenUrl, S_User user, String url ) {
         TwitterOAuth20Service service = new TwitterOAuth20Service(
                 credentials.getTwitterOauth2ClientId(),
                 credentials.getTwitterOAuth2ClientSecret(),
-                "https://www.vapidpromotions.com/twitter.jsp",
-                "offline.access message.create tweet.read users.read tweet.write");
+                "https://www.vapidpromotions.com/tcallback",
+                "offline.access dm.write tweet.read users.read tweet.write");
         OAuth2AccessToken accessToken = null;
         String authorizationUrl;
         try {
