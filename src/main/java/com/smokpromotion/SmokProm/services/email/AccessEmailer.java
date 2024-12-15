@@ -85,10 +85,10 @@ public class AccessEmailer {
             @Value("${twitter.accessToken:}") String accessToken,
             @Value("${twitter.accessSecret:}") String accessSecret
     ){
-        TwitterCredentialsOAuth2 cred =  new  TwitterCredentialsOAuth2(clientId, clientSecret,
+        credentials =  new  TwitterCredentialsOAuth2(clientId, clientSecret,
                 accessToken,
                 accessToken);
-        cred.setOAUth2AutoRefreshToken(true);
+        credentials.setOAUth2AutoRefreshToken(true);
     }
 
     @Scheduled(cron="0 5,15,25,35,45,55 * * * *")
