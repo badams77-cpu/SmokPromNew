@@ -17,6 +17,7 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.OAuthAuthorization;
+import twitter4j.auth.RequestToken;
 import twitter4j.conf.ConfigurationBuilder;
 
 import java.util.List;
@@ -74,11 +75,9 @@ public class DM4J {
 
         String consumerKey = "";
         String consumerSecret = "";
-        var conf = new ConfigurationBuilder()
-                .setJSONStoreEnabled(true)
-                .build();
-        OAuthAuthorization oAuth = new OAuthAuthorization(conf);
            //     .oAuthConsumer(consumerKey, consumerSecret).build();
+
+
         //    RequestToken requestToken = oAuth.getOAuthRequestToken();
         //    AccessToken accessToken = null;
      /*   try (Scanner scanner = new Scanner(System.in)) {
@@ -112,6 +111,13 @@ public class DM4J {
         String access = accessCodeOptional.get().getAccessCode();
         String requestToken = accessCodeOptional.get().getRequestToken();
 
+        var conf = new ConfigurationBuilder()
+//                .setOAuthAccessToken(access)
+                .setOAuth2AccessToken(requestToken)
+                .setJSONStoreEnabled(true)
+                .build();
+        OAuthAuthorization oAuth = new OAuthAuthorization(conf);
+
         AccessToken accessToken = null;
 
         try {
@@ -130,6 +136,8 @@ public class DM4J {
                 //     }
             }
         }
+
+
         Twitter twitter = new TwitterFactory(conf).getInstance();
         //persist to the accessToken for future reference.
         //storeAccessToken(twitter.v1().users().verifyCredentials().getId(), accessToken);

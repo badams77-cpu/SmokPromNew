@@ -120,7 +120,7 @@ public class AccessEmailer {
 
                 String email = user.getUsername();
 
-                String authToken = getAuthUrl( credentials, pkce);
+                String authToken = getAuthUrl( credentials, pkce, 0);
 
                 DE_AccessCode codeEntity = new DE_AccessCode();
                 codeEntity.setUserId(uid);
@@ -185,7 +185,7 @@ private String generateMessageBody(String tokenUrl, S_User user, String url ) {
     return body;
 
 }
-    public String getAuthUrl(TwitterCredentialsOAuth2 credentials, PKCE pkce) {
+    public String getAuthUrl(TwitterCredentialsOAuth2 credentials, PKCE pkce, int accessId) {
         TwitterOAuth20Service service = new TwitterOAuth20Service(
                 credentials.getTwitterOauth2ClientId(),
                 credentials.getTwitterOAuth2ClientSecret(),
@@ -197,7 +197,7 @@ private String generateMessageBody(String tokenUrl, S_User user, String url ) {
 
             System.out.println("Fetching the Authorization URL...");
 
-            final String secretState = "state";
+            final String secretState = "state_code_"+accessId;
 
             authorizationUrl = service.getAuthorizationUrl(pkce, secretState);
 

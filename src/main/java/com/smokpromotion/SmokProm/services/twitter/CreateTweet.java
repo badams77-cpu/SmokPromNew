@@ -11,12 +11,16 @@ import com.twitter.clientlib.auth.TwitterOAuth20Service;
 import com.twitter.clientlib.model.Problem;
 import com.twitter.clientlib.model.TweetCreateRequest;
 import com.twitter.clientlib.model.TweetCreateResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.Date;
 import java.util.Scanner;
 
+@Service
 public class CreateTweet {
 
     private static final String CODE = "FDCode101";
@@ -28,37 +32,46 @@ public class CreateTweet {
 
     int id;
 
+    private TwitterCredentialsOAuth2 credentials;
 
-    public CreateTweet(DistillerTweeter main){
-        this.main = main;
+    @Autowired
+    public CreateTweet(
+            @Value("${twitoauth.clientId:}") String clientId,
+            @Value("${twitoauth.clientSecret:}") String clientSecret,
+            @Value("${twitter.accessToken:}") String accessToken,
+            @Value("${twitter.accessSecret:}") String accessSecret
+    ) {
+        credentials = new TwitterCredentialsOAuth2(clientId, clientSecret,
+                accessToken,
+                accessToken);
+        credentials.setOAUth2AutoRefreshToken(true);
 
-        TwitterCredentialsOAuth2 cred =  new  TwitterCredentialsOAuth2(System.getenv("TWITTER_OAUTH2_CLIENT_ID"),
-                System.getenv("TWITTER_OAUTH2_CLIENT_SECRET"),
-                System.getenv("TWITTER_OAUTH2_ACCESS_TOKEN"),
-                System.getenv("TWITTER_OAUTH2_REFRESH_TOKEN"));
-          cred.setOAUth2AutoRefreshToken(true);
 //                  apiInstance.setTwitterCredentials(new TwitterCredentialsBearer(System.getenv("TWITTER_BEARER_TOKEN")));
-        apiInstance = new TwitterApi(cred);
-        OAuth2AccessToken accessToken = getAccessToken(cred);
+        apiInstance = new TwitterApi(credentials);
+
+    }
+
+    public TwitterApi getCredentials(String code){
+        OAuth2AccessToken accessToken = getAccessToken(credentials, code);
         if (accessToken == null) {
-            return;
+            return null;
         }
 
         // Setting the access & refresh tokens into TwitterCredentialsOAuth2
-        cred.setTwitterOauth2AccessToken(accessToken.getAccessToken());
-        cred.setTwitterOauth2RefreshToken(accessToken.getRefreshToken());
+        credentials.setTwitterOauth2AccessToken(accessToken.getAccessToken());
+        credentials.setTwitterOauth2RefreshToken(accessToken.getRefreshToken());
         // Add Oauth 2 user token
-        apiInstance = new TwitterApi(cred);
+        apiInstance = new TwitterApi(credentials);
 
-        id = 0;
-       }
+        return apiInstance;
+    }
 
-    public OAuth2AccessToken getAccessToken(TwitterCredentialsOAuth2 credentials) {
+    public OAuth2AccessToken getAccessToken( String code) {
         TwitterOAuth20Service service = new TwitterOAuth20Service(
                 credentials.getTwitterOauth2ClientId(),
                 credentials.getTwitterOAuth2ClientSecret(),
-                "https://fd.feeddistiller.com/twitter.jsp",
-                "offline.access tweet.read users.read tweet.write");
+                "https://www.vapidpromotions.com/tcallback",
+                "offline.access tweet.read dm.write users.read tweet.write");
         File codeFile = new File("/tmp/twitter_code");
         OAuth2AccessToken accessToken = null;
         try {
@@ -70,29 +83,9 @@ public class CreateTweet {
             pkce.setCodeChallenge("challenge");
             pkce.setCodeChallengeMethod(PKCECodeChallengeMethod.PLAIN);
             pkce.setCodeVerifier("challenge");
-            String authorizationUrl = service.getAuthorizationUrl(pkce, secretState);
+     //       String authorizationUrl = service.getAuthorizationUrl(pkce, secretState);
 
-            System.out.println("Go to the Authorization URL and authorize your App:\n" +
-            authorizationUrl + "\nAfter that paste the authorization code here\n>>");
-//            final String code = CODE;
-                        System.out.println("\nTrading the Authorization Code for an Access Token...");
-            while(!codeFile.exists()) {
-                try {
-                    Thread.sleep(100);
-                } catch (Exception e) {
-
-                }
-            }
-            String code = "";
-            FileInputStream reader =new FileInputStream(codeFile);
-            final Scanner in = new Scanner(reader, "UTF-8");
-            try {
-                code = in.nextLine();
-            } catch (Exception e){}
-            reader.close();
-            System.out.println(code+"\n----");
             accessToken = service.getAccessToken(pkce, code);
-
 
             System.out.println("Access token: " + accessToken.getAccessToken());
             System.out.println("Refresh token: " + accessToken.getRefreshToken());
@@ -103,7 +96,7 @@ public class CreateTweet {
         return accessToken;
     }
 
-       public void tweet(String text){
+       public void tweet(TwitterApi apiInstance, String text){
            TweetCreateRequest req = new TweetCreateRequest();
            req.setText(text);
  //          req.setDirectMessageDeepLink("");
