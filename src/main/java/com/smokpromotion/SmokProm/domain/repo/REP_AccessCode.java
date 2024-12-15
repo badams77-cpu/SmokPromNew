@@ -47,7 +47,8 @@ public class REP_AccessCode {
 
     public List<Integer> getUsersWithNewCodes() {
         MajoranaAnnotationRepository<DE_AccessCode> repo = searchRepo.getRepo();
-        List<Integer> res = searchRepo.getListNPUsingIntegerMapper("SELECT DISTINCT user_id FROM "+
+        List<Integer> res = searchRepo.getListNPUsingIntegerMapper(
+                "SELECT DISTINCT user_id FROM "+
                 DE_AccessCode.getTableNameStatic()
                 +" WHERE code_date=now() and code_used_date IS NULL ",
                  new String[0], new Object[0]);
@@ -71,8 +72,8 @@ public class REP_AccessCode {
         List<Integer> res = searchRepo.getListNPUsingIntegerMapper("SELECT DISTINCT tw.user_id FROM "+
                         DE_SeduledTwitterSearch.getTableNameStatic()+" tw "
 
-                        +" WHERE  tw.nresults>0 AND tw.nsent=0 AND results_date BETWEEN date_add(now() INTERVAL -7 DAY)" +
-                        " AND now() AND NOT EXISTS SELECT ("+
+                        +" WHERE  tw.nresults>0 AND tw.nsent=0 AND (results_date BETWEEN DATE_SIN(now(), INTERVAL 7 DAY)" +
+                        " AND now()) AND NOT EXISTS SELECT ("+
                         " SELECT "+ DE_AccessCode.getTableNameStatic()+" ac WHERE  "+
                         " AND ac.code_date "+
                         " BETWEEN date_add(now() INTERVAL -7 DAY) AND now() "+
