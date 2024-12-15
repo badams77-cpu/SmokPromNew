@@ -74,7 +74,7 @@ public class REP_AccessCode {
 
                         +" WHERE  tw.nresults>0 AND tw.nsent=0 AND " +
                         " (results_date BETWEEN DATE_SUB(now(), INTERVAL 7 DAY)" +
-                        " AND now()) AND NOT EXISTS SELECT ("+
+                        " AND now()) AND NOT EXISTS ("+
                         " SELECT "+ DE_AccessCode.getTableNameStatic()+" ac WHERE  "+
                         " AND ac.code_date "+
                         " BETWEEN DATE_SUB(now(), INTERVAL 7 DAY) AND now() "+
