@@ -36,6 +36,7 @@ public class DistillerTweeter {
 
     private FileWriter fileWriter = null;
 
+    // Can now autowire
     private CreateTweet tweeter = null;
 
 
@@ -50,7 +51,7 @@ public class DistillerTweeter {
         } catch (Exception e){
             System.err.println("Error connecting to db: "+e.getMessage());
         }
-        tweeter = new CreateTweet(this);
+//        tweeter = new CreateTweet(this);
     }
 
     public void log(String s){
@@ -87,13 +88,13 @@ public class DistillerTweeter {
 
 
 
-    private void tweet(String s){
+  //  private void tweet(String s){
 
 
 
         // System.out.println(s+"----");
-        tweeter.tweet(s);
-    }
+    //    tweeter.tweet(s);
+   // }
 
     public static void main(String argv[]){
         DistillerTweeter dt = new DistillerTweeter();

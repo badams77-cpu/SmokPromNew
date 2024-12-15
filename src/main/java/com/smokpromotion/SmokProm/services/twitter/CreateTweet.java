@@ -52,7 +52,7 @@ public class CreateTweet {
     }
 
     public TwitterApi getCredentials(String code){
-        OAuth2AccessToken accessToken = getAccessToken(credentials, code);
+        OAuth2AccessToken accessToken = getAccessToken( code);
         if (accessToken == null) {
             return null;
         }
