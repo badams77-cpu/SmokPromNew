@@ -107,7 +107,7 @@ public class AccessEmailer {
    //         LOGGER.warn("Email Template "+TEMPLATE+" Not found");
    //         return;
    //     }
-        String url="https://www.vapidpromotions.com/twitter_access";
+        String url="https://www.vapidpromotions.com/";
         for(int uid : usersNeedingKeys) {
             try {
 
@@ -160,7 +160,9 @@ public class AccessEmailer {
 private String generateMessageBody(String tokenUrl, S_User user, String url ) {
     String body = "";
     if (!GenericUtils.isNull(body)) {
-        String conString = url.toString().replace(emailConfig.getDefaultContext(), emailConfig.getExternalContext());
+        String conString =
+                url.toString().replace(emailConfig.getDefaultContext(),
+                        emailConfig.getExternalContext());
         String hashed="";
         String url1 = emailConfig.isUseHttps() ? conString.replace("http:", "https:") : conString;
         body+="<html><head><title></title></head><body> " +
@@ -187,8 +189,8 @@ private String generateMessageBody(String tokenUrl, S_User user, String url ) {
         TwitterOAuth20Service service = new TwitterOAuth20Service(
                 credentials.getTwitterOauth2ClientId(),
                 credentials.getTwitterOAuth2ClientSecret(),
-                "https://fd.feeddistiller.com/twitter.jsp",
-                "offline.access tweet.read users.read tweet.write");
+                "https://www.vapidpromotions.com/twitter.jsp",
+                "offline.access message.create tweet.read users.read tweet.write");
         OAuth2AccessToken accessToken = null;
         String authorizationUrl;
         try {
