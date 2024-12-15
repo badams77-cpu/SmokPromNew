@@ -1,5 +1,8 @@
 package com.smokpromotion.SmokProm.services.email;
 
+import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.github.scribejava.core.pkce.PKCE;
+import com.github.scribejava.core.pkce.PKCECodeChallengeMethod;
 import com.smokpromotion.SmokProm.config.portal.PortalEmailConfig;
 import com.smokpromotion.SmokProm.controller.portal.PortalBaseController;
 import com.smokpromotion.SmokProm.domain.dto.EmailLanguage;
@@ -14,6 +17,8 @@ import com.smokpromotion.SmokProm.email.SmtpMailWrapper;
 import com.smokpromotion.SmokProm.exceptions.UserNotFoundException;
 import com.smokpromotion.SmokProm.util.GenericUtils;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
+import com.twitter.clientlib.TwitterCredentialsOAuth2;
+import com.twitter.clientlib.auth.TwitterOAuth20Service;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -71,8 +76,19 @@ public class AccessEmailer {
     @Autowired
     private SmtpMailSender mailSender;
 
-    public AccessEmailer(){
+    private TwitterCredentialsOAuth2 credentials;
 
+    @Autowired
+    public AccessEmailer(
+            @Value("${twitoauth.clientId:}") String clientId,
+            @Value("${twitoauth.clientSecret:}") String clientSecret,
+            @Value("${twitter.accessToken:}") String accessToken,
+            @Value("${twitter.accessSecret:}") String accessSecret
+    ){
+        TwitterCredentialsOAuth2 cred =  new  TwitterCredentialsOAuth2(clientId, clientSecret,
+                accessToken,
+                accessToken);
+        cred.setOAUth2AutoRefreshToken(true);
     }
 
     @Scheduled(cron="0 5,15,25,35,45,55 * * * *")
@@ -97,22 +113,30 @@ public class AccessEmailer {
                 RequestToken requestToken = oAuth.getOAuthRequestToken();
                 AccessToken accessToken = null;
 
+                PKCE pkce = new PKCE();
+                pkce.setCodeChallenge("challenge");
+                pkce.setCodeChallengeMethod(PKCECodeChallengeMethod.PLAIN);
+                pkce.setCodeVerifier("challenge");
+
                 S_User user = userService.getById(uid);
 
                 String email = user.getUsername();
 
+                String authToken = getAuthUrl( credentials, pkce);
+
                 DE_AccessCode codeEntity = new DE_AccessCode();
                 codeEntity.setUserId(uid);
                 codeEntity.setCodeDate(LocalDate.now());
-                codeEntity.setRequestToken(requestToken.getToken());
+  //              codeEntity.setRequestToken(pkce.getCodeChallenge());
+                codeEntity.setRequestToken(authToken);
                 accessCodeRepo.create(codeEntity);
 
                 Map<String, String> replaceMap = new HashMap<>();
 
                 replaceMap.put("username", user.getFirstname()+" "+user.getLastname());
-                replaceMap.put("access_url", requestToken.getAuthorizationURL());
 
-                String emailBody = generateMessageBody(requestToken.getToken(), user, url);
+
+                String emailBody = generateMessageBody(authToken, user, url);
 
                 LOGGER.warn("Sending twitter access message to user "+user.getUsername());
 
@@ -135,16 +159,11 @@ public class AccessEmailer {
     }
 
 //     Remember for more searches than subs email.
-private String generateMessageBody(String token, S_User user, String url ) {
+private String generateMessageBody(String tokenUrl, S_User user, String url ) {
     String body = "";
     if (!GenericUtils.isNull(body)) {
         String conString = url.toString().replace(emailConfig.getDefaultContext(), emailConfig.getExternalContext());
         String hashed="";
-        try {
-            hashed = Base64.getUrlEncoder().encodeToString( token.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
         String url1 = emailConfig.isUseHttps() ? conString.replace("http:", "https:") : conString;
         body+="<html><head><title></title></head><body> " +
                 "<p>Dear "+user.getFirstname()+" "+user.getLastname()+", </p>"+
@@ -152,7 +171,7 @@ private String generateMessageBody(String token, S_User user, String url ) {
                 "We have sent you this message because you requested that you have search results that need messages sent</p>"+
                 "<p>"+
                 "To do this, click the link below to authorise twitter to send your messages. </p>"+
-                "<a href='"+url+"?pr="+hashed+"' mc:disable-tracking  > Click here to authorise twitter to send your messages </a></p>"+
+                "<a href='"+tokenUrl+"' mc:disable-tracking  > Click here to authorise twitter to send your messages </a></p>"+
                 "<p>"+
                 "Thank You.</p>"+
                 "<h3> Vapid Promotions Admin Team</h3>" +
@@ -166,6 +185,27 @@ private String generateMessageBody(String token, S_User user, String url ) {
     return body;
 
 }
+    public String getAuthUrl(TwitterCredentialsOAuth2 credentials, PKCE pkce) {
+        TwitterOAuth20Service service = new TwitterOAuth20Service(
+                credentials.getTwitterOauth2ClientId(),
+                credentials.getTwitterOAuth2ClientSecret(),
+                "https://fd.feeddistiller.com/twitter.jsp",
+                "offline.access tweet.read users.read tweet.write");
+        OAuth2AccessToken accessToken = null;
+        String authorizationUrl;
+        try {
 
+            System.out.println("Fetching the Authorization URL...");
 
+            final String secretState = "state";
+
+            authorizationUrl = service.getAuthorizationUrl(pkce, secretState);
+
+        } catch (Exception e) {
+            LOGGER.warn("Exceotion geting authorization URL", e);
+            throw new RuntimeException(e);
+
+        }
+        return authorizationUrl;
+    }
 }
