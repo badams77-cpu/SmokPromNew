@@ -127,7 +127,7 @@ public class StripeSubscription extends PortalBaseController {
             throws NotLoggedInException,  UserNotFoundException {
         S_User user = getAuthUser(auth);
         if (user.getId()==userId){
-            Integer sessUserId = sessionIds.get(stripeIdtoMyUuud.getOrDefault(sessionId, UUID.randomUUID());
+            Integer sessUserId = sessionIds.get(stripeIdtoMyUuud.getOrDefault(sessionId, UUID.randomUUID()));
             if( sessUserId!=null && sessUserId.intValue()==userId) {
                 user.setSubCount(myUuidToStripePaidQuant.getOrDefault(
                         stripeIdtoMyUuud.getOrDefault(sessionId, UUID.randomUUID()), user.getSubCount()));
@@ -142,7 +142,7 @@ public class StripeSubscription extends PortalBaseController {
     String sessionId,Authentication auth) throws NotLoggedInException,  UserNotFoundException {
         S_User user = getAuthUser(auth);
         if (user.getId()==userId){
-            Integer sessUserId = sessionIds.get(stripeIdtoMyUuud.getOrDefault(sessionId, UUID.randomUUID());
+            Integer sessUserId = sessionIds.get(stripeIdtoMyUuud.getOrDefault(sessionId, UUID.randomUUID()));
             if( sessUserId!=null && sessUserId.intValue()==userId) {
                 user.setSubCount(0);
                 userService.update(user);
