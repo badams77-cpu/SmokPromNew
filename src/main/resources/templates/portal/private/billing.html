@@ -39,8 +39,8 @@
         <LI th:if="${paying>nsearches}">You are currently have <span th:text="${paying}"></span> Searches Paid for, but only
          <span th:text="${nsearches}"></span> Searches active, you can add new searches <a href="/a/search-home">Here</a></LI>
 
-            <LI th:if="${paying<nsearches}">You are currently have <span th:text="${nsearches}"></span> Searches Active for, but pnlu
-                           th:text="${paying}"></span> paid for.  Click here to buy more subscriptions for each search - <a href="/a/billing-stripe">Pay here</a>
+            <LI th:if="${paying<nsearches}">You are currently have <span th:text="${nsearches}"></span> Searches Active for, but only
+                        <span th:text="${paying}"></span> paid for.  Click here to buy more subscriptions for each search - <a href="/a/billing-stripe">Pay here</a>
 
             <H2>Only the first,  <span th:text="${paying}"></span> Searches will be performed each day</H2></LI>.
 
@@ -48,7 +48,7 @@
          <LI><span th:text="${nsearches}"></span> Searches active, you can add new searches <a href="/a/search-home">Here</a></LI>
 
 
-    <LI> if you want stop payments (and semding tweets) <a href="/a/billing-stripe">cancel here</a></LI>
+    <LI> if you want stop payments (and sending tweets) <a href="/a/billing-stripe">cancel here</a></LI>
     <LI th:unless="${paying!=0}">Your Subscription is not active  - <a href="/a/billing-stripe">Pay here </a></LI>
 
     <LI><a href="/a/home">Back</a> to Home Page</LI>

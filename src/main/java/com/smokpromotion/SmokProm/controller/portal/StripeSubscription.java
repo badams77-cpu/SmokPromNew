@@ -50,18 +50,18 @@ public class StripeSubscription extends PortalBaseController {
     private REP_TwitterSearch repTwitterSearch;
 
 
-    public StripeSubscription(@Value("${stripKey:}") String stripKey){
-        apiKey = "sk_live_51"+stripKey;
-    }
+//    public StripeSubscription(@Value("${stripKey:}") String stripKey){
+//        apiKey = "sk_live_51"+stripKey;
+//    }
 
     // Set your secret key. Remember to switch to your live secret key in production.
 // See your keys here: https://dashboard.stripe.com/apikeys
     //  Stripe.apiKey = "sk_test_51NbwagFrTtrppWcAfH9HZNSq3NHggoB5UC7qPa4Nbl60ZvIshmvxtYyCWxSnDFSMhV99eO4xNik7mHTRJIIDAjHY00qQPQ0rJN"
     @Autowired
-    public StripeSubscription(@Value("${stripeApiKey:null") String apiKey,
+    public StripeSubscription(@Value("${stripKey:null") String apiKey,
         @Value("{stripePriceId") String stripePriceId
     ) {
-        Stripe.apiKey = apiKey;
+        Stripe.apiKey = "sk_live_51"+apiKey;
         sessionIds = new HashMap<>();
         myUuidToStripeUuid = new HashMap<>();
  //       priceId = stripePriceId;
