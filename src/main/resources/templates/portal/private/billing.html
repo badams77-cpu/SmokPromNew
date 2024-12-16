@@ -34,7 +34,7 @@
 
 <UL>
 
-    <LI th:if="${paying!=0 && nsearch=npaying}">Your Subscription is active - with <span th:text="${paying}"> Searches active and paid for</LI>
+    <LI th:if="${paying!=0 && nsearch==npaying}">Your Subscription is active - with <span th:text="${paying}"></span> Searches active and paid for</LI>
 
         <LI th:if="${paying>nsearches}">You are currently have <span th:text="${paying}"></span> Searches Paid for, but only
          <span th:text="${nsearches}"></span> Searches active, you can add new searches <a href="/a/search-home">Here</a></LI>
