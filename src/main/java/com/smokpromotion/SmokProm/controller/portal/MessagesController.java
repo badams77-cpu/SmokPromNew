@@ -27,7 +27,7 @@ import java.util.Optional;
 @Controller
 public class MessagesController extends PortalBaseController{
 
-    private static Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(SearchController.class);
+    private static final Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(SearchController.class);
 
     private static int adminId;
 

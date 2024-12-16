@@ -48,7 +48,7 @@
          <LI><span th:text="${nsearches}"></span> Searches active, you can add new searches <a href="/a/search-home">Here</a></LI>
 
 
-    <LI> if you want stop payments (and sending tweets) <a href="/a/billing-stripe">cancel here</a></LI>
+    <LI> if you want stop payments (and sending tweets) <a href="/a/billing/cancel-stripe">cancel here</a></LI>
     <LI th:unless="${paying!=0 || nsearches==0}">Your Subscription is not active  - <a href="/a/billing-stripe">Pay here </a></LI>
 
     <LI><a href="/a/home">Back</a> to Home Page</LI>

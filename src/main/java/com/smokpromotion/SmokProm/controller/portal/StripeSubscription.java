@@ -6,13 +6,19 @@ import com.smokpromotion.SmokProm.domain.entity.S_User;
 import com.smokpromotion.SmokProm.domain.repo.REP_TwitterSearch;
 import com.smokpromotion.SmokProm.exceptions.NotLoggedInException;
 import com.smokpromotion.SmokProm.exceptions.UserNotFoundException;
+import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
 import com.stripe.Stripe;
 import com.stripe.Stripe.*;
 import com.stripe.exception.StripeException;
+import com.stripe.model.*;
 import com.stripe.model.checkout.Session;
 import com.stripe.net.RequestOptions;
+import com.stripe.param.CustomerListParams;
+import com.stripe.param.SubscriptionCancelParams;
+import com.stripe.param.SubscriptionListParams;
 import com.stripe.param.checkout.SessionCreateParams;
 import kotlin.random.Random;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
@@ -31,6 +37,8 @@ import java.util.UUID;
 @Controller
 public class StripeSubscription extends PortalBaseController {
 
+
+    private static Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(StripeSubscription.class);
 
 
     private String apiKey;
@@ -98,7 +106,7 @@ public class StripeSubscription extends PortalBaseController {
 
         SessionCreateParams params = new SessionCreateParams.Builder()
                 .setSuccessUrl("https://www.vapidpromotions.com/a/billing/"+user.getId()+"/"+mySessionId+"/activate")
-                .setCancelUrl("https://www.vapidpromotions.com/a/billing/a/billing/"+user.getId()+"/"+mySessionId+"/deactivate")
+                .setCancelUrl("https://www.vapidpromotions.com/a/billing-failed")
                 .setMode(SessionCreateParams.Mode.SUBSCRIPTION)
                 .addLineItem(new SessionCreateParams.LineItem.Builder()
                         // For metered billing, do not pass quantity
@@ -109,7 +117,7 @@ public class StripeSubscription extends PortalBaseController {
                 .build();
 
         Session session = Session.create(params);
-        sessionIds.put(session.getId(), user.getId());
+        sessionIds.put(mySessionId.toString(), user.getId());
         stripeIdtoMyUuud.put(session.getId(), mySessionId);
         myUuidToStripeUuid.put(mySessionId, session.getId());
 
@@ -121,17 +129,103 @@ public class StripeSubscription extends PortalBaseController {
         return "redirect:" + session.getUrl();
     }
 
+    @GetMapping("/a/cancel-stripe")
+    public String cancel(Authentication auth) throws StripeException, NotLoggedInException,  UserNotFoundException {
+        S_User user = getAuthUser(auth);
+        UUID mySessionId = UUID.randomUUID();
+
+        List<DE_TwitterSearch> searches = repTwitterSearch.findByUserIdActive(user.getId());
+        int nsearch = searches.size();
+
+        myUuidToStripePaidQuant.put(mySessionId, nsearch);
+
+        RequestOptions ops = RequestOptions.builder()
+                .setApiKey(apiKey)                 .build();
+
+        Stripe.apiKey=  apiKey;
+
+
+        try {
+            int subCount = 0;
+            CustomerListParams params = CustomerListParams.builder()
+                    .setEmail(user.getUsername())
+                    .setLimit(100L).build();
+            CustomerCollection customers = Customer.list(params);
+            for (Customer cust : customers.getData()) {
+                SubscriptionListParams params1 =
+                        SubscriptionListParams.builder().setLimit(100L).setCustomer(cust.getId()).build();
+                SubscriptionCollection subscriptions = Subscription.list(params1);
+                for (Subscription sub : subscriptions.getData()) {
+                    sub.cancel();
+                }
+                subCount++;
+
+            }
+            LOGGER.warn(user.getUsername() + " Cancelled: " + subCount + " subscriptions");
+
+            user.setSubCount(0);
+            userService.update(user);
+        } catch (StripeException e){
+            return PRIBASE+"cancel-failed-stripe";
+        }
+       /*
+        SessionCreateParams params = new SessionCreateParams.Builder()
+                .setSuccessUrl("https://www.vapidpromotions.com/a/billing/"+user.getId()+"/"+mySessionId+"/deactivate")
+                .setCancelUrl("https://www.vapidpromotions.com/a/cancel-failed")
+                .setMode(SessionCreateParams.Mode.SUBSCRIPTION)
+                .addLineItem(new SessionCreateParams.LineItem.Builder()
+                        // For metered billing, do not pass quantity
+                        .setQuantity(0L)
+                        .setPrice(priceId)
+                        .build()
+                )
+                .build();
+
+        Session session = Session.create(params);
+        sessionIds.put(mySessionId.toString(), user.getId());
+        stripeIdtoMyUuud.put(session.getId(), mySessionId);
+        myUuidToStripeUuid.put(mySessionId, session.getId());
+
+// Redirect to the URL returned on the Checkout Session.
+// With Spark, you can redirect with:
+//   response.redirect(session.getUrl(), 303);
+//   return "";
+*/
+        return "redirect:/a/billing";
+    }
 
     @GetMapping("/a/billing/{userId}/{sessionId}/activate")
     public String setBillingActive(@PathVariable("userId") int userId, @PathVariable("sessionId") String sessionId, Authentication auth)
             throws NotLoggedInException,  UserNotFoundException {
         S_User user = getAuthUser(auth);
         if (user.getId()==userId){
-            Integer sessUserId = sessionIds.get(stripeIdtoMyUuud.getOrDefault(sessionId, UUID.randomUUID()));
+            Integer sessUserId = sessionIds.getOrDefault(sessionId, 0);
             if( sessUserId!=null && sessUserId.intValue()==userId) {
                 user.setSubCount(myUuidToStripePaidQuant.getOrDefault(
                         stripeIdtoMyUuud.getOrDefault(sessionId, UUID.randomUUID()), user.getSubCount()));
                 userService.update(user);
+
+                try {
+                    int subCount = 0;
+                    CustomerListParams params = CustomerListParams.builder()
+                            .setEmail(user.getUsername())
+                            .setLimit(100L).build();
+                    CustomerCollection customers = Customer.list(params);
+                    for (Customer cust : customers.getData()) {
+                        SubscriptionListParams params1 =
+                                SubscriptionListParams.builder().setLimit(100L).setCustomer(cust.getId()).build();
+                        SubscriptionCollection subscriptions = Subscription.list(params1);
+                        for(Subscription sub : subscriptions.getData()) {
+                            for(SubscriptionItem si : sub.getItems().getData()) {
+                                subCount+=si.getQuantity();
+                            }
+                        }
+                        user.setSubCount(subCount);
+                    }
+                } catch (StripeException e){
+                    return PRIBASE+"billing-failed-stripe";
+                }
+
             } else {
                 return PRIBASE+"billing-failed";
             }
@@ -142,9 +236,31 @@ public class StripeSubscription extends PortalBaseController {
     }
 
     @GetMapping("/a/billing/{userId}/deactivate")
-    public String setBillingCancelled(@PathVariable("userId") int userId,  @PathVariable("sessionId")
+    public String setBillingCancelled(@PathVariable("userId") int userId,
     String sessionId,Authentication auth) throws NotLoggedInException,  UserNotFoundException {
         S_User user = getAuthUser(auth);
+
+        try {
+            int subCount = 0;
+            CustomerListParams params = CustomerListParams.builder()
+                    .setEmail(user.getUsername())
+                    .setLimit(100L).build();
+            CustomerCollection customers = Customer.list(params);
+            for (Customer cust : customers.getData()) {
+                SubscriptionListParams params1 =
+                        SubscriptionListParams.builder().setLimit(100L).setCustomer(cust.getId()).build();
+                SubscriptionCollection subscriptions = Subscription.list(params1);
+                for(Subscription sub : subscriptions.getData()) {
+                    if (sub.getLivemode()){
+                        sub.cancel();
+                    }
+                }
+
+            }
+        } catch (StripeException e){
+            return PRIBASE+"cancel-failed-customer";
+        }
+
         if (user.getId()==userId){
             Integer sessUserId = sessionIds.get(stripeIdtoMyUuud.getOrDefault(sessionId, UUID.randomUUID()));
             if( sessUserId!=null && sessUserId.intValue()==userId) {
@@ -157,6 +273,18 @@ public class StripeSubscription extends PortalBaseController {
             return PRIBASE+"cancel-failed";
         }
         return PRIBASE+"billing-cancelled";
+    }
+
+    @GetMapping("/a/cancel-failed")
+    public String cancelfailed(
+    String sessionId,Authentication auth) throws NotLoggedInException,  UserNotFoundException {
+            return PRIBASE+"cancel-failed";
+    }
+
+    @GetMapping("/a/billing-failed")
+    public String bailingfailed(
+            String sessionId,Authentication auth) throws NotLoggedInException,  UserNotFoundException {
+        return PRIBASE+"billing-failed";
     }
 
 }
