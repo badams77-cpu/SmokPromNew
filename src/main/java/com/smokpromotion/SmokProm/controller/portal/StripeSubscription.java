@@ -132,7 +132,11 @@ public class StripeSubscription extends PortalBaseController {
                 user.setSubCount(myUuidToStripePaidQuant.getOrDefault(
                         stripeIdtoMyUuud.getOrDefault(sessionId, UUID.randomUUID()), user.getSubCount()));
                 userService.update(user);
+            } else {
+                return PRIBASE+"billing-failed";
             }
+        } else {
+            return PRIBASE+"billing-failed";
         }
         return PRIBASE+"billing-success";
     }
@@ -146,7 +150,11 @@ public class StripeSubscription extends PortalBaseController {
             if( sessUserId!=null && sessUserId.intValue()==userId) {
                 user.setSubCount(0);
                 userService.update(user);
+            } else {
+                return PRIBASE+"cancel-failed";
             }
+        } else {
+            return PRIBASE+"cancel-failed";
         }
         return PRIBASE+"billing-cancelled";
     }
