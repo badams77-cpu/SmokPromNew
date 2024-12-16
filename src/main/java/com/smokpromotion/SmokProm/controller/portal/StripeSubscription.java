@@ -61,8 +61,8 @@ public class StripeSubscription extends PortalBaseController {
     public StripeSubscription(@Value("${stripKey:null") String apiKey,
         @Value("{stripePriceId") String stripePriceId
     ) {
-        apiKey = "sk_live_51"+apiKey;
-        Stripe.apiKey = apiKey;
+        this.apiKey = "sk_live_51"+apiKey;
+        Stripe.apiKey = this.apiKey;
         sessionIds = new HashMap<>();
         myUuidToStripeUuid = new HashMap<>();
  //       priceId = stripePriceId;
