@@ -104,13 +104,40 @@ public class StripeSubscription extends PortalBaseController {
 
         Stripe.apiKey=  apiKey;
 
+        int subCount = 0;
+
+        try {
+
+            CustomerListParams params = CustomerListParams.builder()
+                    .setEmail(user.getUsername())
+                    .setLimit(100L).build();
+            CustomerCollection customers = Customer.list(params);
+            for (Customer cust : customers.getData()) {
+                SubscriptionListParams params1 =
+                        SubscriptionListParams.builder().setLimit(100L).setCustomer(cust.getId()).build();
+                SubscriptionCollection subscriptions = Subscription.list(params1);
+                for (Subscription sub : subscriptions.getData()) {
+                        for(SubscriptionItem si : sub.getItems().getData()) {
+                            subCount+=si.getQuantity();
+                        }
+                }
+            }
+
+            LOGGER.warn(user.getUsername() + " Found: " + subCount + " subscriptions");
+
+            userService.update(user);
+        } catch (StripeException e){
+            return PRIBASE+"cancel-failed-stripe";
+        }
+
+
         SessionCreateParams params = new SessionCreateParams.Builder()
                 .setSuccessUrl("https://www.vapidpromotions.com/a/billing/"+user.getId()+"/"+mySessionId+"/activate")
                 .setCancelUrl("https://www.vapidpromotions.com/a/billing-failed")
                 .setMode(SessionCreateParams.Mode.SUBSCRIPTION)
                 .addLineItem(new SessionCreateParams.LineItem.Builder()
                         // For metered billing, do not pass quantity
-                        .setQuantity(0L+nsearch)
+                        .setQuantity(0L+nsearch-subCount)
                         .setPrice(priceId)
                         .build()
                 )
@@ -120,6 +147,8 @@ public class StripeSubscription extends PortalBaseController {
         sessionIds.put(mySessionId.toString(), user.getId());
         stripeIdtoMyUuud.put(session.getId(), mySessionId);
         myUuidToStripeUuid.put(mySessionId, session.getId());
+
+
 
 // Redirect to the URL returned on the Checkout Session.
 // With Spark, you can redirect with:
@@ -199,12 +228,13 @@ public class StripeSubscription extends PortalBaseController {
             throws NotLoggedInException,  UserNotFoundException {
         S_User user = getAuthUser(auth);
         if (user.getId()==userId){
+            UUID sessionUUID = UUID.fromString(sessionId);
             Integer sessUserId = sessionIds.getOrDefault(sessionId, 0);
             if( sessUserId!=null && sessUserId.intValue()==userId) {
-                user.setSubCount(myUuidToStripePaidQuant.getOrDefault(
-                        stripeIdtoMyUuud.getOrDefault(sessionId, UUID.randomUUID()), user.getSubCount()));
+                user.setSubCount( user.getSubCount()+myUuidToStripePaidQuant.getOrDefault(
+                        sessionUUID, 0));
                 userService.update(user);
-
+                /*
                 try {
                     int subCount = 0;
                     CustomerListParams params = CustomerListParams.builder()
@@ -225,7 +255,7 @@ public class StripeSubscription extends PortalBaseController {
                 } catch (StripeException e){
                     return PRIBASE+"billing-failed-stripe";
                 }
-
+                */
             } else {
                 return PRIBASE+"billing-failed";
             }
