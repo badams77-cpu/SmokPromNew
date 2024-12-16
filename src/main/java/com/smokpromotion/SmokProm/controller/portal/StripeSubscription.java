@@ -58,7 +58,7 @@ public class StripeSubscription extends PortalBaseController {
 // See your keys here: https://dashboard.stripe.com/apikeys
     //  Stripe.apiKey = "sk_test_51NbwagFrTtrppWcAfH9HZNSq3NHggoB5UC7qPa4Nbl60ZvIshmvxtYyCWxSnDFSMhV99eO4xNik7mHTRJIIDAjHY00qQPQ0rJN"
     @Autowired
-    public StripeSubscription(@Value("${stripKey:null") String apiKey,
+    public StripeSubscription(@Value("${stripKey:null}") String apiKey,
         @Value("{stripePriceId") String stripePriceId
     ) {
         this.apiKey = "sk_live_51"+apiKey;
