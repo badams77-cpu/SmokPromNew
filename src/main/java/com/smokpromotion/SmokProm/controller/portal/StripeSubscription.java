@@ -97,8 +97,8 @@ public class StripeSubscription extends PortalBaseController {
         Stripe.apiKey=  apiKey;
 
         SessionCreateParams params = new SessionCreateParams.Builder()
-                .setSuccessUrl("https://www.vapid-promotion.com/a/billing/"+user.getId()+"/"+mySessionId+"/activate")
-                .setCancelUrl("https://www.vapid-promotion.com/a/billing/a/billing/"+user.getId()+"/"+mySessionId+"/deactivate")
+                .setSuccessUrl("https://www.vapidpromotions.com/a/billing/"+user.getId()+"/"+mySessionId+"/activate")
+                .setCancelUrl("https://www.vapidpromotions.com/a/billing/a/billing/"+user.getId()+"/"+mySessionId+"/deactivate")
                 .setMode(SessionCreateParams.Mode.SUBSCRIPTION)
                 .addLineItem(new SessionCreateParams.LineItem.Builder()
                         // For metered billing, do not pass quantity
@@ -122,7 +122,7 @@ public class StripeSubscription extends PortalBaseController {
     }
 
 
-    @GetMapping("/a/billing/{userId}/{sessionUd}/activate")
+    @GetMapping("/a/billing/{userId}/{sessionId}/activate")
     public String setBillingActive(@PathVariable("userId") int userId, @PathVariable("sessionId") int sessionId, Authentication auth)
             throws NotLoggedInException,  UserNotFoundException {
         S_User user = getAuthUser(auth);
