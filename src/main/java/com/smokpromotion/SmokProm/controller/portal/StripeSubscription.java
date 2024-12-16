@@ -125,9 +125,13 @@ public class StripeSubscription extends PortalBaseController {
 
             LOGGER.warn(user.getUsername() + " Found: " + subCount + " subscriptions");
 
-            userService.update(user);
+
         } catch (StripeException e){
             return PRIBASE+"cancel-failed-stripe";
+        }
+
+        if (nsearch<subCount){
+            return "redirect:/a/billing";
         }
 
 
@@ -147,7 +151,7 @@ public class StripeSubscription extends PortalBaseController {
         sessionIds.put(mySessionId.toString(), user.getId());
         stripeIdtoMyUuud.put(session.getId(), mySessionId);
         myUuidToStripeUuid.put(mySessionId, session.getId());
-
+        myUuidToStripePaidQuant.put(mySessionId, nsearch);
 
 
 // Redirect to the URL returned on the Checkout Session.
