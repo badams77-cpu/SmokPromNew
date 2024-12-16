@@ -79,7 +79,9 @@ public class REP_UserService {
     public boolean update(S_User user){
         boolean ok = true;
         try {
-            userRepo.updateBean(new MultiId(user.getId()), user);
+          //  userRepo.updateBean(new MultiId(user.getId()), user);
+            userRepo.deleteBeanById(new MultiId(user.getId()));
+            userRepo.storeBean(user);
         } catch (Exception e){
             LOGGER.warn("Error updating user",e);
             return false;
