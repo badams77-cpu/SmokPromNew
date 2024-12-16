@@ -62,7 +62,9 @@ public class REP_SearchResult {
     public boolean update(DE_SearchResult ts){
         boolean ok = true;
         try {
-            searchRepo.updateBean(new MultiId(ts.getId()), ts);
+//            searchRepo.updateBean(new MultiId(ts.getId()), ts);
+            searchRepo.deleteBeanById(new MultiId(ts.getId()));
+            searchRepo.storeBean(ts);
         } catch (Exception e){
             LOGGER.warn("Error updating user",e);
             return false;

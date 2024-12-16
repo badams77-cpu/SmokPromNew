@@ -32,16 +32,16 @@ import java.util.Optional;
 @Controller
 public class TwitterCallbackController extends PortalBaseController{
 
-    private static Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(TwitterCallbackController.class);
+    private static final Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(TwitterCallbackController.class);
+
+    private final CreateTweet createTweet;
+
+    private final REP_AccessCode accessRepo;
 
     @Autowired
-    private CreateTweet createTweet;
-
-    private REP_AccessCode accessRepo;
-
-    @Autowired
-    public TwitterCallbackController(REP_AccessCode accessRepo) {
+    public TwitterCallbackController(REP_AccessCode accessRepo, CreateTweet createTweet) {
         this.accessRepo = accessRepo;
+        this.createTweet = createTweet;
     }
 
     @RequestMapping("/tcallback")
@@ -52,9 +52,11 @@ public class TwitterCallbackController extends PortalBaseController{
                               )   throws UserNotFoundException, NotLoggedInException
     {
         S_User user = getAuthUser(auth);
-        Optional<DE_AccessCode> accessCodeOpt = accessRepo.getLastCodeForUser(user.getId());
+        Optional<DE_AccessCode> accessCodeOpt = accessRepo.getLastCodeWithoutAccessForUser(user.getId());
 
-        if (!accessCodeOpt.isPresent() || !state.equalsIgnoreCase("state_code_0")) {
+        if (accessCodeOpt.isEmpty()
+                        || !state.equalsIgnoreCase("state_code_0")
+        ) {
             LOGGER.warn("Access code present"+accessCodeOpt.isPresent());
             LOGGER.warn("State was "+state);
             return PRIBASE+"callback_failed";
@@ -65,7 +67,7 @@ public class TwitterCallbackController extends PortalBaseController{
         code1.setAccessCode(code);
 
         OAuth2AccessToken tok = createTweet.getAccessToken(code);
-        code1.setRequestToken(tok.getAccessToken());
+        code1.setAccessCode(tok.getAccessToken());
 
         accessRepo.update(code1);
 

@@ -108,7 +108,9 @@ public class REP_SeduledTwitterSearch {
     public boolean update(DE_SeduledTwitterSearch ts){
         boolean ok = true;
         try {
-            searchRepo.updateBean(new MultiId(ts.getId()), ts);
+            //searchRepo.updateBean(new MultiId(ts.getId()), ts);
+            searchRepo.deleteBeanById(new MultiId(ts.getId()));
+            searchRepo.storeBean(ts);
         } catch (Exception e){
             LOGGER.warn("Error updating scheduled twitter search",e);
             return false;

@@ -83,10 +83,16 @@ public class REP_AccessCode {
         return res;
     }
 
+    public Optional<DE_AccessCode> getLastCodeWithoutAccessForUser(int userId) {
+        List<DE_AccessCode> res = searchRepo.getBeansNP(
+                "SELECT "+ searchRepo.getFields()+" FROM "+
+                        DE_AccessCode.getTableNameStatic()
+                        +" WHERE user_id=:user_id AND access_code IS NULL  ORDER BY code_date DESC", new String[]{"user_id"}, new Object[]{userId});
+        return res.stream().findFirst();
+    }
 
 
-
-    public Optional<DE_AccessCode> getLastCodeForUser(int userId) {
+    public Optional<DE_AccessCode> getLastCodeWithAccessForUser(int userId) {
         List<DE_AccessCode> res = searchRepo.getBeansNP(
                 "SELECT "+ searchRepo.getFields()+" FROM "+
                 DE_AccessCode.getTableNameStatic()

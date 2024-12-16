@@ -31,12 +31,12 @@ import java.util.UUID;
 @Controller
 public class StripeSubscription extends PortalBaseController {
 
-    @Value("${apiKey:sk_test_51QCuAPC5jvKI3njfL5QYiTOSBtcwjjDo0a7LrpyXpkQRFjlxiAWFpoiYwIyTKimfqz3iRvCxZuI5k7GPCk3KSHey00oTIz4A4j}")
-    private String apiKey;
 
 
-
-    private String priceId = "price_1QCuBoC5jvKI3njfi6HcYdjo";
+    @Value("${apiKey:pk_live_51NbwagFrTtrppWcAKQ52o5wR09EKrPPOagnd1x6Ku1hWAfAVPNtPN4RPxSclryqcYzkTNOoWu5mzm4qvyyBf5jKy00bds2ZO9j}")
+    private String apikey;
+    
+    private String priceId = "price_1QCu4mFrTtrppWcAZx4BaPqh";
 
     private HashMap<String, Integer> sessionIds;
 

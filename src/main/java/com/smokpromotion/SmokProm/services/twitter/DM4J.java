@@ -102,7 +102,7 @@ public class DM4J {
             }
         }*/
 
-        Optional<DE_AccessCode> accessCodeOptional = repAccessCode.getLastCodeForUser(userId);
+        Optional<DE_AccessCode> accessCodeOptional = repAccessCode.getLastCodeWithAccessForUser(userId);
 
         if (accessCodeOptional.isEmpty()) {
             return;
@@ -113,7 +113,7 @@ public class DM4J {
 
         var conf = new ConfigurationBuilder()
 //                .setOAuthAccessToken(access)
-                .setOAuth2AccessToken(requestToken)
+                .setOAuth2AccessToken(access)
                 .setJSONStoreEnabled(true)
                 .build();
         OAuthAuthorization oAuth = new OAuthAuthorization(conf);
@@ -215,6 +215,8 @@ public class DM4J {
                         twitter.tweets().updateStatus(stat);
                         sent = true;
                         sentCount++;
+                        sr.setSent(true);
+                        resultRepo.update(sr);
                     } catch (Exception e){
 
                     }
