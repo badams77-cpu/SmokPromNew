@@ -91,7 +91,7 @@ public class AccessEmailer {
         credentials.setOAUth2AutoRefreshToken(true);
     }
 
-    @Scheduled(cron="0 5,15,25,35,45,55 * * * *")
+    @Scheduled(cron="0 5 6,8,10,12,14,16,18 * * *")
     public void AccessEmailScheduledRun(){
         var conf = new ConfigurationBuilder()
                 .setJSONStoreEnabled(true)
@@ -112,11 +112,13 @@ public class AccessEmailer {
             try {
 
                 PKCE pkce = new PKCE();
-                pkce.setCodeChallenge("challenge");
+                pkce.setCodeChallenge("chalBlenge");
                 pkce.setCodeChallengeMethod(PKCECodeChallengeMethod.PLAIN);
                 pkce.setCodeVerifier("challenge");
 
                 S_User user = userService.getById(uid);
+
+                if (user.getSubCount()==0){ continue; }
 
                 String email = user.getUsername();
 
