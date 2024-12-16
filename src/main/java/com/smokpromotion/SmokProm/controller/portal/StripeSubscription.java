@@ -49,6 +49,7 @@ public class StripeSubscription extends PortalBaseController {
     @Autowired
     private REP_TwitterSearch repTwitterSearch;
 
+
     public StripeSubscription(@Value("${stripKey:}") String stripKey){
         apiKey = "sk_live_51"+stripKey;
     }
