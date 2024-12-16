@@ -33,9 +33,9 @@ public class StripeSubscription extends PortalBaseController {
 
 
 
-    @Value("${apiKey:pk_live_51NbwagFrTtrppWcAKQ52o5wR09EKrPPOagnd1x6Ku1hWAfAVPNtPN4RPxSclryqcYzkTNOoWu5mzm4qvyyBf5jKy00bds2ZO9j}")
-    private String apikey;
-    
+    @Value("${stripe_apiKey:pk_live_51NbwagFrTtrppWcAKQ52o5wR09EKrPPOagnd1x6Ku1hWAfAVPNtPN4RPxSclryqcYzkTNOoWu5mzm4qvyyBf5jKy00bds2ZO9j}")
+    private String apiKey;
+
     private String priceId = "price_1QCu4mFrTtrppWcAZx4BaPqh";
 
     private HashMap<String, Integer> sessionIds;
