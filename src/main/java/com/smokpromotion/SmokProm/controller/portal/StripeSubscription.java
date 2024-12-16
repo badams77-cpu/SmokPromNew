@@ -123,7 +123,7 @@ public class StripeSubscription extends PortalBaseController {
 
 
     @GetMapping("/a/billing/{userId}/{sessionId}/activate")
-    public String setBillingActive(@PathVariable("userId") int userId, @PathVariable("sessionId") int sessionId, Authentication auth)
+    public String setBillingActive(@PathVariable("userId") int userId, @PathVariable("sessionId") String sessionId, Authentication auth)
             throws NotLoggedInException,  UserNotFoundException {
         S_User user = getAuthUser(auth);
         if (user.getId()==userId && sessionIds.get(stripeIdtoMyUuud.getOrDefault(sessionId, UUID.randomUUID())).equals(userId)){
@@ -137,7 +137,7 @@ public class StripeSubscription extends PortalBaseController {
 
     @GetMapping("/a/billing/{userId}/deactivate")
     public String setBillingCancelled(@PathVariable("userId") int userId,  @PathVariable("sessionId")
-    int sessionId,Authentication auth) throws NotLoggedInException,  UserNotFoundException {
+    String sessionId,Authentication auth) throws NotLoggedInException,  UserNotFoundException {
         S_User user = getAuthUser(auth);
         if (user.getId()==userId && sessionIds.get(myUuidToStripeUuid.get(sessionId)).equals(userId)){
             user.setSubCount(0);
