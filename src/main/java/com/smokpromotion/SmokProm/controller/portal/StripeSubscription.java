@@ -126,11 +126,13 @@ public class StripeSubscription extends PortalBaseController {
     public String setBillingActive(@PathVariable("userId") int userId, @PathVariable("sessionId") String sessionId, Authentication auth)
             throws NotLoggedInException,  UserNotFoundException {
         S_User user = getAuthUser(auth);
-        if (user.getId()==userId && sessionIds.get(stripeIdtoMyUuud.getOrDefault(sessionId, UUID.randomUUID())).equals(userId)){
-
-            user.setSubCount(myUuidToStripePaidQuant.getOrDefault(
-                    stripeIdtoMyUuud.getOrDefault(sessionId, UUID.randomUUID()), user.getSubCount()));
-            userService.update(user);
+        if (user.getId()==userId){
+            Integer sessUserId = sessionIds.get(stripeIdtoMyUuud.getOrDefault(sessionId, UUID.randomUUID());
+            if( sessUserId!=null && sessUserId.intValue()==userId) {
+                user.setSubCount(myUuidToStripePaidQuant.getOrDefault(
+                        stripeIdtoMyUuud.getOrDefault(sessionId, UUID.randomUUID()), user.getSubCount()));
+                userService.update(user);
+            }
         }
         return PRIBASE+"billing-success";
     }
@@ -139,9 +141,12 @@ public class StripeSubscription extends PortalBaseController {
     public String setBillingCancelled(@PathVariable("userId") int userId,  @PathVariable("sessionId")
     String sessionId,Authentication auth) throws NotLoggedInException,  UserNotFoundException {
         S_User user = getAuthUser(auth);
-        if (user.getId()==userId && sessionIds.get(myUuidToStripeUuid.get(sessionId)).equals(userId)){
-            user.setSubCount(0);
-            userService.update(user);
+        if (user.getId()==userId){
+            Integer sessUserId = sessionIds.get(stripeIdtoMyUuud.getOrDefault(sessionId, UUID.randomUUID());
+            if( sessUserId!=null && sessUserId.intValue()==userId) {
+                user.setSubCount(0);
+                userService.update(user);
+            }
         }
         return PRIBASE+"billing-cancelled";
     }
