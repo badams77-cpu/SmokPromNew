@@ -49,7 +49,7 @@
 
 
     <LI> if you want stop payments (and sending tweets) <a href="/a/billing-stripe">cancel here</a></LI>
-    <LI th:unless="${paying!=0}">Your Subscription is not active  - <a href="/a/billing-stripe">Pay here </a></LI>
+    <LI th:unless="${paying!=0 || nsearch==0}">Your Subscription is not active  - <a href="/a/billing-stripe">Pay here </a></LI>
 
     <LI><a href="/a/home">Back</a> to Home Page</LI>
 </UL>
