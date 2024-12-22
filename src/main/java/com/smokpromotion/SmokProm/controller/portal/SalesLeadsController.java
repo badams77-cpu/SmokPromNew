@@ -101,7 +101,10 @@ public class SalesLeadsController extends PortalBaseController{
             SalesLeadEntity ent1 = ent.get();
             LeadStatus ls = ent.get().getLeadStatus();
             int i =  ls.ordinal();
-            List<LeadStatus>  stats = Arrays.asList(LeadStatus.values());
+
+            List<LeadStatus>  stats =
+                    new LinkedList<>();
+            stats.addAll(Arrays.asList(LeadStatus.values()));
             stats.addAll(Arrays.asList(LeadStatus.values()));
             ls = stats.get(i+1);
             ent1.setLeadStatus(ls);
