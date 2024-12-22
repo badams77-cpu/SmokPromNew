@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public enum LeadStatus {
 
-    UKNOWN(""),NEW("new"), FAILED("failed"), SUCCESS("success"), LAPSED("lapsed");
+    UKNOWN("unknown"),NEW("new"), FAILED("failed"), SUCCESS("success"), LAPSED("lapsed");
 
     private String type;
 
