@@ -108,6 +108,7 @@ public class SalesLeadsController extends PortalBaseController{
             stats.addAll(Arrays.asList(LeadStatus.values()));
             ls = stats.get(i+1);
             ent1.setLeadStatus(ls);
+            ent1.setUserId(user.getId());
             salesRepo.update(ent1);
         }
         return "redirect:/a/sales-leads?period="+period;

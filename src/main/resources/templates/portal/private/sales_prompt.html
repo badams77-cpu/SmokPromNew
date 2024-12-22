@@ -45,6 +45,9 @@
     <BUTTON TYPE="submit" VALUE="Press To Generate Sales Text">Press To Generate Sales Text</BUTTON>
 </FORM>
 
+<pre th:text="${response}">
+</pre>
+
 <FORM th:action="${'#'}" METHOD="GET">
     <TEXTAREA cols="80" rows="16" th:value="${response}"></TEXTAREA>
 </FORM>
