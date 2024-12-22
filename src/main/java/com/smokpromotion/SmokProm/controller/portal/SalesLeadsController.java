@@ -93,7 +93,7 @@ public class SalesLeadsController extends PortalBaseController{
 
 
 
-    @RequestMapping(value="/a/sales-lead-cycle/{$id}")
+    @RequestMapping(value="/a/sales-lead-cycle/{id}")
     public String leadsCycle(Model m, @RequestParam(name="period") int period, @PathVariable("id") int id, Authentication auth) throws UserNotFoundException, NotLoggedInException {
         S_User user = getAuthUser(auth);
         Optional<SalesLeadEntity> ent = salesRepo.getById(user.getId(), id);

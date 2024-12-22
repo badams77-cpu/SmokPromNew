@@ -57,7 +57,7 @@
         <TD><span th:text="${sr.id}"></span></TD>
         <TD><span th:text="${sr.twitterHandle}"></span></TD>
         <TD><span th:text="${sr.createdDateString}"></span></TD>
-        <TD><a th:href="${'/a/sales-leads-cycle/'+id+'?period='+period}">
+        <TD><a th:href="${'/a/sales-lead-cycle/'+sr.id+'?period='+period}">
             <span th:text="${sr.leadStatusString}"></span></a></TD>
         <TD><a th:href="${'/a/sales-notes/'+sr.id}" >View Lead</a></TD>
     </TR>

@@ -21,7 +21,7 @@ public class OpenAIService {
     private final String key;
 
     public OpenAIService(@Value("${open_ai_key:}") String openAIkey){
-        key = "sk_proj_"+openAIkey;
+        key = "sk-proj-"+openAIkey;
     }
 
 
