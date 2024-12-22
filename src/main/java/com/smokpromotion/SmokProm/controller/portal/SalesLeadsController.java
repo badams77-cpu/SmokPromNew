@@ -112,7 +112,7 @@ public class SalesLeadsController extends PortalBaseController{
 
     @RequestMapping("a/sales-prompt")
     public String sellPromptPage(Model m){
-        return PRIBASE+"sales-prompt";
+        return PRIBASE+"sales_prompt";
     }
 
     @RequestMapping(value="/a/sales-prompt-post")
@@ -139,7 +139,7 @@ public class SalesLeadsController extends PortalBaseController{
 
 
 
-        return PRIBASE+"sales-prompt";
+        return PRIBASE+"sales_prompt";
     }
 
 
