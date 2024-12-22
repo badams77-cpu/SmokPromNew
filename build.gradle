@@ -252,6 +252,11 @@ war {
 
 //         implementation group: 'org.flywaydb', name: 'flyway-core'
 
+
+         // AI
+         implementation group: 'dev.langchain4j', name: 'langchain4j', version: '1.0.0-alpha1'
+         implementation group: 'dev.langchain4j', name: 'langchain4j-open-ai', version: '1.0.0-alpha1'
+
      }
 
      test {

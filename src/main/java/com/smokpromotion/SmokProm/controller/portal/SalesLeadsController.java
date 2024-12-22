@@ -7,6 +7,7 @@ import com.smokpromotion.SmokProm.domain.repo.REP_UserService;
 import com.smokpromotion.SmokProm.domain.repo.REP_VPMessage;
 import com.smokpromotion.SmokProm.exceptions.NotLoggedInException;
 import com.smokpromotion.SmokProm.exceptions.UserNotFoundException;
+import com.smokpromotion.SmokProm.services.ai.OpenAIService;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,8 @@ public class SalesLeadsController extends PortalBaseController{
 
     private static final String adminEmail="vapidpromotions@gmail.com";
 
+    @Autowired
+    private OpenAIService aiService;
 
     @Autowired
     private REP_SalesLeadEntity salesRepo;
@@ -107,7 +110,37 @@ public class SalesLeadsController extends PortalBaseController{
         return "redirect:/a/sales-leads?period="+period;
     }
 
+    @RequestMapping("a/sales-prompt")
+    public String sellPromptPage(Model m){
+        return PRIBASE+"sales-prompt";
+    }
 
+    @RequestMapping(value="/a/sales-prompt-post")
+    public String sellPrompt(@RequestBody MultiValueMap<String, String> data, Model m, Authentication auth) throws Exception, UserNotFoundException, NotLoggedInException
+    {
+        S_User user = getAuthUser(auth);
+        List<String> def = new LinkedList<>();
+        def.add("10000");
+
+        List<String> defHandle = new LinkedList<>();
+        def.add("Empty");
+
+        List<String> what = data.getOrDefault("what", new LinkedList<>());
+
+        List<String> userWants = data.getOrDefault("user-wants", new LinkedList<>());
+
+        if (what.size()>0 && userWants.size()>0) {
+            String prompt = "Write two paragraphs to sell "+what.get(0)+" to a customers that wants "+userWants.get(0);
+            m.addAttribute("response", aiService.chat(prompt));
+        }
+        m.addAttribute("form", data);
+
+        m.addAttribute("userName", user.getFirstname()+" "+user.getLastname());
+
+
+
+        return PRIBASE+"sales-prompt";
+    }
 
 
 

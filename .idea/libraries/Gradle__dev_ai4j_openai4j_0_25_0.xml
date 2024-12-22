@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: dev.ai4j:openai4j:0.25.0" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="dev.ai4j" artifactId="openai4j" version="0.25.0" baseVersion="0.25.0" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/dev.ai4j/openai4j/0.25.0/ccb2d676b81936fb4f5cd01cb9bb1636ce9c5e5d/openai4j-0.25.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
