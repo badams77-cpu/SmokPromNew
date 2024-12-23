@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDate;
 
 @Service
 public class REP_AccessCode {
@@ -50,7 +51,7 @@ public class REP_AccessCode {
         List<Integer> res = searchRepo.getListNPUsingIntegerMapper(
                 "SELECT DISTINCT user_id FROM "+
                 DE_AccessCode.getTableNameStatic()
-                +" WHERE code_date=now() and code_used_date IS NULL ",
+                +" WHERE code_date=curdate() and code_used_date IS NULL ",
                  new String[0], new Object[0]);
         return res;
     }
@@ -107,6 +108,21 @@ public class REP_AccessCode {
 
     }
 
+    public List<DE_AccessCode> getByUser(int uid)  {
+        List<DE_AccessCode> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields()+" FROM "+DE_TwitterSearch.getTableNameStatic()
+                +"  userid=:uid", new String[]{"uid"}, new Object[]{uid});
+        return res;
+
+    }
+
+    public void updateSetCodeUsed(int userid){
+        List<DE_AccessCode> uList = getByUser(userid);
+        LocalDate now = LocalDate.now();
+        for(DE_AccessCode ac: uList){
+            ac.setCodeUsedDate(now);
+            update(ac);
+        }
+    }
 
 
     public boolean update(DE_AccessCode ts){

@@ -19,7 +19,7 @@ import twitter4j.auth.AccessToken;
 import twitter4j.auth.OAuthAuthorization;
 import twitter4j.auth.RequestToken;
 import twitter4j.conf.ConfigurationBuilder;
-
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,6 +65,7 @@ public class DM4J {
         for(Integer userId : usersWithCodes){
             try {
                 sendTweetsAndDMs(userId);
+                repAccessCode.updateSetCodeUsed(userId);
             } catch (UserNotFoundException e){
                 LOGGER.warn("UserId not found: "+userId);
             }
@@ -163,7 +164,7 @@ public class DM4J {
                 repoTwitterSearch.getById(sds.getTwitterSearchId(), sds.getUserId());
 
             } catch (TwitterSearchNotFoundException e) {
-
+                LOGGER.warn("User  "+user.getUsername()+" exception find twitter search",e);
             }
             // id sendDM(int userId, int searchId, int replyId) throws TwitterException {
             List<DE_SearchResult> todaysResults = resultRepo.findByUserUnsent(userId, sds.getId());
@@ -195,6 +196,7 @@ public class DM4J {
                         // Mark Sent DM
 
                     } catch (TwitterException e) {
+                        LOGGER.warn("User  "+user.getUsername()+" exception with dm ",e);
                     }
                     //             System.out.printf("Sent: %s to @%d%n", directMessage.getText(), directMessage.getRecipientId());
                 }
@@ -218,7 +220,7 @@ public class DM4J {
                         sr.setSent(true);
                         resultRepo.update(sr);
                     } catch (Exception e){
-
+                        LOGGER.warn("User  "+user.getUsername()+" exception with tweeting ",e);
                     }
 
                     sds.setNsent(sentCount);

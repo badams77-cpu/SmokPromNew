@@ -50,7 +50,7 @@ public class TwitterCallbackController extends PortalBaseController{
                               @RequestParam("state") String state,
                               @RequestParam("code") String code,
                               Authentication auth
-                              )   throws Exception
+                              )   throws UserNotFoundException, NotLoggedInException
     {
         S_User user = getAuthUser(auth);
         Optional<DE_AccessCode> accessCodeOpt = accessRepo.getLastCodeWithoutAccessForUser(user.getId());
@@ -67,15 +67,23 @@ public class TwitterCallbackController extends PortalBaseController{
 
         code1.setAccessCode(code);
 
-        OAuth2AccessToken tok = createTweet.getAccessToken(code,state);
+        try {
 
-        if (tok==null){
-            return PRIBASE+"callback_failed_tok";
+            OAuth2AccessToken tok = createTweet.getAccessToken(code, state);
+
+            if (tok == null) {
+                return PRIBASE + "callback_failed_tok";
+            }
+
+            code1.setAccessCode(tok.getAccessToken());
+
+            accessRepo.update(code1);
+
+        } catch (Exception e){
+           LOGGER.warn("State was "+state);
+           return PRIBASE+"callback_failed_tok";
         }
 
-        code1.setAccessCode(tok.getAccessToken());
-
-        accessRepo.update(code1);
 
         return PRIBASE+"callback_success";
     }
