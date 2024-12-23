@@ -7,6 +7,7 @@ import com.smokpromotion.SmokProm.domain.entity.VPMessage;
 import com.smokpromotion.SmokProm.domain.repo.REP_AccessCode;
 import com.smokpromotion.SmokProm.domain.repo.REP_UserService;
 import com.smokpromotion.SmokProm.domain.repo.REP_VPMessage;
+import java.io.IOException;
 import com.smokpromotion.SmokProm.exceptions.NotLoggedInException;
 import com.smokpromotion.SmokProm.exceptions.UserNotFoundException;
 import com.smokpromotion.SmokProm.services.twitter.CreateTweet;
@@ -49,7 +50,7 @@ public class TwitterCallbackController extends PortalBaseController{
                               @RequestParam("state") String state,
                               @RequestParam("code") String code,
                               Authentication auth
-                              )   throws UserNotFoundException, NotLoggedInException
+                              )   throws Exception
     {
         S_User user = getAuthUser(auth);
         Optional<DE_AccessCode> accessCodeOpt = accessRepo.getLastCodeWithoutAccessForUser(user.getId());
@@ -66,7 +67,7 @@ public class TwitterCallbackController extends PortalBaseController{
 
         code1.setAccessCode(code);
 
-        OAuth2AccessToken tok = createTweet.getAccessToken(code);
+        OAuth2AccessToken tok = createTweet.getAccessToken(code,state);
 
         if (tok==null){
             return PRIBASE+"callback_failed_tok";

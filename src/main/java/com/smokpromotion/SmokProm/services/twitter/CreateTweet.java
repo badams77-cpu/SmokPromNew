@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -59,8 +59,8 @@ public class CreateTweet {
 
     }
 
-    public TwitterApi getCredentials(String code){
-        OAuth2AccessToken accessToken = getAccessToken( code);
+    public TwitterApi getCredentials(String code, String state) throws Exception {
+        OAuth2AccessToken accessToken = getAccessToken( code, state);
         if (accessToken == null) {
             return null;
         }
@@ -100,7 +100,7 @@ public class CreateTweet {
     }
 
 
-    public OAuth2AccessToken getAccessToken( String code) {
+    public OAuth2AccessToken getAccessToken( String code , String secretState) throws Exception {
         TwitterOAuth20Service service = new TwitterOAuth20Service(
                 credentials.getTwitterOauth2ClientId(),
                 credentials.getTwitterOAuth2ClientSecret(),
@@ -108,11 +108,11 @@ public class CreateTweet {
                 "offline.access dm.write tweet.read users.read tweet.write");
         File codeFile = new File("/tmp/twitter_code");
         OAuth2AccessToken accessToken = null;
-        try {
+  //      try {
 
             LOGGER.warn("Fetching the Authorization URL...");
 
-            final String secretState = "state_code_0";
+   //         final String secretState = "state_code_0";
             PKCE pkce = new PKCE();
             pkce.setCodeChallenge("challenge");
             pkce.setCodeChallengeMethod(PKCECodeChallengeMethod.PLAIN);
@@ -123,9 +123,9 @@ public class CreateTweet {
 
             LOGGER.warn("Access token: " + accessToken.getAccessToken());
             LOGGER.warn("Refresh token: " + accessToken.getRefreshToken());
-        } catch (Exception e) {
-            LOGGER.warn("Error while getting the access token:\n " ,e);
-        }
+ //       } catch (Exception e) {
+    //        LOGGER.warn("Error while getting the access token:\n " ,e);
+  //      }
         return accessToken;
     }
 
