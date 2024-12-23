@@ -30,7 +30,7 @@ public class SImpleSearchSchedule {
     @Autowired
     private Search4J searchService;
 
-    @Scheduled(cron="0 0 6 * * *")
+    @Scheduled(cron="0 0 18 * * *")
     public void scheduler(){
         List<S_User> user = userRepo.getAllActive();
         Map<Integer, S_User> userMap = user.stream().collect(Collectors.toMap(x->x.getId(), x->x));
@@ -41,8 +41,8 @@ public class SImpleSearchSchedule {
             int nSearchesDonePerUser = nseeachesPerUbux.getOrDefault(u.getId(),0);
             boolean firstTrial = (nSearchesDonePerUser==0 && u.getSubCount()==0);
             if (u.isUseractive() && nSearchesDonePerUser<u.getSubCount() || firstTrial){
-                searchService.searchTwitter(u.getId(), s.getId(), firstTrial);
                 try {
+                    searchService.searchTwitter(u.getId(), s.getId(), firstTrial);
                     Thread.sleep(WAIT_TIME_RATE_LIMIT);
                 } catch (InterruptedException e) {}
             }

@@ -67,6 +67,11 @@ public class TwitterCallbackController extends PortalBaseController{
         code1.setAccessCode(code);
 
         OAuth2AccessToken tok = createTweet.getAccessToken(code);
+
+        if (tok==null){
+            return PRIBASE+"callback_failed_tok";
+        }
+
         code1.setAccessCode(tok.getAccessToken());
 
         accessRepo.update(code1);

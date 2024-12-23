@@ -89,9 +89,14 @@ public class AccessEmailer {
                 accessToken,
                 accessToken);
         credentials.setOAUth2AutoRefreshToken(true);
+        if (clientId.equals("") || clientId.equals("")) {
+            LOGGER.error("No twitoauth credentials access emailer");
+        } else {
+            LOGGER.error("Have twitoauth credentials access emailer");
+        }
     }
 
-    @Scheduled(cron="0 5 6,8,10,12,14,16,18 * * *")
+    @Scheduled(cron="0 40 6,8,10,12,14,16,18,19 * * *")
     public void AccessEmailScheduledRun(){
         var conf = new ConfigurationBuilder()
                 .setJSONStoreEnabled(true)

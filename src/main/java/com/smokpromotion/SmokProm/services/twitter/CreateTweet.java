@@ -14,7 +14,8 @@ import com.twitter.clientlib.model.TweetCreateResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
+import org.slf4j.Logger;
+import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.Date;
@@ -22,6 +23,9 @@ import java.util.Scanner;
 
 @Service
 public class CreateTweet {
+
+
+    private static final Logger LOGGER = MethodPrefixingLoggerFactory.getLogger(CreateTweet.class);
 
     private static final String CODE = "FDCode101";
 
@@ -45,7 +49,11 @@ public class CreateTweet {
                 accessToken,
                 accessToken);
         credentials.setOAUth2AutoRefreshToken(true);
-
+        if (clientId.equals("") || clientId.equals("")) {
+            LOGGER.error("createtweet No twitoauth credentials");
+        } else {
+            LOGGER.error("createtweet Have twitoauth credentials");
+        }
 //                  apiInstance.setTwitterCredentials(new TwitterCredentialsBearer(System.getenv("TWITTER_BEARER_TOKEN")));
         apiInstance = new TwitterApi(credentials);
 
@@ -71,27 +79,52 @@ public class CreateTweet {
                 credentials.getTwitterOauth2ClientId(),
                 credentials.getTwitterOAuth2ClientSecret(),
                 "https://www.vapidpromotions.com/tcallback",
-                "offline.access tweet.read dm.write users.read tweet.write");
+                "offline.access dm.write tweet.read users.read tweet.write");
         File codeFile = new File("/tmp/twitter_code");
         OAuth2AccessToken accessToken = null;
         try {
 
-            System.out.println("Fetching the Authorization URL...");
+            LOGGER.warn("Fetching the Authorization URL...");
+
+            final String secretState = "state_code_0";
+            PKCE pkce = new PKCE();
+            pkce.setCodeChallenge("challenge");
+            pkce.setCodeChallengeMethod(PKCECodeChallengeMethod.PLAIN);
+            pkce.setCodeVerifier("challenge");
+            String authorizationUrl = service.getAuthorizationUrl(pkce, secretState);
+            return authorizationUrl;
+        } catch (Exception e) {
+            LOGGER.warn("Error while getting the auth url:\n " ,e);
+        }
+        return "";
+    }
+
+
+    public OAuth2AccessToken getAccessToken( String code) {
+        TwitterOAuth20Service service = new TwitterOAuth20Service(
+                credentials.getTwitterOauth2ClientId(),
+                credentials.getTwitterOAuth2ClientSecret(),
+                "https://www.vapidpromotions.com/tcallback",
+                "offline.access dm.write tweet.read users.read tweet.write");
+        File codeFile = new File("/tmp/twitter_code");
+        OAuth2AccessToken accessToken = null;
+        try {
+
+            LOGGER.warn("Fetching the Authorization URL...");
 
             final String secretState = "state";
             PKCE pkce = new PKCE();
             pkce.setCodeChallenge("challenge");
             pkce.setCodeChallengeMethod(PKCECodeChallengeMethod.PLAIN);
             pkce.setCodeVerifier("challenge");
-     //       String authorizationUrl = service.getAuthorizationUrl(pkce, secretState);
+            String authorizationUrl = service.getAuthorizationUrl(pkce, secretState);
 
             accessToken = service.getAccessToken(pkce, code);
 
-            System.out.println("Access token: " + accessToken.getAccessToken());
-            System.out.println("Refresh token: " + accessToken.getRefreshToken());
+            LOGGER.warn("Access token: " + accessToken.getAccessToken());
+            LOGGER.warn("Refresh token: " + accessToken.getRefreshToken());
         } catch (Exception e) {
-            System.err.println("Error while getting the access token:\n " + e);
-            e.printStackTrace();
+            LOGGER.warn("Error while getting the access token:\n " ,e);
         }
         return accessToken;
     }
