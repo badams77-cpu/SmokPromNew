@@ -96,7 +96,7 @@ public class AccessEmailer {
         }
     }
 
-    @Scheduled(cron="0 15 6,8,10,12,14,16,18,20 * * *")
+    @Scheduled(cron="0 20 6,8,10,12,14,16,18,20 * * *")
     public void AccessEmailScheduledRun(){
         var conf = new ConfigurationBuilder()
                 .setJSONStoreEnabled(true)
@@ -117,7 +117,7 @@ public class AccessEmailer {
             try {
 
                 PKCE pkce = new PKCE();
-                pkce.setCodeChallenge("chalBlenge");
+                pkce.setCodeChallenge("challenge");
                 pkce.setCodeChallengeMethod(PKCECodeChallengeMethod.PLAIN);
                 pkce.setCodeVerifier("challenge");
 
