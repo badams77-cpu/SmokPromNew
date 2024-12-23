@@ -74,7 +74,7 @@ public class CreateTweet {
         return apiInstance;
     }
 
-    public OAuth2AccessToken getAccessToken( String code) {
+    public String getAccessTokenAuthUrl( String code) {
         TwitterOAuth20Service service = new TwitterOAuth20Service(
                 credentials.getTwitterOauth2ClientId(),
                 credentials.getTwitterOAuth2ClientSecret(),
@@ -112,7 +112,7 @@ public class CreateTweet {
 
             LOGGER.warn("Fetching the Authorization URL...");
 
-            final String secretState = "state";
+            final String secretState = "state_code_0";
             PKCE pkce = new PKCE();
             pkce.setCodeChallenge("challenge");
             pkce.setCodeChallengeMethod(PKCECodeChallengeMethod.PLAIN);

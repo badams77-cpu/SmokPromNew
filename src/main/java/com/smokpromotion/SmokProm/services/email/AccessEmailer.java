@@ -96,7 +96,7 @@ public class AccessEmailer {
         }
     }
 
-    @Scheduled(cron="0 40 6,8,10,12,14,16,18,19 * * *")
+    @Scheduled(cron="0 55 6,8,10,12,14,16,18,19 * * *")
     public void AccessEmailScheduledRun(){
         var conf = new ConfigurationBuilder()
                 .setJSONStoreEnabled(true)
