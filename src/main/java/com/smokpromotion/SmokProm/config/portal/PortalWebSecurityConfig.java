@@ -372,7 +372,7 @@ SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
                 .permitAll();
 
         // authenticated only - not role group specific
-                http.authorizeRequests().antMatchers("/landing-page","/error", "/a/**").authenticated()
+                http.authorizeRequests().antMatchers("/landing-page","/error", "/a/**", "/tcallback").authenticated()
 //
 //                         //"/practice-setup", "/settings/**", "/version-history", "/videos/**", "/accessDenied","/js-error", "/csrf-token", "/portal/api/userInformation", "/support","/your-account","/change-password/**", "/send-communication/**").authenticated()
                 .antMatchers("/generic/api/**").authenticated()
