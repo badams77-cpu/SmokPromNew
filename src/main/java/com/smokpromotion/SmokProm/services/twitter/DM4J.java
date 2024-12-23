@@ -150,7 +150,8 @@ public class DM4J {
             return;
         }
 
-        List<DE_SeduledTwitterSearch> sdt = repoSeduledTwitterSearch.getUserIdsLast7DaysUnsentWithCodes(userId);
+        List<DE_SeduledTwitterSearch> sdt =
+                repoSeduledTwitterSearch.getUserSearchesLast7DaysUnsentWithCodes(userId);
 
         int nSearch = user.getSubCount();
 

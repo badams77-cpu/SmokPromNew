@@ -36,16 +36,16 @@ public class REP_SeduledTwitterSearch {
         }
     }
 
-    public List<DE_SeduledTwitterSearch>  getUserIdsLast7DaysUnsentWithCodes(int userId){
+    public List<DE_SeduledTwitterSearch>  getUserSearchesLast7DaysUnsentWithCodes(int userId){
         List<DE_SeduledTwitterSearch> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields("tw")+" FROM "+
                 DE_SeduledTwitterSearch.getTableNameStatic()+" tw "+
-                " INNER JOIN "+ DE_AccessCode.getTableNameStatic()+" ac ON tw.user_id=ac+user_id "
+                " INNER JOIN "+ DE_AccessCode.getTableNameStatic()+" ac ON tw.user_id=ac.user_id "
                 +" WHERE tw.user_id=:user_id AND tw.nresults>0 AND tw.nsent=0 AND tw.results_date" +
                         " BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) " +
                 " AND now()"+
                 " AND ac.code_date "+
                         " BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND ac.code_used_date IS NULL ORDER BY tw.twitter_search_id, tw.id ;"
-                , new String[]{}, new Object[]{});
+                , new String[]{"user_id"}, new Object[]{userId});
         return res;
     }
 
