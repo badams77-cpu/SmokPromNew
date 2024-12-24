@@ -162,7 +162,7 @@ public class DM4J {
 
             try {
 
-                repoTwitterSearch.getById(sds.getTwitterSearchId(), sds.getUserId());
+                ts = repoTwitterSearch.getById(sds.getTwitterSearchId(), sds.getUserId());
 
             } catch (TwitterSearchNotFoundException e) {
                 LOGGER.warn("User  "+user.getUsername()+" exception find twitter search",e);
