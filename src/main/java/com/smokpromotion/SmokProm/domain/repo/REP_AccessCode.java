@@ -110,7 +110,7 @@ public class REP_AccessCode {
 
     public List<DE_AccessCode> getByUser(int uid)  {
         List<DE_AccessCode> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields()+" FROM "+DE_TwitterSearch.getTableNameStatic()
-                +"  userid=:uid", new String[]{"uid"}, new Object[]{uid});
+                +" WHERE userid=:uid", new String[]{"uid"}, new Object[]{uid});
         return res;
 
     }
