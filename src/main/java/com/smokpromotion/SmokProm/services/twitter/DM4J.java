@@ -229,7 +229,7 @@ public class DM4J {
                         null,
                                 twiNum,
                         null,
-                        ts.getText());
+                        ts.getMessage());
                         sent = true;
                         sentCount++;
                         sr.setSent(true);
