@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import twitter4j.StatusUpdate;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
+import twitter4j.*;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.OAuthAuthorization;
 import twitter4j.auth.RequestToken;
@@ -142,7 +139,7 @@ public class DM4J {
         Twitter twitter1 = new TwitterFactory(conf).getInstance();
 
 //        Twitter twitter1 = new TwitterFactory().getInstance();
-        twitter = TwitterV2ExKt.getV2(twitter1);
+        twitter4j.TwitterV2 twitterV2 = TwitterV2ExKt.getV2(twitter1);
 
         //persist to the accessToken for future reference.
         //storeAccessToken(twitter.v1().users().verifyCredentials().getId(), accessToken);
@@ -184,7 +181,7 @@ public class DM4J {
 
             int sentCount = 0;
             boolean sent = false;
-
+/*
             if (GenericUtils.isValid(ts.getText())) {
                 for (DE_SearchResult sr : todaysResults) {
 
@@ -194,8 +191,8 @@ public class DM4J {
                             continue;
                         }
                     //    DirectMessage directMessage =
-                                //
-                                 twitter.directMessages().sendDirectMessage(receip, ts.getMessage());
+
+                                 twitter1.directMessages().sendDirectMessage(receip, ts.getMessage());
                         sent = true;
                         sentCount++;
                         // Mark Sent DM
@@ -206,20 +203,33 @@ public class DM4J {
                     //             System.out.printf("Sent: %s to @%d%n", directMessage.getText(), directMessage.getRecipientId());
                 }
             }
-
+*/
             if (GenericUtils.isValid(ts.getMessage())) {
                 for (DE_SearchResult sr : todaysResults) {
                     long twiNum = sr.getTweetId();
                     if (twiNum == 0) {
                         continue;
                     }
-                    StatusUpdate stat = new StatusUpdate(ts.getMessage());
-                    stat.inReplyToStatusId(twiNum);
+//                    StatusUpdate stat = new StatusUpdate(ts.getMessage());
+//                    stat.inReplyToStatusId(twiNum);
+
 
                     //             GeoLocation location = new GeoLocation(latitude, longitude);
                     //             stat.s(location);
                     try {
-                        twitter.tweets().updateStatus(stat);
+//                        twitter.tweets().updateStatus(stat);
+                        twitterV2.createTweet(null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                                twiNum,
+                        null,
+                        ts.getMessage();
                         sent = true;
                         sentCount++;
                         sr.setSent(true);
