@@ -139,7 +139,11 @@ public class DM4J {
         }
 
 
-        Twitter twitter = new TwitterFactory(conf).getInstance();
+        Twitter twitter1 = new TwitterFactory(conf).getInstance();
+
+//        Twitter twitter1 = new TwitterFactory().getInstance();
+        twitter = TwitterV2ExKt.getV2(twitter1);
+
         //persist to the accessToken for future reference.
         //storeAccessToken(twitter.v1().users().verifyCredentials().getId(), accessToken);
 
