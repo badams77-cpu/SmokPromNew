@@ -102,14 +102,14 @@ public class REP_AccessCode {
     }
 
     public DE_AccessCode getById(int id, int uid) throws TwitterSearchNotFoundException {
-        List<DE_AccessCode> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields()+" FROM "+DE_TwitterSearch.getTableNameStatic()
+        List<DE_AccessCode> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields()+" FROM "+DE_AccessCode.getTableNameStatic()
                 +" WHERE id=:id AND  user_id=:uid", new String[]{"id","uid"}, new Object[]{id, uid});
         return res.stream().findFirst().orElseThrow( ()->new TwitterSearchNotFoundException("TS"+id, "Search "+id+" not found"));
 
     }
 
     public List<DE_AccessCode> getByUser(int uid)  {
-        List<DE_AccessCode> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields()+" FROM "+DE_TwitterSearch.getTableNameStatic()
+        List<DE_AccessCode> res = searchRepo.getBeansNP("SELECT "+ searchRepo.getFields()+" FROM "+DE_AccessCode.getTableNameStatic()
                 +" WHERE user_id=:uid", new String[]{"uid"}, new Object[]{uid});
         return res;
 
