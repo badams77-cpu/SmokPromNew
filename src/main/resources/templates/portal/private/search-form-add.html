@@ -50,7 +50,7 @@
                    th:text="${#strings.listJoin(#fields.errors('message'), ', ')}"></p>
             </TD>
             </TR>
-            <INPUT TYPE="hidden" th:field="*{test}" th:value="${''}">
+            <INPUT TYPE="hidden" th:field="*{text}" th:value="${''}">
             <!--TR><TD>Message Text to send Direct message</TD><TD>
                 <TEXTAREA NAME="text" rows=8  cols="100"  SIZE="250" th:field="*{text}" ></TEXTAREA>
                 <p th:if="${#fields.hasErrors('text')}"
