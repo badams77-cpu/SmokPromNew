@@ -69,7 +69,7 @@ public class REP_AccessCode {
 
     }
 
-    public List<Integer>  getUserIdsLast7DaysWithoutCodes(){
+    public List<Integer>  getUserIdsLastDaysWithoutCodes(){
         List<Integer> res = searchRepo.getListNPUsingIntegerMapper("SELECT DISTINCT tw.user_id FROM "+
                         DE_SeduledTwitterSearch.getTableNameStatic()+" tw "
 
@@ -78,7 +78,7 @@ public class REP_AccessCode {
                         " AND now()) AND NOT EXISTS ("+
                         " SELECT * FROM "+ DE_AccessCode.getTableNameStatic()+" ac WHERE  "+
                         " ac.code_date "+
-                        " BETWEEN DATE_SUB(now(), INTERVAL 7 DAY) AND now() "+
+                        " BETWEEN DATE_SUB(now(), INTERVAL 1 DAY) AND now() "+
                 ");"
                 , new String[]{}, new Object[]{});
         return res;

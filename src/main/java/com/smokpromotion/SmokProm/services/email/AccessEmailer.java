@@ -103,7 +103,7 @@ public class AccessEmailer {
                 .build();
         OAuthAuthorization oAuth = new OAuthAuthorization(conf);
 
-        List<Integer> usersNeedingKeys = accessCodeRepo.getUserIdsLast7DaysWithoutCodes();
+        List<Integer> usersNeedingKeys = accessCodeRepo.getUserIdsLastDaysWithoutCodes();
 
         LOGGER.warn(usersNeedingKeys+" users needing keys");
 
