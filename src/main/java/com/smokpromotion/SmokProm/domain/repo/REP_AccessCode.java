@@ -76,9 +76,8 @@ public class REP_AccessCode {
                         +" WHERE  tw.nresult>0 AND tw.nsent=0 AND " +
                         " (results_date BETWEEN DATE_SUB(now(), INTERVAL 7 DAY)" +
                         " AND now()) AND NOT EXISTS ("+
-                        " SELECT * FROM "+ DE_AccessCode.getTableNameStatic()+" ac WHERE  "+
-                        " ac.code_date "+
-                        " BETWEEN DATE_SUB(now(), INTERVAL 1 DAY) AND now() "+
+                        " SELECT * FROM "+ DE_AccessCode.getTableNameStatic()+" ac WHERE  " +
+                        " BETWEEN DATE(ac.code_date)=CURDATE() and tw.user_id=ac.user_id "+
                 ");"
                 , new String[]{}, new Object[]{});
         return res;
