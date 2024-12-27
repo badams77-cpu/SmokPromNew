@@ -43,7 +43,7 @@
         <TD><span th:text="${sr.id}"></span></TD>
         <TD><span th:text="${sr.getCreatedDateString()}"></span></TD>
         <TD><span th:text="${sr.message}"></span></TD>
-        <TD th:if="${toId==fromId}"><Button th:onclick="${'javascript: getElementById(''toid'').value='+sr.from}">Set reply <span th:text="${sr.from}"></span></Button></TD>
+        <TD th:if="${toId==fromId}"><Button th:attr="onclick=| getElementById(''toid'').value='+${sr.from}|">Set reply <span th:text="${sr.from}"></span></Button></TD>
     </TR>
         </TABLE>
 </UL>
