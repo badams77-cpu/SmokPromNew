@@ -63,7 +63,8 @@ public class REP_AccessCode {
                 "SELECT DISTINCT user_id FROM "+DE_TwitterSearch.getTableNameStatic()+" ts "+
                         " JOIN DE_SearchResult.getTableNameStatic() sr ON sr.user_ud=ts.user_id " +
                         " WHERE ts.active=true and (sr.result_date=now()) and NOT EXISTS (" +
-                        " SELECT * FROM "+DE_AccessCode.getTableNameStatic()+" WHERE ac.user_id=ts.user_id AND ac.access_code_date=now()" +
+                        " SELECT * FROM "+DE_AccessCode.getTableNameStatic()+" WHERE ac.user_id=ts.user_id" +
+                        " AND ac.access_code_date=now()" +
                         ")" +
                         ";", new String[0], new Object[0]);
         return res;
@@ -78,7 +79,7 @@ public class REP_AccessCode {
                         " (results_date BETWEEN DATE_SUB(now(), INTERVAL 7 DAY)" +
                         " AND now()) AND NOT EXISTS ("+
                         " SELECT * FROM "+ DE_AccessCode.getTableNameStatic()+" ac WHERE  " +
-                        " DATE(ac.code_date)=CURDATE() and tw.user_id=ac.user_id "+
+                        " DATE(ac.access_code_date)=CURDATE() and tw.user_id=ac.user_id "+
                 ");"
                 , new String[]{}, new Object[]{});
         return res;
