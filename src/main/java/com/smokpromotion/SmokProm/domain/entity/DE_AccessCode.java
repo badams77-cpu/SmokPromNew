@@ -4,6 +4,7 @@ import com.majorana.maj_orm.ORM.BaseMajoranaEntity;
 import jakarta.persistence.Column;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class DE_AccessCode extends BaseMajoranaEntity {
 
@@ -19,10 +20,10 @@ public class DE_AccessCode extends BaseMajoranaEntity {
     private String requestToken;
 
     @Column(name="access_code_date")
-    private LocalDate codeDate;
+    private LocalDateTime codeDate;
 
     @Column(name="access_code_used_date")
-    private LocalDate codeUsedDate;
+    private LocalDateTime codeUsedDate;
 
     public String getRequestToken() {
         return requestToken;
@@ -56,19 +57,19 @@ public class DE_AccessCode extends BaseMajoranaEntity {
         this.userId = userId;
     }
 
-    public LocalDate getCodeDate() {
+    public LocalDateTime getCodeDate() {
         return codeDate;
     }
 
-    public void setCodeDate(LocalDate codeDate) {
+    public void setCodeDate(LocalDateTime codeDate) {
         this.codeDate = codeDate;
     }
 
-    public LocalDate getCodeUsedDate() {
+    public LocalDateTime getCodeUsedDate() {
         return codeUsedDate;
     }
 
-    public void setCodeUsedDate(LocalDate codeUsedDate) {
+    public void setCodeUsedDate(LocalDateTime codeUsedDate) {
         this.codeUsedDate = codeUsedDate;
     }
 }

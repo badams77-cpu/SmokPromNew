@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -65,8 +66,8 @@ public class TwitterCallbackController extends PortalBaseController{
 
         DE_AccessCode code1 = accessCodeOpt.get();
 
-        code1.setAccessCode(code);
-        code1.setCodeDate(LocalDate.now());
+//        code1.setAccessCode(code);
+        code1.setCodeDate(LocalDateTime.now());
         code1.setCodeUsedDate(null);
 
         try {

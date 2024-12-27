@@ -40,6 +40,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Profile("smok_app")
@@ -131,7 +132,7 @@ public class AccessEmailer {
 
                 DE_AccessCode codeEntity = new DE_AccessCode();
                 codeEntity.setUserId(uid);
-                codeEntity.setCodeDate(LocalDate.now());
+                codeEntity.setCodeDate(LocalDateTime.now());
   //              codeEntity.setRequestToken(pkce.getCodeChallenge());
                 codeEntity.setRequestToken(authToken);
                 accessCodeRepo.create(codeEntity);

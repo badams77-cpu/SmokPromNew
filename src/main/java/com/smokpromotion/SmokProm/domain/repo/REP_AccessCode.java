@@ -14,6 +14,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.time.LocalDate;
@@ -51,7 +52,7 @@ public class REP_AccessCode {
         List<Integer> res = searchRepo.getListNPUsingIntegerMapper(
                 "SELECT DISTINCT user_id FROM "+
                 DE_AccessCode.getTableNameStatic()
-                +" WHERE date(code_date)=curdate() and code_used_date IS NULL ",
+                +" WHERE access_code is not null and date(code_date)=curdate() and code_used_date IS NULL ",
                  new String[0], new Object[0]);
         return res;
     }
@@ -116,7 +117,7 @@ public class REP_AccessCode {
 
     public void updateSetCodeUsed(int userid){
         List<DE_AccessCode> uList = getByUser(userid);
-        LocalDate now = LocalDate.now();
+        LocalDateTime now = LocalDateTime.now();
         for(DE_AccessCode ac: uList){
             ac.setCodeUsedDate(now);
             update(ac);
