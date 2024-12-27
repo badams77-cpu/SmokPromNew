@@ -170,10 +170,11 @@ public class DM4J {
 
             try {
 
-                ts = repoTwitterSearch.getById(sds.getId(), sds.getUserId());
+                ts = repoTwitterSearch.getById(sds.getTwitterSearchId(), sds.getUserId());
 
             } catch (TwitterSearchNotFoundException e) {
                 LOGGER.warn("User  "+user.getUsername()+" exception find twitter search",e);
+                continue;
             }
             // id sendDM(int userId, int searchId, int replyId) throws TwitterException {
             List<DE_SearchResult> todaysResults = resultRepo.findByUserUnsent(userId, sds.getId());
