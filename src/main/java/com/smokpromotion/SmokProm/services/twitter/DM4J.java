@@ -171,7 +171,12 @@ public class DM4J {
             // id sendDM(int userId, int searchId, int replyId) throws TwitterException {
             List<DE_SearchResult> todaysResults = resultRepo.findByUserUnsent(userId, sds.getId());
 
+            LOGGER.warn("user "+user.getUsername()+" scheduled results "+
+                    sds.getId()+" has "+todaysResults.size()+" to send");
+
+
             if (!(nSds++ < nSearch)){
+                LOGGER.warn("Out of Search Subscription");
                 continue; // Seach limit reached
             }
 
