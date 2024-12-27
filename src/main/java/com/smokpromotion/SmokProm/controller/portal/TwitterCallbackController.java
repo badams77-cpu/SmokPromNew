@@ -66,8 +66,8 @@ public class TwitterCallbackController extends PortalBaseController{
 
         DE_AccessCode code1 = accessCodeOpt.get();
 
-//        code1.setAccessCode(code);
-        code1.setCodeDate(LocalDateTime.now());
+        code1.setAccessCode(code);
+        code1.setAccessCodeDate(LocalDateTime.now());
         code1.setCodeUsedDate(null);
 
         try {

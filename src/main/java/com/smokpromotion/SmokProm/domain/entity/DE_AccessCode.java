@@ -19,8 +19,11 @@ public class DE_AccessCode extends BaseMajoranaEntity {
     @Column(name="request_token")
     private String requestToken;
 
-    @Column(name="access_code_date")
+    @Column(name="code_date")
     private LocalDateTime codeDate;
+
+    @Column(name="access_code_date")
+    private LocalDateTime accessCodeDate;
 
     @Column(name="access_code_used_date")
     private LocalDateTime codeUsedDate;
@@ -57,12 +60,20 @@ public class DE_AccessCode extends BaseMajoranaEntity {
         this.userId = userId;
     }
 
+    public LocalDateTime getAccessCodeDate() {
+        return accessCodeDate;
+    }
+
     public LocalDateTime getCodeDate() {
         return codeDate;
     }
 
     public void setCodeDate(LocalDateTime codeDate) {
         this.codeDate = codeDate;
+    }
+
+    public void setAccessCodeDate(LocalDateTime codeDate) {
+        this.accessCodeDate = codeDate;
     }
 
     public LocalDateTime getCodeUsedDate() {
