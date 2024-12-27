@@ -43,8 +43,7 @@ public class REP_SeduledTwitterSearch {
                 +" WHERE tw.user_id=:user_id AND tw.nresult>0 AND tw.nsent=0 AND tw.results_date" +
                         " BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) " +
                 " AND now()"+
-                " AND ac.code_date "+
-                        " BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND ac.code_used_date IS NULL ORDER BY tw.twitter_search_id, tw.id ;"
+                " AND date(ac.code_date) = curdate() AND ac.code_used_date IS NULL ORDER BY tw.twitter_search_id, tw.id ;"
                 , new String[]{"user_id"}, new Object[]{userId});
         return res;
     }
