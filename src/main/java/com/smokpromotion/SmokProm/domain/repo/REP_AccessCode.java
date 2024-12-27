@@ -52,7 +52,7 @@ public class REP_AccessCode {
         List<Integer> res = searchRepo.getListNPUsingIntegerMapper(
                 "SELECT DISTINCT user_id FROM "+
                 DE_AccessCode.getTableNameStatic()
-                +" WHERE access_code is not null and date(code_date)=curdate() and code_used_date IS NULL ",
+                +" WHERE access_code is not null and date(access_code_date)=curdate() and code_used_date IS NULL ",
                  new String[0], new Object[0]);
         return res;
     }

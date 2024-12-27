@@ -59,9 +59,11 @@ public class DM4J {
     @Scheduled(cron="0 0,10,20,30,40,50 * * * *")
     public void seduleGetUsersWithAccess(){
         List<Integer> usersWithCodes = repAccessCode.getUsersWithNewCodes();
+        LOGGER.warn(usersWithCodes.size()+" users with access code "+usersWithCodes);
         for(Integer userId : usersWithCodes){
+            LOGGER.warn("Tweets for userId "+userId);
             try {
-                sendTweetsAndDMs(userId);
+                int i = sendTweetsAndDMs(userId);
                 repAccessCode.updateSetCodeUsed(userId);
             } catch (UserNotFoundException e){
                 LOGGER.warn("UserId not found: "+userId);
@@ -69,7 +71,9 @@ public class DM4J {
         }
     }
 
-    public void sendTweetsAndDMs(int userId) throws UserNotFoundException {
+    public int sendTweetsAndDMs(int userId) throws UserNotFoundException {
+
+        int nsent = 0;
 
         String consumerKey = "";
         String consumerSecret = "";
@@ -103,8 +107,10 @@ public class DM4J {
         Optional<DE_AccessCode> accessCodeOptional = repAccessCode.getLastCodeWithAccessForUser(userId);
 
         if (accessCodeOptional.isEmpty()) {
-            return;
+            LOGGER.warn("no acccess code for userid+"+userId);
+            return nsent;
         }
+        LOGGER.warn("found access code for userid+"+userId);
 
         String access = accessCodeOptional.get().getAccessCode();
         String requestToken = accessCodeOptional.get().getRequestToken();
@@ -128,7 +134,8 @@ public class DM4J {
             //    }
         } catch (TwitterException te) {
             if (401 == te.getStatusCode()) {
-                return;
+                LOGGER.warn("OAuth access token expired");
+                return nsent;
                 //         System.out.println("Unable to get the access token.");
                 //         return;
                 //     }
@@ -148,7 +155,7 @@ public class DM4J {
 
         if (user.getSubCount()==0){
             // Send subscritpion reminder (but no code found there
-            return;
+            return nsent;
         }
 
         List<DE_SeduledTwitterSearch> sdt =
@@ -239,6 +246,7 @@ public class DM4J {
                         sentCount++;
                         sr.setSent(true);
                         resultRepo.update(sr);
+                        nsent++;
                     } catch (Exception e){
                         LOGGER.warn("User  "+user.getUsername()+" exception with tweeting ",e);
                     }
@@ -251,5 +259,6 @@ public class DM4J {
                 //             System.out.printf("Sent: %s to @%d%n", directMessage.getText(), directMessage.getRecipientId());
             }
         }
+        return nsent;
     }
 }
