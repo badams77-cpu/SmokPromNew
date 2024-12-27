@@ -33,19 +33,17 @@
 <UL>
     <LI><a href="/a/home">Signed In home</a></LI>
     <LI><a href="/a/search-add">Add New Search for Tweets</a></LI>
-    </UL>
-
-<TABLE BORDER="2" bgcolor="#000000" color="black"><TR><TH COLSPAN="7"><center>Your Marketing Searches</center></TH></TR>
+    </UL><TABLE bgcolor="#000000" color="black"><TR><TH COLSPAN="7"><center>Your Marketing Searches</center></TH></TR>
         <TR><TH colspan="3">Your Messages</TH></TR>
         <TR><TH>Id</TH></TH><TH>Date</TH>
-            <TH>Message</TH>
+            <TH>Message</TH><
             <TH th:if="${toId==fromId}">Set Reply</TH>
         </TR>
     <TR th:each="sr: ${messages}">
         <TD><span th:text="${sr.id}"></span></TD>
-        <TD><span th:text="${sr.createdDate}"></span></TD>
+        <TD><span th:text="${sr.createdDateString}"></span></TD>
         <TD><span th:text="${sr.message}"></span></TD>
-        <TD th:if="${toId==fromId}"><Button onclick="${'getElementById('' '+toid+' '').value=sr.toId}">Set reply <span th:text="${sr.toId}"></span></Button></TD>
+        <TD th:if="${toId==fromId}"><Button th:onclick="${'getElementById('' '+toId+' '').value=sr.toId}">Set reply <span th:text="${sr.toId}"></span></Button></TD>
     </TR>
         </TABLE>
 </UL>
