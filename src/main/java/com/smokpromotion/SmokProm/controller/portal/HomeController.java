@@ -66,6 +66,12 @@ public class HomeController extends PortalBaseController {
         return PUBBASE+"index.html";
     }
 
+    @RequestMapping("/how-it-works")
+    public String howitwork(Model mh)
+    {
+        return PUBBASE+"how_it_works.html";
+    }
+
     @RequestMapping("/forgot")
     public String forgotpass(Model mh)
     {
