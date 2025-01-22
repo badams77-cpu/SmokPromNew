@@ -1,6 +1,7 @@
 package com.smokpromotion.SmokProm.domain.entity;
 
 import com.majorana.maj_orm.ORM.BaseMajoranaEntity;
+import com.majorana.maj_orm.persist.newannot.Updateable;
 import jakarta.persistence.Column;
 
 import java.util.UUID;
@@ -8,13 +9,13 @@ import java.util.UUID;
 public class EmailQueue extends BaseMajoranaEntity {
 
   private static final String TABLE_NAME = "email_queue";
-
+  @Updateable
   @Column(name="receipient_email")
   private String receipientEmail;
-
+  @Updateable
   @Column(name="title_text")
   private String titleText;
-
+  @Updateable
   @Column(name="body_text")
   private String bodyText;
 

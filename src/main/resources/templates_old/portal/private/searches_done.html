@@ -1,0 +1,58 @@
+<HTML><HEAD><TITLE>Vapid Promotions - Searches Done </TITLE>
+
+    <style>
+        body { background-color: purple;  color:lawngreen }
+
+        a:link {
+            color: lawngreen;
+            background-color: transparent;
+            text-decoration: none;
+        }
+        a:visited {
+            color: white;
+            background-color: palevioletred;
+            text-decoration: none;
+        }
+
+
+        a:hover {
+            color: palegreen;
+            background-color: transparent;
+            text-decoration: underline;
+        }
+
+        a:active {
+            color: yellow;
+            background-color: transparent;
+            text-decoration: underline;
+        }
+
+    </style>
+
+</HEAD>
+<BODY bgcolor="#fffff">
+<H2>Welcome to Vapid Promotions <a span th:text="${username}"></a></H2>
+<UL>
+    <LI><a href="/a/home">Signed In home</a></LI>
+    <LI><a href="/a/search-add">Add New Search for Tweets</a></LI>
+    </UL>
+
+<TABLE BORDER="2" bgcolor="black" gcolor="aqua"><TR><TH COLSPAN="7"><center>Your Marketing Searches</center></TH></TR>
+
+        <TR><TH>Id</TH></TH><TH>Last Searched</TH>
+            <TH>Number of Results</TH>
+            <TH>Number of Tweets Sent</TH><TH>View Search Results</TH>
+        </TR>
+    <TR th:each="sr: ${searches}">
+        <TD><span th:text="${sr.id}"></span></TD>
+        <TD><span th:text="${sr.getResultsDateString()}"></span></TD>
+        <TD><span th:text="${sr.nresults}"></span></TD>
+        <TD><span th:text="${sr.nsent}"></span></TD>
+        <TD><span><a th:href="${'/a/search-edit/'+sr.id}">Edit</a></span></TD>
+        <TD th:if="${sr.resultsDate!=null}"><span><a  th:href="${'/a/search-results/'+sr.id}">View Results</a></span></TD>
+        <TD  th:unless="${sr.resultsDate!=null}"><span>No Results Yet</span></TD>
+    </TR>
+        </TABLE>
+</UL>
+</BODY>
+</HTML>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+
+    <title th:text="#{'Vapid Promotions - Error'}">Error</title>
+    <style>
+        body { background-color: purple;  color:lawngreen }
+        a:link {
+            color: lawngreen;
+            background-color: transparent;
+            text-decoration: none;
+        }
+
+        a:visited {
+            color: white;
+            background-color: palevioletred;
+            text-decoration: none;
+        }
+
+
+        a:hover {
+            color: palegreen;
+            background-color: transparent;
+            text-decoration: underline;
+        }
+
+        a:active {
+            color: yellow;
+            background-color: transparent;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body bgcolor="#220022" color="#77ff87">
+
+<center>
+    <img border=1 src="/images/vapid-440x350.png"/>
+</center>
+<H2>Vapid Promotions</H2>
+
+<!--/* ---------------------------------------------------------------------------------------------
+page_content++
+---------------------------------------------------------------------------------------------- */-->
+<div  id="error-page">
+
+    <div class="row">
+        <div class="error-container">
+            <!--<p th:text="${exception}"></p>-->
+            <p>&nbsp;</p>
+
+            <p>An error occurred in processing your request.<br>Please revise your inputs and try again</p>
+            <p><a href="/a/home">Back to Home Page</a></p>
+            <div class="user-details">
+
+                <span th:text="|Date: ${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}|"></span>
+                <span th:text="|URL: ${url}|"></span>
+
+                <span th:text="|Exception Name: ${exceptionName}|"></span>
+                <span th:text="|Exception Message: ${exceptionMessage}|"></span>
+                    <span th:text="|Exception Message: ${message}|"></span>
+                    <span th:text="|Exception Message: ${Message}|"></span>
+                    <pre th:text="${trace}"></pre>
+            </div>
+
+        </div>
+    </div> <!--/* .row */-->
+
+
+</div> <!-- layout:fragment="page_content" -->
+<!--/* ---------------------------------------------------------------------------------------------
+page_content--
+---------------------------------------------------------------------------------------------- */-->
+
+<th:block layout:fragment="bottom_script">
+</th:block> <!-- bottom_script -->
+
+</body>
+
+</html>

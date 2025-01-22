@@ -1,0 +1,68 @@
+<HTML><HEAD><TITLE>Vapid Promotions - Sales Leads </TITLE>
+
+    <style>        a:link {
+        color: lawngreen;
+        background-color: transparent;
+        text-decoration: none;
+    }
+
+    a:visited {
+        color: white;
+        background-color: palevioletred;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: palegreen;
+        background-color: transparent;
+        text-decoration: underline;
+    }
+
+    a:active {
+        color: yellow;
+        background-color: transparent;
+        text-decoration: underline;
+    }
+        body { background-color: purple;  color:lawngreen }
+
+    </style>
+
+</HEAD>
+<BODY bgcolor="#fffff">
+<H2>Welcome to Vapid Promotions <span th:text="${userName}"></span></H2>
+<UL>
+    <LI><a href="/a/home">Signed In home</a></LI>
+    <LI><a href="/a/search-add">Add New Search for Tweets</a></LI>
+    <LI><a href="/a/sales-leads">Return to sales leads</a></LI>
+    </UL>
+
+<H2>Sales Leads Notes for <span th:text="${lead.twitterHandle}"></span></H2></H3>
+
+<TABLE BORDER="2" bgcolor="#000000" color="black">
+        <TR><TH colspan="5">Notes on your sales lead</TH></TR>
+        <TR><TH>Id</TH><TH>Date</TH>
+            <TH>Note Type</TH>
+            <TH>Note Test</TH>
+        </TR>
+    <TR th:each="sr: ${notes}">
+        <TD><span th:text="${sr.id}"></span></TD>
+        <TD><span th:text="${sr.createdDateString}"></span></TD>
+        <TD><span th:text="${sr.noteTypeString}"></span></a></TD>
+        <TD><span th:text="${sr.text}">Note</TD>
+    </TR>
+        </TABLE>
+<H2>New Sales Lead</H2>
+<FORM th:action="${'/a/sales-notes-post/'+lead.id}" method="POST">
+    <INPUT TYPE="hidden" NAME="context-type" ID="" value="application/x-www-form-urlencoded">
+    <SELECT name="note_type">
+        <OPTION th:value="${'LIKES'}">Likes</OPTION>
+        <OPTION th:value="${'DISLIKES'}">Dislikes</OPTION>
+        <OPTION th:value="${'WANTS'}">Wants</OPTION>
+      /OPTION>
+    </SELECT>
+    <TEXTAREA name="note_text" cols="60" rows="6"></TEXTAREA>
+    <BUTTON TYPE="submit" VALUE="Add Sales Lead">Add Sales Note</BUTTON>
+</FORM>
+
+</BODY>
+</HTML>

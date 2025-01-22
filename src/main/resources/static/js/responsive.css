@@ -1,0 +1,155 @@
+@media only screen and (max-width:1200px){
+
+}
+
+
+@media only screen and (max-width: 992px){
+	html{
+	font-size: 55.5%;
+	}
+	.menu-links{
+		width:60%;
+		margin:0 auto;
+		background:#EFF0FC;
+		margin-top:2rem;
+		border-radius:2.5rem;
+		/*padding:3rem 2rem;*/
+		box-sizing: border-box;
+		border-bottom: 0px;
+		margin:auto 1rem;
+
+	}
+	.navbar-nav{
+		padding:3rem 2rem;
+		margin-top: 1rem;
+	}
+	.navbar{
+	height: auto;
+	margin-top:1rem;
+	position: fixed;
+}
+	.navbar-nav li{
+		line-height: 3rem;
+		border-bottom: 1px solid var(--darkblack);
+	}
+	.navbar-nav li a{
+		color:black;
+		font-size:1.6rem;
+	}
+	.forbtn{
+		border-bottom: 0px!important;
+		padding:0px!important;
+		margin-top: 1rem;
+	}
+	.forbtn a{
+		background: var(--lightblack);
+		color:white!important;
+	}
+
+.menu_btn{
+	margin-bottom:1rem;
+	margin-left:0rem;
+	height: 5rem;
+}
+.menu_btn a{
+	line-height: 5rem;
+	color:white!important;
+}
+
+.mt-55{
+	margin-top:0rem!important;
+}
+.hero_title{
+	font-size:3rem;
+	line-height: 3.5rem;
+}
+.hero_p{
+	font-size:1.8rem;
+	line-height: 2.2rem;
+}
+.content_p{
+	margin-left:0rem;
+}
+.regis_section{
+	width:70%;
+}
+.for_table{
+	width:100%;
+}
+}
+@media only screen and (max-width: 768px){
+	html{
+	font-size: 45.5%;
+	}
+	.mb3{
+		margin-bottom:3rem;
+	}
+.navbar{
+	margin-top:0rem;
+	/*padding:auto 5rem;*/
+}
+.navbar-nav li a{
+	font-size: 1.8rem;
+}
+.navbar-toggler{
+	color:red;
+}
+.nop{
+	padding:0rem;
+}
+.mt-55{
+	margin-top:0rem!important;
+}
+.hero_contents{
+	margin-top:13rem;
+}
+.hero_right_img{
+	max-width: 40rem;display: block;margin:0 auto;
+	margin-top:-3rem;
+
+
+}
+ #colap_header a{
+  	font-size:1.8rem;
+  }
+  .hero_btn{
+  	display: block;
+  	color:white;
+  	height: 6rem;
+  	font-size:2rem;
+  	line-height: 4.5rem;
+  	text-transform: uppercase;
+  	letter-spacing: .1rem;
+  }
+  .hero_btn:hover{
+  	background:var(--lightblue)!important;
+  	color:white;
+  }
+.hero_contents{
+	margin-top:12rem;
+}
+.hero_btn{
+	display:block;
+	text-align: center;
+}
+.heroimage{
+	max-width: 39rem!important;
+	display: block;
+	margin:0 auto;
+}
+.regis_section{
+	width:96%;
+}
+.panel-body{
+	padding:1rem;
+	box-sizing: border-box;
+}
+.for_table{
+	width:96%;
+}
+}
+@media only screen and (max-width: 576px){
+.main_logo{
+	width:15rem;
+}
+}

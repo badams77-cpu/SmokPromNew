@@ -1,0 +1,222 @@
+@media only screen and (min-width:1440px){
+
+}
+
+@media only screen and (max-width:1200px){
+.nav-link{
+	margin-right: 1.5rem;
+}
+.why_join_card h4{
+	font-size: 1.5rem;
+}
+.why_join_card{
+	padding:2rem .2rem;
+}
+.why_join{
+	padding:2rem .5rem;
+}
+}
+
+
+@media only screen and (max-width: 992px){
+	html{
+	font-size: 55.5%;
+	}
+	.my_menu{
+	display: block;
+	text-align: center;
+	margin-top: 4rem;
+}
+.nav-link{
+	margin:0;
+	padding:0;
+	margin-bottom:1rem;
+	font-size: 2.2rem;
+}
+.download_btn{
+	width:100%;
+	margin-top:5rem;
+}
+.forspace{
+	display: none;
+}
+.offcanvas-header{
+	margin-right: 2rem;
+}
+.menu_icon{
+	font-size:2.5rem;
+	color: var(--primary);
+	cursor: pointer;
+}
+
+	.nav_mobile_right{
+		display: flex;
+		flex-direction: row-reverse;
+	}
+	.testi_desc{
+		height: auto;
+		margin-bottom: 2rem;
+	}
+	.slick-next{
+		right: 3%!important;
+	}
+	.slick-prev {
+		right: 9%!important;
+	}
+	.footerheading{
+		margin-top:2.5rem;
+	}
+	.fotlink ul{
+		margin-top: 1rem;
+	}
+	.fotlink ul li a{
+		line-height:3rem;
+	}
+	.copyright_text{
+		text-align: center;
+	}
+	.footer_p{
+		display: none;
+	}
+	.login_btn{
+		display: block;
+		margin:0 auto;
+		height: 4rem;
+
+		margin-top: 2rem;
+		padding:0;
+		width:15rem;
+		height: 5rem!important;
+		line-height: 5rem;
+	}
+	.principle_card, .how_card, .set_card{
+	height: auto;
+}
+.footermargintop{
+	margin-top: 2rem;
+}
+
+.why_join{
+	padding:2rem 2rem;
+}
+}
+
+
+
+
+
+@media only screen and (max-width: 768px){
+	html{
+	font-size: 47.5%;
+	}
+.offcanvas.show{
+	max-width: 45rem;
+}
+.navbar{
+	padding:1.5rem 1rem;
+}
+.menu_icon{
+	font-size: 3rem;
+}
+.navbar-nav .nav-link{
+	font-size: 2.2rem;
+}
+.w_90{
+	width: 100%;
+}
+.slick-prev{
+	right:12%!important;
+}
+.testi_desc{
+	font-size: 1.7rem;
+	text-align: center;
+}
+.banner_type .sec_heading, .banner_type .gen_p{
+	text-align: center;
+}
+.hero_image{
+	margin-top: 2rem;
+}
+.right_arrow_downword, .left_arrow_downword, .last_right_arrow{
+	width:3.4rem;
+}
+.last_right_arrow{
+	top:-47%;
+}
+.main_heading{
+	font-size: 3.5rem;
+	line-height: 4rem;
+}
+.footer_logo{
+	margin-top: 5rem;
+}
+.tabs_section .tab-content, .form_bg{
+  padding:2rem 1rem;
+
+}
+.register_and_login_main{
+	padding:3rem 0;
+}
+.main_logo{
+	max-width: 10rem;
+}
+.navbar{
+	padding:.5rem 0;
+}
+.common_space{
+	margin-top: 8.5rem;
+}
+.getting_deal_main_section{
+	padding:2rem 1rem;
+}
+.tabs_section .nav-tabs .nav-link{
+	padding:.8rem 0;
+}
+.hero_image{
+	max-width: 35rem;
+	margin:0 auto;
+	display: block;
+	margin-top: 4rem;
+}
+.process_card{
+	max-width: 67%;
+	margin:0 auto;
+	margin-bottom: 4rem;
+}
+.section_sub_heading{
+	font-size: 3rem;
+}
+
+.main_form {
+  padding: 3rem 1rem;
+  margin-top: 3rem!important;;
+}
+.main_form label{
+  font-size: 1.6rem;
+}
+}
+
+
+
+@media only screen and (max-width: 400px){
+	.footer_logo{
+		max-width: 17rem;
+		margin-top: 5rem;
+	} 
+	.process_card{
+	max-width:90%;
+	margin:0 auto;
+	margin-bottom: 4rem;
+}
+.logos_list li a img {
+	max-width: 10rem;
+	margin:0 auto;
+}
+.logos_list{
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	justify-content: center;
+	width: 100%;
+}
+}

@@ -1,6 +1,7 @@
 package com.smokpromotion.SmokProm.domain.entity;
 
 import com.majorana.maj_orm.ORM.BaseMajoranaEntity;
+import com.majorana.maj_orm.persist.newannot.Updateable;
 import jakarta.persistence.Column;
 
 public class SearchRecordOfAPICall extends BaseMajoranaEntity {
@@ -15,10 +16,10 @@ public class SearchRecordOfAPICall extends BaseMajoranaEntity {
     @Column(name="searchid")
 
     private String searchId;
-
+    @Updateable
     @Column(name="message_content")
     private String messageContent;
-
+    @Updateable
     @Column(name="message_text")
     private String messageText;
 

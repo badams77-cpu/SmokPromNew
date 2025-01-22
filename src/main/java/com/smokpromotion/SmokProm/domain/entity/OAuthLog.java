@@ -12,11 +12,11 @@ public class OAuthLog extends BaseSmokEntity {
 
     private static final String TABLE_NAME = "oauth_log";
 
-    @Column(name="!username")
+    @Column(name="username")
     private String username;
-    @Column(name="!log_Date")
+    @Column(name="log_Date")
     private LocalDateTime logDate;
-    @Column(name="!oauth_statuss")
+    @Column(name="oauth_status")
     private String errorMessage;
 
     public String getTableName(){

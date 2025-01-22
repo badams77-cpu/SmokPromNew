@@ -1,6 +1,7 @@
 package com.smokpromotion.SmokProm.domain.entity;
 
 import com.majorana.maj_orm.ORM.BaseMajoranaEntity;
+import com.majorana.maj_orm.persist.newannot.Updateable;
 import jakarta.persistence.Column;
 
 import java.time.LocalDate;
@@ -11,10 +12,10 @@ public class PaidDays extends BaseMajoranaEntity {
 
     @Column(name="user_id")
     private int userId;
-
+    @Updateable
     @Column(name="paid_date")
     private LocalDate date;
-
+    @Updateable
     @Column(name="has_paid")
     private boolean paid;
 

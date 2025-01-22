@@ -1,5 +1,6 @@
 package com.smokpromotion.SmokProm.domain.entity;
 
+import com.majorana.maj_orm.persist.newannot.Updateable;
 import jakarta.persistence.Column;
 
 import java.time.LocalDate;
@@ -12,13 +13,13 @@ public class UserLoginActivity extends BaseSmokEntity {
 
     @Column(name="id_user")
     private int userId;
-
+    @Updateable
     @Column(name="token_datetime")
     private LocalDateTime tokenDate;
-
+    @Updateable
     @Column(name="token")
     private String token;
-
+    @Updateable
     @Column(name="locked")
     private boolean locked;
 

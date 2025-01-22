@@ -1,5 +1,6 @@
 package com.smokpromotion.SmokProm.domain.entity;
 
+import com.majorana.maj_orm.persist.newannot.Updateable;
 import com.smokpromotion.SmokProm.util.SecVnEnum;
 
 import java.time.LocalDateTime;
@@ -23,6 +24,7 @@ public class AdminUser  extends BaseSmokEntity  {
     @Column(name="lastname")
     private String lastname;
     //   @org.springframework.data.cassandra.core.mapping.Column("passwd")
+    @Updateable
     @Column(name="passwd")
     private String userpw;
 
@@ -30,16 +32,19 @@ public class AdminUser  extends BaseSmokEntity  {
     //@org.springframework.data.cassandra.core.mapping.Column("secVn")
     private int secVn;
     //@org.springframework.data.cassandra.core.mapping.Column("last_login")
+    @Updateable
     @Column(name="last_login")
     private LocalDateTime lastvisit;
     @Column(name="useractive")
 //    @org.springframework.data.cassandra.core.mapping.Column("useractive")
     private boolean useractive;
 //    @org.springframework.data.cassandra.core.mapping.Column("change_pass_token")
+@Updateable
     @Column(name="change_pass_token")
     private String changePassToken;
 
 //    @org.springframework.data.cassandra.core.mapping.Column("change_pass_token_created")
+@Updateable
     @Column(name="change_pass_token_created")
     private LocalDateTime changePassTokenCreate;
 

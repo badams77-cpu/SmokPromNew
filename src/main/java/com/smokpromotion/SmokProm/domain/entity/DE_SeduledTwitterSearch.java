@@ -2,6 +2,7 @@ package com.smokpromotion.SmokProm.domain.entity;
 
 
 import com.majorana.maj_orm.ORM.BaseMajoranaEntity;
+import com.majorana.maj_orm.persist.newannot.Updateable;
 import jakarta.persistence.Column;
 
 import java.time.LocalDate;
@@ -22,16 +23,16 @@ public class DE_SeduledTwitterSearch  extends BaseMajoranaEntity {
 
     @Column(name="user_id")
     private int userId;
-
+    @Updateable
     @Column(name="trial_search")
     private boolean trialSearch;
-
+    @Updateable
     @Column(name="results_date")
     private LocalDate resultsDate;
-
+    @Updateable
     @Column(name="nresult")
     private int nresults;
-
+    @Updateable
     @Column(name="nsent")
     private int nsent;
 

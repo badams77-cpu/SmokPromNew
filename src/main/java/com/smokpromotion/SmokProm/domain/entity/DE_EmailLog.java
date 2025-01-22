@@ -1,6 +1,7 @@
 package com.smokpromotion.SmokProm.domain.entity;
 
 import com.majorana.maj_orm.ORM.BaseMajoranaEntity;
+import com.majorana.maj_orm.persist.newannot.Updateable;
 import jakarta.persistence.Column;
 
 public class DE_EmailLog extends BaseMajoranaEntity {
@@ -10,8 +11,10 @@ public class DE_EmailLog extends BaseMajoranaEntity {
 
     @Column(name="userid")
     private String userid;
+    @Updateable
     @Column(name="error_message")
     private String errorMessage;
+    @Updateable
     @Column(name="status")
     private String status;
 

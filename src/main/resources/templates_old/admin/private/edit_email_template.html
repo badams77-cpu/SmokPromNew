@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<!--     layout:decorate="~{layout/private/private_admin_layout.html}"-->
+<head>
+
+    <title th:text="#{t.EmailTemplates}"></title>
+
+    <link th:if="${false}" rel="stylesheet" type="text/css" media="screen"
+          href="../../../../static/css/icons/icomoon/style.css"/>
+
+    <link th:if="${false}" rel="stylesheet" type="text/css" media="screen"
+          href="../../../../static/css/bootstrap.css"/>
+
+    <link th:if="${false}" rel="stylesheet" type="text/css" media="screen"
+          href="../../../../static/css/app.css"/>
+    <script th:inline="javascript">
+
+
+
+
+    </script>
+
+</head>
+
+<body>
+
+<!--/* -----------------------------------------------------------------------------------------------------------------
+page_content++
+------------------------------------------------------------------------------------------------------------------ */-->
+<div>
+
+    <!--/* --------------------------------------------------------------------
+    page-header - Showing the name of the report and help button.
+    --------------------------------------------------------------------- */-->
+
+    <div id="page-header">
+
+        <div class="row">
+
+            <div class="page-header-element page-header-title col-md-9">
+                <h1>
+                    <i class="icon-circle-right mr-2"></i>
+                    <span th:text="#{t.EmailTemplates}"></span>
+                    <span class="heading-sub"></span>
+                </h1>
+            </div> <!-- .page-header-element -->
+            <div class="page-header-element col-md-3 print-hide">
+                <div class="float-right">
+                    <button class="btn btn-success float-right" id="report-help-button" data-bs-toggle="modal" data-bs-target="#report-help-modal">
+                        <i class="icon-question"></i>
+                        <span th:text="#{t.Help}">Help</span>
+                    </button>
+                    <button class="btn btn-info print-button mr-2">
+                        <i class="icon-printer"></i>
+                        <span th:text="#{t.Print}">Print</span>
+                    </button>
+                </div>
+            </div> <!-- .page-header-element -->
+
+        </div> <!-- .row -->
+
+    </div> <!-- #page-header -->
+
+
+    <!--/* --------------------------------------------------------------------
+    Report Content
+    --------------------------------------------------------------------- */-->
+
+    <div class="card report-card" >
+            <h2 class="card-header card-header-practices" th:text="#{t.EditTemplate}">Edit Templates</h2>
+            <div class="card-block">
+                <form th:action="${'/admin/email-templates/edit/'+templateForm.id}" th:method="post" th:object="${templateForm}">
+                    <input type="hidden" name="id" th:value="${templateForm.id}"/>
+                    <table border="0" class="float-right">
+                        <tr>
+                            <td style="width: 50px;"><button class="btn btn-primary mr-1" th:text="${'Save'}" type="submit"></button> </td>
+                            <td style="width: 50px;"><button class="btn btn-warning" th:text="${'Cancel'}" type="button" th:attr="onclick=${'window.location.href=''/email-templates/list'''}"></button></td>
+                        </tr>
+                    </table>
+                    <div class="form-group col-xl-2 col-lg-2 col-md-3 col-sm-6" id="templateBody-name-div" th:classappend="${#fields.hasErrors('name') ? 'has-danger':''}" style="padding-left: 0px;">
+                        <label for="templateBody-name-input" th:text="#{t.TemplateName}">Report Name</label>
+                        <input name="name" type="text" th:field="*{name}"  id="templateBody-name-input" class="form-control"/>
+                        <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger help-block error-templateName" ></span>
+                    </div>
+                    <div class="form-group col-xl-2 col-lg-2 col-md-3 col-sm-4" id="language-selection" th:classappend="${#fields.hasErrors('language') ? 'has-danger':''}" style="padding-left: 0px;">
+                        <label for="selected-language-display" th:text="#{t.Language}">Language</label>
+                        <select th:field="*{language}" id="selected-language-display" class="form-control">
+                            <th:block th:each="language : ${languages}">
+                                <th:block th:if="${language.code>=0}">
+                                  <option th:value="${language.value}">
+                                       <span th:text="${language.label}">Language</span>
+                                  </option>
+                                </th:block>
+                            </th:block>
+                        </select>
+                        <span th:if="${#fields.hasErrors('language')}" th:errors="*{language}" class="text-danger help-block error-language" ></span>
+                    </div>
+                    <div class="form-group" style="min-width: 80%; max-width: 80%;" id="templateBody-name-div" th:classappend="${#fields.hasErrors('subject') ? 'has-danger':''}">
+                        <label for="templateBody-name-input" th:text="#{t.Subject}">Subject</label>
+                        <input name="name" type="text" th:field="*{subject}"  id="template-subject-input" class="form-control"/>
+                        <span th:if="${#fields.hasErrors('subject')}" th:errors="*{name}" class="text-danger help-block error-subject" ></span>
+                    </div>
+                    <div class="form-group"  id="report-body-div" th:classappend="${#fields.hasErrors('templateBody') ? 'has-danger':''}">
+                        <label for="template-body-textarea" th:text="#{t.TemplateBody}">Template Body</label>
+                        <center><span th:if="${#fields.hasErrors('templateBody')}" th:errors="*{templateBody}" class="text-danger help-block error-templateBody" ></span></center>
+                        <textarea name="templateBody" type="text" cols="120" style="min-width: 80%; max-width: 80%;" rows="20" th:field="*{templateBody}" id="template-body-textarea" class="form-control"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    <!--/* --------------------------------------------------------------------
+    Help Modal
+    --------------------------------------------------------------------- */-->
+
+    <div class="modal fade help-modal print-hide" id="report-help-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" th:text="${'Email Templates'}">Page Name</h3>
+                    <button type="button" class="close print-hide" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div th:replace="admin/private/help/email_templates/edit :: en"></div>
+            </div>
+        </div>
+    </div>
+</div> <!-- layout:fragment="page_content" -->
+
+
+
+
+
+<!--/* -----------------------------------------------------------------------------------------------------------------
+page_content--
+------------------------------------------------------------------------------------------------------------------ */-->
+
+<th:block layout:fragment="bottom_script">
+</th:block> <!-- bottom_script -->
+
+</body>
+</html>

@@ -1,0 +1,123 @@
+@media only screen and (max-width:992px){
+html{
+  font-size: 55.5%;
+  }
+.contents_only{
+  display: none!important;
+}
+.icon_only, .not_on_lg{display: block!important;}
+}
+.close_icon{display: block!important;}
+}
+
+
+}
+@media only screen and (max-width:768px){
+  html{
+  font-size: 45.5%;
+  }
+.main_logo{
+    max-width:12rem;
+    margin-left:0rem;
+  }
+  .navbar{
+    display: block!important;
+    align-items: flex-start!important;
+    height:auto;
+  }
+  .user_avator{
+  max-width: 3rem;
+  float: none;
+  display: inline!important;
+
+  display: none!important;
+}
+.right_corner_link{
+  font-size:1.4rem;
+  color:black!important;
+  display: inline!important;
+
+}
+.contents_only{
+  display: none!important;
+}
+.icon_only{display: block}
+}
+
+.navbar-toggler{
+	padding:0rem;
+	margin:0rem;
+	width:auto!important;
+	box-shadow:none!important;
+}
+.navbar-toggler i{
+  font-size:2rem!important;
+  display: block;margin-top:0rem;
+  color:white!important;
+}
+.navbar-toggler i:hover{
+	padding:0rem;
+  color:white!important;
+
+}
+.formain{
+	padding:1rem;
+}
+.mb3{
+  margin-bottom: 2rem;
+}
+.timer_big_days{
+  margin-left:36%;
+}
+.start_time, .end_time{
+  display:block;
+  font-size:1.2rem!important;
+}
+.timer_day{
+   padding:.4rem .6rem;
+  margin-bottom:.5rem;
+}
+.days_btns input{
+  margin-left: .5rem;
+}
+.noponmobile{
+  padding:0rem;
+}
+.dtp>.dtp-content>.dtp-date-view>header.dtp-header{
+  padding:2rem!important;
+}
+.main_table{
+  width:80rem!important;
+}
+}
+
+@media only screen and (max-width:576px){
+.mb33{
+  margin-bottom:2rem;
+}
+.d_button{
+  gap: 0;
+  flex-direction: row!important;
+}
+.dt-info{
+  font-size: 1.4rem;
+}
+.dt-layout-row{
+  flex-direction: row!important;
+}
+.search_text{display: none}
+
+.dash_box{
+  max-width:1%!important;
+  margin-top:4rem;
+  box-shadow: blue!important;
+}
+
+
+}
+
+@media only screen and (max-width:400px){
+  .d_logo span{
+    font-size: 1.5rem!important;
+  }
+}

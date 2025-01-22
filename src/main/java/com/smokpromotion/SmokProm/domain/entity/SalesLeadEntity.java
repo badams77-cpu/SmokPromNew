@@ -1,5 +1,6 @@
 package com.smokpromotion.SmokProm.domain.entity;
 
+import com.majorana.maj_orm.persist.newannot.Updateable;
 import jakarta.persistence.Column;
 
 import java.time.format.DateTimeFormatter;
@@ -12,13 +13,13 @@ public class SalesLeadEntity extends BaseSmokEntity{
 
     @Column(name="user_id")
     private int userId;
-
+    @Updateable
     @Column(name="twitter_handle")
     private String twitterHandle;
 
     @Column(name="twitter_user_id")
     private long twitterUserId;
-
+    @Updateable
     @Column(name="leadStatus")
     private LeadStatus leadStatus;
 

@@ -1,6 +1,7 @@
 package com.smokpromotion.SmokProm.domain.entity;
 
 import com.majorana.maj_orm.ORM.BaseMajoranaEntity;
+import com.majorana.maj_orm.persist.newannot.Updateable;
 import jakarta.persistence.Column;
 
 public class DE_SearchResult extends BaseMajoranaEntity {
@@ -12,25 +13,20 @@ public class DE_SearchResult extends BaseMajoranaEntity {
 
     @Column(name="user_id")
     private int userId;
-
     @Column(name="tweet_id")
     private long tweetId;
-
     @Column(name="tweet")
     private String tweetText;
-
     @Column(name="has_paid")
     private boolean paid;
-
     @Column(name="twitter_user_id")
     private long twitterUserId;
-
     @Column(name="twitter_user_handle")
     private String twitterUserHandle;
-
     @Column(name="seduled_search_id")
     private int seduledSearchNumber;
     // Results for the given Tweeter Search Segedial Set
+    @Updateable
     @Column(name="sent")
     private boolean sent;
 

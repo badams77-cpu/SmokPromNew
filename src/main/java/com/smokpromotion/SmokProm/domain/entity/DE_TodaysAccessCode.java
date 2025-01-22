@@ -1,6 +1,7 @@
 package com.smokpromotion.SmokProm.domain.entity;
 
 import com.majorana.maj_orm.ORM.BaseMajoranaEntity;
+import com.majorana.maj_orm.persist.newannot.Updateable;
 import jakarta.persistence.Column;
 
 import java.time.LocalDate;
@@ -11,10 +12,10 @@ public class DE_TodaysAccessCode extends BaseMajoranaEntity {
 
     @Column(name = "user_id")
     private int userid;
-
+    @Updateable
     @Column(name = "day")
     private LocalDate day;
-
+    @Updateable
     @Column(name = "auth_code")
     private String auth_code;
 

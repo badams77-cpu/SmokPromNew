@@ -2,6 +2,7 @@ package com.smokpromotion.SmokProm.domain.entity;
 
 import com.majorana.maj_orm.ORM.BaseMajoranaEntity;
 
+import com.majorana.maj_orm.persist.newannot.Updateable;
 import com.smokpromotion.SmokProm.form.UserForm;
 import com.smokpromotion.SmokProm.util.SecVnEnum;
 import jakarta.persistence.Column;
@@ -17,7 +18,7 @@ public class VPMessage extends BaseMajoranaEntity implements Serializable {
 
     private static final DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-
+    @Updateable
     @Column(name="message")
     private String message;
     @Column(name="from_user")

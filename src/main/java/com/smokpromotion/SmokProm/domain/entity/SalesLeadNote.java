@@ -1,5 +1,6 @@
 package com.smokpromotion.SmokProm.domain.entity;
 
+import com.majorana.maj_orm.persist.newannot.Updateable;
 import jakarta.persistence.Column;
 
 import java.time.format.DateTimeFormatter;
@@ -16,10 +17,10 @@ public class SalesLeadNote extends BaseSmokEntity{
 
     @Column(name="sales_lead_id")
     private int leadEntityId;
-
+    @Updateable
     @Column(name="note_text")
     private String text;
-
+    @Updateable
     @Column(name="note_type")
     private NoteType noteType;
 

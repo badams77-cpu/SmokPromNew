@@ -1,0 +1,43 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+
+
+</head>
+<body>
+
+<!--/* -----------------------------------------------------------------------------------------------------------------
+English
+------------------------------------------------------------------------------------------------------------------ */-->
+<div th:fragment="en" class="container">
+    <p class="top-line">The Page Displays the list of Email Templates on the list, and has a form to add a new
+    Email template.</p>
+    <h2>Fields in the List of Template</h2>
+    <ul>
+        <li><strong>Template Name - </strong>Each template has a name, and a fixed value of this name, is used in Portal when sending
+        messages. You can have two templates with the same name is they are in different language</li>
+        <li><strong>Language - </strong> The correct language is selected from the users settings, when sending the email</li>
+        <li><strong>Subject - </strong> The subject line of the email sent</li>
+        <li><strong>Template Body - </strong> The body of the Email</li>
+        <li><strong>Edit Template - </strong> Button to Edit the template.</li>
+    </ul>
+    <h2>Tag Replacement</h2>
+    If the variable exists in the system creating email, subject and body text 'tags' in curly brackets {variable} are replaced by the
+    value of the variable.
+    <h2>Conditionals</h2>
+    Between {ifVar} and {/ifVar} text in the body is on sent if the var has a value of true.
+
+    <h2>Fields in Add Template</h2>
+    <ul>
+        <li><strong>Template Name - </strong>Each template has a name, and a fixed value of this name, is used in Portal when sending
+            messages. You can have two templates with the same name is they are in different language</li>
+        <li><strong>Language - </strong> The correct language is selected from the users settings, when sending the email</li>
+        <li><strong>Subject - </strong> The subject line of the email sent</li>
+        <li><strong>Template Body - </strong> The body of the Email</li>
+    </ul>
+</div>
+
+
+
+</body>
+</html>

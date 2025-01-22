@@ -1,6 +1,7 @@
 package com.smokpromotion.SmokProm.domain.entity;
 
 import com.majorana.maj_orm.ORM.BaseMajoranaEntity;
+import com.majorana.maj_orm.persist.newannot.Updateable;
 import jakarta.persistence.Column;
 
 import java.time.LocalDate;
@@ -9,22 +10,22 @@ import java.time.LocalDateTime;
 public class DE_AccessCode extends BaseMajoranaEntity {
 
     private static final String TABLE_NAME = "access_codes";
-
+    @Updateable
     @Column(name="access_code")
     private String accessCode;
 
     @Column(name="user_id")
     private int userId;
-
+    @Updateable
     @Column(name="request_token")
     private String requestToken;
-
+    @Updateable
     @Column(name="code_date")
     private LocalDateTime codeDate;
-
+    @Updateable
     @Column(name="access_code_date")
     private LocalDateTime accessCodeDate;
-
+    @Updateable
     @Column(name="access_code_used_date")
     private LocalDateTime codeUsedDate;
 
