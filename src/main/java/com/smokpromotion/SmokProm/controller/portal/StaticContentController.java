@@ -29,5 +29,12 @@ public class StaticContentController {
         // Load and return your static HTML file
         return resourceLoader.getResource("classpath:/static/js/"+file);
     }
+
+    @GetMapping(value = "/css/{file}",  produces ="text/css")
+    @ResponseBody
+    public Resource serveCSSContent(@PathVariable String file) {
+        // Load and return your static HTML file
+        return resourceLoader.getResource("classpath:/static/css/"+file);
+    }
 }
 

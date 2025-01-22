@@ -3,7 +3,6 @@ package com.smokpromotion.SmokProm.config.admin;
 import com.smokpromotion.SmokProm.config.portal.MajoranaAccessDecisionManager;
 import com.smokpromotion.SmokProm.config.portal.MajoranaAuthenticationFailureHandler;
 import com.smokpromotion.SmokProm.config.portal.MajoranaCustomAPISecurityFilter;
-import com.smokpromotion.SmokProm.config.portal.PortalCustomAuthenticationProvider;
 import com.smokpromotion.SmokProm.util.CookieFactory;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 import org.slf4j.Logger;
@@ -361,7 +360,7 @@ SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
 
        http         .authorizeRequests()
      //   permitAll items -should be a fairly restricted set of items
-                .antMatchers("/", "/css/**",
+                .antMatchers("/", "/static/css/**",
                         "/images/**", "/public-js/**",
                         "/login-handler", "/login", "/favicon.ico",  "/actuator/health")
                 .permitAll();

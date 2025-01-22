@@ -1,6 +1,5 @@
 package com.smokpromotion.SmokProm.config.portal;
 
-import com.amazonaws.HttpMethod;
 import com.smokpromotion.SmokProm.util.CookieFactory;
 import javax.servlet.http.HttpServletRequest;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
@@ -14,23 +13,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationManagerResolver;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.SecurityBuilder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.DefaultSecurityFilterChain;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 
 //import reactor.publisher.Mono;
@@ -368,7 +356,7 @@ SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
 
        http         .authorizeRequests()
      //   permitAll items -should be a fairly restricted set of items
-                .antMatchers("/", "/css/**", "/images/**", "/public-js/**", "/login-handler", "/login", "/client-login/**", "/exact-login", "/favicon.ico", "/prec/**", "/actuator/health")
+                .antMatchers("/", "/static/css/**", "/images/**", "/public-js/**", "/login-handler", "/login", "/client-login/**", "/exact-login", "/favicon.ico", "/prec/**", "/actuator/health")
                 .permitAll();
 
         // authenticated only - not role group specific
