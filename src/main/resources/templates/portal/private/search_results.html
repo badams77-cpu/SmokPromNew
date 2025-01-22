@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
   <head>
     <title>Dashboard</title>
     <meta charset="UTF-8" />
@@ -138,100 +139,13 @@
             </tr>
         </thead>
         <tbody class="text-center">
-            <tr>
-                <td >001</td>
-                <td>4546546</td>
-                <td>6646454</td>
-                <td>some text goes here here </td>
-                <td>2011-04-25</td>
-            </tr>
-            
-            <tr>
-                <td>001</td>
-                <td>4546546</td>
-                <td>6646454</td>
-                <td>some text goes here here </td>
-                <td>2011-04-25</td>
-            </tr>
-
-            <tr>
-                <td>001</td>
-                <td>4546546</td>
-                <td>6646454</td>
-                <td>some text goes here here </td>
-                <td>2011-04-25</td>
-            </tr>
-
-            <tr>
-                <td>001</td>
-                <td>4546546</td>
-                <td>6646454</td>
-                <td>some text goes here here </td>
-                <td>2011-04-25</td>
-            </tr>
-            <tr>
-                <td>001</td>
-                <td>4546546</td>
-                <td>6646454</td>
-                <td>some text goes here here </td>
-                <td>2011-04-25</td>
-            </tr>
-            <tr>
-                <td>001</td>
-                <td>4546546</td>
-                <td>6646454</td>
-                <td>some text goes here here </td>
-                <td>2011-04-25</td>
-            </tr>
-            <tr>
-                <td>001</td>
-                <td>4546546</td>
-                <td>6646454</td>
-                <td>some text goes here here </td>
-                <td>2011-04-25</td>
-            </tr><tr>
-                <td>001</td>
-                <td>4546546</td>
-                <td>6646454</td>
-                <td>some text goes here here </td>
-                <td>2011-04-25</td>
-            </tr><tr>
-                <td>001</td>
-                <td>4546546</td>
-                <td>6646454</td>
-                <td>some text goes here here </td>
-                <td>2011-04-25</td>
-            </tr><tr>
-                <td>001</td>
-                <td>4546546</td>
-                <td>6646454</td>
-                <td>some text goes here here </td>
-                <td>2011-04-25</td>
-            </tr><tr>
-                <td>001</td>
-                <td>4546546</td>
-                <td>6646454</td>
-                <td>some text goes here here </td>
-                <td>2011-04-25</td>
-            </tr><tr>
-                <td>001</td>
-                <td>4546546</td>
-                <td>6646454</td>
-                <td>some text goes here here </td>
-                <td>2011-04-25</td>
-            </tr><tr>
-                <td>001</td>
-                <td>4546546</td>
-                <td>6646454</td>
-                <td>some text goes here here </td>
-                <td>2011-04-25</td>
-            </tr><tr>
-                <td>001</td>
-                <td>4546546</td>
-                <td>6646454</td>
-                <td>some text goes here here </td>
-                <td>2011-04-25</td>
-            </tr>
+        <TR th:each="sr: ${results}">
+            <TD><span th:text="${sr.id}"></span></TD>
+            <TD><span th:text="${sr.tweetId}"></span></TD>
+            <TD><span th:text="${sr.twitterUserId}"></span></TD>
+            <TD><span th:text="${sr.tweetText}"></span></TD>
+            <TD><span th:text="${sr.sent?'yes':'no'}"></span></TD>
+        </TR>
           </tbody>
         </table>
           </div>
@@ -243,7 +157,7 @@
 
     <script src="/js/jquery-3.7.1.js"></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="datatables.min.js"></script>
+    <script type="text/javascript" src="/js/datatables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/2.2.1/js/dataTables.js"></script>
     <script src="/js/script.js"></script>
   </body>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
   <head>
     <title>Dashboard | Edit search</title>
     <meta charset="UTF-8" />
@@ -127,17 +128,22 @@
 
       <div class="row">
         <div class="col-12 mt-4 forform">
-          <form action="" method="post">
+          <form th:action="${'/a/search-edit-post/'+edit_id} method="post">
             <div class="mb-4">
               <label>Search for Tweet Texts:</label>
-              <input type="text" name="" required>
+              <input NAME="searchText" th:field="*{searchText}" required>
+              <p th:if="${#fields.hasErrors('searchText')}"
+                 th:text="${#strings.listJoin(#fields.errors('searchText'), ', ')}"></p>
             </div>
             <div class="mb-4">
               <label>Message to Tweet in Reply :</label>
-              <textarea required></textarea>
+              <textarea NAME="message" rows="8" cols="100" SIZE="250" th:field="*{message}" required></textarea>
+              <p th:if="${#fields.hasErrors('message')}"
+                 th:text="${#strings.listJoin(#fields.errors('message'), ', ')}"></p>
             </div>
+          <INPUT TYPE="hidden" th:field="*{text}" th:value="${''}">
             <div class="mb-4 check_flex">
-              <span><input type="checkbox" name=""></span>
+              <span><input type="checkbox" id="active" name="active" value="true">></span>
               <label>Search Active - Tick </label>
             </div>
             <div>
@@ -152,7 +158,7 @@
 
     <script src="/js/jquery-3.7.1.js"></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="datatables.min.js"></script>
+    <script type="text/javascript" src="/js/datatables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/2.2.1/js/dataTables.js"></script>
     <script src="/js/script.js"></script>
   </body>

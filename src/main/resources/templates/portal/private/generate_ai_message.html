@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
   <head>
     <title>Dashboard | Generate Ai Message</title>
     <meta charset="UTF-8" />
@@ -123,14 +124,15 @@
 
       <div class="row">
         <div class="col-12 col-md-12 mt-4 forform generate_msg">
-          <form action="" method="post">
+          <form th:action="${'/a/sales-prompt-post'}" method="post">
+            <INPUT TYPE="hidden" NAME="context-type" ID="" value="application/x-www-form-urlencoded">
             <div>
               <label>What to sell :</label>
-              <input type="text" name="" required>
+              <input type="text" name="what" required>
             </div>
             <div class="my-4">
               <label>To A User who Wants:</label>
-              <input type="text" name="" required>
+              <input type="text" name="user-wants" required>
 
             </div>
             <div>
@@ -149,7 +151,7 @@
 
     <script src="/js/jquery-3.7.1.js"></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="datatables.min.js"></script>
+    <script type="text/javascript" src="/js/datatables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/2.2.1/js/dataTables.js"></script>
     <script src="/js/script.js"></script>
   </body>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
   <head>
     <title>Dashboard | Add search</title>
     <meta charset="UTF-8" />
@@ -127,10 +128,11 @@
 
       <div class="row">
         <div class="col-12 mt-4 forform">
-          <form action="" method="post">
+          <form action="th:action="${'/a/sales-leads-post'}" method="post">
+            <INPUT TYPE="hidden" NAME="context-type" ID="" value="application/x-www-form-urlencoded">
             <div class="mb-4">
               <label>New Sales Lead:</label>
-              <input type="text" name="" required>
+              <input type="text" name="twitter_handle" required>
             </div>
             <div>
               <input type="submit" name="" value="Add sales Lead">
@@ -144,7 +146,7 @@
 
     <script src="/js/jquery-3.7.1.js"></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="datatables.min.js"></script>
+    <script type="text/javascript" src="/js/datatables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/2.2.1/js/dataTables.js"></script>
     <script src="/js/script.js"></script>
   </body>

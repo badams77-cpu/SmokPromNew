@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
   <head>
     <title>Dashboard | Add search</title>
     <meta charset="UTF-8" />
@@ -127,14 +128,15 @@
 
       <div class="row">
         <div class="col-12 mt-4 forform">
-          <form action="" method="post">
+          <form action="/a/search-add-post" th:object="${form}" method="post">
             <div>
               <label>Search for Tweet Texts:</label>
-              <input type="text" name="" required>
+              <input NAME="searchText" th:field="*{searchText}" required>
             </div>
             <div class="my-4">
               <label>Message to Tweet in Reply :</label>
-              <textarea required></textarea>
+              <textarea NAME="message" rows=8  cols="100"  SIZE="250"
+                        th:field="*{message}" required></textarea>
             </div>
             <div>
               <input type="submit" name="" value="Save Search">
@@ -148,7 +150,7 @@
 
     <script src="/js/jquery-3.7.1.js"></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="datatables.min.js"></script>
+    <script type="text/javascript" src="/js/datatables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/2.2.1/js/dataTables.js"></script>
     <script src="/js/script.js"></script>
   </body>

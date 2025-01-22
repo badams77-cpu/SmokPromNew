@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
   <head>
     <title>Dashboard | Messege us</title>
     <meta charset="UTF-8" />
@@ -139,27 +140,14 @@
             </tr>
         </thead>
         <tbody class="text-center">
-            <tr>
-                <td>03</td>
-                <td>2025-01-19 07:33  </td>
-                <td>some message will goes here</td>
-                <td><a href="set_reply.html" class="small_btn">Set Reply</a></td>
-            </tr>
-
-            <tr>
-                <td>03</td>
-                <td>2025-01-19 07:33  </td>
-                <td>some message will goes here</td>
-                <td><a href="set_reply.html" class="small_btn">Set Reply</a></td>
-            </tr>
-            <tr>
-                <td>03</td>
-                <td>2025-01-19 07:33  </td>
-                <td>some message will goes here</td>
-                <td><a href="set_reply.html" class="small_btn">Set Reply</a></td>
-            </tr>
-            
-            
+        <TR th:each="sr: ${messages}">
+            <TD><span th:text="${sr.id}"></span></TD>
+            <TD><span th:text="${sr.getCreatedDateString()}"></span></TD>
+            <TD><span th:text="${sr.message}"></span></TD>
+            <TD th:if="${toId==fromId}"><Button
+                    th:attr="onclick=|document.getElementById('toid').setAttribute('value',${sr.from});|">
+                Set reply <span th:text="${sr.from}"></span></Button></TD>
+        </TR>
 
            
           </tbody>
@@ -167,13 +155,23 @@
 
         </div>
       </div>
+        <div>
+          <FORM th:action="message-add-post" method="POST">
+              <INPUT TYPE="hidden" NAME="context-type" ID="" value="application/x-www-form-urlencoded">
+              <INPUT TYPE="hidden" NAME="to" ID="toid" th:value="${toId}">
+              <INPUT TYPE="hidden" NAME="from" th:value="${fromId}">
+              <textarea name="message" cols="80" rows="6"></textarea>
+              <BUTTON TYPE="submit">Message Our Staff</BUTTON>
+          </FORM>
+            </div>
+      </div>
       <!-- row end -->
 
     </main>
 
     <script src="/js/jquery-3.7.1.js"></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="datatables.min.js"></script>
+    <script type="text/javascript" src="/js/datatables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/2.2.1/js/dataTables.js"></script>
     <script src="/js/script.js"></script>
   </body>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
   <head>
     <title>Dashboard | Search Home</title>
     <meta charset="UTF-8" />
@@ -140,49 +141,18 @@
             </tr>
         </thead>
         <tbody class="text-center">
-            <tr>
-                <td>03</td>
-                <td>4546546</td>
-                <td>YES</td>
-                <td>Pakistan </td>
-                <td>Pakistan is a safe country. </td>
-                <td>
-                  <ul class="action_list">
-                    <li><a href="#"><i class="fa fa-edit"></i></a></li>
-                    <li><a href="searches_done.html"><i class="fa fa-eye"></i></a></li>
-                    <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                  </ul>
-                </td>
-            </tr>
-            <tr>
-                <td>03</td>
-                <td>4546546</td>
-                <td>YES</td>
-                <td>Pakistan </td>
-                <td>Pakistan is a safe country. </td>
-                <td>
-                  <ul class="action_list">
-                    <li><a href="#"><i class="fa fa-edit"></i></a></li>
-                    <li><a href="searches_done.html"><i class="fa fa-eye"></i></a></li>
-                    <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                  </ul>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>03</td>
-                <td>4546546</td>
-                <td>YES</td>
-                <td>Pakistan </td>
-                <td>Pakistan is a safe country. </td>
-                <td>
-                  <ul class="action_list">
-                    <li><a href="#"><i class="fa fa-edit"></i></a></li>
-                    <li><a href="searches_done.html"><i class="fa fa-eye"></i></a></li>
-                    <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                  </ul>
-                </td>
-            </tr>
+        <TR th:each="sr: ${searches}">
+            <TD><span th:text="${sr.id}"></span></TD>
+            <TD><span th:text="${sr.lastSearchText}"></span></TD>
+            <TD><span th:text="${sr.active?'YES':'NO'}"></span></TD>
+            <TD><span th:text="${sr.searchText}"></span></TD>
+            <!--TD><span th:text="${sr.text}"></span></TD-->
+            <TD><span th:text="${sr.message}"></span></TD>
+            <TD><span><a th:href="${'/a/search-edit/'+sr.id}">Edit</a></span></TD>
+            <TD th:if="${sr.resultDate!=null}"><span><a  th:href="${'/a/search-done/'+sr.id}">View Results</a></span></TD>
+            <TD  th:unless="${sr.resultDate!=null}"><span>No Results Yet</span></TD>
+        </TR>
+
           </tbody>
         </table>
           </div>
@@ -194,7 +164,7 @@
 
     <script src="/js/jquery-3.7.1.js"></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="datatables.min.js"></script>
+    <script type="text/javascript" src="/js/datatables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/2.2.1/js/dataTables.js"></script>
     <script src="/js/script.js"></script>
   </body>

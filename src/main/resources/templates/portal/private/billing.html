@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
   <head>
     <title>Dashboard | Billings</title>
     <meta charset="UTF-8" />
@@ -117,24 +118,24 @@
         <div class="col-6 col-md-12"> 
           <h2 class="sec_heading text-white border_left ps-2">Welcome to Vapid Promotions </h2>
           <ul class="mt-4 dashlist">
-            <li>Your Subscription is active - with Searches active and paid for</li>
-            <li>You are currently have Searches Paid for, but only Searches active, you can add new searches <a href="add_search.html" class="small_btn">Here</a></li>
-            <li>You are currently have Searches Active for, but only paid for. Click here to buy more subscriptions for each search -  <a href="billing_stripe.html" class="small_btn">Pay here</a></li>
+            <li th:if="${paying!=0 && nsearches==paying}">Your Subscription is active - with <span th:text="${paying}"></span> Searches active and paid for</li>
+            <li th:if="${paying>nsearches}">You are currently have <span th:text="${paying}"></span> Searches Paid for, but only <span th:text="${nsearches}"></span> Searches active, you can add new searches <a href="add_search.html" class="small_btn">Here</a></li>
+            <li th:if="${paying<nsearches}">You are currently have <span th:text="${nsearches}"></span> Searches Active for, <span th:text="${paying}"></span> but only paid for. Click here to buy more subscriptions for each search -  <a href="billing_stripe.html" class="small_btn">Pay here</a></li>
           </ul>
 
-          <h2 class="sec_heading text-white my-5">Only the first, 0 Searches will be performed each day</h2>
+          <h2 th:if="${paying<nsearches}" class="sec_heading text-white my-5">Only the first, <span th:text="${paying}"></span> Searches will be performed each day</h2>
 
           <ul class=" dashlist">
-            <li>Searches active, you can add new searches  <a href="add_search.html" class="small_btn">Here</a></li>
+            <li><span th:text="${nsearches}"></span> Searches active, you can add new searches  <a href="add_search.html" class="small_btn">Here</a></li>
             <li>if you want stop payments (and sending tweets) <a href="cancel_stripe.html" class="small_btn">Cancel Here</a></li>
-            <li>Your Subscription is not active - 
+            <li th:unless="${paying!=0 || nsearches==0}">Your Subscription is not active -
               <a href="billing_stripe.html" class="small_btn">Pay here</a></li>
           </ul>
         </div>
       </div>
       <!-- row end -->
 
-
+.
       <div class="row">
         <div class="col-12 mt-4">
           
@@ -146,7 +147,7 @@
 
     <script src="/js/jquery-3.7.1.js"></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="datatables.min.js"></script>
+    <script type="text/javascript" src="/js/datatables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/2.2.1/js/dataTables.js"></script>
     <script src="/js/script.js"></script>
   </body>

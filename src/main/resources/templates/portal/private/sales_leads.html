@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
   <head>
     <title>Dashboard | Sales Leads</title>
     <meta charset="UTF-8" />
@@ -128,14 +129,16 @@
       <div class="row">
         <div class="col-12 mt-4">
           <div class="custom_filter">
-            <select id="date-filter">
-              <option value="all-time">All Time</option>
-              <option value="today">Today</option>
-              <option value="this-week">This Week</option>
-              <option value="this-fortnight">This Fortnight</option>
-              <option value="30-days">Last 30 Days</option>
-            </select>
-          <button class="small_btn">Change Time Period</button>
+              <FORM th:action="${'/a/sales-leads'}" METHOD="GET">
+                  <SELECT name="period" id="date-filter">
+                      <OPTION th:value="${1}" th:selected="${period}==${1}">TODAY</OPTION>
+                      <OPTION th:value="${7}" th:selected="${period}==${7}">THIS WEEK</OPTION>
+                      <OPTION th:value="${14}" th:selected="${period}==${14}">THIS FORTNIGHT</OPTION>
+                      <OPTION th:value="${30}" th:selected="${period}==${31}">30 DAYS</OPTION>
+                      <OPTION th:value="${10000}" th:selected="${period}==${10000}">ALL TIME</OPTION>
+                  </SELECT>
+                  <BUTTON class="small_btn" VALUE="Change Time Period">Change Time Period</BUTTON>
+              </FORM>
 
           </div>
 
@@ -151,44 +154,19 @@
             </tr>
         </thead>
         <tbody class="text-center">
-            <tr>
-                <td>03</td>
-                <td>Abid</td>
-                <td>2025-01-19 07:33  </td>
-                <td><a href="#" class="internal_link">Success</a> </td>
-                <td>
-                  <ul class="action_list">
-                    <li><a href="sales_notes.html"><i class="fa fa-eye"></i></a></li>
-                    <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                  </ul>
-                </td>
-            </tr>
-            
-            <tr>
-                <td>03</td>
-                <td>Abid</td>
-                <td>2025-01-19 07:33  </td>
-                <td><a href="" class="internal_link">Success</a> </td>
-                <td>
-                  <ul class="action_list">
-                    <li><a href="sales_notes.html"><i class="fa fa-eye"></i></a></li>
-                    <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                  </ul>
-                </td>
-            </tr>
-
-            <tr>
-                <td>03</td>
-                <td>Abid</td>
-                <td>2025-01-19 07:33  </td>
-                <td><a href="" class="internal_link">Success</a> </td>
-                <td>
-                  <ul class="action_list">
-                    <li><a href="sales_notes.html"><i class="fa fa-eye"></i></a></li>
-                    <li><a href="#"><i class="fa fa-trash"></i></a></li>
-                  </ul>
-                </td>
-            </tr>
+        <TR th:each="sr: ${leads}">
+            <TD><span th:text="${sr.id}"></span></TD>
+            <TD><span th:text="${sr.twitterHandle}"></span></TD>
+            <TD><span th:text="${sr.createdDateString}"></span></TD>
+            <TD>
+                <ul class="action_list">
+                <li><a th:href="${'/a/sales-lead-cycle/'+sr.id+'?period='+period}"></li>
+                    <li><span th:text="${sr.leadStatusString}"></span></a></li>
+            <li><a th:href="${'/a/sales-notes/'+sr.id}" <i class="fa fa-eye"></i>View Lead</a></li>
+                    <!--li><a href="#"><i class="fa fa-trash"></i></a></li-->
+                </ul>
+            </TD>
+        </TR>
 
           </tbody>
         </table>
@@ -201,7 +179,7 @@
 
     <script src="/js/jquery-3.7.1.js"></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="datatables.min.js"></script>
+    <script type="text/javascript" src="/js/datatables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/2.2.1/js/dataTables.js"></script>
     <script src="/js/script.js"></script>
   </body>

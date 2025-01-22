@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
   <head>
     <title>Dashboard | Sales Notes</title>
     <meta charset="UTF-8" />
@@ -139,21 +140,12 @@
             </tr>
         </thead>
         <tbody class="text-center">
-            <tr>
-                <td>03</td>
-                <td>2025-01-19 07:33  </td>
-                <td>note</td>
-                <td>Yess</td>
-            </tr>
-            
-            
-
-            <tr>
-                <td>03</td>
-                <td>2025-01-19 07:33  </td>
-                <td>note</td>
-                <td>Yess</td>
-            </tr>
+        <TR th:each="sr: ${notes}">
+            <TD><span th:text="${sr.id}"></span></TD>
+            <TD><span th:text="${sr.createdDateString}"></span></TD>
+            <TD><span th:text="${sr.noteTypeString}"></span></a></TD>
+            <TD><span th:text="${sr.text}">Note</TD>
+        </TR>
           </tbody>
         </table>
 
@@ -165,7 +157,7 @@
 
     <script src="/js/jquery-3.7.1.js"></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="datatables.min.js"></script>
+    <script type="text/javascript" src="/js/datatables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/2.2.1/js/dataTables.js"></script>
     <script src="/js/script.js"></script>
   </body>
