@@ -60,6 +60,12 @@ public class HomeController extends PortalBaseController {
         return PRIBASE+"home.html";
     }
 
+    @RequestMapping({"/contact.html","/a/contact_us.html"})
+    public String home(Model m) throws UserNotFoundException, NotLoggedInException
+    {
+        return PUBBASE+"contact_us.html";
+    }
+
     @RequestMapping({"/","/index.html"})
     public String pubhome(Model mh)
     {
