@@ -155,7 +155,7 @@ public class HomeController extends PortalBaseController {
         } catch (Exception e){
             LOGGER.warn("Exception sending signup email",e);
         }
-        return PUBBASE+"/signn_up_confirmed";
+        return PUBBASE+"/sign_up_confirmed";
     }
 
 
@@ -182,7 +182,7 @@ public class HomeController extends PortalBaseController {
         } catch (Exception e){
             LOGGER.warn("Exception sending signup email",e);
         }
-        return PUBBASE+"/signn_up_confirmed";
+        return PUBBASE+"/sign_up_confirmed";
     }
 
     @PostMapping("/signup-from-reseller")
@@ -206,7 +206,7 @@ public class HomeController extends PortalBaseController {
         } catch (Exception e){
             LOGGER.warn("Exception sending signup email",e);
         }
-        return PUBBASE+"/signn_up_confirmed";
+        return PUBBASE+"/sign_up_confirmed";
     }
 
 
