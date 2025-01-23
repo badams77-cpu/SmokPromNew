@@ -53,7 +53,7 @@ public class ExceptionControllerAdvice {
         if (m.isEmpty()){
             LOGGER.warn("internalServerError no model variables");
         }
-        return new ModelAndView("/error", m);
+        return new ModelAndView("/portal/public/error", m);
     }
 
     private Map<String, Object> getErrorAttributes(ServletWebRequest wr,

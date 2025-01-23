@@ -38,7 +38,7 @@ public class AppErrorController implements ErrorController {
 
     private final static String ERROR_PATH = "/error";
 
-    protected static final String PUBBASE = "/portal/public/";
+    protected static final String PUBBASE = "portal/public/";
     /**
      * Controller for the Error Controller
      * @param errorAttributes
