@@ -1,6 +1,8 @@
 package com.smokpromotion.SmokProm.controller.portal;
 
 
+import com.smokpromotion.SmokProm.exceptions.TwitterSearchNotFoundException;
+import com.smokpromotion.SmokProm.exceptions.UserNotFoundException;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLogger;
 import com.smokpromotion.SmokProm.util.MethodPrefixingLoggerFactory;
 import org.slf4j.Logger;
@@ -46,6 +48,32 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ModelAndView  internalServerError(ServletWebRequest request,final Exception ex) {
+        Map<String, Object> m = getErrorAttributes(request,true);
+        for(String s : m.keySet()){
+            LOGGER.warn(s+": "+m.get(s));
+        }
+        if (m.isEmpty()){
+            LOGGER.warn("internalServerError no model variables");
+        }
+        return new ModelAndView("/portal/public/error", m);
+    }
+
+    @ExceptionHandler(TwitterSearchNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ModelAndView  searchNotFoundServerError(ServletWebRequest request,final Exception ex) {
+        Map<String, Object> m = getErrorAttributes(request,true);
+        for(String s : m.keySet()){
+            LOGGER.warn(s+": "+m.get(s));
+        }
+        if (m.isEmpty()){
+            LOGGER.warn("internalServerError no model variables");
+        }
+        return new ModelAndView("/portal/public/error", m);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ModelAndView  userNotFoundServerError(ServletWebRequest request,final Exception ex) {
         Map<String, Object> m = getErrorAttributes(request,true);
         for(String s : m.keySet()){
             LOGGER.warn(s+": "+m.get(s));
