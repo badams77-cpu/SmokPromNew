@@ -156,7 +156,7 @@
         </div>
       </div>
         <div>
-          <FORM th:action="message-add-post" method="POST">
+          <FORM th:action="${'message-add-post'}" method="POST">
               <INPUT TYPE="hidden" NAME="context-type" ID="" value="application/x-www-form-urlencoded">
               <INPUT TYPE="hidden" NAME="to" ID="toid" th:value="${toId}">
               <INPUT TYPE="hidden" NAME="from" th:value="${fromId}">

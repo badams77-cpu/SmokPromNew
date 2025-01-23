@@ -52,7 +52,7 @@ public class SearchController extends PortalBaseController{
 
         m.addAttribute("userName", user.getFirstname()+" "+user.getLastname());
 
-        return PRIBASE+"searches";
+        return PRIBASE+"search_home";
     }
 
 
