@@ -128,7 +128,7 @@
 
       <div class="row">
         <div class="col-12 mt-4 forform">
-          <form th:action="${'/a/search-edit-post/'+edit_id}" method="post">
+          <form th:action="${'/a/search-edit-post/'+edit_id}" th:object="${form}" method="post">
             <div class="mb-4">
               <label>Search for Tweet Texts:</label>
               <input NAME="searchText" th:field="*{searchText}" required>
@@ -137,14 +137,15 @@
             </div>
             <div class="mb-4">
               <label>Message to Tweet in Reply :</label>
-              <textarea NAME="message" rows="8" cols="100" SIZE="250" th:field="*{message}" required></textarea>
+              <textarea NAME="message" rows="8" cols="100" th:field="*{message}" required></textarea>
               <p th:if="${#fields.hasErrors('message')}"
                  th:text="${#strings.listJoin(#fields.errors('message'), ', ')}"></p>
             </div>
           <INPUT TYPE="hidden" th:field="*{text}" th:value="${''}">
             <div class="mb-4 check_flex">
-              <span><input type="checkbox" id="active" name="active" value="true">></span>
+
               <label>Search Active - Tick </label>
+              <span><input type="checkbox" id="active" name="active" value="true">></span>
             </div>
             <div>
               <input type="submit" name="" value="Save Search">
