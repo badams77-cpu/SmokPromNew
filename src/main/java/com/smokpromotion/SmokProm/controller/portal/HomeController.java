@@ -105,7 +105,7 @@ public class HomeController extends PortalBaseController {
         return PUBBASE+"login.html";
     }
 
-    @GetMapping({"signup", "/singup.html"})
+    @GetMapping({"signup","sign_up","sign_up.html", "/singup.html"})
     public String signup(Model m) throws UserNotFoundException, NotLoggedInException
     {
 //        S_User user = getAuthUser(auth);
