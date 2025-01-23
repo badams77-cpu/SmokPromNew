@@ -82,9 +82,9 @@
                   <div class="tab-pane fade" id="login" role="tabpanel">
                     <div class="row">
                       <div class="col-12 col-md-8 offset-md-2 col-lg-8 offset-lg-2 pt-5">
-                        <form th:action="@{/login-handler}" >
+                        <form th:action="@{/login-handler}" METHOD="post" >
                           <label>User Name :</label>
-                          <input type="text" name="email" required>
+                          <input type="text" name="username" required>
                           <label>Password :</label>
                           <input type="password" name="password" id="myInput" required>
                           <i class="fa fa-eye eye_icon" onclick="myFunction()"></i>
