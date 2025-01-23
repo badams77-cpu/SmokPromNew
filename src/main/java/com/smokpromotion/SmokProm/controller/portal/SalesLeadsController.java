@@ -116,7 +116,7 @@ public class SalesLeadsController extends PortalBaseController{
 
     @RequestMapping("a/sales-prompt")
     public String sellPromptPage(Model m){
-        return PRIBASE+"sales_prompt";
+        return PRIBASE+"generate_ai_message";
     }
 
     @RequestMapping(value="/a/sales-prompt-post")

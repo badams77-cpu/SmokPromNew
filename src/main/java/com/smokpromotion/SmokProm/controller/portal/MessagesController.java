@@ -61,7 +61,7 @@ public class MessagesController extends PortalBaseController{
 
         m.addAttribute("fromId", user.getId());
 
-        return PRIBASE+"messages_us";
+        return PRIBASE+"message_us";
     }
 
 

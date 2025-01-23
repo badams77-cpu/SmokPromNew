@@ -69,7 +69,7 @@ public class SearchController extends PortalBaseController{
 
         m.addAttribute("userName", user.getFirstname()+" "+user.getLastname());
 
-        return PRIBASE+"search-form-add";
+        return PRIBASE+"add_search";
     }
 
     @RequestMapping("/a/search-done/{id}")
@@ -104,7 +104,7 @@ public class SearchController extends PortalBaseController{
 
         m.addAttribute("results", results);
 
-        return PRIBASE+"searches_results";
+        return PRIBASE+"search_results";
     }
 
 
@@ -121,7 +121,7 @@ public class SearchController extends PortalBaseController{
 
         m.addAttribute("userName", user.getFirstname()+" "+user.getLastname());
 
-        return PRIBASE+"search-form-edit";
+        return PRIBASE+"edit_search";
     }
 
     @RequestMapping("/a/search-add-post")
