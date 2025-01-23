@@ -53,14 +53,14 @@ public class HomeController extends PortalBaseController {
     @Autowired
     private REP_UserService userService;
 
-    @RequestMapping("/a/home")
+    @RequestMapping({"/a/home","/a/index.html"})
     public String home(Model m, Authentication auth) throws UserNotFoundException, NotLoggedInException
     {
         S_User user = getAuthUser(auth);
         return PRIBASE+"home.html";
     }
 
-    @RequestMapping("/")
+    @RequestMapping({"/","/index.html"})
     public String pubhome(Model mh)
     {
         return PUBBASE+"index.html";
@@ -72,7 +72,7 @@ public class HomeController extends PortalBaseController {
         return PUBBASE+"how_it_works.html";
     }
 
-    @RequestMapping("/forgot")
+    @RequestMapping({"/forgot","/forfot.html"})
     public String forgotpass(Model mh)
     {
         mh.addAttribute("forgottenPasswordMsg","");
@@ -93,34 +93,34 @@ public class HomeController extends PortalBaseController {
 
 
 
-    @RequestMapping("/login")
+    @RequestMapping({"/login","/login.html"})
     public String login(Model m, Authentication auth)
     {
         return PUBBASE+"login.html";
     }
 
-    @GetMapping("/signup")
+    @GetMapping({"signup", "/singup.html"})
     public String signup(Model m) throws UserNotFoundException, NotLoggedInException
     {
 //        S_User user = getAuthUser(auth);
         return PUBBASE+"signup.html";
     }
 
-    @GetMapping("/resell")
+    @GetMapping({"/resell","/resell.html"})
     public String reseller(Model m) throws UserNotFoundException, NotLoggedInException
     {
 //        S_User user = getAuthUser(auth);
         return PUBBASE+"resell.html";
     }
 
-    @GetMapping("/signup-reseller")
+    @GetMapping({"/signup-reseller","/signup-reseller.html"})
     public String signupReseller(Model m) throws UserNotFoundException, NotLoggedInException
     {
 //        S_User user = getAuthUser(auth);
         return PUBBASE+"signup-reseller.html";
     }
 
-    @GetMapping("/signup-from-reseller")
+    @GetMapping({"/signup-from-reseller","/signup-from-reseller.html"})
     public String signupFromReseller(Model m) throws UserNotFoundException, NotLoggedInException
     {
 //        S_User user = getAuthUser(auth);

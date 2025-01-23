@@ -58,7 +58,7 @@ public class StaticContentController {
         return resourceLoader.getResource("classpath:/static/js/"+file);
     }
 
-    @GetMapping(value = "/fonts/{file}.w0ff2",  produces = "font/woff2")
+    @GetMapping(value = "/fonts/{file}.woff2",  produces = "font/woff2")
     @ResponseBody
     public Resource serveFontWoff2Content(@PathVariable String file) {
         // Load and return your static HTML file

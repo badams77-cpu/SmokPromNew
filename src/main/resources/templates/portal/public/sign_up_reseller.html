@@ -72,54 +72,55 @@
               <div class="form_bg ">
 
                           <div class="col-12 col-md-12">
-                            <h2 class="sub_sub_heading  "><span class="linees">---</span>Sign up to be a <span class="brand_text"> Reseller</span></h2>
+                            <h2 class="sub_sub_heading  "><span class="linees">---</span>Sign up to be
+                              a <span class="brand_text"> Reseller</span></h2>
                             <hr class="my-4 main_hr">
-                            
 
-                            <form class="">
+
+                          <form  th:action="${'/signup-reseller'}"  method="POST">
                       <div class="row">
                         <div class="col-12 col-md-6">
                           <label>First Name:</label>
-                          <input type="text" name="" required>
+                          <input type="text" name="firstname" required>
                         </div>
                         <div class="col-12 col-md-6">
                           <label>Last Name: <span class="staric">*</span></label>
-                          <input type="text" name="" required>
+                          <input type="text" name="lastname" required>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-12 col-md-6">
                           <label>Email: <span class="staric">*</span></label>
-                          <input type="email" name="" required>
+                          <input type="email" name="email" required>
                         </div>
                         <div class="col-12 col-md-6">
                           <label>Password:</label>
-                          <input type="password" name="" id="myInput2" required>
+                          <input type="password" name="password" id="myInput2" required>
                           <i class="fa fa-eye eye_icon" onclick="myFunction2()"></i>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-12 col-md-6">
                           <label>Address 1:</label>
-                          <textarea></textarea>
+                          <textarea name="address1"></textarea>
                         </div>
                         <div class="col-12 col-md-6">
                           <label>Address 2:</label>
-                          <textarea></textarea>
+                          <textarea mame="address2"></textarea>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-12 col-md-6 col-lg-4">
                           <label>Town:</label>
-                          <input type="text" name="" required>
+                          <input type="text" name="towm" required>
                         </div>
                         <div class="col-12 col-md-6 col-lg-4">
                           <label>Country:</label>
-                          <input type="text" name="" required>
+                          <input type="text" name="country" required>
                         </div>
                         <div class="col-12 col-md-6 col-lg-4">
                           <label>Postal Code:</label>
-                          <input type="text" name="" required>
+                          <input type="text" name="postcode" required>
                         </div>
                       </div>
                       <div class="row">
@@ -187,14 +188,14 @@
               <!-- links end -->
               <div class="col-12 col-md-4 col-lg-5 ps-0">
                 <h5 class="footerheading">Contact</h5>
-                <p class="foot-p  mt-4">Vista Building., London, W1 4HD</p>
+                <p class="foot-p  mt-4">London, NW10 7ET</p>
                 <div class="mt-4">
                   <i class="fa fa-envelope lifafa"></i>
-                  <a href="mailto:info@easytutes.com" class="ff-link"> info@easytutes.com</a>
+                  <a href="malto:admin@vapidpromotions.com" class="ff-link"> info@easytutes.com</a>
                 </div>
                 <div class="mt-4">
                   <i class="fa fa-phone lifafa"></i>
-                  <a href="tel:+92 340 90 900 61" class="ff-link">+92 340 90 900 61</a>
+                 To contact signuo for free and using are message staff service
                 </div>
               </div>
             </div>
