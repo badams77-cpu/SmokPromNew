@@ -119,18 +119,18 @@ public class HomeController extends PortalBaseController {
         return PUBBASE+"resell.html";
     }
 
-    @GetMapping({"/signup-reseller","/signup-reseller.html"})
+    @GetMapping({"/sign_up_reseller","/signup-reseller.html"})
     public String signupReseller(Model m) throws UserNotFoundException, NotLoggedInException
     {
 //        S_User user = getAuthUser(auth);
-        return PUBBASE+"signup-reseller.html";
+        return PUBBASE+"sign_up_reseller.html";
     }
 
-    @GetMapping({"/signup-from-reseller","/signup-from-reseller.html"})
+    @GetMapping({"/signup_from_reseller","/signup-from-reseller.html"})
     public String signupFromReseller(Model m) throws UserNotFoundException, NotLoggedInException
     {
 //        S_User user = getAuthUser(auth);
-        return PUBBASE+"signup-from-reseller.html";
+        return PUBBASE+"signup_from_reseller.html";
     }
 
 
