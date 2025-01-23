@@ -155,7 +155,7 @@ public class HomeController extends PortalBaseController {
         } catch (Exception e){
             LOGGER.warn("Exception sending signup email",e);
         }
-        return PUBBASE+"/signup-confirm";
+        return PUBBASE+"/signn_up_confirmed";
     }
 
 
@@ -182,7 +182,7 @@ public class HomeController extends PortalBaseController {
         } catch (Exception e){
             LOGGER.warn("Exception sending signup email",e);
         }
-        return PUBBASE+"/signup-confirm";
+        return PUBBASE+"/signn_up_confirmed";
     }
 
     @PostMapping("/signup-from-reseller")
@@ -206,7 +206,7 @@ public class HomeController extends PortalBaseController {
         } catch (Exception e){
             LOGGER.warn("Exception sending signup email",e);
         }
-        return PUBBASE+"/signup-confirm";
+        return PUBBASE+"/signn_up_confirmed";
     }
 
 
@@ -228,7 +228,7 @@ public class HomeController extends PortalBaseController {
                     "<p>"+
                     "Thank you for signing up to Vapid Promotions<p/>"+
                     "<p>To continue confirm your email by clicking the link below: </p>"+
-                    "<a href='"+url+"/signup-confirm?pr="+hashed+"' mc:disable-tracking  > Click here to confirm your email </a></p>"+
+                    "<a href='"+url+"/signn_up_confirmed?pr="+hashed+"' mc:disable-tracking  > Click here to confirm your email </a></p>"+
                     "<p>" +
                     "Note that this link will expire after a short period of time. " +
                     "If you find, when clicking on the link that it has expired, please request another one, by using the 'Forgot your password' link on the  login page. " +

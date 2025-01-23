@@ -193,7 +193,7 @@ public class PasswordRecoveryController extends PortalBaseController {
 
     }
 
-    @RequestMapping(path = "/signup-confirm", method = { RequestMethod.GET })
+    @RequestMapping(path = "/signn_up_confirmed", method = { RequestMethod.GET })
     public String confirmsignup(
 
             HttpServletRequest request,
