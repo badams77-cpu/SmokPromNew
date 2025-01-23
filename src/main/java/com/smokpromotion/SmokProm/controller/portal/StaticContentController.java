@@ -16,11 +16,18 @@ public class StaticContentController {
         this.resourceLoader = resourceLoader;
     }
 
-    @GetMapping(value = "/images/{file}",  produces = MediaType.IMAGE_PNG_VALUE)
+    @GetMapping(value = "/images/{file}.png",  produces = MediaType.IMAGE_PNG_VALUE)
     @ResponseBody
     public Resource serveStaticContent(@PathVariable String file) {
         // Load and return your static HTML file
-        return resourceLoader.getResource("classpath:/static/images/"+file);
+        return resourceLoader.getResource("classpath:/static/images/"+file+".png");
+    }
+
+    @GetMapping(value = "/images/{file}.jpg",  produces = MediaType.IMAGE_JPEG_VALUE)
+    @ResponseBody
+    public Resource serveStaticJpgContent(@PathVariable String file) {
+        // Load and return your static HTML file
+        return resourceLoader.getResource("classpath:/static/jpg/"+file+".jpg");
     }
 
     @GetMapping(value = "/webfonts/{file}.eot",  produces ="application/vnd.ms-fontobject")

@@ -56,7 +56,7 @@ body{
 .hero_section{
 	width:100%;
 	height: auto;
-	background:url(../images/hero.jpg);
+	background:url(../jpg/hero.jpg);
 	background-size: cover;
 	padding-bottom: 6rem;
 }
@@ -589,7 +589,7 @@ width:4rem;
 /* Default state: collapsed with plus icon */
 .accordion-button.collapsed::after {
   content: "";
-  background-image: url("../images/cross.png"); /* Replace with your plus icon image */
+  background-image: url("../jpg/cross.png"); /* Replace with your plus icon image */
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center right;
@@ -600,7 +600,7 @@ width:4rem;
 
 .accordion-button:not(.collapsed)::after {
   content: "";
-  background-image: url("../images/cross.png");
+  background-image: url("../jpg/cross.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center right;
@@ -624,7 +624,7 @@ width:4rem;
 	height: auto;
 	padding:6rem 2rem;
 	background: linear-gradient(to right, rgba(46, 10, 72, 0.9), rgba(177, 98, 234, 0.9)), 
-              url('../images/banner.jpg') center/cover no-repeat;
+              url('../jpg/banner.jpg') center/cover no-repeat;
 	border-radius: 2rem;
 	background-size: cover;
 	background-position: center;

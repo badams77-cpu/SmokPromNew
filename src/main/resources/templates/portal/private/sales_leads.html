@@ -120,7 +120,7 @@
           
         </div>
         <div class="col-6 col-md-3 text-end">
-          <a href="add_lead.html" class="d_button"><i class="fa fa-plus"></i>Add Lead</a>
+          <a href="/a/sales-leads-add" class="d_button"><i class="fa fa-plus"></i>Add Lead</a>
         </div>
       </div>
       <!-- row end -->
@@ -160,8 +160,8 @@
             <TD><span th:text="${sr.createdDateString}"></span></TD>
             <TD>
                 <ul class="action_list">
-                <li><a th:href="${'/a/sales-lead-cycle/'+sr.id+'?period='+period}"></li>
-                    <li><i class="fa fa-eye"><span th:text="${sr.leadStatusString}"></span></a></li></ul>
+                <li><a th:href="${'/a/sales-lead-cycle/'+sr.id+'?period='+period}">
+                    <li><i class="fa fa-eye"></i><span th:text="${sr.leadStatusString}"></span></a></li></ul>
                     </td><td>
                     <ul class="action_list">
             <li><a th:href="${'/a/sales-notes/'+sr.id}"> <i class="fa fa-eye"></i>View Lead</a></li></ul>
@@ -175,7 +175,7 @@
         </div>
       </div>
       <!-- row end -->
-
+      </div>
     </main>
 
     <script src="/js/jquery-3.7.1.js"></script>

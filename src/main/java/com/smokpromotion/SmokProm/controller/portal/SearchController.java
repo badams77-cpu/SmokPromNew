@@ -22,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -121,7 +122,7 @@ public class SearchController extends PortalBaseController{
 
         m.addAttribute("userName", user.getFirstname()+" "+user.getLastname());
 
-        return PRIBASE+"edit_search";
+        return "portal/private/edit_search";
     }
 
     @RequestMapping("/a/search-add-post")
@@ -149,7 +150,7 @@ public class SearchController extends PortalBaseController{
         return "redirect:/a/search-home";
     }
 
-    @RequestMapping("/a/search-edit-post/{id}")
+    @PostMapping("/a/search-edit-post/{id}")
     public String searchEditPost(@Valid DE_TwitterSearch twitterSearchForm, BindingResult bindingResult, Model m, Authentication auth, @PathVariable("id") int id) throws TwitterSearchNotFoundException, UserNotFoundException, NotLoggedInException
     {
         S_User user = getAuthUser(auth);
