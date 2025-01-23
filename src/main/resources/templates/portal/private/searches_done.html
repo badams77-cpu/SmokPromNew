@@ -119,7 +119,7 @@
           <h2 class="sec_heading text-white border_left ps-2">Marketing Searches</h2>
         </div>
         <div class="col-6 col-md-3 text-end">
-          <a href="add_search.html" class="d_button"><i class="fa fa-plus"></i>Add New</a>
+          <a href="/a/search-add" class="d_button"><i class="fa fa-plus"></i>Add New</a>
         </div>
       </div>
       <!-- row end -->
@@ -136,7 +136,7 @@
                 <th>Number of Results </th>
                 <th>Number of Tweets Sent </th>
                 <th>Status</th>
-                <th>Action</th>
+                <!--th>Action</th-->
 
             </tr>
         </thead>
@@ -150,8 +150,8 @@
                 <ul class="action_list"><span>
                 <a  th:href="${'/a/search-results/'+sr.id}"> <i class="fa fa-edit"></i> View Results</a></span></TD>
             <TD  th:unless="${sr.resultsDate!=null}"><span>No Results Yet</span></TD>
-            <TD>  <ul class="action_list"><span>
-                <a th:href="${'/a/search-edit/'+sr.id}"><i class="fa fa-edit"></i>Edit</a></span></TD>
+            <!--TD>  <ul class="action_list"><span>
+                <a th:href="${'/a/search-edit/'+sr.id}"><i class="fa fa-edit"></i>Edit</a></span></TD-->
             <!--li><a href="#"><i class="fa fa-trash"></i></a></li-->
         </TR>
 
