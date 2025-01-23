@@ -57,7 +57,7 @@ public class HomeController extends PortalBaseController {
     public String home(Model m, Authentication auth) throws UserNotFoundException, NotLoggedInException
     {
         S_User user = getAuthUser(auth);
-        return PRIBASE+"home.html";
+        return PRIBASE+"index.html";
     }
 
     @RequestMapping({"/contact.html","/a/contact_us.html"})
