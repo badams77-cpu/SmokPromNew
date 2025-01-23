@@ -69,6 +69,21 @@ public class SalesLeadsController extends PortalBaseController{
         return PRIBASE+"sales_leads";
     }
 
+    @RequestMapping("/a/sales-leads-add")
+    public String leadsAdd(Model m, Authentication auth) throws UserNotFoundException, NotLoggedInException
+    {
+        S_User user = getAuthUser(auth);
+        return PRIBASE+"add_sales_leads";
+    }
+
+    @RequestMapping("/a/sales-notes-add/{id}")
+    public String notesadd(Model m, @PathVariable(name="id") int id, Authentication auth) throws UserNotFoundException, NotLoggedInException
+    {
+        S_User user = getAuthUser(auth);
+        m.addAttribute("leadId", id);
+        return PRIBASE+"add_sales_notes";
+    }
+
     @RequestMapping("/a/sales-notes/{id}")
     public String notesHome(Model m, @PathVariable(name="id") int id, Authentication auth) throws UserNotFoundException, NotLoggedInException
     {
