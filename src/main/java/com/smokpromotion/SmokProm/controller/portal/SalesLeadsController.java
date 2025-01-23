@@ -143,7 +143,7 @@ public class SalesLeadsController extends PortalBaseController{
 
 
 
-        return PRIBASE+"sales_prompt";
+        return PRIBASE+"generate_ai_message";
     }
 
 
