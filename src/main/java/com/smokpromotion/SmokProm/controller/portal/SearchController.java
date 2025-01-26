@@ -122,7 +122,7 @@ public class SearchController extends PortalBaseController{
 
         m.addAttribute("userName", user.getFirstname()+" "+user.getLastname());
 
-        return "portal/private/edit_search";
+        return PRIBASE+"edit_search";
     }
 
     @RequestMapping("/a/search-add-post")
@@ -132,7 +132,7 @@ public class SearchController extends PortalBaseController{
 
         if (bindingResult.hasErrors()) {
             LOGGER.warn("WARNING Search form binding ",bindingResult.getFieldErrors());
-            return "search-form-add";
+            return PRIBASE+"add_serch";
         }
 
         twitterSearchForm.setUserId(user.getId());

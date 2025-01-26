@@ -161,10 +161,10 @@
             <TD>
                 <ul class="action_list">
                 <li><a th:href="${'/a/sales-lead-cycle/'+sr.id+'?period='+period}">
-                    <li><i class="fa fa-eye"></i><span th:text="${sr.leadStatusString}"></span></a></li></ul>
+                    <i class="fa fa-eye"></i><span th:text="${sr.leadStatusString}"></span></a></li></ul>
                     </td><td>
-                    <ul class="action_list">
-            <li><a th:href="${'/a/sales-notes/'+sr.id}"> <i class="fa fa-eye"></i>View Lead</a></li></ul>
+                    <a th:href="${'/a/sales-notes/'+sr.id}">
+                        <i class="fa fa-eye"></i>View Lead</a>
                     <!--li><a href="#"><i class="fa fa-trash"></i></a></li-->
             </TD>
         </TR>
