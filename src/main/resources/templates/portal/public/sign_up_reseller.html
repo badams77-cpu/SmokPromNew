@@ -122,6 +122,15 @@
                           <label>Postal Code:</label>
                           <input type="text" name="postcode" required>
                         </div>
+                        <div class="">
+                          <canvas class="jCaptchaCanvas" ></canvas>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4">
+                          <label>Are you human? Enter the sum above:</label>
+                          <input class="jCaptcha" name="jCaptcha" type="text" placeholder="Type in result please">
+                        </div>
+                      </div>
+                            <input type="hidden" value="0" id="jCaptcha1" name="jCaptcha1">
                       </div>
                       <div class="row">
                         <div class="col-12 col-md-6 offset-md-3">
@@ -191,7 +200,7 @@
                 <p class="foot-p  mt-4">London, NW10 7ET</p>
                 <div class="mt-4">
                   <i class="fa fa-envelope lifafa"></i>
-                  <a href="malto:admin@vapidpromotions.com" class="ff-link"> info@easytutes.com</a>
+                  <a href="malto:admin@vapidpromotions.com" class="ff-link"> admin@vapidpromotions.com</a>
                 </div>
                 <div class="mt-4">
                   <i class="fa fa-phone lifafa"></i>
@@ -221,11 +230,41 @@
 
 
 
-    <script src="/js/jquery-3.7.1.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/proper.min.js"></script>
-    <script type="text/javascript" src="/js/slick.min.js"></script>
-    <script type="text/javascript" src="/js/custome_script.js"></script>
+      <script src="/js/jquery-3.7.1.js"></script>
+      <script src="/js/bootstrap.min.js"></script>
+      <script src="/js/proper.min.js"></script>
+      <script src="/js/js-capture.js" type="text/javascript"></script>
+      <script type="text/javascript" src="/js/slick.min.js"></script>
+      <script type="text/javascript" src="/js/custome_script.js"></script>
+      <script>
+        myCaptcha = new jCaptcha({
+          el: '.jCaptcha',
+          canvasClass: 'jCaptchaCanvas',
+          canvasStyle: {
+            // required properties for captcha stylings:
+            width: 100,
+            height: 15,
+            textBaseline: 'top',
+            font: '15px Arial',
+            textAlign: 'left',
+            fillStyle: '#333'
+          },
+          // set callback function for success and error messages:
+          callback: ( response, $captchaInputElement, numberOfTries ) => {
+            if ( response == 'success' ) {
+              // success handle, e.g. continue with form submit
+              $('signform').submit();
+            }
+            if ( response == 'error' ) {
+              // error handle, e.g. add error class to captcha input
+
+              if (numberOfTries === 3) {
+                // maximum attempts handle, e.g. disable form
+              }
+            }
+          }
+        });
+      </script>
     
   </body>
 </html>

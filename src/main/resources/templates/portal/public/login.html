@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, 
+  user-scalable=0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/fontawesome.css">
+    <link rel="stylesheet" type="text/css" href="/css/mystyle.css">
+    <link rel="stylesheet" type="text/css" href="/css/responsive.css">
+    <link rel="stylesheet" type="text/css" href="/css/slick-slider/slick-theme.css">
+    <link rel="stylesheet" type="text/css" href="/css/slick-slider/slick.css">
+    <link rel="icon" href="images/favicon.png" type="image/png" sizes="16x16">
+    <title>Home</title>
+  </head>
+  <body>
+      <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container ">
+          <a href="index.html" class="navbar-brand ">
+            <img src="/images/logo.png" class="img-fluid main_logo" alt="iQ EA Logo">
+          </a>
+          <div class="nav_mobile_right">
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#main_navbar" aria-controls="main_navbar">
+              <i class="fa fa-bars menu_icon"></i>
+            </button>
+          </div>
+          <div class="offcanvas offcanvas-start" tabindex="-1" id="main_navbar" aria-labelledby="offcanvasExampleLabel">
+            <div class="offcanvas-header">
+              <a href="" class="navbar-brand">
+                <img src="/images/logo.png" class="img-fluid main_logo" alt="iQ EA Logo">
+              </a>
+              <i class="fa fa-times menu_icon" data-bs-dismiss="offcanvas" aria-label="Close"></i>
+            </div>
+            <div class="offcanvas-body my_menu">
+              <div class="forspace"></div>
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a href="index.html" class="nav-link">Home</a>
+                </li>
+               
+                <li class="nav-item">
+                  <a href="index.html#about" class="nav-link ">About</a>
+                </li>
+                <li class="nav-item">
+                  <a href="index.html#how_it_works" class="nav-link ">How it works</a>
+                </li>
+                <li class="nav-item">
+                  <a href="index.html#reseller" class="nav-link ">Reseller</a>
+                </li>
+                <li class="nav-item">
+                  <a href="contact_us.html" class="nav-link ">Contact us</a>
+                </li>
+              </ul>
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a href="signup.html" class="nav-link login_btn">Sign Up</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <div class="common_space"></div>
+
+      <main class="py_7 register_and_login_main">
+  <div class="getting_deal_main">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-12 col-lg-10 offset-lg-1 getting_deal_main_section">
+          <img src="/images/logo.png" class="img-fluid main_logo m-auto d-block" align="Office Depot">
+            <div class="row">
+              <div class="col-md-12 noponmobile px-0">
+                <nav class="tabs_links_main">
+                  <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link" id="login-tab" data-bs-toggle="tab" href="#login" role="tab" aria-bs-selected="false">Login</a>
+                    <a class="nav-item nav-link me-0 active" id="signup-tab" data-bs-toggle="tab" href="#signup" role="tab" aria-bs-selected="true">Sign Up</a>
+                  </div>
+                </nav>
+                <div class="tab-content forms_contents" id="nav-tabContent">
+                  <div class="tab-pane fade" id="login" role="tabpanel">
+                    <div class="row">
+                      <div class="col-12 col-md-8 offset-md-2 col-lg-8 offset-lg-2 pt-5">
+                        <form th:action="@{/login-handler}" METHOD="post" >
+                          <label>User Name :</label>
+                          <input type="text" name="username" required>
+                          <label>Password :</label>
+                          <input type="password" name="password" id="myInput" required>
+                          <i class="fa fa-eye eye_icon" onclick="myFunction()"></i>
+                          <div class="check_flex ">
+                            <div class="forgot_div">
+                              <a href="forgot_password.html" class="forgot_pass_link">Forgot Password?</a>
+                            </div>
+                          </div>
+                          <input type="submit" name="" value="Login" class="mb-0">
+                        </form>
+                        <div class="my-4">
+                          <span class="ask_q">
+                            Didn't Have an account? 
+                            <a class="dont_link" href="#" onclick="showTab('signup')">Register Here</a>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                  <!-- login tab end -->
+
+                  <!-- signup tab end -->
+                </div>
+                <!-- tab content end -->
+              </div>
+              <!-- tabs col end -->
+            </div>
+            <!-- tabs row end -->
+          </div>
+        </div>
+        <!-- main section end -->
+      </div>
+      <!-- row end -->
+    </div>
+  </div>
+  <!-- getting_deal_main end -->
+</main>
+<!-- register and login main end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <footer class="forfooter pb-0 mb-0">
+      <div class="container px_2">
+        <div class="row"style="border-bottom:1px solid gray;">
+          <div class="col-12 col-md-12 d-block d-md-none d-lg-block col-lg-2 noponmobile mb3">
+            <img src="/images/logo.png" class="img-fluid footer_logo" alt=" Logo">
+            
+          </div>
+          <div class="col-12 col-md-12 col-lg-10 fotlink pb-5">
+            <div class="row">
+              <div class="col-12 col-md-4 col-lg-3 mb3 noponmobile ps-0">
+                <h5 class="footerheading">Legal</h5>
+                <ul class="footer_menu_ul">
+                  <li>
+                    <a href="#">Privacy Policy</a>
+                  </li>
+                  <li>
+                    <a href="#">Terms & conditions </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-12 col-md-4 col-lg-4 mb3 ps-0 ps-md-4">
+                <h5 class="footerheading">Quick Links</h5>
+                <ul class="footer_menu_ul">
+                  <li><a href="index.html">Home</a></li>
+                  <li><a href="index.html#about">About us</a></li>
+                  <li><a href="index.html#how_it_works">How it works</a></li>
+                  <li><a href="index.html#reseller">Reseller</a></li>
+                  <li><a href="contact.html">Contact us</a></li>
+                </ul>
+              </div>
+              <!-- links end -->
+              <div class="col-12 col-md-4 col-lg-5 ps-0">
+                <h5 class="footerheading">Contact</h5>
+                <p class="foot-p  mt-4">Headquarters, London, NW10 7ET</p>
+                <div class="mt-4">
+                  <i class="fa fa-envelope lifafa"></i>
+                  <a href="malto:admin@vapidpromotions.com" class="ff-link"> admin@vapidpromotions.com</a>
+                </div>
+                <div class="mt-4">
+                  <i class="fa fa-phone lifafa"></i>
+                 To contact signuo for free and using are message staff service
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- row end -->
+          
+
+      <div class="row d-flex align-items-center py-4">
+        <div class="col-12 col-md-12 col-lg-6  text-center text-md-start"><p class="copyright_text">&copy;<span id="currentYear"></span> All Rights Reserved by <a href="https://vapidpromotions.com/">vapidpromotions.com</a></p>
+        </div>
+        <div class="col-12 col-md-12 col-lg-6 text-center text-lg-end ">
+          <ul class="social_icons footermargintop mt-4 mt-lg-0 mb-0">
+            <li><a href="#" class="fab fa-facebook-f"></a></li>
+            <li><a href="#" class="fab fa-twitter"></a></li>
+            <li><a href="#" class="fab fa-linkedin-in"></a></li>
+            <li><a href="#" class="fab fa-instagram"></a></li>
+            <li><a href="#" class="fab fa-telegram"></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    </footer>
+
+
+
+    <script src="/js/jquery-3.7.1.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/proper.min.js"></script>
+    <script type="text/javascript" src="/js/slick.min.js"></script>
+    <script type="text/javascript" src="/js/custome_script.js"></script>
+    
+  </body>
+</html>

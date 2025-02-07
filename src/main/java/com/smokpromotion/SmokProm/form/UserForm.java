@@ -38,7 +38,8 @@ public class UserForm {
     private boolean validEmail =true;
     private boolean isLocked = false;
     private boolean specifyPassword = false;
-
+    private transient int jCaptcha;
+    private transient int jCaptcha1;
     // ---------------------------------------------------------------------------------------------
     // Constructors
     // ---------------------------------------------------------------------------------------------
@@ -60,6 +61,9 @@ public class UserForm {
     public void setReseller(String reseller) {
         this.reseller = reseller;
     }
+
+
+
 
     public int idAsInt() {
 
@@ -195,6 +199,21 @@ public class UserForm {
         isLocked = locked;
     }
 
+    public int getjCaptcha() {
+        return jCaptcha;
+    }
+
+    public void setjCaptcha(int jCaptcha) {
+        this.jCaptcha = jCaptcha;
+    }
+
+    public int getjCaptcha1() {
+        return jCaptcha1;
+    }
+
+    public void setjCaptcha1(int jCaptcha1) {
+        this.jCaptcha1 = jCaptcha1;
+    }
 
     public boolean isSpecifyPassword() {
         return specifyPassword;

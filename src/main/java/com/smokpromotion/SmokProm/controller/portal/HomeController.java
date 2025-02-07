@@ -138,11 +138,15 @@ public class HomeController extends PortalBaseController {
     public String signup(Model model, HttpServletRequest request, @Valid @ModelAttribute("userForm") UserForm userForm, BindingResult bindingResult) throws UserNotFoundException, NotLoggedInException
     {
        // validateTemplate(template, bindingResult);
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors() || userForm.getjCaptcha()!= userForm.getjCaptcha1()){
             model.addAttribute("languages", EmailLanguage.values());
             model.addAttribute("userForm", userForm);
+            LOGGER.warn("Signup captcha was "+userForm.getjCaptcha()+" but captcga1 was "+userForm.getjCaptcha1());
+            System.err.println("Signup captcha was "+userForm.getjCaptcha()
+                    +" but captcga1 was "+userForm.getjCaptcha1());
             return PUBBASE+"signup";
         }
+
         S_User user = new S_User(userForm);
 
         userService.create(user, userForm.getPassword());
@@ -164,10 +168,10 @@ public class HomeController extends PortalBaseController {
     public String signupReseller(Model model,  HttpServletRequest request,@Valid @ModelAttribute("userForm") UserForm userForm, BindingResult bindingResult) throws UserNotFoundException, NotLoggedInException
     {
         // vaateTemplate(template, bindingResult);
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()|| userForm.getjCaptcha()!= userForm.getjCaptcha1()){
             model.addAttribute("languages", EmailLanguage.values());
             model.addAttribute("userForm", userForm);
-            return PUBBASE+"signup";
+            return PUBBASE+"sign_up_reseller";
         }
         S_User user = new S_User(userForm);
         user.setResellerName("isa_reseller");
@@ -189,10 +193,10 @@ public class HomeController extends PortalBaseController {
     public String signupFromReseller(Model model, HttpServletRequest request, @Valid @ModelAttribute("userForm") UserForm userForm, BindingResult bindingResult) throws UserNotFoundException, NotLoggedInException
     {
         // vaateTemplate(template, bindingResult);
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors() || userForm.getjCaptcha()!= userForm.getjCaptcha1()){
             model.addAttribute("languages", EmailLanguage.values());
             model.addAttribute("userForm", userForm);
-            return PUBBASE+"signup";
+            return PUBBASE+"sign_up_from_reseller";
         }
         S_User user = new S_User(userForm);
 
